@@ -6,14 +6,67 @@
         <title>{% block title %}Welcome!{% endblock %}</title>
         {% block stylesheets %}
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
-            {% stylesheets "bundles/app/css/*" filter="cssrewrite" %}
+            {% stylesheets
+            "bundles/app/css/*"
+            "bundles/user/*" filter="cssrewrite" %}
             <link rel="stylesheet" href="{{ asset_url }}" />
             {% endstylesheets %}
         {% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
+    <div class="container-fluid">
+        <nav class="navbar fixed-top navbar-toggleable-md navbar-light bg-faded">
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="nav navbar-brand" href="#">Arkein</a>
+
+            <div class="collapse navbar-collapse" id="navbar">
+
+                <ul class="navbar-nav mx-auto">
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Projets</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Partenaires</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Evènements</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                {{ app.user.username }}
+                            </a>
+
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                {% if is_granted("ROLE_ADMIN") %}
+                                <a class="dropdown-item" href="{{ path('member_index') }}">Members</a>
+                                <a class="dropdown-item" href="{{ path('organization_index') }}">Organizations</a>
+                                {% endif %}
+                                <a class="dropdown-item" href="{{ path('fos_user_security_logout') }}">{{ 'layout.logout'|trans({}, 'FOSUserBundle') }}</a>
+                            </div>
+                        </li>
+                    {% else %}
+                        <li class="nav-item"><a class="nav-link" href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a></li>
+                    {% endif %}
+                </ul>
+
+            </div>
+        </nav>
+    </div>
         {% block body %}{% endblock %}
+
         {% block javascripts %}
             <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>

@@ -4,21 +4,17 @@ namespace UserBundle\Controller;
 
 use UserBundle\Entity\Organization;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Organization controller.
  *
- * @Route("organization")
  */
 class OrganizationController extends Controller
 {
     /**
      * Lists all organization entities.
      *
-     * @Route("/", name="organization_index")
-     * @Method("GET")
      */
     public function indexAction()
     {
@@ -34,21 +30,21 @@ class OrganizationController extends Controller
     /**
      * Creates a new organization entity.
      *
-     * @Route("/new", name="organization_new")
-     * @Method({"GET", "POST"})
      */
     public function newAction(Request $request)
     {
         $organization = new Organization();
+
         $form = $this->createForm('UserBundle\Form\OrganizationType', $organization);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($organization);
-            $em->flush($organization);
 
-            return $this->redirectToRoute('organization_show', array('id' => $organization->getId()));
+            $em->flush();
+
+            return $this->redirectToRoute('organization_edit', array('id' => $organization->getId()));
         }
 
         return $this->render('organization/new.html.twig', array(
@@ -60,8 +56,6 @@ class OrganizationController extends Controller
     /**
      * Finds and displays a organization entity.
      *
-     * @Route("/{id}", name="organization_show")
-     * @Method("GET")
      */
     public function showAction(Organization $organization)
     {
@@ -76,13 +70,11 @@ class OrganizationController extends Controller
     /**
      * Displays a form to edit an existing organization entity.
      *
-     * @Route("/{id}/edit", name="organization_edit")
-     * @Method({"GET", "POST"})
      */
     public function editAction(Request $request, Organization $organization)
     {
         $deleteForm = $this->createDeleteForm($organization);
-        $editForm = $this->createForm('UserBundle\Form\OrganizationType', $organization);
+        $editForm = $this->createForm('UserBundle\Form\OrganizationEditType', $organization);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
@@ -101,8 +93,6 @@ class OrganizationController extends Controller
     /**
      * Deletes a organization entity.
      *
-     * @Route("/{id}", name="organization_delete")
-     * @Method("DELETE")
      */
     public function deleteAction(Request $request, Organization $organization)
     {

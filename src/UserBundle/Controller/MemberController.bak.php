@@ -4,22 +4,17 @@ namespace UserBundle\Controller;
 
 use UserBundle\Entity\Member;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Member controller.
  *
- * @Route("member")
  */
 class MemberController extends Controller
 {
     /**
-     * Lists all member entities.
+     * Lists all user entities.
      *
-     * @Route("/", name="member_index")
-     * @Method("GET")
      */
     public function indexAction()
     {
@@ -27,16 +22,14 @@ class MemberController extends Controller
 
         $members = $em->getRepository('UserBundle:Member')->findAll();
 
-        return $this->render('member/index.html.twig', array(
+        return $this->render('user/index.html.twig', array(
             'members' => $members,
         ));
     }
 
     /**
-     * Creates a new member entity.
+     * Creates a new user entity.
      *
-     * @Route("/new", name="member_new")
-     * @Method({"GET", "POST"})
      */
     public function newAction(Request $request)
     {
@@ -49,61 +42,55 @@ class MemberController extends Controller
             $em->persist($member);
             $em->flush($member);
 
-            return $this->redirectToRoute('member_show', array('id' => $member->getId()));
+            return $this->redirectToRoute('user_show', array('id' => $member->getId()));
         }
 
-        return $this->render('member/new.html.twig', array(
-            'member' => $member,
+        return $this->render('user/new.html.twig', array(
+            'user' => $member,
             'form' => $form->createView(),
         ));
     }
 
     /**
-     * Finds and displays a member entity.
+     * Finds and displays a user entity.
      *
-     * @Route("/{id}", name="member_show")
-     * @Method("GET")
      */
     public function showAction(Member $member)
     {
         $deleteForm = $this->createDeleteForm($member);
 
-        return $this->render('member/show.html.twig', array(
-            'member' => $member,
+        return $this->render('user/show.html.twig', array(
+            'user' => $member,
             'delete_form' => $deleteForm->createView(),
         ));
     }
 
     /**
-     * Displays a form to edit an existing member entity.
+     * Displays a form to edit an existing user entity.
      *
-     * @Route("/{id}/edit", name="member_edit")
-     * @Method({"GET", "POST"})
      */
     public function editAction(Request $request, Member $member)
     {
         $deleteForm = $this->createDeleteForm($member);
-        $editForm = $this->createForm('UserBundle\Form\MemberType', $member);
+        $editForm = $this->createForm('UserBundle\Form\MemberEditType', $member);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('member_edit', array('id' => $member->getId()));
+            return $this->redirectToRoute('user_edit', array('id' => $member->getId()));
         }
 
-        return $this->render('member/edit.html.twig', array(
-            'member' => $member,
+        return $this->render('user/edit.html.twig', array(
+            'user' => $member,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
     }
 
     /**
-     * Deletes a member entity.
+     * Deletes a user entity.
      *
-     * @Route("/{id}", name="member_delete")
-     * @Method("DELETE")
      */
     public function deleteAction(Request $request, Member $member)
     {
@@ -116,20 +103,20 @@ class MemberController extends Controller
             $em->flush($member);
         }
 
-        return $this->redirectToRoute('member_index');
+        return $this->redirectToRoute('user_index');
     }
 
     /**
-     * Creates a form to delete a member entity.
+     * Creates a form to delete a user entity.
      *
-     * @param Member $member The member entity
+     * @param Member $member The user entity
      *
      * @return \Symfony\Component\Form\Form The form
      */
     private function createDeleteForm(Member $member)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('member_delete', array('id' => $member->getId())))
+            ->setAction($this->generateUrl('user_delete', array('id' => $member->getId())))
             ->setMethod('DELETE')
             ->getForm()
         ;

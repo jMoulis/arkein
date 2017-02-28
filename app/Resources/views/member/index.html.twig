@@ -1,0 +1,41 @@
+{% extends ':member:layout.html.twig' %}
+
+{% block body %}
+    <h1>Members list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Firstname</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for member in members %}
+            <tr>
+                <td><a href="{{ path('member_show', { 'id': member.id }) }}">{{ member.id }}</a></td>
+                <td>{{ member.name }}</td>
+                <td>{{ member.firstname }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('member_show', { 'id': member.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('member_edit', { 'id': member.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('member_new') }}">Create a new member</a>
+        </li>
+    </ul>
+{% endblock %}
