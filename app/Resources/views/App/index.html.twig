@@ -1,0 +1,45 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}AppBundle:App:index{% endblock %}
+
+{% block body %}
+    <header>
+
+            <div>
+                <img src="https://dummyimage.com/1900x730/149ede.png&text=Welcome" class="img-fluid" alt="welcome">
+            </div>
+
+    </header>
+
+    <nav class="navbar fixed-top navbar-toggleable-md navbar-light bg-faded">
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" href="#">Arkein</a>
+        <div class="collapse navbar-collapse" id="navbar">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Accueil<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Projets</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Contact</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Partenaires</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Evènements</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Login</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+{% endblock %}
