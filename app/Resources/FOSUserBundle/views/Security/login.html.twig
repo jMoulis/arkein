@@ -10,25 +10,17 @@
         {% if csrf_token %}
             <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
         {% endif %}
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3>Connexion</h3>
+            <h2 class="form-signin-heading">Please sign in</h2>
+            <label for="username" class="sr-only">{{ 'security.login.username'|trans }}</label>
+            <input type="text" id="username" name="_username" class="form-control" value="{{ last_username }}" placeholder="Identifiant" required="required" />
+
+            <label for="password" class="sr-only">{{ 'security.login.password'|trans }}</label>
+            <input type="password" id="password" name="_password" class="form-control" placeholder="Mot de passe" required="required" />
+            <div class="checkbox">
+                <label for="remember_me">
+                    <input type="checkbox" id="remember_me" name="_remember_me" value="on" />{{ 'security.login.remember_me'|trans }}
+                </label>
             </div>
-            <div class="panel-body">
-                <label for="username" class="sr-only">{{ 'security.login.username'|trans }}</label>
-                <input type="text" id="username" name="_username" class="form-control" value="{{ last_username }}" placeholder="Identifiant" required="required" />
-
-                <label for="password" class="sr-only">{{ 'security.login.password'|trans }}</label>
-                <input type="password" id="password" name="_password" class="form-control" placeholder="Mot de passe" required="required" />
-
-                <div class="checkbox">
-                    <label for="remember_me">
-                        <input type="checkbox" id="remember_me" name="_remember_me" value="on" />{{ 'security.login.remember_me'|trans }}
-                    </label>
-                </div>
-
-                <input type="submit" class="btn btn-default btn-block btn-lg" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}" />
-            </div>
-        </div>
-    </form>
+            <input type="submit" class="btn btn-default btn-block btn-lg" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}" />
+        </form>
 {% endblock fos_user_content %}
