@@ -3,57 +3,33 @@
 {% block body %}
     <h1>Organizations list</h1>
 
-    <table>
+    <p><a class="btn btn-primary" role="button" href="{{ path('organization_new') }}">Create a new organization</a></p>
+
+    <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Name</th>
-                <th>Description</th>
-                <th>Datecreated</th>
-                <th>Address</th>
-                <th>Size</th>
-                <th>Namecontact</th>
-                <th>Firstname</th>
+                <th>Contact</th>
                 <th>Email</th>
                 <th>Phone</th>
-                <th>Website</th>
-                <th>Facebook</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for organization in organizations %}
             <tr>
-                <td><a href="{{ path('organization_show', { 'id': organization.id }) }}">{{ organization.id }}</a></td>
-                <td>{{ organization.name }}</td>
-                <td>{{ organization.description }}</td>
-                <td>{% if organization.dateCreated %}{{ organization.dateCreated|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{{ organization.address }}</td>
-                <td>{{ organization.size }}</td>
-                <td>{{ organization.namecontact }}</td>
-                <td>{{ organization.firstname }}</td>
+                <td><a href="{{ path('organization_show', { 'id': organization.id }) }}">{{ organization.name }}</a></td>
+                <td>{{ organization.namecontact }}, {{ organization.firstnameContact }}</td>
                 <td>{{ organization.email }}</td>
                 <td>{{ organization.phone }}</td>
-                <td>{{ organization.website }}</td>
-                <td>{{ organization.facebook }}</td>
                 <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('organization_show', { 'id': organization.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('organization_edit', { 'id': organization.id }) }}">edit</a>
-                        </li>
-                    </ul>
+                    <a class="btn btn-success" role="button" href="{{ path('organization_show', { 'id': organization.id }) }}">show</a>
+                    <a class="btn btn-warning" role="button" href="{{ path('organization_edit', { 'id': organization.id }) }}">edit</a>
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <ul>
-        <li>
-            <a href="{{ path('organization_new') }}">Create a new organization</a>
-        </li>
-    </ul>
+
 {% endblock %}

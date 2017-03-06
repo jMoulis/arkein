@@ -27,10 +27,9 @@ class OrganizationType extends AbstractType
             ->add('dateCreated', DateType::class, array(
                 'format' => 'ddMMyyyy'
             ))
-            ->add('internalSkill', TextType::class)
             ->add('size', IntegerType::class)
             ->add('namecontact', TextType::class)
-            ->add('firstname', TextType::class)
+            ->add('firstnamecontact', TextType::class)
             ->add('address', TextareaType::class)
             ->add('phone', TextType::class)
             ->add('email', EmailType::class)

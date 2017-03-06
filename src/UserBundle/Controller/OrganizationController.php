@@ -82,7 +82,7 @@ class OrganizationController extends Controller
     public function editAction(Request $request, Organization $organization)
     {
         $deleteForm = $this->createDeleteForm($organization);
-        $editForm = $this->createForm('UserBundle\Form\OrganizationType', $organization);
+        $editForm = $this->createForm('UserBundle\Form\OrganizationEditType', $organization);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {

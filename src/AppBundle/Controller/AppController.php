@@ -16,4 +16,12 @@ class AppController extends Controller
         ));
     }
 
+    /**
+     * @Route("/dashboard", name="dashboard")
+     */
+    public function dashboardAction()
+    {
+        return $this->render(':App:dashboard.html.twig');
+    }
+
 }

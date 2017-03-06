@@ -75,7 +75,7 @@ class Organization
      *
      * @ORM\Column(name="firstname_contact", type="string", length=100, nullable=true)
      */
-    private $firstname;
+    private $firstnamecontact;
 
     /**
      * @var string
@@ -261,27 +261,27 @@ class Organization
     }
 
     /**
-     * Set firstname
+     * Set firstnamecontact
      *
-     * @param string $firstname
+     * @param string $firstnamecontact
      *
      * @return Organization
      */
-    public function setFirstname($firstname)
+    public function setFirstnameContact($firstnamecontact)
     {
-        $this->firstname = $firstname;
+        $this->firstnamecontact = $firstnamecontact;
 
         return $this;
     }
 
     /**
-     * Get firstname
+     * Get firstnamecontact
      *
      * @return string
      */
-    public function getFirstname()
+    public function getFirstnameContact()
     {
-        return $this->firstname;
+        return $this->firstnamecontact;
     }
 
     /**

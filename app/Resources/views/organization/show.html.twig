@@ -3,12 +3,14 @@
 {% block body %}
     <h1>Organization</h1>
 
-    <table>
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ organization.id }}</td>
-            </tr>
+    <div class="card">
+        <div class="card-header">
+            <h3>{{ organization.name }}</h3>
+        </div>
+
+    <div class="card-block">
+        <table class="table">
+            <tbody>
             <tr>
                 <th>Name</th>
                 <td>{{ organization.name }}</td>
@@ -35,7 +37,7 @@
             </tr>
             <tr>
                 <th>Firstname</th>
-                <td>{{ organization.firstname }}</td>
+                <td>{{ organization.firstnamecontact }}</td>
             </tr>
             <tr>
                 <th>Email</th>
@@ -53,8 +55,10 @@
                 <th>Facebook</th>
                 <td>{{ organization.facebook }}</td>
             </tr>
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    </div>
+    </div>
 
     <ul>
         <li>

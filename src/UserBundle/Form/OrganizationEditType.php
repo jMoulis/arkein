@@ -19,6 +19,8 @@ class OrganizationEditType extends AbstractType
     {
         $builder
             ->remove('credential')
+            ->remove('save', SubmitType::class)
+            ->add('edit', SubmitType::class)
 
         ;
     }

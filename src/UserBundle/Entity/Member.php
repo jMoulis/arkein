@@ -40,6 +40,20 @@ class Member
      */
     private $firstname;
 
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $email;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $phone;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $address;
 
     /**
      * Get id
@@ -99,6 +113,7 @@ class Member
         return $this->firstname;
     }
 
+
     /**
      * Set credential
      *
@@ -123,4 +138,54 @@ class Member
     {
         return $this->credential;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param mixed $email
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+
+    /**
+     * @param mixed $phone
+     */
+    public function setPhone($phone)
+    {
+        $this->phone = $phone;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAddress()
+    {
+        return $this->address;
+    }
+
+    /**
+     * @param mixed $address
+     */
+    public function setAddress($address)
+    {
+        $this->address = $address;
+    }
+
+
 }
