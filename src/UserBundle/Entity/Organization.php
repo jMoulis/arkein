@@ -15,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Organization
 {
     /**
-     * @ORM\OneToOne(targetEntity="UserBundle\Entity\Credential", inversedBy="organization", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="UserBundle\Entity\Credential", inversedBy="organization", cascade={"all"})
      */
     protected $credential;
 
@@ -76,13 +76,6 @@ class Organization
      * @ORM\Column(name="firstname_contact", type="string", length=100, nullable=true)
      */
     private $firstnamecontact;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="email", type="string", length=100, nullable=true)
-     */
-    private $email;
 
     /**
      * @var string
@@ -282,30 +275,6 @@ class Organization
     public function getFirstnameContact()
     {
         return $this->firstnamecontact;
-    }
-
-    /**
-     * Set email
-     *
-     * @param string $email
-     *
-     * @return Organization
-     */
-    public function setEmail($email)
-    {
-        $this->email = $email;
-
-        return $this;
-    }
-
-    /**
-     * Get email
-     *
-     * @return string
-     */
-    public function getEmail()
-    {
-        return $this->email;
     }
 
     /**

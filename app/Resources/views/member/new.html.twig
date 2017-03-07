@@ -2,15 +2,8 @@
 
 {% block body %}
     <h1>Member creation</h1>
-
+    <p><a href="{{ path('member_index') }}">Back to the list</a></p>
     {{ form_start(form) }}
         {{ form_widget(form) }}
-        <input type="submit" value="Create" />
     {{ form_end(form) }}
-
-    <ul>
-        <li>
-            <a href="{{ path('member_index') }}">Back to the list</a>
-        </li>
-    </ul>
 {% endblock %}

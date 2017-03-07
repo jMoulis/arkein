@@ -46,10 +46,11 @@ class MemberController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+
             $em->persist($member);
             $em->flush($member);
 
-            return $this->redirectToRoute('member_show', array('id' => $member->getId()));
+            return $this->redirectToRoute('member_edit', array('id' => $member->getId()));
         }
 
         return $this->render('member/new.html.twig', array(
@@ -83,7 +84,7 @@ class MemberController extends Controller
     public function editAction(Request $request, Member $member)
     {
         $deleteForm = $this->createDeleteForm($member);
-        $editForm = $this->createForm('UserBundle\Form\MemberType', $member);
+        $editForm = $this->createForm('UserBundle\Form\MemberEditType', $member);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {

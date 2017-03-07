@@ -2,6 +2,7 @@
 
 namespace UserBundle\Controller;
 
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use UserBundle\Entity\Organization;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -48,28 +49,12 @@ class OrganizationController extends Controller
             $em->persist($organization);
             $em->flush($organization);
 
-            return $this->redirectToRoute('organization_show', array('id' => $organization->getId()));
+            return $this->redirectToRoute('organization_edit', array('id' => $organization->getId()));
         }
 
         return $this->render('organization/new.html.twig', array(
             'organization' => $organization,
             'form' => $form->createView(),
-        ));
-    }
-
-    /**
-     * Finds and displays a organization entity.
-     *
-     * @Route("/{id}", name="organization_show")
-     * @Method("GET")
-     */
-    public function showAction(Organization $organization)
-    {
-        $deleteForm = $this->createDeleteForm($organization);
-
-        return $this->render('organization/show.html.twig', array(
-            'organization' => $organization,
-            'delete_form' => $deleteForm->createView(),
         ));
     }
 
@@ -119,9 +104,9 @@ class OrganizationController extends Controller
     }
 
     /**
-     * Creates a form to delete a organization entity.
+     * Creates a form to delete a member entity.
      *
-     * @param Organization $organization The organization entity
+     * @param Organization $organization The member entity
      *
      * @return \Symfony\Component\Form\Form The form
      */
@@ -131,6 +116,6 @@ class OrganizationController extends Controller
             ->setAction($this->generateUrl('organization_delete', array('id' => $organization->getId())))
             ->setMethod('DELETE')
             ->getForm()
-        ;
+            ;
     }
 }

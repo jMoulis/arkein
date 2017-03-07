@@ -18,12 +18,11 @@
         <tbody>
         {% for organization in organizations %}
             <tr>
-                <td><a href="{{ path('organization_show', { 'id': organization.id }) }}">{{ organization.name }}</a></td>
+                <td><a href="{{ path('organization_edit', { 'id': organization.id }) }}">{{ organization.name }}</a></td>
                 <td>{{ organization.namecontact }}, {{ organization.firstnameContact }}</td>
-                <td>{{ organization.email }}</td>
+                <td>{{ organization.credential.email }}</td>
                 <td>{{ organization.phone }}</td>
                 <td>
-                    <a class="btn btn-success" role="button" href="{{ path('organization_show', { 'id': organization.id }) }}">show</a>
                     <a class="btn btn-warning" role="button" href="{{ path('organization_edit', { 'id': organization.id }) }}">edit</a>
                 </td>
             </tr>

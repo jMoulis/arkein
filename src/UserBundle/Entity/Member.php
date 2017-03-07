@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Member
 {
     /**
-     * @ORM\OneToOne(targetEntity="UserBundle\Entity\Credential", inversedBy="member", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="UserBundle\Entity\Credential", inversedBy="member", cascade={"all"})
      */
     protected $credential;
 
@@ -39,11 +39,6 @@ class Member
      * @ORM\Column(name="firstname", type="string", length=100)
      */
     private $firstname;
-
-    /**
-     * @ORM\Column(type="string")
-     */
-    private $email;
 
     /**
      * @ORM\Column(type="string")
@@ -124,7 +119,7 @@ class Member
     public function setCredential(\UserBundle\Entity\Credential $credential = null)
     {
         $this->credential = $credential;
-        $this->credential->setRoles(array('ROLE_MEMBER'));
+        /* $this->credential->setRoles(array('ROLE_MEMBER'));*/
 
         return $this;
     }
@@ -137,22 +132,6 @@ class Member
     public function getCredential()
     {
         return $this->credential;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getEmail()
-    {
-        return $this->email;
-    }
-
-    /**
-     * @param mixed $email
-     */
-    public function setEmail($email)
-    {
-        $this->email = $email;
     }
 
     /**

@@ -2,25 +2,36 @@
 {% trans_default_domain 'FOSUserBundle' %}
 
 {% block fos_user_content %}
+    <div id="loginform" class="d-flex justify-content-center">
+        <div class="card" style="width: 20rem;">
+            <img class="card-img-top" src="{{ asset('img/login.jpg') }}" alt="the path" />
+            <div class="card-block">
+                <form action="{{ path("fos_user_security_check") }}" method="post">
+                    {% if error %}
+                        <div class="alert alert-danger" role="alert">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                    {% endif %}
+                    {% if csrf_token %}
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+                    {% endif %}
+                    <h2 class="">Please sign in</h2>
 
-    <form class="form-signin" action="{{ path("fos_user_security_check") }}" method="post">
-        {% if error %}
-            <div class="alert alert-danger" role="alert">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-        {% endif %}
-        {% if csrf_token %}
-            <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
-        {% endif %}
-            <h2 class="form-signin-heading">Please sign in</h2>
-            <label for="username" class="sr-only">{{ 'security.login.username'|trans }}</label>
-            <input type="text" id="username" name="_username" class="form-control" value="{{ last_username }}" placeholder="Identifiant" required="required" />
+                    <div class="form-group">
+                        <label for="username" class="sr-only">{{ 'security.login.username'|trans }}</label>
+                        <input type="text" id="username" name="_username" class="form-control" value="{{ last_username }}" placeholder="Identifiant" required="required" />
+                    </div>
+                    <div class="form-group">
+                        <label for="password" class="sr-only">{{ 'security.login.password'|trans }}</label>
+                        <input type="password" id="password" name="_password" class="form-control" placeholder="Mot de passe" required="required" />
+                    </div>
 
-            <label for="password" class="sr-only">{{ 'security.login.password'|trans }}</label>
-            <input type="password" id="password" name="_password" class="form-control" placeholder="Mot de passe" required="required" />
-            <div class="checkbox">
-                <label for="remember_me">
-                    <input type="checkbox" id="remember_me" name="_remember_me" value="on" />{{ 'security.login.remember_me'|trans }}
-                </label>
+                    <div class="checkbox">
+                        <label for="remember_me">
+                            <input type="checkbox" id="remember_me" name="_remember_me" value="on" />{{ 'security.login.remember_me'|trans }}
+                        </label>
+                    </div>
+                    <input type="submit" class="btn btn-default btn-block btn-lg" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}" />
+                </form>
             </div>
-            <input type="submit" class="btn btn-default btn-block btn-lg" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}" />
-        </form>
+        </div>
+    </div>
 {% endblock fos_user_content %}

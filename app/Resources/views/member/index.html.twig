@@ -2,40 +2,28 @@
 
 {% block body %}
     <h1>Members list</h1>
+    <p><a class="btn btn-primary" role="button" href="{{ path('member_new') }}">Create a new member</a></p>
 
-    <table>
+    <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Firstname</th>
+                <th>Name, Firstname</th>
+                <th>phone</th>
+                <th>email</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for member in members %}
             <tr>
-                <td><a href="{{ path('member_show', { 'id': member.id }) }}">{{ member.id }}</a></td>
-                <td>{{ member.name }}</td>
-                <td>{{ member.firstname }}</td>
+                <td><a href="{{ path('member_show', { 'id': member.id }) }}">{{ member.name }}, {{ member.firstname }}</a></td>
+                <td>{{ member.phone }}</td>
+                <td>{{ member.credential.email }}</td>
                 <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('member_show', { 'id': member.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('member_edit', { 'id': member.id }) }}">edit</a>
-                        </li>
-                    </ul>
+                    <a class="btn btn-warning" href="{{ path('member_edit', { 'id': member.id }) }}">edit</a>
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-
-    <ul>
-        <li>
-            <a href="{{ path('member_new') }}">Create a new member</a>
-        </li>
-    </ul>
 {% endblock %}

@@ -49,8 +49,9 @@
                                 {{ app.user.username }}
                             </a>
 
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
                                 {% if is_granted("ROLE_ADMIN") %}
+                                    <a class="dropdown-item" href="{{ path('dashboard') }}">Tableau de bord</a>
                                 <a class="dropdown-item" href="{{ path('member_index') }}">Members</a>
                                 <a class="dropdown-item" href="{{ path('organization_index') }}">Organizations</a>
                                 {% endif %}

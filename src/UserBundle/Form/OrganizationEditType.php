@@ -3,12 +3,8 @@
 namespace UserBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class OrganizationEditType extends AbstractType
 {
@@ -19,7 +15,8 @@ class OrganizationEditType extends AbstractType
     {
         $builder
             ->remove('credential')
-            ->remove('save', SubmitType::class)
+            ->remove('save')
+            ->add('credential', CredentialEditType::class)
             ->add('edit', SubmitType::class)
 
         ;

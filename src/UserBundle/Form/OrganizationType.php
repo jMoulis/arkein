@@ -21,20 +21,18 @@ class OrganizationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('credential', CredentialType::class)
             ->add('name', TextType::class)
             ->add('description', TextareaType::class)
             ->add('dateCreated', DateType::class, array(
                 'format' => 'ddMMyyyy'
             ))
-            ->add('size', IntegerType::class)
             ->add('namecontact', TextType::class)
             ->add('firstnamecontact', TextType::class)
             ->add('address', TextareaType::class)
             ->add('phone', TextType::class)
-            ->add('email', EmailType::class)
             ->add('facebook', UrlType::class)
             ->add('website', UrlType::class)
+            ->add('credential', CredentialType::class)
             ->add('save', SubmitType::class)
         ;
     }
