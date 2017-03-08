@@ -19,11 +19,11 @@
             </tr>
             <tr>
                 <th>Datestart</th>
-                <td>{% if event.datestart %}{{ event.datestart|date('Y-m-d') }}{% endif %}</td>
+                <td>{% if event.datestart %}{{ event.datestart|date('d-m-Y') }}{% endif %}</td>
             </tr>
             <tr>
                 <th>Endstart</th>
-                <td>{% if event.endstart %}{{ event.endstart|date('Y-m-d') }}{% endif %}</td>
+                <td>{% if event.dateend %}{{ event.dateend|date('d-m-Y') }}{% endif %}</td>
             </tr>
         </tbody>
     </table>

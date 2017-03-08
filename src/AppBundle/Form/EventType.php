@@ -23,7 +23,7 @@ class EventType extends AbstractType
             ->add('datestart', DateType::class, array(
                 'format' => 'ddMMyyyy'
             ))
-            ->add('endstart', DateType::class, array(
+            ->add('dateend', DateType::class, array(
                 'format' => 'ddMMyyyy'
             ))
             ->add('place', TextareaType::class)

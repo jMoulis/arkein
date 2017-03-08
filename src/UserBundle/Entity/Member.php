@@ -119,7 +119,7 @@ class Member
     public function setCredential(\UserBundle\Entity\Credential $credential = null)
     {
         $this->credential = $credential;
-        /* $this->credential->setRoles(array('ROLE_MEMBER'));*/
+        $this->credential->setRoles(array('ROLE_MEMBER'));
 
         return $this;
     }

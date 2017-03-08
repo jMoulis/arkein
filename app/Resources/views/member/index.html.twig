@@ -4,7 +4,7 @@
     <h1>Members list</h1>
     <p><a class="btn btn-primary" role="button" href="{{ path('member_new') }}">Create a new member</a></p>
 
-    <table class="table">
+    <table class="table table-responsive">
         <thead>
             <tr>
                 <th>Name, Firstname</th>
@@ -16,7 +16,7 @@
         <tbody>
         {% for member in members %}
             <tr>
-                <td><a href="{{ path('member_show', { 'id': member.id }) }}">{{ member.name }}, {{ member.firstname }}</a></td>
+                <td><a href="{{ path('member_edit', { 'id': member.id }) }}">{{ member.name }}, {{ member.firstname }}</a></td>
                 <td>{{ member.phone }}</td>
                 <td>{{ member.credential.email }}</td>
                 <td>

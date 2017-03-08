@@ -4,6 +4,20 @@ parameters:
 #    parameter_name: value
 
 services:
-#    service_name:
-#        class: AppBundle\Directory\ClassName
-#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+    app.form.registration:
+        class: UserBundle\Form\CredentialType
+        tags:
+            - { name: form.type, alias: app_user_registration }
+    find.orga:
+        class: UserBundle\Twig\FindOrga
+        arguments:
+            doctrine:  '@doctrine'
+        tags:
+          - { name: twig.extension }
+
+    find.member:
+        class: UserBundle\Twig\FindMember
+        arguments:
+            doctrine:  '@doctrine'
+        tags:
+          - { name: twig.extension }

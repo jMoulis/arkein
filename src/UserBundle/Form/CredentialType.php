@@ -25,7 +25,7 @@ class CredentialType extends AbstractType
                     'Organisation' => 'ROLE_ORGANIZATION'
                 ),
                 'expanded' => true,
-                'multiple' => false
+                'multiple' => true
             ));
     }
 

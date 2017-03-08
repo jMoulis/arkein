@@ -66,6 +66,9 @@ class OrganizationController extends Controller
      */
     public function editAction(Request $request, Organization $organization)
     {
+        $em = $this->getDoctrine()->getManager();
+
+        $roles = $organization->getCredential()->getRoles();
         $deleteForm = $this->createDeleteForm($organization);
         $editForm = $this->createForm('UserBundle\Form\OrganizationEditType', $organization);
         $editForm->handleRequest($request);
@@ -77,6 +80,7 @@ class OrganizationController extends Controller
         }
 
         return $this->render('organization/edit.html.twig', array(
+            'roles' => $roles,
             'organization' => $organization,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),

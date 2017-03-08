@@ -156,4 +156,3 @@ class Reservation
         return $this->email;
     }
 }
-

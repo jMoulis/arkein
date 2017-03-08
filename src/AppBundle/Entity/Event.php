@@ -45,9 +45,9 @@ class Event
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="endstart", type="datetime", nullable=true)
+     * @ORM\Column(name="dateend", type="datetime", nullable=true)
      */
-    private $endstart;
+    private $dateend;
 
     /**
      * @ORM\Column(type="text")
@@ -69,7 +69,7 @@ class Event
      *
      * @param string $title
      *
-     * @return Events
+     * @return Event
      */
     public function setTitle($title)
     {
@@ -93,7 +93,7 @@ class Event
      *
      * @param string $description
      *
-     * @return Events
+     * @return Event
      */
     public function setDescription($description)
     {
@@ -117,7 +117,7 @@ class Event
      *
      * @param \DateTime $datestart
      *
-     * @return Events
+     * @return Event
      */
     public function setDatestart($datestart)
     {
@@ -137,35 +137,11 @@ class Event
     }
 
     /**
-     * Set endstart
-     *
-     * @param \DateTime $endstart
-     *
-     * @return Events
-     */
-    public function setEndstart($endstart)
-    {
-        $this->endstart = $endstart;
-
-        return $this;
-    }
-
-    /**
-     * Get endstart
-     *
-     * @return \DateTime
-     */
-    public function getEndstart()
-    {
-        return $this->endstart;
-    }
-
-    /**
      * Set place
      *
      * @param string $place
      *
-     * @return Events
+     * @return Event
      */
     public function setPlace($place)
     {
@@ -182,5 +158,29 @@ class Event
     public function getPlace()
     {
         return $this->place;
+    }
+
+    /**
+     * Set dateend
+     *
+     * @param \DateTime $dateend
+     *
+     * @return Event
+     */
+    public function setDateend($dateend)
+    {
+        $this->dateend = $dateend;
+
+        return $this;
+    }
+
+    /**
+     * Get dateend
+     *
+     * @return \DateTime
+     */
+    public function getDateend()
+    {
+        return $this->dateend;
     }
 }

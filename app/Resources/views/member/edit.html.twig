@@ -25,13 +25,14 @@
         {{ form_label(edit_form.credential) }}
         {{ form_widget(edit_form.credential) }}
     </div>
-
         {{ form_widget(edit_form.edit, {'attr': {'class': 'btn btn-warning'}}) }}
     <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">
         Supprimer
     </button>
     {{ form_end(edit_form) }}
+    <div class="form-group">
 
+    </div>
     <!-- Modal -->
     <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteLongTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
