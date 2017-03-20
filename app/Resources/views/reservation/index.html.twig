@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends ':App:layout.html.twig' %}
 
 {% block body %}
     <h1>Reservations list</h1>
@@ -9,7 +9,7 @@
                 <th>Id</th>
                 <th>Name</th>
                 <th>Firstname</th>
-                <th>Qt?y</th>
+                <th>Qty</th>
                 <th>Email</th>
                 <th>Actions</th>
             </tr>
@@ -20,7 +20,7 @@
                 <td><a href="{{ path('reservation_show', { 'id': reservation.id }) }}">{{ reservation.id }}</a></td>
                 <td>{{ reservation.name }}</td>
                 <td>{{ reservation.firstname }}</td>
-                <td>{{ reservation.qt√y }}</td>
+                <td>{{ reservation.qty }}</td>
                 <td>{{ reservation.email }}</td>
                 <td>
                     <ul>

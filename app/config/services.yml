@@ -1,23 +1,38 @@
 # Learn more about services, parameters and containers at
 # http://symfony.com/doc/current/service_container.html
 parameters:
-#    parameter_name: value
 
 services:
-    app.form.registration:
-        class: UserBundle\Form\CredentialType
-        tags:
-            - { name: form.type, alias: app_user_registration }
-    find.orga:
-        class: UserBundle\Twig\FindOrga
-        arguments:
-            doctrine:  '@doctrine'
-        tags:
-          - { name: twig.extension }
 
-    find.member:
-        class: UserBundle\Twig\FindMember
-        arguments:
-            doctrine:  '@doctrine'
+    app.flash_message:
+        class: AppBundle\EventListener\FlashMessage
+        autowire: true
         tags:
-          - { name: twig.extension }
+          - { name: doctrine.event_subscriber }
+
+    app.security.login_form_authenticator:
+        class: UserBundle\Security\LoginFormAuthenticator
+        autowire: true
+
+    app.doctrine.hash_password_listener:
+        class: UserBundle\DoctrineEvent\HashPasswordListener
+        autowire: true
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    app.user_voter:
+        class: UserBundle\Security\UserVoter
+        tags:
+            - { name: security.voter }
+        public: false
+      #app.doctrineevent.mail_user:
+       #     class: UserBundle\DoctrineEvent\MailUserListener
+        #    autowire: true
+         #   tags:
+          #      - { name: doctrine.event_subscriber }
+
+    app.form.youngster_coach:
+        class:  AppBundle\Form\TicketType
+        autowire: true
+        tags:
+            - { name: form.type }

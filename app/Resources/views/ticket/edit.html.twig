@@ -1,0 +1,7 @@
+{% extends ':App:layout.html.twig' %}
+
+{% block body %}
+    <h1>Ticket edit</h1>
+    {% set routeIndex = 'ticket_index' %}
+    {{ include(':App:_formEdit.html.twig') }}
+{% endblock %}

@@ -1,0 +1,7 @@
+
+    {{ form_start(form, { method: 'POST', action: path('answer_new', {'id': ticket.id }) }) }}
+    {{ form_errors(form) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+
+

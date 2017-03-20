@@ -1,0 +1,153 @@
+{% import _self as formMacros %}
+
+{% extends ':App:layout.html.twig' %}
+
+{% macro printPhoneRow(phoneForm) %}
+    <div class="js-phone-item form-group">
+        <div class="form-inline">
+            {{ form_errors(phoneForm) }}
+            {{ form_widget(phoneForm.title, {
+                attr: {
+                    class: 'form-control mb-2 mr-sm-2 mb-sm-0'
+                }
+            }) }}
+            <div class="input-group">
+                {{ form_widget(phoneForm.phoneNumber) }}
+                <span class="input-group-btn">
+                    <button class="btn btn-danger js-remove-phone" type="button">X</button>
+                </span>
+            </div>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro printAddressRow(addressForm) %}
+
+    <div class="js-address-item form-group">
+
+        {{ form_errors(addressForm) }}
+
+        {{ form_widget(addressForm.title) }}
+        {{ form_widget(addressForm.street, {
+            'attr': {
+                placeholder: 'Rue'
+            }
+        }) }}
+        {{ form_widget(addressForm.postalCode, {
+            'attr': {
+                placeholder: 'Code Postal'
+            }
+        }) }}
+        {{ form_widget(addressForm.town, {
+            'attr': {
+                placeholder: 'Ville'
+            }
+        }) }}
+        {{ form_widget(addressForm.country, {
+            'attr': {
+                placeholder: 'Pays'
+            }
+        }) }}
+
+        <button class="btn btn-danger btn-block js-remove-address" type="button">X</button>
+
+    </div>
+
+{% endmacro %}
+
+{% block body %}
+    <h1>User edit</h1>
+    {{ form_start(edit_form) }}
+    {{ form_row(edit_form.name) }}
+    {{ form_row(edit_form.firstname) }}
+    {{ form_row(edit_form.email) }}
+
+    <div class="js-phone-wrapper" data-prototype="{{ formMacros.printPhoneRow(edit_form.phoneNumbers.vars.prototype)|e('html_attr') }}" data-index="{{ edit_form.phoneNumbers|length }}">
+        {% for phoneForm in edit_form.phoneNumbers %}
+            {{ formMacros.printPhoneRow(phoneForm) }}
+        {% endfor %}
+        <button class="btn btn-success js-add-phone" type="button">
+            Add
+        </button>
+    </div>
+    <br/>
+    <div class="js-address-wrapper" data-prototype="{{ formMacros.printAddressRow(edit_form.addresses.vars.prototype)|e('html_attr') }}" data-index="{{ edit_form.addresses|length }}">
+
+        {% for addressForm in edit_form.addresses %}
+                {{ formMacros.printAddressRow(addressForm) }}
+        {% endfor %}
+        <button class="btn btn-success js-add-address" type="button">
+            Add
+        </button>
+    </div>
+    <br/>
+    {% if is_granted('ROLE_ADMIN') %}
+        {{ form_row(edit_form.coach) }}
+        {{ form_row(edit_form.role) }}
+        {{ form_row(edit_form.isActive) }}
+    {% else %}
+        {% do edit_form.coach.setRendered() %}
+        {% do edit_form.role.setRendered() %}
+        {% do edit_form.isActive.setRendered() %}
+    {% endif %}
+
+
+
+    {# Avoid seeing the colelction title #}
+    {{ form_widget((edit_form.phoneNumbers)) }}
+    {{ form_widget((edit_form.addresses)) }}
+
+    <button type="submit" class="btn btn-primary" formnovalidate>Save</button>
+    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Supprimer</button>
+
+    {{ form_end(edit_form) }}
+
+
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteLongTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteLongTitle">Confirmation Suppression</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{ form_start(delete_form) }}
+                    <p>Attention, vous êtes sur le point de supprimer une entrée</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                    <input type="submit" class="btn btn-danger" value="Supprimer" />
+                </div>
+                {{ form_end(delete_form) }}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/add-remove-collectionType.js') }}"></script>
+    <script>
+        jQuery(document).ready(function () {
+            var $wrapperPhone = $('.js-phone-wrapper');
+            var $addPhone = '.js-add-phone';
+            var $removePhone = '.js-remove-phone';
+            var $phoneItem = '.js-phone-item';
+
+            actionPhone($wrapperPhone, $addPhone, $removePhone, $phoneItem);
+
+            var $wrapperAddress = $('.js-address-wrapper');
+            var $addAddress = '.js-add-address';
+            var $removeAddress = '.js-remove-address';
+            var $addressItem = '.js-address-item';
+
+            actionPhone($wrapperAddress, $addAddress, $removeAddress, $addressItem);
+        });
+    </script>
+{% endblock %}

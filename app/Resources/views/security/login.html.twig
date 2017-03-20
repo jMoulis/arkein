@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <div id="loginform" class="d-flex justify-content-center">
+        <div class="card" style="width: 20rem;">
+            <img class="card-img-top" src="{{ asset('img/login.jpg') }}" alt="the path" />
+            <div class="card-block">
+                {% if error %}
+                    <div class="alert alert-danger">
+                        {{ error.messageKey|trans(error.messageData, 'security') }}
+                    </div>
+                {% endif %}
+                {{ form_start(form) }}
+                {{ form_row(form._username) }}
+                {{ form_row(form._password) }}
+                <p><button type="submit" class="btn btn-primary btn-block">Login <span class="fa fa-lock"></span></button></p>
+                {{ form_end(form) }}
+                <p class="">Pas encore enregistré?</p>
+                <a href="{{ path('user_register') }}" class="btn btn-success btn-block">Register</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -159,4 +159,28 @@ class Event
     {
         return $this->place;
     }
+
+    /**
+     * Set dateend
+     *
+     * @param \DateTime $dateend
+     *
+     * @return Event
+     */
+    public function setDateend($dateend)
+    {
+        $this->dateend = $dateend;
+
+        return $this;
+    }
+
+    /**
+     * Get dateend
+     *
+     * @return \DateTime
+     */
+    public function getDateend()
+    {
+        return $this->dateend;
+    }
 }

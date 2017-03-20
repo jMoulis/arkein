@@ -1,0 +1,52 @@
+{% extends ':App:layout.html.twig' %}
+
+{% block stylesheets %}
+{{ parent() }}
+    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+{% endblock %}
+{% block body %}
+    <h1>List des membres</h1>
+    <div class="js-main-content">
+
+        <table id="users" class="table table-hover table-bordered" cellspacing="0" width="100%">
+        </table>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+    <script src="{{ asset('bundles/user/js/dataTablesBootstrap4.js') }}"></script>
+    <script src="{{ asset('bundles/user/js/yadcfFilterDataTables.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+
+            var url = Routing.generate('json_user');
+
+            var oTable = $('#users').DataTable({
+                responsive: true,
+                processing: true,
+                ajax: url,
+                columns: [
+                   {"title": "Prénom", "data": "firstname"},
+                   {"title": "Nom", "data": "name"},
+                   {"title": "Email","data": "email"},
+                   {"data": "role"},
+                   {"title": "Action",
+                       "data": "id",
+                       "render": function (data, type, full, meta) {
+                           var showUserDetail = Routing.generate('user_show', { id: data });
+                           return '<a class="btn btn-warning" href="'+ showUserDetail +'">Voir</a>'
+                       }}
+                       ]
+            });
+            yadcf.init(oTable, [{
+                column_number: 3,
+                filter_default_label: 'Rôle'
+            }]);
+
+        });
+    </script>
+{% endblock %}

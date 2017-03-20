@@ -1,28 +1,29 @@
 security:
     encoders:
-        FOS\UserBundle\Model\UserInterface: bcrypt
+        UserBundle\Entity\User: bcrypt
 
     role_hierarchy:
-        ROLE_ADMIN:       [ROLE_USER, ROLE_MEMBER]
-        ROLE_SUPER_ADMIN: ROLE_ADMIN
+        ROLE_ADMIN:
+
 
     providers:
-        fos_userbundle:
-            id: fos_user.user_provider.username
+        our_users:
+            entity: { class: UserBundle\Entity\User, property: email }
 
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+
         main:
-            pattern: ^/
-            form_login:
-                provider: fos_userbundle
-            logout:       true
-            anonymous:    true
+            anonymous: ~
+            guard:
+                authenticators:
+                    - app.security.login_form_authenticator
+            logout:
+                path: /logout
+
+            switch_user: ~
 
     access_control:
-        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/, role: IS_AUTHENTICATED_FULLY }
+        - { path: '^/admin', roles: 'IS_AUTHENTICATED_FULLY' }

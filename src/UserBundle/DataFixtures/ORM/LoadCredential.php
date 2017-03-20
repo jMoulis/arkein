@@ -23,16 +23,4 @@ class LoadCredential implements  \Doctrine\Common\DataFixtures\FixtureInterface
 
     }
 
-    public function roles()
-    {
-        $roles = [
-            array('ORGANIZATION'),
-            array('MEMBER')
-        ];
-
-        $key = array_rand($roles);
-        return $roles[$key];
-
-    }
-
 }

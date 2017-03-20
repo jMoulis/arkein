@@ -1,0 +1,3 @@
+parameters:
+    update_message_success: 'Modification validée'
+    new_message_success: 'Données correctements enregistrées'

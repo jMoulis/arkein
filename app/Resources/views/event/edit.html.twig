@@ -1,34 +1,7 @@
-{% extends ':event:layout.html.twig' %}
+{% extends ':App:layout.html.twig' %}
 
 {% block body %}
     <h1>Event edit</h1>
-    <p><a href="{{ path('event_index') }}">Back to the list</a></p>
-    {{ form_start(edit_form) }}
-        {{ form_widget(edit_form) }}
-    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">
-        Supprimer
-    </button>
-    {{ form_end(edit_form) }}
-
-    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteLongTitle" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deleteLongTitle">Confirmation Suppression</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    {{ form_start(delete_form) }}
-                    <p>Êtes-vous certain de supprimer la fiche de "{{ event.title }}"</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                    <input type="submit" class="btn btn-danger" value="Supprimer" />
-                </div>
-                {{ form_end(delete_form) }}
-            </div>
-        </div>
-    </div>
+    {% set routeIndex = 'event_index' %}
+    {{ include(':App:_formEdit.html.twig') }}
 {% endblock %}

@@ -1,10 +1,7 @@
-{% extends ':event:layout.html.twig' %}
+{% extends ':App:layout.html.twig' %}
 
 {% block body %}
     <h1>Event creation</h1>
     <p><a class="" href="{{ path('event_index') }}">Back to the list</a></p>
-
-    {{ form_start(form) }}
-        {{ form_widget(form) }}
-    {{ form_end(form) }}
+    {{ include(':App:_formNew.html.twig') }}
 {% endblock %}

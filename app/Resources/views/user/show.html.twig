@@ -1,0 +1,62 @@
+{% extends ':App:layout.html.twig' %}
+
+{% block body %}
+    <h1>Bienvenu, {{ user.firstname }}</h1>
+
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#profile" role="tab">Profile</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#messages" role="tab">Messages</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#settings" role="tab">Settings</a>
+        </li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content" >
+        <div class="tab-pane active" id="profile" role="tabpanel">
+            <div class="row d-flex justify-content-start">
+                <div class="" style="margin: 2rem">
+                    <img class="" src="http://trenchlessleakdetection.com/wp-content/themes/trenchless-leak-detection/images/unknown-speaker.gif" width="250px" alt="avatar" />
+                    <div>
+                        <button class="btn btn-block btn-primary">Envoyer un Message</button>
+                    </div>
+
+                </div>
+
+                <div class="" style="margin: 2rem">
+                    <h3>{{ user.firstname }} {{ user.name }}</h3>
+                    <table class="table table-responsive">
+
+                        <tbody>
+                        {% for phoneNumbers in user.phoneNumbers %}
+                        <tr>
+                            <th>{{ phoneNumbers.title }}</th>
+                            <td>{{ phoneNumbers.phoneNumber }}</td>
+                        </tr>
+                        {% endfor %}
+                        <tr>
+                            <th>Adresse</th>
+                            <td>{{ user.addresses.first }}</td>
+                        </tr>
+                        <tr>
+                            <th>Email</th>
+                            <td>{{ user.email }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div>
+                        <a href="{{ path('user_edit', {'id': user.id}) }}" class="btn btn-success">Modifier</a>
+                        <button class="btn btn-danger">Supprimer</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="tab-pane" id="messages" role="tabpanel">...</div>
+        <div class="tab-pane" id="settings" role="tabpanel">...</div>
+    </div>
+{% endblock %}

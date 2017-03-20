@@ -1,11 +1,22 @@
 app:
-    resource: "@AppBundle/Controller/"
+    resource: "@AppBundle/Controller/AppController.php"
     type:     annotation
     prefix:   /
 
-user:
-    resource: "@UserBundle/Controller/"
+app.action:
+    resource: "@AppBundle/Controller/"
     type:     annotation
+    prefix:   /admin
 
-fos_user:
-    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+user.security:
+    resource: "@UserBundle/Controller/SecurityController.php"
+    type:     annotation
+    prefix: /
+
+user:
+    resource: "@UserBundle/Controller/UserController.php"
+    type:     annotation
+    prefix:   /admin
+
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"

@@ -19,27 +19,23 @@
 
 {% block dashbody %}
 <div class="container-fluid">
+
     <div class="row">
-        <nav class="col-sm-3 col-md-2 hidden-xs-down bg-faded sidebar">
-            <ul class="nav nav-pills flex-column">
-                <li class="nav-item">
-                    <a class="nav-link active" href="{{ path('dashboard') }}">Overview <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('member_index') }}">Members</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('organization_index') }}">Organizations</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('event_index') }}">Events</a>
-                </li>
-            </ul>
-        </nav>
+        {{ include(':App:dashboard_sidebar.html.twig') }}
         <main class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3">
+
+                {% if app.request.hasPreviousSession %}
+                    {% for type, messages in app.session.flashbag.all() %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ type }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                {% endif %}
+
         {% block dashcontent %}
             <h1>Dashboard</h1>
-
             <section class="row text-center placeholders">
                 <div class="col-6 col-sm-3 placeholder">
                     <img src="data:image/gif;base64,R0lGODlhAQABAIABAAJ12AAAACwAAAAAAQABAAACAkQBADs=" width="200" height="200" class="img-fluid rounded-circle" alt="Generic placeholder thumbnail">
@@ -93,7 +89,7 @@
 {% endblock dashbody %}
 
 {% block javascripts %}
-    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
 {% endblock %}

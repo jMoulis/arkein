@@ -1,0 +1,22 @@
+{% extends ':App:dashboard.html.twig' %}
+
+{% block dashcontent %}
+    <h1>Détail demande</h1>
+    <a href="{{ path('ticket_index') }}">Back to the list</a>
+    <div class="media">
+        <div class="media-body">
+            <h5 class="mt-0">{{ ticket.fromWho.name }} {{ ticket.fromWho.firstname }} posté le {{ ticket.date|date('d/m/Y') }}</h5>
+            <p class="js-message-static">{{ ticket.message }}</p>
+            <a class="btn btn-primary" href="{{ path('ticket_edit', {'id': ticket.id}) }}">Modifier</a>
+            <div>{{ render(controller('AppBundle:Ticket:newAnswer', { 'id': ticket.id })) }}</div>
+            {% for answer in ticket.answers %}
+                <div class="media mt-3">
+                    <div class="media-body">
+                        <h5 class="mt-0">{{ answer.user.name }} {{ answer.user.firstname }}</h5>
+                        {{ answer.message }}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

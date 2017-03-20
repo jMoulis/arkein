@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends ':App:layout.html.twig' %}
 
 {% block body %}
     <h1>Reservation</h1>
@@ -18,8 +18,8 @@
                 <td>{{ reservation.firstname }}</td>
             </tr>
             <tr>
-                <th>Qt?y</th>
-                <td>{{ reservation.qt√y }}</td>
+                <th>Qty</th>
+                <td>{{ reservation.qty }}</td>
             </tr>
             <tr>
                 <th>Email</th>

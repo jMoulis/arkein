@@ -1,0 +1,149 @@
+<?php
+
+namespace UserBundle\Controller;
+
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use UserBundle\Entity\User;
+use UserBundle\Form\RegisterEditType;
+use UserBundle\Form\RegisterType;
+
+/**
+ * User controller.
+ *
+ * @Route("user")
+ */
+
+class UserController extends Controller
+{
+    /**
+     * @Route("/", name="user_index")
+     */
+    public function indexAction(Request $request)
+    {
+        return $this->render('user/index.html.twig');
+    }
+
+    /**
+     * @Route("/{id}/show",
+     *      name="user_show",
+     *     options = { "expose" = true }
+     *     )
+     */
+    public function showAction(User $user)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $user = $em->getRepository('UserBundle:User')
+            ->find($user);
+        return $this->render('user/show.html.twig', [
+            'user' => $user
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/edit", name="user_edit")
+     * @Method({"GET", "POST"})
+     *
+     */
+    public function editAction(Request $request, User $user)
+    {
+
+        $deleteForm = $this->createDeleteForm($user);
+
+        $form = $this->createForm(RegisterEditType::class, $user);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid())
+        {
+            /** @var User $user */
+            $user = $form->getData();
+            $this->getDoctrine()->getManager()->flush();
+        }
+        return $this->render('user/edit.html.twig', [
+            'edit_form' => $form->createView(),
+            'delete_form' => $deleteForm->createView(),
+            'user' => $user
+        ]);
+    }
+
+    /**
+     * Deletes a member entity.
+     *
+     *
+     * @Route("/{id}/delete", name="member_delete")
+     * @Method("DELETE")
+     */
+    public function deleteAction(Request $request, User $user)
+    {
+        $form = $this->createDeleteForm($user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($user);
+            $em->flush($user);
+        }
+
+        return $this->redirectToRoute('dashboard');
+    }
+
+    /**
+     * Creates a form to delete a member entity.
+     *
+     * @param User $user The member entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createDeleteForm(User $user)
+    {
+        return $this->createFormBuilder()
+            ->setAction($this->generateUrl('member_delete', array('id' => $user->getId())))
+            ->setMethod('DELETE')
+            ->getForm()
+            ;
+    }
+
+    /**
+     * @Route("/json", name="json_user",
+     *     options={"expose" = true}
+     *     )
+     *
+     */
+    public function jsonData()
+    {
+        $coach = $this->get('security.token_storage')->getToken()->getUser();
+
+        $em = $this->getDoctrine()->getManager();
+
+        //If admin is connected, he can view all the users
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN'))
+        {
+            $users = $em->getRepository('UserBundle:User')
+                ->findYoungsterByCoach($coach)->getQuery()->execute();
+        } else {
+            $users = $em->getRepository('UserBundle:User')
+                ->findAll();
+        }
+
+        $listUsers = [];
+        $i = 0;
+
+        foreach ($users as $user)
+        {
+            $listUsers[$i]['id'] = $user->getId();
+            $listUsers[$i]['firstname'] = $user->getFirstname();
+            $listUsers[$i]['name'] = $user->getName();
+            $listUsers[$i]['email'] = $user->getEmail();
+            $listUsers[$i]['role'] = $user->getRole();
+            $i++;
+        }
+
+        return new JsonResponse(['data' => $listUsers]);
+    }
+}

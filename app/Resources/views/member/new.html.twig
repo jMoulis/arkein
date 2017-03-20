@@ -1,9 +1,0 @@
-{% extends ':member:layout.html.twig' %}
-
-{% block body %}
-    <h1>Member creation</h1>
-    <p><a href="{{ path('member_index') }}">Back to the list</a></p>
-    {{ form_start(form) }}
-        {{ form_widget(form) }}
-    {{ form_end(form) }}
-{% endblock %}

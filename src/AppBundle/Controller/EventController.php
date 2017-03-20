@@ -5,7 +5,8 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Event;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Event controller.
@@ -39,6 +40,7 @@ class EventController extends Controller
      */
     public function newAction(Request $request)
     {
+
         $event = new Event();
         $form = $this->createForm('AppBundle\Form\EventType', $event);
         $form->handleRequest($request);
@@ -47,6 +49,7 @@ class EventController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($event);
             $em->flush($event);
+
 
             return $this->redirectToRoute('event_edit', array('id' => $event->getId()));
         }
@@ -90,7 +93,7 @@ class EventController extends Controller
 
             return $this->redirectToRoute('event_edit', array('id' => $event->getId()));
         }
-
+        $this->getParameter('update_message_success');
         return $this->render('event/edit.html.twig', array(
             'event' => $event,
             'edit_form' => $editForm->createView(),

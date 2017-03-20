@@ -47,7 +47,6 @@ class ReservationController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($reservation);
             $em->flush($reservation);
-
             return $this->redirectToRoute('reservation_show', array('id' => $reservation->getId()));
         }
 
@@ -87,7 +86,6 @@ class ReservationController extends Controller
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-
             return $this->redirectToRoute('reservation_edit', array('id' => $reservation->getId()));
         }
 

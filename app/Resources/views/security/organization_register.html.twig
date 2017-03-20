@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+{% block content %}
+<div id="loginform" class="d-flex justify-content-center">
+    <div class="card" style="width: 20rem;">
+        <img class="card-img-top" src="{{ asset('img/login.jpg') }}" alt="the path" />
+        <div class="card-block">
+            {{ form_start(form) }}
+            {{ form_row(form.name, {
+                'label': 'Dénomination Organisme'
+            }) }}
+            {{ form_row(form.description) }}
+            {{ form_row(form.namecontact, {
+                'label': 'Nom contact'
+            }) }}
+            {{ form_row(form.firstnamecontact, {
+                'label': 'Prénom contact'
+            }) }}
+            {{ form_row(form.credential.email) }}
+            {{ form_row(form.credential.plainPassword.first, {
+                'label': 'Password'
+            }) }}
+            {{ form_row(form.credential.plainPassword.second, {
+                'label': 'Repeat Password'
+            }) }}
+            <button type="submit" class="btn btn-primary btn-block">Register</button>
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+{% endblock %}

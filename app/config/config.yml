@@ -3,6 +3,7 @@ imports:
     - { resource: security.yml }
     - { resource: services.yml }
     - { resource: "@UserBundle/Resources/config/services.yml" }
+    - { resource: "@AppBundle/Resources/config/services.yml" }
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
@@ -19,7 +20,7 @@ framework:
     form:            ~
     csrf_protection: ~
     validation:      { enable_annotations: true }
-    #serializer:      { enable_annotations: true }
+    serializer:      { enable_annotations: true }
     templating:
         engines: ['twig']
     default_locale:  "%locale%"
@@ -65,25 +66,14 @@ doctrine:
         auto_mapping: true
 
 
+
 # Swiftmailer Configuration
 swiftmailer:
     transport: "%mailer_transport%"
-    host:      "%mailer_host%"
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
 
-# FosUser Configuration
-fos_user:
-    db_driver: orm
-    firewall_name: main
-    user_class: UserBundle\Entity\Credential
-    from_email:
-        address: "%mailer_user%"
-        sender_name: "%mailer_user%"
-    registration:
-        form:
-            type: UserBundle\Form\CredentialType
 
 #Assetic Configuration
 assetic:
@@ -91,3 +81,10 @@ assetic:
     use_controller: "%kernel.debug%"
     filters:
         cssrewrite: ~
+
+stof_doctrine_extensions:
+    default_locale: en_US
+    orm:
+        default:
+            sluggable: true
+            blameable: true

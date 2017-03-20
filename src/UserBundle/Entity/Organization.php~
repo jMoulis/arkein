@@ -15,11 +15,6 @@ use Doctrine\ORM\Mapping as ORM;
 class Organization
 {
     /**
-     * @ORM\OneToOne(targetEntity="UserBundle\Entity\Credential", inversedBy="organization", cascade={"persist"})
-     */
-    protected $credential;
-
-    /**
      * @var int
      *
      * @ORM\Column(name="id", type="integer")
@@ -93,7 +88,6 @@ class Organization
      * @ORM\Column(name="facebook", type="string", length=255, nullable=true)
      */
     private $facebook;
-
 
     public function __construct()
     {
@@ -347,30 +341,5 @@ class Organization
     public function getFacebook()
     {
         return $this->facebook;
-    }
-
-    /**
-     * Set credential
-     *
-     * @param \UserBundle\Entity\Credential $credential
-     *
-     * @return Organization
-     */
-    public function setCredential(\UserBundle\Entity\Credential $credential = null)
-    {
-        $this->credential = $credential;
-        $this->credential->setRoles(array('ROLE_ORGANIZATION'));
-
-        return $this;
-    }
-
-    /**
-     * Get credential
-     *
-     * @return \UserBundle\Entity\Credential
-     */
-    public function getCredential()
-    {
-        return $this->credential;
     }
 }

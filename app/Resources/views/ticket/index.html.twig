@@ -1,0 +1,55 @@
+{% extends ':App:layout.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+{% endblock %}
+
+{% block dashcontent %}
+    <h1>Tickets list</h1>
+    <p><a class="btn btn-primary" href="{{ path('ticket_new') }}">Créer un nouveau ticket</a></p>
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#myTicket" role="tab">Mes Tickets</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#myAttribution" role="tab">Mes actions</a>
+        </li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div class="tab-pane active" id="myTicket" role="tabpanel">
+            <div class="js-main-content">
+                <table class="js-tickets table table-hover" cellspacing="0" width="100%">
+                </table>
+            </div>
+        </div>
+        <div class="tab-pane" id="myAttribution" role="tabpanel">
+            <table class="js-tickets-attribtution table table-hover" cellspacing="0" width="100%">
+            </table>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+    <script src="{{ asset('bundles/user/js/dataTablesBootstrap4.js') }}"></script>
+    <script src="{{ asset('bundles/user/js/yadcfFilterDataTables.js') }}"></script>
+    <script src="{{ asset('bundles/app/js/getTicket.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            var urlTicketAsAuthor = Routing.generate('json_ticket');
+            var otableTicketAsAuthor = getTicket('.js-tickets', urlTicketAsAuthor);
+
+            var urlTicketAsRecipient = Routing.generate('json_ticket_attribution');
+            var oTicketAsRecipient = getTicket('.js-tickets-attribtution', urlTicketAsRecipient);
+
+            /*yadcf.init(oTable, [{
+             column_number: 3,
+             filter_default_label: 'Rôle'
+             }]);*/
+        });
+    </script>
+{% endblock %}
