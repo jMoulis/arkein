@@ -3,8 +3,18 @@ app:
     type:     annotation
     prefix:   /
 
-app.action:
-    resource: "@AppBundle/Controller/"
+app.event:
+    resource: "@AppBundle/Controller/EventController.php"
+    type:     annotation
+    prefix:   /admin
+
+app.reservation:
+    resource: "@AppBundle/Controller/ReservationController.php"
+    type:     annotation
+    prefix:   /admin
+
+app.ticket:
+    resource: "@AppBundle/Controller/TicketController.php"
     type:     annotation
     prefix:   /admin
 

@@ -5,9 +5,13 @@
 {% endblock %}
 {% block dashcontent %}
     <h1>Ticket creation</h1>
-
     {{ form_start(form) }}
         {{ form_widget(form) }}
+        {{ form_row(form.objet) }}
+        {{ form_row(form.toWho) }}
+        {{ form_row(form.message) }}
+        {{ form_row(form.level) }}
+        {{ form_row(form.aboutWho) }}
         <input class="btn btn-primary" type="submit" value="Create" />
     {{ form_end(form) }}
 {% endblock %}

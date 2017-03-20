@@ -77,6 +77,7 @@ class Ticket
     public function __construct()
     {
         $this->statut = 1;
+        $this->date = new \DateTime();
     }
 
     /**

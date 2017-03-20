@@ -44,4 +44,13 @@ class UserRepository extends EntityRepository
         ;
         return $qb;
     }
+
+    public  function findYoungster()
+    {
+        $qb = $this->createQueryBuilder('user')
+            ->andWhere('user.role = :role ')
+            ->setParameter('role', 'ROLE_YOUNGSTER')
+        ;
+        return $qb;
+    }
 }

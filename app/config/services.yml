@@ -25,11 +25,12 @@ services:
         tags:
             - { name: security.voter }
         public: false
-      #app.doctrineevent.mail_user:
-       #     class: UserBundle\DoctrineEvent\MailUserListener
-        #    autowire: true
-         #   tags:
-          #      - { name: doctrine.event_subscriber }
+
+    app.doctrineevent.mail_user:
+        class: UserBundle\DoctrineEvent\MailUserListener
+        autowire: true
+        tags:
+            - { name: doctrine.event_subscriber }
 
     app.form.youngster_coach:
         class:  AppBundle\Form\TicketType
