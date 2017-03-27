@@ -35,14 +35,32 @@ class UserController extends Controller
      *     options = { "expose" = true }
      *     )
      */
-    public function showAction(User $user)
+    public function showAction(Request $request, User $user)
     {
         $em = $this->getDoctrine()->getManager();
+        $form = $this->createForm('DocumentationBundle\Form\DocumentType');
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $em = $this->getDoctrine()->getManager();
+
+            $document = $form->getData();
+            $document->setAuthor($this->getUser());
+            $document->setDestinataire($this->getUser());
+
+            $em->persist($document);
+            $em->flush($document);
+
+            return $this->redirectToRoute('user_show', array('id' => $user->getId()));
+        }
 
         $user = $em->getRepository('UserBundle:User')
             ->find($user);
+        $documents = $this->getDoctrine()->getRepository('DocumentationBundle:Document')->findAll();
         return $this->render('user/show.html.twig', [
-            'user' => $user
+            'documents' => $documents,
+            'user' => $user,
+            'form' => $form->createView()
         ]);
     }
 

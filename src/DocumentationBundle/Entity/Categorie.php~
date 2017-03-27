@@ -1,16 +1,16 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace DocumentationBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Document
+ * Categorie
  *
- * @ORM\Table(name="document")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\DocumentRepository")
+ * @ORM\Table(name="categorie")
+ * @ORM\Entity(repositoryClass="DocumentationBundle\Repository\CategorieRepository")
  */
-class Document
+class Categorie
 {
     /**
      * @var int
@@ -24,10 +24,14 @@ class Document
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=100)
+     * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
 
+    /**
+     * @ORM\OneToMany(targetEntity="DocumentationBundle\Entity\Document", mappedBy="categorie")
+     */
+    private $documents;
 
     /**
      * Get id
@@ -44,7 +48,7 @@ class Document
      *
      * @param string $name
      *
-     * @return Document
+     * @return Categorie
      */
     public function setName($name)
     {
@@ -63,3 +67,4 @@ class Document
         return $this->name;
     }
 }
+

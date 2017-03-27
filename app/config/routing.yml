@@ -1,3 +1,8 @@
+app.documentation:
+    resource: "@DocumentationBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 app:
     resource: "@AppBundle/Controller/AppController.php"
     type:     annotation
@@ -27,6 +32,7 @@ user:
     resource: "@UserBundle/Controller/UserController.php"
     type:     annotation
     prefix:   /admin
+
 
 fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"

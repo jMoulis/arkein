@@ -10,6 +10,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Validator\Constraints\Choice;
 use UserBundle\Entity\User;
 use UserBundle\Repository\UserRepository;
 
@@ -47,8 +48,8 @@ class TicketType extends AbstractType
             ])
             ->add('level', ChoiceType::class, [
                 'choices' => [
-                    'normal' => 'Normal',
-                    'urgent' => 'Urgent'
+                    'Normal' => 'normal',
+                    'Urgent' => 'urgent'
                 ]
             ])
             ->add('message')
@@ -75,7 +76,13 @@ class TicketType extends AbstractType
                     ];
                 }
                 $form->add('aboutWho', EntityType::class, $formOptions);
-            });
+            })
+            ->add('statut', ChoiceType::class, [
+                'choices' => [
+                    'Cloturé' => 0,
+                    'Ouvert' => 1
+                ]
+            ])
         ;
     }
     

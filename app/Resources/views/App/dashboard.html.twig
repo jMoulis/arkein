@@ -12,7 +12,7 @@
                 <a class="nav-link" href="{{ path('app_app_index') }}">Retour Site <span class="sr-only">(current)</span></a>
             </li>
         </ul>
-        {% include ':App:menu.html.twig' %}
+        {% include ':App:_menu.html.twig' %}
     </div>
 </nav>
 {% endblock nav %}
@@ -21,7 +21,7 @@
 <div class="container-fluid">
 
     <div class="row">
-        {{ include(':App:dashboard_sidebar.html.twig') }}
+        {{ include(':App:_sidebar.html.twig') }}
         <main class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3">
 
                 {% if app.request.hasPreviousSession %}
@@ -89,7 +89,5 @@
 {% endblock dashbody %}
 
 {% block javascripts %}
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
+    {{ parent() }}
 {% endblock %}

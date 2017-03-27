@@ -96,6 +96,11 @@ class User implements UserInterface
      */
     private $coach;
 
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Document", mappedBy="destinataire")
+     */
+    private $documents;
+
     private $fromWho;
     private $toWho;
     private $aboutWho;
@@ -170,6 +175,7 @@ class User implements UserInterface
         $this->phoneNumbers = new ArrayCollection();
         $this->addresses = new ArrayCollection();
         $this->coach = new ArrayCollection();
+        $this->documents = new ArrayCollection();
         $this->isActive = false;
     }
 
@@ -362,5 +368,29 @@ class User implements UserInterface
     public function setCoach($coach)
     {
         $this->coach = $coach;
+    }
+
+    /**
+     * Add coach
+     *
+     * @param \UserBundle\Entity\User $coach
+     *
+     * @return User
+     */
+    public function addCoach(\UserBundle\Entity\User $coach)
+    {
+        $this->coach[] = $coach;
+
+        return $this;
+    }
+
+    /**
+     * Remove coach
+     *
+     * @param \UserBundle\Entity\User $coach
+     */
+    public function removeCoach(\UserBundle\Entity\User $coach)
+    {
+        $this->coach->removeElement($coach);
     }
 }

@@ -4,6 +4,7 @@ imports:
     - { resource: services.yml }
     - { resource: "@UserBundle/Resources/config/services.yml" }
     - { resource: "@AppBundle/Resources/config/services.yml" }
+    - { resource: "@DocumentationBundle/Resources/config/services.yml" }
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
@@ -64,6 +65,13 @@ doctrine:
         auto_generate_proxy_classes: "%kernel.debug%"
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
+        mappings:
+            gedmo_tree:
+                type: annotation
+                prefix: Gedmo\Tree\Entity
+                dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Tree/Entity"
+                alias: GedmoTree # (optional) it will default to the name set for the mapping
+                is_bundle: false
 
 
 
@@ -88,3 +96,15 @@ stof_doctrine_extensions:
         default:
             sluggable: true
             blameable: true
+            tree: true
+
+# app/config/config.yml
+vich_uploader:
+    db_driver: orm
+    mappings:
+        file_youngster:
+            uri_prefix: /youngster
+            upload_destination: '%kernel.root_dir%/../web/youngster'
+            inject_on_load:     false
+            delete_on_update:   true
+            delete_on_remove:   true

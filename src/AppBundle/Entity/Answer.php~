@@ -3,12 +3,14 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Answer
  *
  * @ORM\Table(name="answer")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\AnswerRepository")
+ *
  */
 class Answer
 {
@@ -27,6 +29,7 @@ class Answer
     private $ticket;
 
     /**
+     *
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User", inversedBy="answers")
      */
     private $user;
@@ -37,9 +40,15 @@ class Answer
     private $message;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $dateCreated;
+
+
+    public function __construct()
+    {
+        $this->dateCreated = new \DateTime();
+    }
 
 
     /**
@@ -118,4 +127,3 @@ class Answer
 
 
 }
-

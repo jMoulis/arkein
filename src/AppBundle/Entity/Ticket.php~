@@ -37,7 +37,7 @@ class Ticket
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date", type="date", nullable=true)
+     * @ORM\Column(name="date", type="datetime", nullable=true)
      */
     private $date;
 
@@ -47,8 +47,6 @@ class Ticket
      * @ORM\Column(name="statut", type="smallint")
      */
     private $statut;
-
-
 
     /**
      * @ORM\Column(type="string")
@@ -72,11 +70,14 @@ class Ticket
 
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Answer", mappedBy="ticket", cascade={"persist"})
+     * @ORM\OrderBy({"dateCreated" = "DESC"})
      */
     private $answers;
 
     public function __construct()
     {
+        $this->statut = 1;
+        $this->date = new \DateTime();
     }
 
     /**
@@ -263,5 +264,40 @@ class Ticket
     public function setLevel($level)
     {
         $this->level = $level;
+    }
+
+    /**
+     * Add answer
+     *
+     * @param \AppBundle\Entity\Answer $answer
+     *
+     * @return Ticket
+     */
+    public function addAnswer(\AppBundle\Entity\Answer $answer)
+    {
+        $this->answers[] = $answer;
+        $answer->setTicket($this);
+
+        return $this;
+    }
+
+    /**
+     * Remove answer
+     *
+     * @param \AppBundle\Entity\Answer $answer
+     */
+    public function removeAnswer(\AppBundle\Entity\Answer $answer)
+    {
+        $this->answers->removeElement($answer);
+    }
+
+    /**
+     * Get answers
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getAnswers()
+    {
+        return $this->answers;
     }
 }

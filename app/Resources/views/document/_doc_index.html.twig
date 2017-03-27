@@ -1,0 +1,53 @@
+<div class="js-document-table mt-5">
+    <ul>
+        <h4>
+            Documents
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalAddDoc">
+                +
+            </button>
+        </h4>
+        {% set i = 1 %}
+        {% for categorie in categories %}
+            {% set i = i + 1 %}
+            <div class="card">
+                <div class="card-header" role="tab" id="heading{{ i }}">
+                    <h5 class="mb-0">
+                        <a href="#collapseFile{{ i }}" data-toggle="collapse"><i class="fa fa-folder" aria-hidden="true"></i>  {{ categorie.name }}</a>
+                    </h5>
+                </div>
+            </div>
+            <div class="collapse" id="collapseFile{{ i }}">
+                <div class="card-block">
+                    <table class="table table-sm table-responsive">
+                        {% for documents in categorie.documents %}
+                            <tr>
+                                <td><a href="{{ vich_uploader_asset(documents, 'fileTemporary') }}"><i class="fa fa-file" aria-hidden="true"></i>  {{ documents.fileName }}</a></td>
+                                <td align="center">
+                                    <a href="#"
+                                       class="js-delete-document btn btn-danger btn-sm"
+                                       data-url="{{ path('document_delete', {id: documents.id}) }}"
+                                    >x</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        {% endfor %}
+    </ul>
+</div>
+{{ include(':document:_modal_add_doc.html.twig') }}
+{#<script type="text/template" id="js-document-row-template">
+        <tr>
+            <td><a href="#"><%= fileName %></a></td>
+            <td align="center">
+                <a href="#"
+                   class="js-delete-document"
+                   data-url="<%= links._self %>"
+                >x</a>
+            </td>
+        </tr>
+    </script>#}
+
+

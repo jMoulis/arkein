@@ -29,7 +29,7 @@ class Answer
     private $ticket;
 
     /**
-     * @Gedmo\Blameable(on="create")
+     *
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User", inversedBy="answers")
      */
     private $user;

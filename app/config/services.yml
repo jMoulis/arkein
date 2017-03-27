@@ -32,6 +32,12 @@ services:
         tags:
             - { name: doctrine.event_subscriber }
 
+    app.doctrineenvent.mail_ticket:
+        class: UserBundle\DoctrineEvent\MailTicketListener
+        autowire: true
+        tags:
+            - { name: doctrine.event_subscriber }
+
     app.form.youngster_coach:
         class:  AppBundle\Form\TicketType
         autowire: true

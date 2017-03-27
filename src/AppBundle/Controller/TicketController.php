@@ -159,8 +159,10 @@ class TicketController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var Answer $answer */
+
             $answer = $form->getData();
             $answer->setTicket($ticket);
+            $answer->setUser($this->getUser());
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($answer);
@@ -168,7 +170,7 @@ class TicketController extends Controller
 
             return $this->redirectToRoute('ticket_show', ['id' => $ticket->getId()]);
         }
-        return $this->render('blog/comment_form_error.html.twig', [
+        return $this->render('ticket/comment_form_error.html.twig', [
             'ticket' => $ticket,
             'form' => $form->createView(),
         ]);

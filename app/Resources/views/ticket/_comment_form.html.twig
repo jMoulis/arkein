@@ -1,7 +1,8 @@
 
     {{ form_start(form, { method: 'POST', action: path('answer_new', {'id': ticket.id }) }) }}
     {{ form_errors(form) }}
-    {{ form_widget(form) }}
+    {{ form_row(form.message) }}
+    <input class="btn btn-success" type="submit" value="Répondre" />
     {{ form_end(form) }}
 
 

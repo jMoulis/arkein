@@ -20,7 +20,6 @@ class AnswerType extends AbstractType
     {
         $builder
             ->add('message', TextareaType::class)
-            ->add('save', SubmitType::class)
             ->addEventListener(
                 FormEvents::POST_SET_DATA,
                 array($this, 'onPostSetData')

@@ -1,0 +1,4 @@
+{{ form_start(form, { method: 'POST', action: path('document_new', {'user': user.id }) }) }}
+    {{ form_widget(form) }}
+<input class="btn btn-success" type="submit" value="Ajouter" />
+{{ form_end(form) }}

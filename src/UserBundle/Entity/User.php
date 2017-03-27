@@ -9,9 +9,11 @@
 namespace UserBundle\Entity;
 
 use AppBundle\Entity\Address;
+use AppBundle\Entity\Answer;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
+use DocumentationBundle\Entity\Document;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -96,11 +98,27 @@ class User implements UserInterface
      */
     private $coach;
 
+    /**
+     * @ORM\OneToMany(targetEntity="DocumentationBundle\Entity\Document", mappedBy="destinataire")
+     */
+    private $documents;
+
     private $fromWho;
     private $toWho;
     private $aboutWho;
 
 
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->phoneNumbers = new ArrayCollection();
+        $this->addresses = new ArrayCollection();
+        $this->coach = new ArrayCollection();
+        $this->documents = new ArrayCollection();
+        $this->isActive = false;
+    }
 
     /**
      * @ORM\Column(type="string", nullable=true)
@@ -162,16 +180,7 @@ class User implements UserInterface
         return $this->email;
     }
 
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->phoneNumbers = new ArrayCollection();
-        $this->addresses = new ArrayCollection();
-        $this->coach = new ArrayCollection();
-        $this->isActive = false;
-    }
+
 
     public function __toString()
     {
@@ -320,7 +329,7 @@ class User implements UserInterface
      *
      * @return User
      */
-    public function addAnswer(\AppBundle\Entity\Answer $answer)
+    public function addAnswer(Answer $answer)
     {
         $this->answers[] = $answer;
         $answer->setUser($this);
@@ -333,7 +342,7 @@ class User implements UserInterface
      *
      * @param \AppBundle\Entity\Answer $answer
      */
-    public function removeAnswer(\AppBundle\Entity\Answer $answer)
+    public function removeAnswer(Answer $answer)
     {
         $this->answers->removeElement($answer);
     }
@@ -371,7 +380,7 @@ class User implements UserInterface
      *
      * @return User
      */
-    public function addCoach(\UserBundle\Entity\User $coach)
+    public function addCoach(User $coach)
     {
         $this->coach[] = $coach;
 
@@ -383,8 +392,42 @@ class User implements UserInterface
      *
      * @param \UserBundle\Entity\User $coach
      */
-    public function removeCoach(\UserBundle\Entity\User $coach)
+    public function removeCoach(User $coach)
     {
         $this->coach->removeElement($coach);
+    }
+
+    /**
+     * Add document
+     *
+     * @param \DocumentationBundle\Entity\Document $document
+     *
+     * @return User
+     */
+    public function addDocument(Document $document)
+    {
+        $this->documents[] = $document;
+
+        return $this;
+    }
+
+    /**
+     * Remove document
+     *
+     * @param \DocumentationBundle\Entity\Document $document
+     */
+    public function removeDocument(Document $document)
+    {
+        $this->documents->removeElement($document);
+    }
+
+    /**
+     * Get documents
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getDocuments()
+    {
+        return $this->documents;
     }
 }

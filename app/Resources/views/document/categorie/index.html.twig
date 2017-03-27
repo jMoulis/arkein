@@ -1,0 +1,32 @@
+{% extends ':App:layout.html.twig' %}
+{% block dashcontent %}
+
+    <h3>Dossiers</h3>
+<ul class="js-categorie-hierarchy">
+    {% for category in categories %}
+        <li>{{ category.name }}</li>
+        <li class="js-id-categorie" data-id="{{ category.id }}">{{ category.id }}</li>
+        <ul>
+            {% for document in category.documents %}
+                <li>{{ document.filename }}</li>
+            {% endfor %}
+            <li><a class="js-new-doc" href="#">Nouveau</a></li>
+            <div class="js-doc-form-wrapper" style="display: none;">
+
+            </div>
+        </ul>
+    {% endfor %}
+</ul>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function () {
+            $('.js-new-doc').on('click', function (e) {
+                var $listCategorie = $('js-categorie-hierarchy');
+                console.log($('.js-id-categorie').data('id'));
+            })
+        });
+    </script>
+{% endblock %}

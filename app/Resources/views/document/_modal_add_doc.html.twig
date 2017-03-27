@@ -1,0 +1,42 @@
+<!-- Modal -->
+<div class="modal fade" id="modalAddDoc" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        {{ form_start(form, { method: 'POST', action: path('document_new', {'user': user.id }) }) }}
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Nouveau document</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="js-new-document-form-wrapper">
+                    <div class="form-group">
+                    {{ form_row(form.categorie) }}
+                    </div>
+                    <div class="form-group">
+                    {{ form_widget(form.fileTemporary, {
+                        'label': false,
+                        'attr': {
+                            'class': 'file'
+                        }
+                    }) }}
+                        <div class="input-group col-xs-12">
+                            <input type="text" class="form-control input-lg" disabled placeholder="Télécharger un fichier">
+                            <span class="input-group-btn">
+                                <button class="browse btn btn-primary input-lg" type="button"> Rechercher</button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                <button type="submit" class="btn btn-primary">Valider</button>
+            </div>
+        </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>

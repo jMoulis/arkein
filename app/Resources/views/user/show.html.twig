@@ -1,23 +1,26 @@
 {% extends ':App:layout.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/app/css/upload-btn.css') }}"
+{% endblock %}
 {% block body %}
     <h1>Bienvenu, {{ user.firstname }}</h1>
 
-    <ul class="nav nav-tabs" role="tablist">
-        <li class="nav-item">
-            <a class="nav-link active" data-toggle="tab" href="#profile" role="tab">Profile</a>
+    <ul class="nav nav-tabs" id="tabs" role="tablist">
+        <li class="nav-item active">
+            <a class="nav-link" data-toggle="tab" href="#profile" role="tab">Profile</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#messages" role="tab">Messages</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#settings" role="tab">Settings</a>
+            <a class="nav-link" data-toggle="tab" href="#documents" role="tab">Documents</a>
         </li>
     </ul>
-
     <!-- Tab panes -->
     <div class="tab-content" >
-        <div class="tab-pane active" id="profile" role="tabpanel">
+        <div class="tab-pane" id="profile" role="tabpanel">
             <div class="row d-flex justify-content-start">
                 <div class="" style="margin: 2rem">
                     <img class="" src="http://trenchlessleakdetection.com/wp-content/themes/trenchless-leak-detection/images/unknown-speaker.gif" width="250px" alt="avatar" />
@@ -53,10 +56,48 @@
                         <button class="btn btn-danger">Supprimer</button>
                     </div>
                 </div>
-
             </div>
         </div>
         <div class="tab-pane" id="messages" role="tabpanel">...</div>
-        <div class="tab-pane" id="settings" role="tabpanel">...</div>
+        <div class="tab-pane" id="documents" role="tabpanel">
+            {#{{ include(':document:_doc_index.html.twig') }}#}
+            {{ render(controller('DocumentationBundle:Document:new', {'user': user.id })) }}
+        </div>
     </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/DocumentApp.js') }}"></script>
+
+    <script>
+        $(document).ready(function () {
+            var $wrapper = $('.js-document-table');
+            var documentApp = new DocumentApp($wrapper);
+
+            $('.js-new-doc').on('click', function () {
+                $('.js-new-document-form-wrapper').toggle("blind");
+            });
+
+            //Gestion de l'affichage de la dernière tab utilisée après refresh
+            $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
+                localStorage.setItem('activeTab', $(e.target).attr('href'));
+            });
+            var activeTab = localStorage.getItem('activeTab');
+            if(activeTab){
+                $('#tabs a[href="' + activeTab + '"]').tab('show');
+            }
+
+            $("#uploadBtn").onchange = function () {
+                $("#uploadFile").value = this.value;
+            };
+
+            $(document).on('click', '.browse', function(){
+                var file = $(this).parent().parent().parent().find('.file');
+                file.trigger('click');
+            });
+            $(document).on('change', '.file', function(){
+                $(this).parent().find('.form-control').val($(this).val().replace(/C:\\fakepath\\/i, ''));
+            });
+        });
+    </script>
 {% endblock %}

@@ -1,0 +1,91 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * DocumentUser
+ *
+ * @ORM\Table(name="document_user")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\DocumentUserRepository")
+ */
+class DocumentUser
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User", inversedBy="documents")
+     */
+    private $author;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Document")
+     */
+    private $document;
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set author
+     *
+     * @param \UserBundle\Entity\User $author
+     *
+     * @return DocumentUser
+     */
+    public function setAuthor(\UserBundle\Entity\User $author = null)
+    {
+        $this->author = $author;
+
+        return $this;
+    }
+
+    /**
+     * Get author
+     *
+     * @return \UserBundle\Entity\User
+     */
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+
+    /**
+     * Set document
+     *
+     * @param \AppBundle\Entity\Document $document
+     *
+     * @return DocumentUser
+     */
+    public function setDocument(\AppBundle\Entity\Document $document = null)
+    {
+        $this->document = $document;
+
+        return $this;
+    }
+
+    /**
+     * Get document
+     *
+     * @return \AppBundle\Entity\Document
+     */
+    public function getDocument()
+    {
+        return $this->document;
+    }
+}
