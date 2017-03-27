@@ -2,10 +2,13 @@
 
 namespace DocumentationBundle\Entity;
 
+use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
+
 
 /**
  * Categorie
+ *
  *
  * @ORM\Table(name="categorie")
  * @ORM\Entity(repositoryClass="DocumentationBundle\Repository\CategorieRepository")
@@ -66,5 +69,50 @@ class Categorie
     {
         return $this->name;
     }
-}
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->documents = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
+    /**
+     * Add document
+     *
+     * @param \DocumentationBundle\Entity\Document $document
+     *
+     * @return Categorie
+     */
+    public function addDocument(\DocumentationBundle\Entity\Document $document)
+    {
+        $this->documents[] = $document;
+
+        return $this;
+    }
+
+    /**
+     * Remove document
+     *
+     * @param \DocumentationBundle\Entity\Document $document
+     */
+    public function removeDocument(\DocumentationBundle\Entity\Document $document)
+    {
+        $this->documents->removeElement($document);
+    }
+
+    /**
+     * Get documents
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getDocuments()
+    {
+        return $this->documents;
+    }
+
+    public function __toString()
+    {
+        return $this->getName();
+    }
+}

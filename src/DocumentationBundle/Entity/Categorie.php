@@ -2,6 +2,7 @@
 
 namespace DocumentationBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -74,7 +75,7 @@ class Categorie
      */
     public function __construct()
     {
-        $this->documents = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->documents = new ArrayCollection();
     }
 
     /**
@@ -84,7 +85,7 @@ class Categorie
      *
      * @return Categorie
      */
-    public function addDocument(\DocumentationBundle\Entity\Document $document)
+    public function addDocument($document)
     {
         $this->documents[] = $document;
 
@@ -96,7 +97,7 @@ class Categorie
      *
      * @param \DocumentationBundle\Entity\Document $document
      */
-    public function removeDocument(\DocumentationBundle\Entity\Document $document)
+    public function removeDocument($document)
     {
         $this->documents->removeElement($document);
     }

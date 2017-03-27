@@ -103,11 +103,6 @@ class User implements UserInterface
      */
     private $documents;
 
-    private $fromWho;
-    private $toWho;
-    private $aboutWho;
-
-
     /**
      * Constructor
      */
@@ -179,8 +174,6 @@ class User implements UserInterface
     {
         return $this->email;
     }
-
-
 
     public function __toString()
     {
@@ -344,7 +337,7 @@ class User implements UserInterface
      */
     public function removeAnswer(Answer $answer)
     {
-        $this->answers->removeElement($answer);
+        $this->answer->removeElement($answer);
     }
 
     /**

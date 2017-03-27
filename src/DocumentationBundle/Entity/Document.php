@@ -178,7 +178,7 @@ class Document
      *
      * @return Document
      */
-    public function setCategorie(\DocumentationBundle\Entity\Categorie $categorie = null)
+    public function setCategorie(Categorie $categorie = null)
     {
         $this->categorie = $categorie;
 
