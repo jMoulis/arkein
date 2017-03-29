@@ -1,31 +1,30 @@
-
 (function (window, $, Routing) {
     'use strict';
 
-    window.DocumentApp = function ($wrapper) {
+    window.CategoryApp = function ($wrapper) {
         this.$wrapper = $wrapper;
 
         this.$wrapper.on(
             'click',
             '.js-delete-document',
-            this.handleDocumentDelete.bind(this)
+            this.handleCategoryDelete.bind(this)
         );
 
         this.$wrapper.on(
             'submit',
-            this._selector.newDocForm,
+            this._selector.newCatForm,
             this.handleNewFormSubmit.bind(this)
         );
 
-        //this.loadDocuments();
+        this.loadCategories();
     };
 
-    $.extend(window.DocumentApp.prototype, {
+    $.extend(window.CategoryApp.prototype, {
         _selector: {
-            newDocForm: '.js-new-document-form'
+            newCatForm: '.js-new-folder-form'
         },
 
-        handleDocumentDelete: function (e) {
+        handleCategoryDelete: function (e) {
             e.preventDefault();
             var $link = $(e.currentTarget);
 
@@ -61,9 +60,10 @@
                 method: 'POST',
                 data: JSON.stringify(formData),
                 success: function (data) {
-                    console.log('success');
-                    /*self._clearForm();*/
-                    self._addRow(data);
+                    self._clearForm();
+                    self._addSelect(data);
+                    $('#addFolderForm').collapse('toggle');
+                    $('#categorie').val(data.id);
                 },
                 error: function (jqXHR) {
                     var errorData = JSON.parse(jqXHR.responseText);
@@ -72,13 +72,13 @@
             })
         },
 
-        loadDocuments: function () {
+        loadCategories: function () {
             var self = this;
             $.ajax({
-                url: Routing.generate('document_list'),
+                url: Routing.generate('category_list'),
                 success: function (data) {
-                    $.each(data.items, function (key, document) {
-                        self._addRow(document);
+                    $.each(data.items, function (key, category) {
+                        self._addSelect(category);
                     })
                 }
             })
@@ -86,39 +86,40 @@
 
         _mapErrorsToForm: function (errorData) {
             this._removeFormErrors();
-            var $form = this.$wrapper.find(this._selector.newDocForm);
+            var $form = this.$wrapper.find(this._selector.newCatForm);
 
             $form.find(':input').each(function () {
                 var fieldName = $(this).attr('name');
-                var $wrapper = $(this).closest('.form-group');
+                var $wrapper = $('.js-new-folder-form');
                 if (!errorData[fieldName]){
                     return;
                 }
 
                 var $error = $('<span class="js-field-error text-danger"></span>');
                 $error.html(errorData[fieldName]);
-                $wrapper.append($error);
+                $wrapper.prepend($error);
                 $wrapper.addClass('has-error');
             });
         },
 
         _removeFormErrors: function () {
-            var $form = this.$wrapper.find(this._selector.newDocForm);
+            var $form = $('.js-new-folder-form');
             $form.find('.js-field-error').remove();
-            $form.find('.form-group').removeClass('has-error');
+            $form.removeClass('has-error');
         },
 
         _clearForm: function () {
             this._removeFormErrors();
             var $form = this.$wrapper.find(this._selector.newDocForm);
-            $form[0].reset();
+            $('.js-new-folder-form')[0].reset();
+
         },
 
-        _addRow: function (document) {
-            var tplText = $('#js-document-row-template').html();
-            /*var tpl = _.template(tplText);
-            var html = tpl(document);
-            this.$wrapper.find('tbody').append($.parseHTML(html));*/
+        _addSelect: function (category) {
+            var tplText = $('#js-cat-option-template').html();
+            var tpl = _.template(tplText);
+            var html = tpl(category);
+            $('.js-select-folder').append($.parseHTML(html));
         }
 
     });

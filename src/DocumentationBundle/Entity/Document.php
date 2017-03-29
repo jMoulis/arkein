@@ -53,17 +53,19 @@ class Document
 
     /**
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
+     * @ORM\JoinColumn(nullable=false)
     */
     private $author;
 
     /**
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User", inversedBy="documents")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $destinataire;
 
     /**
      * @ORM\ManyToOne(targetEntity="DocumentationBundle\Entity\Categorie", inversedBy="documents")
-     * @Assert\NotBlank(message="Veuillez sélectionner le dossier")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $categorie;
 

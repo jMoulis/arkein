@@ -6,12 +6,10 @@
         <title>{% block title %}Welcome!{% endblock %}</title>
         {% block stylesheets %}
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" />
-            <link rel="stylesheet" href="" />
+            <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
             {% stylesheets
                 "font/css/font-awesome.css"
-            "bundles/app/css/*"
-            "bundles/user/*"
-            "bundles/user/css/datatables.boostrap4.css" filter="cssrewrite" %}
+            "css/*" filter="cssrewrite" %}
             <link rel="stylesheet" href="{{ asset_url }}" />
             {% endstylesheets %}
         {% endblock %}
@@ -28,9 +26,7 @@
             <a class="nav navbar-brand" href="#">Arkein</a>
 
             <div class="collapse navbar-collapse" id="navbar">
-
                 <ul class="navbar-nav mx-auto">
-
                     <li class="nav-item">
                         <a class="nav-link" href="#">Accueil</a>
                     </li>
@@ -61,8 +57,13 @@
             <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+            <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
             <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
             <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+            {% javascripts 'js/*' filter='?uglifyjs2' %}
+            <script src="{{ asset_url }}"></script>
+            {% endjavascripts %}
+
         {% endblock %}
     </body>
 </html>

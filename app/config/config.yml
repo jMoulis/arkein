@@ -87,8 +87,11 @@ swiftmailer:
 assetic:
     debug:    "%kernel.debug%"
     use_controller: "%kernel.debug%"
+    node: /usr/bin/nodejs
     filters:
         cssrewrite: ~
+        uglifyjs2:
+            bin: /usr/local/bin/uglifyjs
 
 stof_doctrine_extensions:
     default_locale: en_US

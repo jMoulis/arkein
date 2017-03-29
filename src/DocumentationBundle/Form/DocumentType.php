@@ -2,6 +2,8 @@
 
 namespace DocumentationBundle\Form;
 
+use DocumentationBundle\Entity\Categorie;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -15,10 +17,7 @@ class DocumentType extends AbstractType
             ->add('fileTemporary', FileType::class, [
                 'label' => false
             ])
-            ->add('categorie', null, [
-                'label' => false,
-                'placeholder' => 'Sélectionner un dossier'
-            ])
+            ->add('categorie')
         ;
     }
 
@@ -31,6 +30,6 @@ class DocumentType extends AbstractType
 
     public function getBlockPrefix()
     {
-        return 'app_bundle_document_type';
+        return '';
     }
 }

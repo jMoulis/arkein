@@ -2,13 +2,12 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('bundles/app/css/upload-btn.css') }}"
 {% endblock %}
 {% block body %}
     <h1>Bienvenu, {{ user.firstname }}</h1>
 
     <ul class="nav nav-tabs" id="tabs" role="tablist">
-        <li class="nav-item active">
+        <li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#profile" role="tab">Profile</a>
         </li>
         <li class="nav-item">
@@ -27,7 +26,6 @@
                     <div>
                         <button class="btn btn-block btn-primary">Envoyer un Message</button>
                     </div>
-
                 </div>
 
                 <div class="" style="margin: 2rem">
@@ -67,37 +65,61 @@
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
-    <script src="{{ asset('js/DocumentApp.js') }}"></script>
-
     <script>
         $(document).ready(function () {
             var $wrapper = $('.js-document-table');
             var documentApp = new DocumentApp($wrapper);
 
-            $('.js-new-doc').on('click', function () {
-                $('.js-new-document-form-wrapper').toggle("blind");
-            });
+            var $folder = $('.js-category');
+            var categoryApp = new CategoryApp($folder);
 
-            //Gestion de l'affichage de la dernière tab utilisée après refresh
-            $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
-                localStorage.setItem('activeTab', $(e.target).attr('href'));
-            });
-            var activeTab = localStorage.getItem('activeTab');
-            if(activeTab){
-                $('#tabs a[href="' + activeTab + '"]').tab('show');
-            }
-
-            $("#uploadBtn").onchange = function () {
-                $("#uploadFile").value = this.value;
-            };
-
+            /**
+             * Gestion input file du modal d'ajout de fichier
+             *
+             */
             $(document).on('click', '.browse', function(){
                 var file = $(this).parent().parent().parent().find('.file');
                 file.trigger('click');
             });
             $(document).on('change', '.file', function(){
-                $(this).parent().find('.form-control').val($(this).val().replace(/C:\\fakepath\\/i, ''));
+                $(this).parent().find('.form-control').html($(this).val().replace(/C:\\fakepath\\/i, ''));
             });
+
+            $('.js-new-doc-btn').on('click', function (e) {
+                e.preventDefault();
+                $('#categorie').val($(this).data('id'));
+            });
+
+            $(".sortable").sortable({
+                connectWith: ".connectedSortable",
+                items: "tr:not(.notSortable)",
+                receive: function (e, ui) {
+                    var idCat = ($(this)[0].id);
+                    var id = $(ui.item)[0].id;
+
+                    $.ajax({
+                        url: Routing.generate('api_document_edit'),
+                        data: JSON.stringify({id: id, idCat: idCat}),
+                        method: 'POST',
+                        success: function (data) {
+                            $.each(data, function (key, value) {
+                                console.log(value);
+                                var $tbodyLength = ($('.js-table-document').find('tbody#'+ value.idCat +' tr').length) - 1;
+                                console.log($tbodyLength - 1);
+
+                                $('.js-total-doc-categorie').html($tbodyLength);
+                            })
+                        },
+                        error: function (jqXHR) {
+                            console.log(jqXHR.responseText);
+                        }
+                    })
+                }
+            }).disableSelection();
         });
+    </script>
+
+    <script type="text/template" id="js-cat-option-template">
+        <option value="<%= id %>"><%= name %></option>
     </script>
 {% endblock %}

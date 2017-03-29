@@ -25,6 +25,6 @@ class CategorieType extends AbstractType
 
     public function getBlockPrefix()
     {
-        return 'app_bundle_document_type';
+        return '';
     }
 }

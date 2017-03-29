@@ -6,9 +6,11 @@ use AppBundle\Api\RepLogApiModel;
 use AppBundle\Controller\BaseController;
 use DocumentationBundle\Entity\Categorie;
 use DocumentationBundle\Entity\Document;
+use DocumentationBundle\Form\CategorieType;
 use DocumentationBundle\Form\DocumentType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -28,8 +30,7 @@ class ApiDocumentController extends BaseController
     public function getDocumentsAction()
     {
         $documents = $this->getDoctrine()->getRepository('DocumentationBundle:Document')
-        ->findAll()
-        ;
+            ->findAll();
 
         $models = [];
         foreach ($documents as $document) {
@@ -67,15 +68,13 @@ class ApiDocumentController extends BaseController
     }
 
     /**
-     * @Route("/docs", name="api_document_new")
+     * @Route("/docs", name="api_document_new", options={"expose" = true})
      * @Method("POST")
      */
-    public function newRepLogAction(Request $request)
+    public function newDocumentAction(Request $request)
     {
 
-        dump($request->getContent());
-
-       /* $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');*/
+        /* $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');*/
         $data = json_decode($request->getContent(), true);
 
         if ($data === null) {
@@ -141,4 +140,31 @@ class ApiDocumentController extends BaseController
         return $model;
     }
 
+    /**
+     * @Route("/docs/edit", name="api_document_edit", options={"expose" = true})
+     * @Method("POST")
+     */
+    public function editDocument(Request $request)
+    {
+        $content = $request->getContent();
+        if ($content === null) {
+            throw new BadRequestHttpException('Invalid JSON');
+        }
+
+        if($request->isXmlHttpRequest()){
+
+            if(!empty($content))
+            {
+                $em = $this->getDoctrine()->getManager();
+                $params = json_decode($content, true);
+                $document = $em->getRepository('DocumentationBundle:Document')->findOneBy(['id' => $params['id']]);
+                $categorie = $em->getRepository('DocumentationBundle:Categorie')->findOneBy(['id' => $params['idCat']]);
+                $document->setCategorie($categorie);
+                $em->persist($document);
+                $em->flush();
+            }
+             return new JsonResponse(['data' => $params]);
+        }
+        return new Response("Error", 400);
+    }
 }

@@ -59,6 +59,23 @@ class CategorieController extends BaseController
      */
     public function newAction(Request $request)
     {
+        $form = $this->createForm('DocumentationBundle\Form\CategorieType');
+        $form->handleRequest($request);
 
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+
+            $categorie = $form->getData();
+            $em->persist($categorie);
+            $em->flush($categorie);
+
+            return $this->redirectToRoute('categorie_new');
+        }
+        $categories = $this->getDoctrine()->getRepository('DocumentationBundle:Categorie')->findAll();
+
+        return $this->render('document/categorie/_new.html.twig', array(
+            'categories' => $categories,
+            'form' => $form->createView(),
+        ));
     }
 }
