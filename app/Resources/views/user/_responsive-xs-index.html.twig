@@ -1,0 +1,21 @@
+
+<div class="hidden-sm-up">
+    <div class="js-main-content">
+        <ul class="js-list-user list-group">
+            {% for user in users %}
+            <div class="list-group-item d-flex justify-content-between">
+                <div><a href="{{ path('user_show', {'id': user.id}) }}">{{ user.name }} {{ user.firstname }}</a></div>
+                <div>{{ user.phonenumbers.first }}</div>
+            </div>
+
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+<div class="hidden-xs-down">
+    <div class="js-main-content">
+        <table id="users" class="table table-hover table-bordered table-responsive" cellspacing="0" width="100%">
+        </table>
+    </div>
+</div>

@@ -1,0 +1,15 @@
+
+/*select:not([multiple]) {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+*/
+#categorie {
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+}
+
+.file {
+    visibility: hidden;
+    position: absolute;
+}

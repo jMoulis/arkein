@@ -38,6 +38,9 @@ class HashPasswordListener implements EventSubscriber
         if (!$entity instanceof User){
             return;
         }
+        if (!$entity->getPlainPassword()){
+            return;
+        }
         $this->encodePassword($entity);
 
         $em = $args->getEntityManager();

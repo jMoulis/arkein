@@ -3,26 +3,5 @@
 {% block body %}
     <h1>Events list</h1>
     <p><a class="btn btn-primary" href="{{ path('event_new') }}">Create a new event</a></p>
-    <table class="table table-responsive">
-        <thead>
-            <tr>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Datestart</th>
-                <th>Dateend</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for event in events %}
-            <tr>
-                <td><a href="{{ path('event_edit', { 'id': event.id }) }}">{{ event.title }}</a></td>
-                <td>{{ event.description }}</td>
-                <td>{% if event.datestart %}{{ event.datestart|date('d-m-Y') }}{% endif %}</td>
-                <td>{% if event.dateend %}{{ event.dateend|date('d-m-Y') }}{% endif %}</td>
-                <td><a class="btn btn-warning" href="{{ path('event_edit', { 'id': event.id }) }}">edit</a></td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    {% include ':event:_list_event.html.twig' %}
 {% endblock %}

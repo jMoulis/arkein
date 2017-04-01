@@ -1,3 +1,8 @@
+app_entretien:
+    resource: "@AppBundle/Controller/EntretienController.php"
+    type:     annotation
+    prefix:   /
+
 app.documentation:
     resource: "@DocumentationBundle/Controller/"
     type:     annotation
@@ -11,7 +16,7 @@ app:
 app.event:
     resource: "@AppBundle/Controller/EventController.php"
     type:     annotation
-    prefix:   /admin
+    prefix:   /
 
 app.reservation:
     resource: "@AppBundle/Controller/ReservationController.php"

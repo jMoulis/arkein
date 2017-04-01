@@ -4,7 +4,7 @@
     <button class="navbar-toggler navbar-toggler-right hidden-lg-up" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <a class="navbar-brand" href="#">Dashboard</a>
+    <a class="navbar-brand" href="#"> Dashboard</a>
 
     <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
@@ -12,7 +12,13 @@
                 <a class="nav-link" href="{{ path('app_app_index') }}">Retour Site <span class="sr-only">(current)</span></a>
             </li>
         </ul>
-        {% include ':App:_menu.html.twig' %}
+        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+            {% include ':dashboard:_menu.html.twig' %}
+            {% include ':dashboard:_menu-responsive-xs.html.twig' %}
+        {% else %}
+            <li class="nav-item"><a class="nav-link" href="{{ path('security_login') }}">Connexion</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ path('user_register') }}">S'inscrire</a></li>
+        {% endif %}
     </div>
 </nav>
 {% endblock nav %}
@@ -21,8 +27,8 @@
 <div class="container-fluid">
 
     <div class="row">
-        {{ include(':App:_sidebar.html.twig') }}
-        <main class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3">
+        {{ include(':dashboard:_sidebar.html.twig') }}
+        <main class="col-md-10 offset-lg-2 pt-3">
 
                 {% if app.request.hasPreviousSession %}
                     {% for type, messages in app.session.flashbag.all() %}
@@ -87,7 +93,11 @@
     </div>
 </div>
 {% endblock dashbody %}
-
+{% block footer %}
+    {% endblock %}
 {% block javascripts %}
     {{ parent() }}
+    <script>
+
+    </script>
 {% endblock %}

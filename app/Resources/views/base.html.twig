@@ -9,6 +9,7 @@
             <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
             {% stylesheets
                 "font/css/font-awesome.css"
+                "css/main.css"
             "css/*" filter="cssrewrite" %}
             <link rel="stylesheet" href="{{ asset_url }}" />
             {% endstylesheets %}
@@ -23,35 +24,51 @@
             <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <a class="nav navbar-brand" href="#">Arkein</a>
+            <a class="nav navbar-brand" href="{{ path('app_app_index') }}">Arkein</a>
 
             <div class="collapse navbar-collapse" id="navbar">
                 <ul class="navbar-nav mx-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Accueil</a>
+                        <a class="nav-link" href="{{ path('app_app_index') }}">Accueil</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Projets</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Contact</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="#">Partenaires</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Evènements</a>
+                        <a class="nav-link" href="{{ path('event') }}">Evènements</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Boutique</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Actualités</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('contact') }}">Contact</a>
+                    </li>
+                    <li class="nav-item hidden-md-down">
+                        <a class="nav-link" href="{{ path('dashboard') }}">Tableau de bord</a>
                     </li>
                 </ul>
-                {% include ':App:_menu.html.twig' %}
+                {% include ':dashboard:_menu.html.twig' %}
             </div>
         </nav>
         {% endblock nav %}
     </div>
         {% block dashbody %}{% endblock %}
 
-        {% block content %}{% endblock %}
 
+        {% block content %}{% endblock %}
+    {% block footer %}
+        <footer class="footer">
+            <div class="container">
+                Informations pieds de page
+            </div>
+        </footer>
+    {% endblock %}
         {% block javascripts %}
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
@@ -60,10 +77,6 @@
             <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
             <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
             <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
-            {% javascripts 'js/*' filter='?uglifyjs2' %}
-            <script src="{{ asset_url }}"></script>
-            {% endjavascripts %}
-
         {% endblock %}
     </body>
 </html>

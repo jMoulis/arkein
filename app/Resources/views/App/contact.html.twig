@@ -1,0 +1,175 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <div class="row top-nav">
+        <div class="jumbotron jumbotron-fluid w-100">
+            <div class="container">
+                <h1 class="display-3">Fluid jumbotron</h1>
+                <p class="lead hidden-xs-down">This is a modified jumbotron that occupies the entire horizontal space of its parent.</p>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row map hidden-xs-down">
+            <div class="card w-100">
+                <div class="card-header">
+                    <h3><i class="fa fa-map-marker"></i>  Location</h3>
+                </div>
+                <div class="card-block">
+                    <div id="map"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md mr-md-3 p-0">
+                <div class="card w-100 mt-3 ">
+                    <div class="card-header">
+                        <h3><i class="fa fa-envelope"></i>  Contactez-nous</h3>
+                    </div>
+                    <div class="card-block">
+                        {{ form_start(form) }}
+                        {{ form_row(form.nom, {
+                            'label': false,
+                            'attr': {
+                                'placeholder': 'Nom'
+                            }
+                        }) }}
+                        {{ form_row(form.prenom, {
+                            'label': false,
+                            'attr': {
+                                'placeholder': 'Prénom'
+                            }
+                        }) }}
+                        {{ form_row(form.mail, {
+                            'label': false,
+                            'attr': {
+                                'placeholder': 'E-mail'
+                            }
+                        }) }}
+                        {{ form_row(form.objet, {
+                            'label': false,
+                            'attr': {
+                                'placeholder': 'Objet'
+                            }
+                        }) }}
+                        {{ form_row(form.message, {
+                            'label': false,
+                            'attr': {
+                                'placeholder': 'Ecrivez votre message'
+                            }
+                        }) }}
+                        <button type="submit" class="btn btn-primary">Envoyer</button>
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+            <div class="col col-md">
+                <div class="row">
+                    <div class="card w-100 mt-3">
+                        <div class="card-header">
+                            <h3><i class="fa fa-address-book"></i>  Notre addresse</h3>
+                        </div>
+                        <div class="card-block">
+                            <strong>Association le Goéland</strong>
+                            <p>
+                                22 ROUTE DE LASBORDES<br />
+                                31130 FLOURENS <br />
+                                <span><i class="fa fa-phone"></i>  0909090909</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="card w-100 mt-3">
+                        <div class="card-header">
+                            <h3><i class="fa fa-clock-o"></i>  Horaires</h3>
+                        </div>
+                        <div class="card-block">
+                            <table class="table table-sm">
+                                <thead>
+                                <tr>
+                                    <th>Jour</th>
+                                    <th>Heure</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="table-success">
+                                        <td>Lundi</td>
+                                        <td>9:00 à 18:00</td>
+                                    </tr>
+                                    <tr class="table-success">
+                                        <td>Mardi</td>
+                                        <td>9:00 à 18:00</td>
+                                    </tr>
+                                    <tr class="table-success">
+                                        <td>Mercredi</td>
+                                        <td>9:00 à 18:00</td>
+                                    </tr>
+                                    <tr class="table-success">
+                                        <td>Jeudi</td>
+                                        <td>9:00 à 18:00</td>
+                                    </tr>
+                                    <tr class="table-success">
+                                        <td>Vendredi</td>
+                                        <td>9:00 à 18:00</td>
+                                    </tr>
+                                    <tr class="table-warning">
+                                        <td>Samedi</td>
+                                        <td>9:00 à 18:00</td>
+                                    </tr>
+                                    <tr class="table-warning">
+                                        <td>Dimanche</td>
+                                        <td>9:00 à 18:00</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCMmLTA2wKD2PQpOZwR7Bk1GwOumT2kNV0&callback=initMap"
+            async defer></script>
+    <script>
+        function initMap() {
+            var myLatLng = {lat: 43.597658, lng: 1.543788};
+
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 10,
+                center: myLatLng,
+                disableDefaultUI: true
+            });
+
+            var marker = new google.maps.Marker({
+                position: myLatLng,
+                map: map,
+                title: 'Le Goéland'
+            });
+
+            var contentString = '<div id="content">'+
+                '<div id="siteNotice">' +
+                '</div>' +
+                '<h3 id="firstHeading" class="firstHeading">Le Goéland</h3>' +
+                '<div id="bodyContent">' +
+                '<p>Voici notre lieu de vie</p>';
+
+            var infowindow = new google.maps.InfoWindow({
+                content: contentString
+            });
+
+            marker.addListener('click', function() {
+                infowindow.open(map, marker);
+            });
+            map.addListener('click', function () {
+                infowindow.close();
+            })
+        }
+    </script>
+
+{% endblock %}

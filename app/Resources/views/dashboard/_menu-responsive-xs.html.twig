@@ -1,0 +1,22 @@
+<ul class="navbar-nav hidden-lg-up">
+    <ul class="nav nav-pills flex-column">
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('user_edit', {'id': app.user.id}) }}">Mon profil</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('user_index') }}">Membres</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('ticket_index') }}">Tickets</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('event_index') }}">Evènements</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('entretien_index') }}">Entretiens</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('security_logout') }}">Logout</a>
+        </li>
+    </ul>
+</ul>

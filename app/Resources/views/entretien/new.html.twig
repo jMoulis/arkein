@@ -1,0 +1,26 @@
+{% extends ':App:layout.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/widget/bootstrap-datepicker.css') }}" />
+{% endblock %}
+
+{% block body %}
+    <h1>Nouvel entretien</h1>
+    <p><a class="" href="{{ path('entretien_index') }}">Back to the list</a></p>
+    {{ include(':App:_formNew.html.twig') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/widget/bootstrap-datepicker.js') }}"></script>
+    <script src="//cdn.ckeditor.com/4.6.2/standard/ckeditor.js"></script>
+    <script>
+    $(document).ready(function() {
+        $('.js-datepicker').datepicker({
+            format: 'dd/mm/yyyy',
+            language: "fr"
+        });
+        CKEDITOR.replace('appbundle_entretien_compteRendu');
+    });
+    </script>
+{% endblock %}

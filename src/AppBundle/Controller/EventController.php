@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Event;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -20,6 +21,7 @@ class EventController extends Controller
      *
      * @Route("/", name="event_index")
      * @Method("GET")
+     *
      */
     public function indexAction()
     {
@@ -37,6 +39,7 @@ class EventController extends Controller
      *
      * @Route("/new", name="event_new")
      * @Method({"GET", "POST"})
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function newAction(Request $request)
     {
@@ -81,6 +84,7 @@ class EventController extends Controller
      *
      * @Route("/{id}/edit", name="event_edit")
      * @Method({"GET", "POST"})
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function editAction(Request $request, Event $event)
     {
@@ -106,6 +110,7 @@ class EventController extends Controller
      *
      * @Route("/{id}", name="event_delete")
      * @Method("DELETE")
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function deleteAction(Request $request, Event $event)
     {

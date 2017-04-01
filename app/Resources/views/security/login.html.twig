@@ -1,8 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block content %}
-    <div id="loginform" class="d-flex justify-content-center">
-        <div class="card" style="width: 20rem;">
+    <div class="container">
+        <div class="row d-flex justify-content-center">
+    <div id="loginform" class="">
+        <div class="card">
             <img class="card-img-top" src="{{ asset('img/login.jpg') }}" alt="the path" />
             <div class="card-block">
                 {% if error %}
@@ -11,13 +13,27 @@
                     </div>
                 {% endif %}
                 {{ form_start(form) }}
-                {{ form_row(form._username) }}
-                {{ form_row(form._password) }}
+                {{ form_row(form._username, {
+                    label: false,
+                    attr: {
+                        placeholder: 'Identifiant'
+                    }
+                }) }}
+                {{ form_row(form._password, {
+                    label: false,
+                    attr: {
+                        placeholder: 'Mot de passe'
+                    }
+                }) }}
                 <p><button type="submit" class="btn btn-primary btn-block">Login <span class="fa fa-lock"></span></button></p>
                 {{ form_end(form) }}
-                <p class="">Pas encore enregistré?</p>
+                <p class="text-center">Pas encore enregistré?</p>
                 <a href="{{ path('user_register') }}" class="btn btn-success btn-block">Register</a>
             </div>
         </div>
     </div>
+        </div>
+    </div>
+{% endblock %}
+{% block footer %}
 {% endblock %}

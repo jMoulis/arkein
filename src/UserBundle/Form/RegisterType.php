@@ -37,11 +37,15 @@ class RegisterType extends AbstractType
             ])
             ->add('role', ChoiceType::class,
                 [
+                    'placeholder' => 'Sélectionner',
                     'choices' => [
                         'Personnel' => 'ROLE_STAFF',
                         'Jeune' => 'ROLE_YOUNGSTER',
                         'Externe' => 'ROLE_EXTERNAL'
+                    ],
+                    'attr' => [
                     ]
+
                 ])
         ;
     }
