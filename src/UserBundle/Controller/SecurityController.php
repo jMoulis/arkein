@@ -40,36 +40,4 @@ class SecurityController extends Controller
     {
         throw new \Exception('This should not be reached');
     }
-
-    /**
-     * @Route("/register", name="user_register")
-     */
-    public function registerAction(Request $request)
-    {
-        $form = $this->createForm(RegisterType::class);
-        $form->handleRequest($request);
-        if($form->isValid())
-        {
-            /** @var User $user */
-            $user = $form->getData();
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
-
-            return $this->render('security/registrationcomplete.html.twig', [
-                'user' => $user
-            ]);
-
-            /*return $this->get('security.authentication.guard_handler')
-                ->authenticateUserAndHandleSuccess(
-                    $user,
-                    $request,
-                    $this->get('app.security.login_form_authenticator'),
-                    'main'
-                );*/
-        }
-        return $this->render('security/register.html.twig', [
-            'form' => $form->createView()
-        ]);
-    }
 }

@@ -2,7 +2,7 @@
 
 namespace DocumentationBundle\Controller;
 
-use AppBundle\Api\RepLogApiModel;
+use AppBundle\Api\DocumentApiModel;
 use AppBundle\Controller\BaseController;
 use DocumentationBundle\Entity\Categorie;
 use DocumentationBundle\Entity\Document;
@@ -78,4 +78,6 @@ class CategorieController extends BaseController
             'form' => $form->createView(),
         ));
     }
+
+
 }

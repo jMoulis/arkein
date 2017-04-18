@@ -2,7 +2,7 @@
 
 namespace DocumentationBundle\Controller;
 
-use AppBundle\Api\RepLogApiModel;
+use AppBundle\Api\DocumentApiModel;
 use AppBundle\Controller\BaseController;
 use DocumentationBundle\Entity\Categorie;
 use DocumentationBundle\Entity\Document;
@@ -10,6 +10,7 @@ use DocumentationBundle\Form\CategorieType;
 use DocumentationBundle\Form\DocumentType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,14 +28,14 @@ class ApiDocumentController extends BaseController
      * @Route("/docs", name="document_list", options={"expose" = true})
      * @Method("GET")
      */
-    public function getDocumentsAction()
+    public function indexAction()
     {
         $documents = $this->getDoctrine()->getRepository('DocumentationBundle:Document')
             ->findAll();
 
         $models = [];
         foreach ($documents as $document) {
-            $models[] = $this->createRepLogApiModel($document);
+            $models[] = $this->createDocumentApiModel($document);
         }
 
         return $this->createApiResponse([
@@ -43,101 +44,49 @@ class ApiDocumentController extends BaseController
     }
 
     /**
-     * @Route("/docs/{id}", name="doc_get")
+     * Creates a new document entity.
+     *
+     * @Route("/new/{user}/", name="document_new")
+     * @Method({"GET", "POST"})
+     */
+    public function newAction(Request $request, User $user)
+    {
+        $form = $this->createForm('DocumentationBundle\Form\DocumentType');
+        $form->handleRequest($request);
+        $categories = $this->getDoctrine()->getRepository('DocumentationBundle:Categorie')->getCategoryDocumentByUserDisplayed($user);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+
+            $document = $form->getData();
+            $document->setAuthor($this->getUser());
+            $document->setDestinataire($user);
+            $em->persist($document);
+            $em->flush($document);
+
+            return $this->redirectToRoute('user_show', ['id' => $user->getId()]);
+        }
+        $documents = $this->getDoctrine()->getRepository('DocumentationBundle:Document')->findBy([
+            'destinataire' => $user
+        ]);
+
+        return $this->render('document/_doc_index.html.twig', array(
+            'categories' => $categories,
+            'user' => $user,
+            'documents' => $documents,
+            'form' => $form->createView(),
+        ));
+    }
+
+
+    /**
+     * @Route("/docs/{id}", name="doc_show")
      * @Method("GET")
      */
-    public function getRepLogAction(Document $document)
+    public function showAction(Document $document)
     {
-        $apiModel = $this->createRepLogApiModel($document);
+        $apiModel = $this->createDocumentApiModel($document);
 
         return $this->createApiResponse($apiModel);
-    }
-
-    /**
-     * @Route("/docs/{id}", name="document_delete")
-     * @Method("DELETE")
-     */
-    public function deleteRepLogAction(Document $document)
-    {
-        /*$this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');*/
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($document);
-        $em->flush();
-
-        return new Response(null, 204);
-    }
-
-    /**
-     * @Route("/docs", name="api_document_new", options={"expose" = true})
-     * @Method("POST")
-     */
-    public function newDocumentAction(Request $request)
-    {
-
-        /* $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');*/
-        $data = json_decode($request->getContent(), true);
-
-        if ($data === null) {
-            throw new BadRequestHttpException('Invalid JSON');
-        }
-
-        $form = $this->createForm(DocumentType::class, null, [
-            'csrf_protection' => false,
-        ]);
-        $form->submit($data);
-        if (!$form->isValid()) {
-            $errors = $this->getErrorsFromForm($form);
-
-            return $this->createApiResponse([
-                'errors' => $errors
-            ], 400);
-        }
-
-        /** @var Document $document */
-        $document = $form->getData();
-        $em = $this->getDoctrine()->getManager();
-        $document->setAuthor($this->getUser());
-        $document->setDestinataire($this->getUser());
-
-        $em->persist($document);
-        $em->flush();
-
-        $apiModel = $this->createRepLogApiModel($document);
-
-        $response = $this->createApiResponse($apiModel);
-        // setting the Location header... it's a best-practice
-        $response->headers->set(
-            'Location',
-            $this->generateUrl('doc_get', ['id' => $document->getId()])
-        );
-
-        return $response;
-    }
-
-    /**
-     * Turns a RepLog into a RepLogApiModel for the API.
-     *
-     * This could be moved into a service if it needed to be
-     * re-used elsewhere.
-     *
-     * @param Document $document
-     * @return RepLogApiModel
-     */
-    private function createRepLogApiModel(Document $document)
-    {
-
-        $model = new RepLogApiModel();
-        $model->id = $document->getId();
-        $model->fileName = $document->getFileName();
-        $model->fileTemporary = $document->getFileTemporary();
-
-        $selfUrl = $this->generateUrl(
-            'doc_get',
-            ['id' => $document->getId()]
-        );
-        $model->addLink('_self', $selfUrl);
-
-        return $model;
     }
 
     /**
@@ -163,8 +112,46 @@ class ApiDocumentController extends BaseController
                 $em->persist($document);
                 $em->flush();
             }
-             return new JsonResponse(['data' => $params]);
+            return new JsonResponse(['data' => $params]);
         }
         return new Response("Error", 400);
     }
+
+    /**
+     * @Route("/docs/{id}", name="document_delete")
+     * @Method("DELETE")
+     * @Security("has_role('ROLE_ADMIN')")
+     */
+    public function deleteDocumentAction(Document $document)
+    {
+        /*$this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');*/
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($document);
+        $em->flush();
+
+        return new Response(null, 204);
+    }
+
+
+    /**
+     * @param Document $document
+     * @return DocumentApiModel
+     */
+    private function createDocumentApiModel(Document $document)
+    {
+
+        $model = new DocumentApiModel();
+        $model->id = $document->getId();
+        $model->fileName = $document->getFileName();
+        $model->fileTemporary = $document->getFileTemporary();
+
+        $selfUrl = $this->generateUrl(
+            'doc_show',
+            ['id' => $document->getId()]
+        );
+        $model->addLink('_self', $selfUrl);
+
+        return $model;
+    }
+
 }

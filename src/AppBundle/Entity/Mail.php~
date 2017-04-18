@@ -73,6 +73,11 @@ class Mail
     private $message;
 
     /**
+     * @ORM\Column(type="string")
+     */
+    private $sujet;
+
+    /**
      * @ORM\Column(type="datetime")
      */
     private $dateCreated;
@@ -229,5 +234,29 @@ class Mail
     public function getDateCreated()
     {
         return $this->dateCreated;
+    }
+
+    /**
+     * Set sujet
+     *
+     * @param string $sujet
+     *
+     * @return Mail
+     */
+    public function setSujet($sujet)
+    {
+        $this->sujet = $sujet;
+
+        return $this;
+    }
+
+    /**
+     * Get sujet
+     *
+     * @return string
+     */
+    public function getSujet()
+    {
+        return $this->sujet;
     }
 }

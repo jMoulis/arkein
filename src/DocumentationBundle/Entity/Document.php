@@ -69,6 +69,16 @@ class Document
      */
     private $categorie;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isArchived;
+
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isPrivate;
 
     /**
      * Contructeur
@@ -76,6 +86,8 @@ class Document
     public function __construct()
     {
         $this->updatedAt = new \DateTime();
+        $this->isArchived = false;
+        $this->isPrivate = true; //Les fichiers sont au niveau le plus sécurisé par défaut
     }
 
     /**
@@ -204,4 +216,51 @@ class Document
 
 
 
+    /**
+     * Set isArchived
+     *
+     * @param boolean $isArchived
+     *
+     * @return Document
+     */
+    public function setIsArchived($isArchived)
+    {
+        $this->isArchived = $isArchived;
+
+        return $this;
+    }
+
+    /**
+     * Get isArchived
+     *
+     * @return boolean
+     */
+    public function getIsArchived()
+    {
+        return $this->isArchived;
+    }
+
+    /**
+     * Set isPrivate
+     *
+     * @param boolean $isPrivate
+     *
+     * @return Document
+     */
+    public function setIsPrivate($isPrivate)
+    {
+        $this->isPrivate = $isPrivate;
+
+        return $this;
+    }
+
+    /**
+     * Get isPrivate
+     *
+     * @return boolean
+     */
+    public function getIsPrivate()
+    {
+        return $this->isPrivate;
+    }
 }

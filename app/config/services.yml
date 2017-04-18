@@ -26,17 +26,18 @@ services:
             - { name: security.voter }
         public: false
 
-    #app.doctrineevent.mail_user:
-     #   class: UserBundle\DoctrineEvent\MailUserListener
-      #  autowire: true
-       # tags:
-        #    - { name: doctrine.event_subscriber }
+# Envoie les mails aux différents coach
+    app.doctrine.answer_mail_workflow:
+        class: AppBundle\Doctrine\AnswerMailWorkflow
+        autowire: true
+        tags:
+            - { name: doctrine.event_subscriber }
 
-   # app.doctrineenvent.mail_ticket:
-    #    class: UserBundle\DoctrineEvent\MailTicketListener
-     #   autowire: true
-      #  tags:
-       #     - { name: doctrine.event_subscriber }
+    app.doctrine.ticket_mail_workflow:
+        class: AppBundle\Doctrine\TicketMailWorkflow
+        autowire: true
+        tags:
+            - { name: doctrine.event_subscriber }
 
     app.form.youngster_coach:
         class:  AppBundle\Form\TicketType

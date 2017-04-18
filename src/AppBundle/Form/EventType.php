@@ -26,6 +26,7 @@ class EventType extends AbstractType
                 'format' => 'ddMMyyyy'
             ))
             ->add('place', TextareaType::class)
+            ->add('isArchived')
         ;
     }
     

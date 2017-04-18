@@ -18,7 +18,6 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use UserBundle\Entity\User;
 use UserBundle\Repository\UserRepository;
@@ -50,6 +49,7 @@ class RegisterEditType extends AbstractType
             ->add('coach', EntityType::class, [
                 'class' => User::class,
                 'multiple' => true,
+                'expanded' => true,
                 'query_builder' => function(UserRepository $repository){
                 return $repository->createQueryBuilder('user')
                     ->andWhere('user.role != :role ')
@@ -61,9 +61,9 @@ class RegisterEditType extends AbstractType
                 [
                     'expanded' => true,
                     'choices' => [
-                        'Personnel' => 'ROLE_STAFF',
-                        'Jeune' => 'ROLE_YOUNGSTER',
-                        'Externe' => 'ROLE_EXTERNAL'
+                        'Personnel' => self::STAFF,
+                        'Jeune' => self::YOUNGSTER,
+                        'Externe' => self::EXTERNAL
                     ]
                 ])
             ->add('isActive')

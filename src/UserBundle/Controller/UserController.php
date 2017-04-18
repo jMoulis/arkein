@@ -33,8 +33,41 @@ class UserController extends Controller
     }
 
     /**
+     * @Route("/new", name="user_new")
+     * @Method({"GET", "POST"})
+     */
+    public function newAction(Request $request)
+    {
+        $user = new User();
+
+        $form = $this->createForm(RegisterType::class);
+        $form->handleRequest($request);
+        if($form->isValid())
+        {
+            /** @var User $user */
+            $user = $form->getData();
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
+
+            return $this->redirectToRoute('user_edit', [ 'id' => $user->getId()]);
+
+            /*return $this->get('security.authentication.guard_handler')
+                ->authenticateUserAndHandleSuccess(
+                    $user,
+                    $request,
+                    $this->get('app.security.login_form_authenticator'),
+                    'main'
+                );*/
+        }
+        return $this->render('user/new.html.twig', [
+            'user' => $user,
+            'form' => $form->createView()
+        ]);
+    }
+    /**
      * @Route("/{id}/show",
-     *      name="user_show",
+     *     name="user_show",
      *     options = { "expose" = true }
      *     )
      */

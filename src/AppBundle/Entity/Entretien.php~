@@ -55,6 +55,11 @@ class Entretien
      */
     private $interviewee;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isArchived;
+
     public function __construct()
     {
         $this->date = new \DateTime();
@@ -142,4 +147,52 @@ class Entretien
         return $this->objet;
     }
 
+
+    /**
+     * Set interviewer
+     *
+     * @param \UserBundle\Entity\User $interviewer
+     *
+     * @return Entretien
+     */
+    public function setInterviewer(\UserBundle\Entity\User $interviewer)
+    {
+        $this->interviewer = $interviewer;
+
+        return $this;
+    }
+
+    /**
+     * Get interviewer
+     *
+     * @return \UserBundle\Entity\User
+     */
+    public function getInterviewer()
+    {
+        return $this->interviewer;
+    }
+
+    /**
+     * Set interviewee
+     *
+     * @param \UserBundle\Entity\User $interviewee
+     *
+     * @return Entretien
+     */
+    public function setInterviewee(\UserBundle\Entity\User $interviewee)
+    {
+        $this->interviewee = $interviewee;
+
+        return $this;
+    }
+
+    /**
+     * Get interviewee
+     *
+     * @return \UserBundle\Entity\User
+     */
+    public function getInterviewee()
+    {
+        return $this->interviewee;
+    }
 }

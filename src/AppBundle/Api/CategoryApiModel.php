@@ -8,6 +8,8 @@ class CategoryApiModel
 
     public $name;
 
+    public $isPrivate;
+
     private $links = [];
 
     public function addLink($ref, $url)

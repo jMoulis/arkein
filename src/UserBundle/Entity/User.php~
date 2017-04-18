@@ -104,6 +104,11 @@ class User implements UserInterface
     private $documents;
 
     /**
+     * @ORM\ManyToMany(targetEntity="UserBundle\Entity\Groups", inversedBy="users")
+     */
+    private $groups;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -356,14 +361,6 @@ class User implements UserInterface
     public function getCoach()
     {
         return $this->coach;
-    }
-
-    /**
-     * @param mixed $coach
-     */
-    public function setCoach($coach)
-    {
-        $this->coach = $coach;
     }
 
     /**

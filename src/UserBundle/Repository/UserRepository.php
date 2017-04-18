@@ -14,8 +14,6 @@ use UserBundle\Entity\User;
  */
 class UserRepository extends EntityRepository
 {
-
-
     /**
      * @return mixed
      */
@@ -45,11 +43,22 @@ class UserRepository extends EntityRepository
         return $qb;
     }
 
-    public  function findYoungster()
+    public function findYoungster()
     {
         $qb = $this->createQueryBuilder('user')
             ->andWhere('user.role = :role ')
             ->setParameter('role', 'ROLE_YOUNGSTER')
+        ;
+        return $qb;
+    }
+
+    public function findCoach($user)
+    {
+        $qb = $this->createQueryBuilder('user')
+            ->where('user = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->execute()
         ;
         return $qb;
     }

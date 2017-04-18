@@ -39,6 +39,21 @@ class Categorie
      */
     private $documents;
 
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isPrivate;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->documents = new ArrayCollection();
+       // $this->isPrivate = true;
+    }
+
     /**
      * Get id
      *
@@ -71,13 +86,6 @@ class Categorie
     public function getName()
     {
         return $this->name;
-    }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->documents = new ArrayCollection();
     }
 
     /**
@@ -117,5 +125,21 @@ class Categorie
     public function __toString()
     {
         return $this->getName();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIsPrivate()
+    {
+        return $this->isPrivate;
+    }
+
+    /**
+     * @param mixed $isPrivate
+     */
+    public function setIsPrivate($isPrivate)
+    {
+        $this->isPrivate = $isPrivate;
     }
 }

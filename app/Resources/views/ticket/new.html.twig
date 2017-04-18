@@ -1,4 +1,4 @@
-{% extends ':App:dashboard.html.twig' %}
+{% extends ':dashboard:dashboard.html.twig' %}
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.standalone.css" />
@@ -6,13 +6,31 @@
 {% block dashcontent %}
     <h1>Ticket creation</h1>
     {{ form_start(form) }}
-        {{ form_widget(form) }}
+    <div class="form-group">
+        <label class="">Objet</label>
+    <select class="form-control js-default-objet">
+        <option value="">-- Veuillez sélectionner un objet --</option>
+        <option value="scolaire">Scolarité</option>
+        <option value="incident">Incident</option>
+        <option value="personnel">Personnel</option>
+        <option value="autre">Autre</option>
+    </select>
+        <div class="form-group js-wrapper-input-autre"></div>
+    </div>
         {{ form_row(form.objet) }}
-        {{ form_row(form.toWho) }}
+        {{ form_row(form.aboutWho, {
+            'label': 'Jeune'
+        }) }}
         {{ form_row(form.message) }}
-        {{ form_row(form.level) }}
-        {{ form_row(form.aboutWho) }}
-        <input class="btn btn-primary" type="submit" value="Create" />
+        {{ form_row(form.level, {
+            'label': 'Niveau'
+        }) }}
+        {% if is_granted('ROLE_ADMIN') %}
+            {{ form_row(form.toWho, {
+                'label': 'Assigné à'
+            }) }}
+        {% endif %}
+        <button class="btn btn-primary" type="submit">Créer</button>
     {{ form_end(form) }}
 {% endblock %}
 {% block javascripts %}
@@ -20,9 +38,34 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js"></script>
     <script>
         jQuery(document).ready(function() {
+            const $div = $('.js-wrapper-input-autre');
+            function addAutreField(){
+                const $label = $('<label class="control-label"></label>');
+                const $input = $('<input type="text" class="form-control js-input-autre" placeholder="Merci de précisez"/>');
+
+                $div.append($label);
+                $div.append($input);
+            }
+
+
             $('.js-datepicker').datepicker({
                 format: "dd/mm/yyyy",
                 orientation: 'bottom left'
+            });
+
+            $('.js-default-objet').change(function () {
+                let $selectValue = $(this).val();
+                $('#appbundle_ticket_objet').val($selectValue);
+                if($selectValue === 'autre'){
+                    addAutreField();
+                } else {
+                    $div.empty();
+                }
+            });
+
+            $div.on('change', 'input', function (e) {
+                let $value = $(this).val();
+                $('#appbundle_ticket_objet').val($value);
             });
         });
     </script>

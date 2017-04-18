@@ -46,7 +46,7 @@ class EntretienType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'appbundle_entretien';
+        return '';
     }
 
 

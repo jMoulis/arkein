@@ -5,12 +5,12 @@ namespace AppBundle\Form;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Validator\Constraints\Choice;
 use UserBundle\Entity\User;
 use UserBundle\Repository\UserRepository;
 
@@ -36,16 +36,11 @@ class TicketType extends AbstractType
     {
         $user = $this->tokenStorage->getToken()->getUser();
         $builder
-            ->add('objet')
-            ->add('toWho', EntityType::class, [
-                'class' => User::class,
-                'placeholder' => 'Sélectionner un destinataire',
-                'query_builder' => function(UserRepository $repository) {
-                    return $repository->createQueryBuilder('user')
-                        ->andWhere('user.role != :role ')
-                        ->setParameter('role', 'ROLE_YOUNGSTER');
-                }
-            ])
+            ->add('objet', HiddenType::class)
+            /* Je l'ai mis en hiddenType, est l'ai codé en pur html et JS,
+             * pour gérer l'objet 'Autre' qui fait apparaître un inputtext
+             * pour écrire un objet autre et c'est JS qui sert pour remplir cet hidden field
+             */
             ->add('level', ChoiceType::class, [
                 'choices' => [
                     'Normal' => 'normal',
@@ -67,6 +62,15 @@ class TicketType extends AbstractType
                         },
                     ];
                 } else {
+                    $form->add('toWho', EntityType::class, [
+                        'class' => User::class,
+                        'placeholder' => 'Sélectionner un destinataire',
+                        'query_builder' => function(UserRepository $repository) {
+                            return $repository->createQueryBuilder('user')
+                                ->andWhere('user.role != :role ')
+                                ->setParameter('role', 'ROLE_YOUNGSTER');
+                        }
+                    ]);
                     $formOptions = [
                         'class' => User::class,
                         'placeholder' => 'Sélectionner le jeune',
@@ -77,12 +81,6 @@ class TicketType extends AbstractType
                 }
                 $form->add('aboutWho', EntityType::class, $formOptions);
             })
-            ->add('statut', ChoiceType::class, [
-                'choices' => [
-                    'Cloturé' => 0,
-                    'Ouvert' => 1
-                ]
-            ])
         ;
     }
     

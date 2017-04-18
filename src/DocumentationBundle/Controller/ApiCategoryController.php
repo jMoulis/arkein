@@ -3,7 +3,7 @@
 namespace DocumentationBundle\Controller;
 
 use AppBundle\Api\CategoryApiModel;
-use AppBundle\Api\RepLogApiModel;
+use AppBundle\Api\DocumentApiModel;
 use AppBundle\Controller\BaseController;
 use DocumentationBundle\Entity\Categorie;
 use DocumentationBundle\Entity\Document;
@@ -47,7 +47,7 @@ class ApiCategoryController extends BaseController
      * @Route("/docs/cat/{id}", name="cat_get")
      * @Method("GET")
      */
-    public function getRepLogAction(Categorie $category)
+    public function getCategoryAction(Categorie $category)
     {
         $apiModel = $this->createCategoryApiModel($category);
 
@@ -114,7 +114,7 @@ class ApiCategoryController extends BaseController
     }
 
     /**
-     * Turns a RepLog into a RepLogApiModel for the API.
+     *
      *
      * This could be moved into a service if it needed to be
      * re-used elsewhere.
@@ -128,6 +128,7 @@ class ApiCategoryController extends BaseController
         $model = new CategoryApiModel();
         $model->id = $category->getId();
         $model->name = $category->getName();
+        $model->isPrivate = $category->getIsPrivate();
 
         $selfUrl = $this->generateUrl(
             'cat_get',

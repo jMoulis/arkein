@@ -104,6 +104,11 @@ class User implements UserInterface
     private $documents;
 
     /**
+     * @ORM\ManyToMany(targetEntity="UserBundle\Entity\Groups", inversedBy="users")
+     */
+    private $groups;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -359,14 +364,6 @@ class User implements UserInterface
     }
 
     /**
-     * @param mixed $coach
-     */
-    public function setCoach($coach)
-    {
-        $this->coach = $coach;
-    }
-
-    /**
      * Add coach
      *
      * @param \UserBundle\Entity\User $coach
@@ -422,5 +419,39 @@ class User implements UserInterface
     public function getDocuments()
     {
         return $this->documents;
+    }
+
+    /**
+     * Add group
+     *
+     * @param \UserBundle\Entity\Groups $group
+     *
+     * @return User
+     */
+    public function addGroup(\UserBundle\Entity\Groups $group)
+    {
+        $this->groups[] = $group;
+
+        return $this;
+    }
+
+    /**
+     * Remove group
+     *
+     * @param \UserBundle\Entity\Groups $group
+     */
+    public function removeGroup(\UserBundle\Entity\Groups $group)
+    {
+        $this->groups->removeElement($group);
+    }
+
+    /**
+     * Get groups
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getGroups()
+    {
+        return $this->groups;
     }
 }

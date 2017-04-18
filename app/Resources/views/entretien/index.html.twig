@@ -1,28 +1,15 @@
+<p><a class="btn btn-primary" href="{{ path('entretien_new') }}">Nouvel entretien</a></p>
+<table class="js-table-wrapper table table-responsive">
+    <thead>
+    <tr>
+        <th>Date</th>
+        <th>Objet</th>
+        <th>Compte rendu</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody class="action">
 
-    <p><a class="btn btn-primary" href="{{ path('entretien_new') }}">Nouvel entretien</a></p>
-    <table class="table table-responsive">
-        <thead>
-        <tr>
-            <th>Id</th>
-            <th>Date</th>
-            <th>Objet</th>
-            <th>Compte rendu</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for entretien in entretiens %}
-            <tr>
-                <td><a href="{{ path('entretien_show', { 'id': entretien.id }) }}">{{ entretien.id }}</a></td>
-                <td>{% if entretien.date %}{{ entretien.date|date('d/m/Y') }}{% endif %}</td>
-                <td>{{ entretien.compteRendu }}</td>
-                <td>{{ entretien.objet }}</td>
-                {% if is_granted('ROLE_ADMIN') %}
-                    <td><a class="btn btn-warning" href="{{ path('entretien_edit', { 'id': entretien.id }) }}">Modifier</a></td>
-                {% else %}
-                    <td><a class="btn btn-warning" href="{{ path('entretien_show', { 'id': entretien.id }) }}">Voir</a></td>
-                {% endif %}
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    </tbody>
+</table>
+

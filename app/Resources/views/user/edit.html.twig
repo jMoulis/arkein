@@ -82,10 +82,15 @@
     </div>
     <br/>
     {% if is_granted('ROLE_ADMIN') %}
-        {{ form_row(edit_form.coach) }}
+
+        {% if edit_form.role.vars.value == ('ROLE_YOUNGSTER') %}
+            {{ form_row(edit_form.coach) }}
+        {% endif %}
+        {% do edit_form.coach.setRendered() %}
         {{ form_row(edit_form.role) }}
         {{ form_row(edit_form.isActive) }}
     {% else %}
+
         {% do edit_form.coach.setRendered() %}
         {% do edit_form.role.setRendered() %}
         {% do edit_form.isActive.setRendered() %}

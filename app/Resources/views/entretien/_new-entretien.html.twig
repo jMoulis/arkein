@@ -1,0 +1,28 @@
+<form class="js-new-entretien-form" novalidate data-url="{{ path('entretien_new') }}">
+    <div id="appbundle_entretien">
+        <div class="form-group">
+            <label class="control-label required" for="date">Date</label>
+            <input type="text" id="date" name="date" required="required" class="js-datepicker form-control" value="02/04/2017" />
+        </div>
+        <div class="form-group">
+            <label class="control-label required" for="interviewer">Interviewer</label>
+            <select id="interviewer" name="interviewer" class="form-control">
+                <option value="1">Monty, McClure</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="control-label required" for="interviewee">Interviewee</label>
+            <select id="interviewee" name="interviewee" class="form-control">
+                <option value="6">Erik, Johnson</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="control-label required" for="objet">Objet</label>
+            <input type="text" id="objet" name="objet" required="required" maxlength="255" class="form-control" />
+        </div><div class="form-group">
+            <label class="control-label required" for="compteRendu">Compte rendu</label>
+            <textarea id="compteRendu" name="compteRendu" required="required" class="form-control"></textarea>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Valider</button>
+</form>

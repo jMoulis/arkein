@@ -46,4 +46,87 @@
         {% endfor %}
     </ul>
 </div>
-{{ include(':document:_modal_add_doc.html.twig') }}
+<!-- Modal -->
+<div class="modal fade" id="modalAddDoc" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        {{ form_start(form, { method: 'POST', action: path('document_new', {'user': user.id }) }) }}
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Nouveau document</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="js-new-document-form-wrapper">
+                    <div class="form-group d-flex justify-content-center">
+                        {% do form.categorie.setRendered() %}
+                        <span class="input-group-btn">
+                            <button class="btn btn-secondary" type="button"><i class="fa fa-folder"></i></button>
+                        </span>
+
+                        <select
+                                id="categorie"
+                                name="categorie"
+                                required="required"
+                                class="js-select-folder form-control">
+                            <option value="" selected>Sélectionner un dossier</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        {{ form_widget(form.fileTemporary, {
+                            'label': false,
+                            'attr': {
+                                'class': 'file'
+                            }
+                        }) }}
+                        <div class="input-group col-xs-12">
+                            <span class="input-group-btn">
+                                <button class="browse btn btn-secondary input-lg" type="button"> <i class="fa fa-search"></i></button>
+                            </span>
+                            <p class="form-control">Télécharger un fichier</p>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                {{ form_widget(form.isPrivate) }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-between">
+                <button type="button" data-toggle="collapse" data-target="#addFolderForm" class="btn btn-secondary" aria-expanded="false" aria-controls="addFolderForm">Nouveau dossier</button>
+                <div class="btn-group" role="group" aria-label="footerBtn">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-primary">Valider</button>
+                </div>
+            </div>
+            {{ form_end(form) }}
+
+
+
+            <div class="modal-body">
+                <div class="js-category collapse" id="addFolderForm">
+                    <form class="js-new-folder-form" novalidate data-url="{{ path('api_category_new') }}">
+                        <div class="input-group">
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-primary" >Créer</button>
+                                </span>
+                            <input type="text" id="folder"
+                                   name="name" required="required"
+                                   placeholder="Nom du dossier"
+                                   class="form-control" />
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="js-isprivate-file" name="isPrivate" id="isPrivate" type="checkbox" value="">
+                                    is Private
+                                </label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -3,6 +3,7 @@
 namespace AppBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -13,7 +14,19 @@ class MailType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('mail')->add('nom')->add('prenom')->add('objet')->add('message');
+        $builder
+            ->add('sujet', ChoiceType::class, [
+                'choices' => [
+                    "Demande d'info" => "info",
+                    "Se rencontrer" => "rencontre",
+                    "Demande d'admission" => "admission"
+                ]
+            ])
+            ->add('objet')
+            ->add('nom')
+            ->add('prenom')
+            ->add('mail')
+            ->add('message');
     }
     
     /**

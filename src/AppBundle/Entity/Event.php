@@ -55,6 +55,11 @@ class Event
     private $place;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isArchived;
+
+    /**
      * Get id
      *
      * @return int
@@ -182,5 +187,29 @@ class Event
     public function getDateend()
     {
         return $this->dateend;
+    }
+
+    /**
+     * Set isArchived
+     *
+     * @param boolean $isArchived
+     *
+     * @return Event
+     */
+    public function setIsArchived($isArchived)
+    {
+        $this->isArchived = $isArchived;
+
+        return $this;
+    }
+
+    /**
+     * Get isArchived
+     *
+     * @return boolean
+     */
+    public function getIsArchived()
+    {
+        return $this->isArchived;
     }
 }

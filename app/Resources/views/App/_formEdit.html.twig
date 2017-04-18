@@ -2,8 +2,10 @@
 {{ form_start(edit_form) }}
     {{ form_widget(edit_form) }}
 <button type="submit" class="btn btn-primary">Modifier</button>
-<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Supprimer</button>
-{{ form_end(edit_form) }}
+
+{#TODO: Ajouter un call ajax pour mettre à jour l'archivage#}
+{#
+<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Archivé</button>
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteLongTitle" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -25,3 +27,5 @@
         </div>
     </div>
 </div>
+#}
+{{ form_end(edit_form) }}

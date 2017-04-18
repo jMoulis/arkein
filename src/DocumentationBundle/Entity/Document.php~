@@ -53,20 +53,32 @@ class Document
 
     /**
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
+     * @ORM\JoinColumn(nullable=false)
     */
     private $author;
 
     /**
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User", inversedBy="documents")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $destinataire;
 
     /**
      * @ORM\ManyToOne(targetEntity="DocumentationBundle\Entity\Categorie", inversedBy="documents")
-     * @Assert\NotBlank(message="Veuillez sélectionner le dossier")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $categorie;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isArchived;
+
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isPrivate;
 
     /**
      * Contructeur
@@ -74,6 +86,7 @@ class Document
     public function __construct()
     {
         $this->updatedAt = new \DateTime();
+        $this->isArchived = false;
     }
 
     /**
@@ -178,7 +191,7 @@ class Document
      *
      * @return Document
      */
-    public function setCategorie(\DocumentationBundle\Entity\Categorie $categorie = null)
+    public function setCategorie(Categorie $categorie = null)
     {
         $this->categorie = $categorie;
 
@@ -202,4 +215,27 @@ class Document
 
 
 
+    /**
+     * Set isArchived
+     *
+     * @param boolean $isArchived
+     *
+     * @return Document
+     */
+    public function setIsArchived($isArchived)
+    {
+        $this->isArchived = $isArchived;
+
+        return $this;
+    }
+
+    /**
+     * Get isArchived
+     *
+     * @return boolean
+     */
+    public function getIsArchived()
+    {
+        return $this->isArchived;
+    }
 }

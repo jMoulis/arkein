@@ -7,7 +7,10 @@
 {% block body %}
     <h1>Nouvel entretien</h1>
     <p><a class="" href="{{ path('entretien_index') }}">Back to the list</a></p>
-    {{ include(':App:_formNew.html.twig') }}
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button type="submit" class="btn">Créer</button>
+    {{ form_end(form) }}
 {% endblock %}
 
 {% block javascripts %}
@@ -20,7 +23,7 @@
             format: 'dd/mm/yyyy',
             language: "fr"
         });
-        CKEDITOR.replace('appbundle_entretien_compteRendu');
+        CKEDITOR.replace('compteRendu');
     });
     </script>
 {% endblock %}

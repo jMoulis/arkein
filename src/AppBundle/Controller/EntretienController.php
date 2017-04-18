@@ -2,9 +2,9 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Api\EntretienApiModel;
 use AppBundle\Entity\Entretien;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
 use UserBundle\Entity\User;
@@ -14,7 +14,7 @@ use UserBundle\Entity\User;
  *
  * @Route("entretien")
  */
-class EntretienController extends Controller
+class EntretienController extends BaseController
 {
     /**
      * Lists all entretien entities par interviewee.
@@ -26,7 +26,12 @@ class EntretienController extends Controller
     public function indexAction(Request $request, User $user = null)
     {
         $em = $this->getDoctrine()->getManager();
+
         $userFilter = '';
+
+        /* Cette action étant utilisée à deux endroits, il est nécessaire de mettre une condition
+        * Afin d'éviter une erreur doctrine lors de la lecture des entretiens sur la liste globale hors fiche membre
+        */
 
         if($user == null) {
             $user = $this->getUser();
@@ -47,9 +52,8 @@ class EntretienController extends Controller
     /**
      * Creates a new entretien entity.
      *
-     * @Route("/new", name="entretien_new")
+     * @Route("/new/", name="entretien_new")
      * @Method({"GET", "POST"})
-     * @Security("has_role('ROLE_ADMIN')")
      */
     public function newAction(Request $request)
     {
@@ -59,10 +63,12 @@ class EntretienController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $entretien->setInterviewer($this->getUser());
+
             $em->persist($entretien);
             $em->flush();
 
-            return $this->redirectToRoute('entretien_show', array('id' => $entretien->getId()));
+            return $this->redirectToRoute('user_show', array('id' => $entretien->getInterviewee()->getId()));
         }
 
         return $this->render('entretien/new.html.twig', array(
@@ -70,21 +76,61 @@ class EntretienController extends Controller
             'form' => $form->createView(),
         ));
     }
+    /**
+     * @Route("/{id}/",
+     *     name="entretien_list",
+     *     options={"expose" = true}
+     * )
+     * @Method("GET")
+     */
+    public function getEntretiensAction(User $user)
+    {
+        if(!$user) {
+            throw new \Exception('erreur object non trouvé', 500);
+        }
+
+        $entetiens = $this->getDoctrine()->getRepository('AppBundle:Entretien')
+            ->findBy([
+                'interviewee' => $user
+            ])
+        ;
+
+        $models = [];
+        foreach ($entetiens as $entetien) {
+            $models[] = $this->createEntretienApiModel($entetien);
+        }
+
+        return $this->createApiResponse([
+            'items' => $models
+        ]);
+    }
+
+
 
     /**
      * Finds and displays a entretien entity.
      *
-     * @Route("/{id}", name="entretien_show")
+     * @Route("/{id}/show",
+     *     name="entretien_show",
+     *     options={"expose" = true})
      * @Method("GET")
      */
     public function showAction(Entretien $entretien)
     {
-        $deleteForm = $this->createDeleteForm($entretien);
+        dump($entretien);
+        if(!$entretien) {
+            throw new \Exception('erreur object non trouvé', 500);
+        }
 
-        return $this->render('entretien/show.html.twig', array(
-            'entretien' => $entretien,
-            'delete_form' => $deleteForm->createView(),
-        ));
+        $entetien = $this->getDoctrine()->getRepository('AppBundle:Entretien')
+            ->find($entretien->getId())
+        ;
+
+        $model = $this->createEntretienApiModel($entetien);
+
+        return $this->createApiResponse([
+            'item' => $model
+        ]);
     }
 
     /**
@@ -148,5 +194,23 @@ class EntretienController extends Controller
             ->setMethod('DELETE')
             ->getForm()
         ;
+    }
+
+    private function createEntretienApiModel(Entretien $entretien)
+    {
+
+        $model = new EntretienApiModel();
+        $model->id = $entretien->getId();
+        $model->compteRendu = $entretien->getCompteRendu();
+        $model->objet = $entretien->getObjet();
+        $model->date = $entretien->getDate();
+
+        $selfUrl = $this->generateUrl(
+            'entretien_list',
+            ['id' => $entretien->getId()]
+        );
+        $model->addLink('_self', $selfUrl);
+
+        return $model;
     }
 }

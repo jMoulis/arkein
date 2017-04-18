@@ -55,9 +55,15 @@ class Entretien
      */
     private $interviewee;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isArchived;
+
     public function __construct()
     {
         $this->date = new \DateTime();
+        $this->isArchived = false;
     }
 
     /**
@@ -189,5 +195,29 @@ class Entretien
     public function getInterviewee()
     {
         return $this->interviewee;
+    }
+
+    /**
+     * Set isArchived
+     *
+     * @param boolean $isArchived
+     *
+     * @return Entretien
+     */
+    public function setIsArchived($isArchived)
+    {
+        $this->isArchived = $isArchived;
+
+        return $this;
+    }
+
+    /**
+     * Get isArchived
+     *
+     * @return boolean
+     */
+    public function getIsArchived()
+    {
+        return $this->isArchived;
     }
 }

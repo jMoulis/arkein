@@ -15,7 +15,7 @@ function getTicket(table, url) {
                 "data": "niveau",
                 "render": function (data, type, full, meta){
                     if (data == 'urgent') {
-                        return '<span class="badge badge-danger">'+ data +'</span>'
+                        return '<span class="badge badge-warning">'+ data +'</span>'
                     } else {
                         return '<span class="badge badge-info">'+ data +'</span>'
                     }
@@ -31,7 +31,7 @@ function getTicket(table, url) {
                 "data": "id",
                 "render": function (data, type, full, meta) {
                     var showTicketDetail = Routing.generate('ticket_show', { id: data });
-                    return '<a class="btn btn-warning" href="'+ showTicketDetail +'">Voir</a>'
+                    return '<a class="btn btn-outline-info" href="'+ showTicketDetail +'">Voir</a>'
                 }}
         ]
     });

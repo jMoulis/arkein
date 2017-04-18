@@ -47,6 +47,10 @@ class RegisterType extends AbstractType
                     ]
 
                 ])
+            ->add('groups', null, [
+                'expanded' => true,
+                'multiple' => true
+            ])
         ;
     }
 

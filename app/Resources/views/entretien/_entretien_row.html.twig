@@ -1,0 +1,9 @@
+<tr>
+    <td><a href="{{ vich_uploader_asset(document, 'fileTemporary') }}">{{ document.fileName }}</a></td>
+    <td align="center">
+        <a href="#"
+           class="js-entretien-document btn btn-danger"
+           data-url="{{ path('entretien_delete', {id: entretien.id}) }}"
+        >x</a>
+    </td>
+</tr>

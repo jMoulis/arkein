@@ -4,8 +4,8 @@
     <div class="row top-nav">
         <div class="jumbotron jumbotron-fluid w-100">
             <div class="container">
-                <h1 class="display-3">Fluid jumbotron</h1>
-                <p class="lead hidden-xs-down">This is a modified jumbotron that occupies the entire horizontal space of its parent.</p>
+                <h1 class="display-3">Contactez-nous</h1>
+                <p class="lead hidden-xs-down">Lorem ipsum.</p>
             </div>
         </div>
     </div>
@@ -29,38 +29,48 @@
                     </div>
                     <div class="card-block">
                         {{ form_start(form) }}
-                        {{ form_row(form.nom, {
+                        {{ form_row(form.sujet, {
                             'label': false,
                             'attr': {
-                                'placeholder': 'Nom'
+                                'class': 'js-list-choix-contact'
                             }
                         }) }}
-                        {{ form_row(form.prenom, {
-                            'label': false,
-                            'attr': {
-                                'placeholder': 'Prénom'
-                            }
-                        }) }}
-                        {{ form_row(form.mail, {
-                            'label': false,
-                            'attr': {
-                                'placeholder': 'E-mail'
-                            }
-                        }) }}
-                        {{ form_row(form.objet, {
-                            'label': false,
-                            'attr': {
-                                'placeholder': 'Objet'
-                            }
-                        }) }}
-                        {{ form_row(form.message, {
-                            'label': false,
-                            'attr': {
-                                'placeholder': 'Ecrivez votre message'
-                            }
-                        }) }}
+                        <div class="js-admission-message alert alert-success" role="alert" style="display: none"></div>
+                        <div class="js-admission" style="display: none">
+
+                            {{ form_row(form.objet, {
+                                'label': false,
+                                'attr': {
+                                    'placeholder': 'Autre'
+                                }
+                            }) }}
+                            {{ form_row(form.message, {
+                                'label': false,
+                                'attr': {
+                                    'placeholder': 'Ecrivez votre message'
+                                }
+                            }) }}
+                            {{ form_row(form.nom, {
+                                'label': false,
+                                'attr': {
+                                    'placeholder': 'Nom'
+                                }
+                            }) }}
+                            {{ form_row(form.prenom, {
+                                'label': false,
+                                'attr': {
+                                    'placeholder': 'Prénom'
+                                }
+                            }) }}
+                            {{ form_row(form.mail, {
+                                'label': false,
+                                'attr': {
+                                    'placeholder': 'E-mail'
+                                }
+                            }) }}
                         <button type="submit" class="btn btn-primary">Envoyer</button>
                         {{ form_end(form) }}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -137,6 +147,23 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCMmLTA2wKD2PQpOZwR7Bk1GwOumT2kNV0&callback=initMap"
             async defer></script>
     <script>
+        $(document).ready(function () {
+
+            var $messageAdmission = $('.js-admission-message');
+            var $messageLink = '<a href="mailto:admission@arkein.com?subject=Demande d\'admission">admission@arkein.com</a>';
+
+
+           $('.js-list-choix-contact').on('change', function (e) {
+               console.log($(this).val());
+               if ($(this).val() !== 'admission') {
+                    $('.js-admission').show();
+                   $messageAdmission.hide();
+               } else {
+                   $('.js-admission').hide();
+                   $messageAdmission.show().html('Pour faire une demande d\'admission. Veuillez envoyer un mail à l\'addresse suivante: '+ $messageLink);
+               }
+           })
+        });
         function initMap() {
             var myLatLng = {lat: 43.597658, lng: 1.543788};
 
@@ -149,7 +176,7 @@
             var marker = new google.maps.Marker({
                 position: myLatLng,
                 map: map,
-                title: 'Le Goéland'
+                title: 'Le Goëland'
             });
 
             var contentString = '<div id="content">'+

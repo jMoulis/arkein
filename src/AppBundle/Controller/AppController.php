@@ -25,6 +25,7 @@ class AppController extends Controller
     /**
      *
      * @Route("/dashboard", name="dashboard")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      */
     public function dashboardAction()
     {

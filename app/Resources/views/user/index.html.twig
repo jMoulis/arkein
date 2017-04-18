@@ -7,6 +7,9 @@
 {% endblock %}
 {% block body %}
     <h1>List des membres</h1>
+    <div class="row">
+        <a class="btn btn-primary" href="{{ path('user_new') }}">Ajouter un membre</a>
+    </div>
     {% include (':user:_responsive-xs-index.html.twig') %}
 {% endblock %}
 

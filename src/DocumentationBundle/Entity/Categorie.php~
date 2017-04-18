@@ -2,8 +2,10 @@
 
 namespace DocumentationBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 
 /**
@@ -28,6 +30,7 @@ class Categorie
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     * @Assert\NotBlank(message="Veuillez définir un nom de dossier")
      */
     private $name;
 
@@ -74,7 +77,7 @@ class Categorie
      */
     public function __construct()
     {
-        $this->documents = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->documents = new ArrayCollection();
     }
 
     /**
@@ -84,7 +87,7 @@ class Categorie
      *
      * @return Categorie
      */
-    public function addDocument(\DocumentationBundle\Entity\Document $document)
+    public function addDocument($document)
     {
         $this->documents[] = $document;
 
@@ -96,7 +99,7 @@ class Categorie
      *
      * @param \DocumentationBundle\Entity\Document $document
      */
-    public function removeDocument(\DocumentationBundle\Entity\Document $document)
+    public function removeDocument($document)
     {
         $this->documents->removeElement($document);
     }

@@ -59,6 +59,19 @@ class TicketController extends Controller
 
             $ticket->setFromWho($this->getUser());
 
+            /* TODO: Find the coach and setitTowho */
+            //$ticket->getAboutWho()->getCoach();
+            $youngster = $ticket->getAboutWho();
+            $coaches = $youngster->getCoach();
+            $staffCoach = '';
+            foreach ($coaches as $coach){
+                if($coach->getRole() == 'ROLE_STAFF')
+                {
+                    $staffCoach = $coach;
+                }
+            }
+
+            $ticket->setToWho($staffCoach);
             $em->persist($ticket);
             $em->flush($ticket);
 
@@ -117,6 +130,7 @@ class TicketController extends Controller
      *
      * @Route("/{id}", name="ticket_delete")
      * @Method("DELETE")
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function deleteAction(Request $request, Ticket $ticket)
     {
