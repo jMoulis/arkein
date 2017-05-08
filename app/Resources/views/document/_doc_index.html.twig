@@ -34,7 +34,7 @@
                                 <td align="center">
                                     <a href="#"
                                        class="js-delete-document btn btn-danger btn-sm"
-                                       data-url="{{ path('document_delete', {id: documents.id}) }}"
+                                       data-url="{{ path('api_document_delete', {id: documents.id}) }}"
                                     >x</a>
                                 </td>
                             </tr>
@@ -103,8 +103,6 @@
                 </div>
             </div>
             {{ form_end(form) }}
-
-
 
             <div class="modal-body">
                 <div class="js-category collapse" id="addFolderForm">

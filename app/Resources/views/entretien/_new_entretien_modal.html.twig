@@ -1,0 +1,54 @@
+{# TODO Mettre en place CKeditor #}
+<div class="modal fade" id="newEntretienModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">Nouvel entretien</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="js-new-entretien-form" novalidate data-url="{{ path('entretien_new') }}">
+                    <div id="appbundle_entretien">
+                        <div class="form-group">
+                            <label class="control-label required" for="date">Date</label>
+                            <input type="text" id="date" name="date" required="required" class="js-datepicker form-control" value="02/04/2017" />
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label required" for="young">Interviewee</label>
+                            <select id="young" name="young" class="form-control js-select-young">
+                                <option value="" selected>Sélectionnez le jeune</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group js-select-guest">
+                            <label class="control-label required" for="guests">Invités</label>
+                            <select id="guests" name="guests" class="form-control" disabled="disabled">
+                                <option value="" selected>Sélectionnez les invités</option>
+                            </select>
+                        </div>
+                        <div>
+                            <ul class="js-actual-guests list-unstyled">
+
+                            </ul>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label required" for="objet">Objet</label>
+                            <input type="text" id="objet" name="objet" required="required" maxlength="255" class="form-control" />
+                        </div><div class="form-group">
+                            <label class="control-label required" for="compteRendu">Compte rendu</label>
+                            <textarea id="compteRendu" name="compteRendu" required="required" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="btn-group" role="group" aria-label="modalButton">
+                        <button type="submit" class="btn btn-primary">Créer</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>

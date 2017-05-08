@@ -24,27 +24,24 @@ class ApiCategoryController extends BaseController
 {
 
     /**
-     * @Route("/docs/cat", name="category_list", options={"expose" = true})
+     * @Route("api/docs/cat", name="category_list", options={"expose" = true})
      * @Method("GET")
      */
     public function getCategoriesAction()
     {
         $categories = $this->getDoctrine()->getRepository('DocumentationBundle:Categorie')
-            ->findOrderASCCategorie()
-        ;
-
+            ->findOrderASCCategorie();
         $models = [];
         foreach ($categories as $category) {
             $models[] = $this->createCategoryApiModel($category);
         }
-
         return $this->createApiResponse([
             'items' => $models
         ]);
     }
 
     /**
-     * @Route("/docs/cat/{id}", name="cat_get")
+     * @Route("api/docs/cat/{id}", name="cat_get")
      * @Method("GET")
      */
     public function getCategoryAction(Categorie $category)
@@ -55,7 +52,7 @@ class ApiCategoryController extends BaseController
     }
 
     /**
-     * @Route("/docs/cat/{id}", name="cat_delete")
+     * @Route("api/docs/cat/{id}", name="cat_delete")
      * @Method("DELETE")
      */
     public function deleteRepLogAction(Categorie $category)
@@ -69,7 +66,7 @@ class ApiCategoryController extends BaseController
     }
 
     /**
-     * @Route("/docs/cat/", name="api_category_new")
+     * @Route("api/docs/cat/", name="api_category_new")
      * @Method("POST")
      */
     public function newCategoryAction(Request $request)
@@ -81,7 +78,6 @@ class ApiCategoryController extends BaseController
         if ($data === null) {
             throw new BadRequestHttpException('Invalid JSON');
         }
-
         $form = $this->createForm(CategorieType::class, null, [
             'csrf_protection' => false,
         ]);

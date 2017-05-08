@@ -3,9 +3,11 @@
         <li class="nav-item">
             <a class="nav-link active" href="{{ path('dashboard') }}">Overview <span class="sr-only">(current)</span></a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{{ path('user_index') }}">Membres</a>
-        </li>
+        {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_STAFF') %}
+            <li class="nav-item">
+              <a class="nav-link" href="{{ path('user_index') }}">Membres</a>
+            </li>
+        {% endif %}
         <li class="nav-item">
             <a class="nav-link" href="{{ path('ticket_index') }}">Tickets</a>
         </li>

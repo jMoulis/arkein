@@ -23,6 +23,7 @@ class UserController extends Controller
 {
     /**
      * @Route("/", name="user_index")
+     * @Security("has_role('ROLE_STAFF') or has_role('ROLE_ADMIN')")
      */
     public function indexAction(Request $request)
     {
@@ -35,6 +36,7 @@ class UserController extends Controller
     /**
      * @Route("/new", name="user_new")
      * @Method({"GET", "POST"})
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function newAction(Request $request)
     {
@@ -50,15 +52,8 @@ class UserController extends Controller
             $em->persist($user);
             $em->flush();
 
-            return $this->redirectToRoute('user_edit', [ 'id' => $user->getId()]);
+            return $this->redirectToRoute('user_show', [ 'id' => $user->getId()]);
 
-            /*return $this->get('security.authentication.guard_handler')
-                ->authenticateUserAndHandleSuccess(
-                    $user,
-                    $request,
-                    $this->get('app.security.login_form_authenticator'),
-                    'main'
-                );*/
         }
         return $this->render('user/new.html.twig', [
             'user' => $user,
@@ -92,6 +87,7 @@ class UserController extends Controller
 
         $user = $em->getRepository('UserBundle:User')
             ->find($user);
+
         $documents = $this->getDoctrine()->getRepository('DocumentationBundle:Document')->findAll();
         return $this->render('user/show.html.twig', [
             'documents' => $documents,
@@ -107,7 +103,6 @@ class UserController extends Controller
      */
     public function editAction(Request $request, User $user)
     {
-
         $deleteForm = $this->createDeleteForm($user);
 
         $form = $this->createForm(RegisterEditType::class, $user);
@@ -118,6 +113,8 @@ class UserController extends Controller
             /** @var User $user */
             $user = $form->getData();
             $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('user_show', [ 'id' => $user->getId()]);
         }
         return $this->render('user/edit.html.twig', [
             'edit_form' => $form->createView(),
@@ -132,6 +129,7 @@ class UserController extends Controller
      *
      * @Route("/{id}/delete", name="member_delete")
      * @Method("DELETE")
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function deleteAction(Request $request, User $user)
     {
@@ -169,7 +167,7 @@ class UserController extends Controller
      *     )
      *
      */
-    public function jsonData()
+    /*public function jsonData()
     {
         $coach = $this->get('security.token_storage')->getToken()->getUser();
 
@@ -199,5 +197,5 @@ class UserController extends Controller
         }
 
         return new JsonResponse(['data' => $listUsers]);
-    }
+    }*/
 }

@@ -25,29 +25,41 @@ use UserBundle\Entity\User;
 class RegisterType extends AbstractType
 {
 
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class)
-            ->add('firstname', TextType::class)
-            ->add('email', EmailType::class)
+            ->add('name', TextType::class, [
+                'label' => 'Nom'
+            ])
+            ->add('firstname', TextType::class, [
+                'label' => 'Prénom'
+            ])
+            ->add('email', EmailType::class, [
+                'label' => 'Email'
+            ])
             ->add('plainPassword', RepeatedType::class, [
-                'type' => PasswordType::class
+                'type' => PasswordType::class,
+                'first_options' => [
+                    'label' => 'Mot de passe'
+                    ],
+                'second_options' => [
+                    'label' => 'Confirmation'
+                ],
+                'invalid_message' => 'Les mots de passes ne correspondent pas'
+
             ])
             ->add('role', ChoiceType::class,
                 [
+                    'label' => 'Rôle',
                     'placeholder' => 'Sélectionner',
                     'choices' => [
                         'Personnel' => 'ROLE_STAFF',
                         'Jeune' => 'ROLE_YOUNGSTER',
                         'Externe' => 'ROLE_EXTERNAL'
-                    ],
-                    'attr' => [
                     ]
-
                 ])
             ->add('groups', null, [
+                'label' => 'Groupe',
                 'expanded' => true,
                 'multiple' => true
             ])
@@ -57,8 +69,7 @@ class RegisterType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => User::class,
-            'validation_groups' => ['Default', 'Registration']
+            'data_class' => User::class
         ]);
     }
 

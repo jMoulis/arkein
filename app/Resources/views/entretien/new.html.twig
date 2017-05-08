@@ -3,27 +3,41 @@
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/widget/bootstrap-datepicker.css') }}" />
 {% endblock %}
-
 {% block body %}
     <h1>Nouvel entretien</h1>
     <p><a class="" href="{{ path('entretien_index') }}">Back to the list</a></p>
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button type="submit" class="btn">Créer</button>
-    {{ form_end(form) }}
+
+    <div class="js-new-interview-form-wrapper">
+        {{ include('entretien/_form.html.twig') }}
+    </div>
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
     <script src="{{ asset('js/widget/bootstrap-datepicker.js') }}"></script>
-    <script src="//cdn.ckeditor.com/4.6.2/standard/ckeditor.js"></script>
+    <script src="{{ asset('js/api/EntretienAppAuthor.js') }}"></script>
+    <script src="{{ asset('js/api/UserApp.js') }}"></script>
     <script>
-    $(document).ready(function() {
+        const $entretienWrapper = $('.js-new-interview-form-wrapper');
+        const entretienApp = new EntretienAppAuthor($entretienWrapper);
+        entretienApp.loadUsers();
+
+        $entretienWrapper.on('click', '.js-select-user', function () {
+            entretienApp.loadGuests($('#young option:selected').val());
+        });
+
         $('.js-datepicker').datepicker({
             format: 'dd/mm/yyyy',
             language: "fr"
         });
-        CKEDITOR.replace('compteRendu');
-    });
+    </script>
+
+    <script type="text/template" id="js-user-option-template">
+        <option value="<%= id %>"><%= fullname %></option>
+    </script>
+
+    <script type="text/template" id="js-guests-option-template">
+        <option value="<%= id %>"><%= fullname %></option>
     </script>
 {% endblock %}
+

@@ -52,13 +52,12 @@ class TicketType extends AbstractType
                 FormEvents::PRE_SET_DATA,
                 function(FormEvent $event) use ($user) {
                 $form = $event->getForm();
-
                 if ($user->getRole() != 'ROLE_ADMIN') {
                     $formOptions = [
                         'class' => User::class,
                         'placeholder' => 'Sélectionner le jeune',
                         'query_builder' => function(UserRepository $repository) use ($user){
-                            return $repository->findYoungsterByCoach($user);
+                            return $repository->findMyYoungsters($user);
                         },
                     ];
                 } else {
@@ -75,7 +74,7 @@ class TicketType extends AbstractType
                         'class' => User::class,
                         'placeholder' => 'Sélectionner le jeune',
                         'query_builder' => function(UserRepository $repository) use ($user){
-                            return $repository->findYoungster();
+                            return $repository->findAllYoungsters();
                     }
                     ];
                 }

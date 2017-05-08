@@ -16,7 +16,7 @@ class AddressType extends AbstractType
                 'multiple' => false,
                 'choices' => [
                     'Perso' => 'HOME',
-                    'Mobile' => 'MOBILE'
+                    'Autre' => 'OTHER'
                 ]
             ])
             ->add('street')
@@ -31,6 +31,13 @@ class AddressType extends AbstractType
         $resolver->setDefaults([
             'data_class' => 'AppBundle\Entity\Address'
         ]);
+    }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix()
+    {
+        return 'address_';
     }
 }

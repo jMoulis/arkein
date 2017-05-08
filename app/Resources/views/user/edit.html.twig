@@ -56,45 +56,46 @@
 {% endmacro %}
 
 {% block body %}
-    <h1>User edit</h1>
+    <h1>Modification membre</h1>
     {{ form_start(edit_form) }}
     {{ form_row(edit_form.name) }}
     {{ form_row(edit_form.firstname) }}
     {{ form_row(edit_form.email) }}
 
-    <div class="js-phone-wrapper" data-prototype="{{ formMacros.printPhoneRow(edit_form.phoneNumbers.vars.prototype)|e('html_attr') }}" data-index="{{ edit_form.phoneNumbers|length }}">
+    <div class="js-phone-wrapper"
+         data-prototype="{{ formMacros.printPhoneRow(edit_form.phoneNumbers.vars.prototype)|e('html_attr') }}"
+         data-index="{{ edit_form.phoneNumbers|length }}">
         {% for phoneForm in edit_form.phoneNumbers %}
             {{ formMacros.printPhoneRow(phoneForm) }}
         {% endfor %}
-        <button class="btn btn-success js-add-phone" type="button">
-            Add
-        </button>
+        <button class="btn btn-success js-add-phone" type="button">+</button><span> Ajouter un numéro</span>
     </div>
     <br/>
-    <div class="js-address-wrapper" data-prototype="{{ formMacros.printAddressRow(edit_form.addresses.vars.prototype)|e('html_attr') }}" data-index="{{ edit_form.addresses|length }}">
+    <div class="js-address-wrapper"
+         data-prototype="{{ formMacros.printAddressRow(edit_form.addresses.vars.prototype)|e('html_attr') }}"
+         data-index="{{ edit_form.addresses|length }}">
 
         {% for addressForm in edit_form.addresses %}
                 {{ formMacros.printAddressRow(addressForm) }}
         {% endfor %}
-        <button class="btn btn-success js-add-address" type="button">
-            Add
-        </button>
+        <button class="btn btn-success js-add-address" type="button">+</button><span> Ajouter une adresse</span>
     </div>
     <br/>
-    {% if is_granted('ROLE_ADMIN') %}
 
+    {% if is_granted('ROLE_ADMIN') %}
         {% if edit_form.role.vars.value == ('ROLE_YOUNGSTER') %}
             {{ form_row(edit_form.coach) }}
         {% endif %}
+        {{ form_row(edit_form.groups) }}
         {% do edit_form.coach.setRendered() %}
-        {{ form_row(edit_form.role) }}
-        {{ form_row(edit_form.isActive) }}
+            {{ form_row(edit_form.role) }}
+            {{ form_row(edit_form.isActive) }}
     {% else %}
-
         {% do edit_form.coach.setRendered() %}
         {% do edit_form.role.setRendered() %}
         {% do edit_form.isActive.setRendered() %}
     {% endif %}
+
 
 
 
@@ -106,7 +107,6 @@
     <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Supprimer</button>
 
     {{ form_end(edit_form) }}
-
 
     <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteLongTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">

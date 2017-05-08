@@ -41,9 +41,19 @@ class MailTicketListener implements EventSubscriber
         if (!$entity instanceof Answer){
             return;
         }
-        $user = $this->tokenStorage->getToken()->getUser()->getEmail();
-        $author = $entity->getTicket()->getFromWho()->getEmail();
-        $destinataire = $entity->getTicket()->getToWho()->getEmail();
+        $user = $this
+            ->tokenStorage
+            ->getToken()
+            ->getUser()
+            ->getEmail();
+        $author = $entity
+            ->getTicket()
+            ->getFromWho()
+            ->getEmail();
+        $destinataire = $entity
+            ->getTicket()
+            ->getToWho()
+            ->getEmail();
         $body = $entity->getMessage();
 
         if($user == $author)

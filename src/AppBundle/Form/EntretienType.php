@@ -2,11 +2,16 @@
 
 namespace AppBundle\Form;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use UserBundle\Entity\User;
 
 class EntretienType extends AbstractType
 {
@@ -23,14 +28,25 @@ class EntretienType extends AbstractType
                 'attr' => [
                     'class' => 'js-datepicker'
                 ]
-                ])
-            ->add('interviewer')
-            ->add('interviewee')
+            ])
+            ->add('young')
+            ->add('guests', EntityType::class, [
+                'class' => User::class,
+                'mapped' => false
+            ])
+            ->add('interviewGuests', CollectionType::class, [
+                'entry_type' => InterviewUserType::class,
+                'prototype' => true,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+                'allow_extra_fields' => true
+            ])
             ->add('objet')
             ->add('compteRendu', TextareaType::class)
         ;
     }
-    
+
     /**
      * {@inheritdoc}
      */

@@ -5,7 +5,6 @@ security:
     role_hierarchy:
         ROLE_ADMIN:
 
-
     providers:
         our_users:
             entity: { class: UserBundle\Entity\User, property: email }
@@ -23,7 +22,6 @@ security:
             logout:
                 path: /logout
 
-            switch_user: ~
 
     access_control:
         - { path: '^/admin', roles: 'IS_AUTHENTICATED_FULLY' }

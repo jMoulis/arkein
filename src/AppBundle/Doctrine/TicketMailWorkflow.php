@@ -10,24 +10,31 @@ namespace AppBundle\Doctrine;
 
 use AppBundle\Entity\Ticket;
 use Doctrine\Common\EventSubscriber;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Swift_Mailer;
+use UserBundle\Entity\User;
 
 class TicketMailWorkflow implements EventSubscriber
 {
-    const ADMINMAIL = 'julien.moulis@mac.com';
+    const ADMINMAIL = 'julien.moulis21@gmail.com';
 
     private $mailer;
     private $engine;
     private $tokenStorage;
+    /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
 
-    public function __construct(Swift_Mailer $mailer, EngineInterface $engine, TokenStorageInterface $tokenStorage)
+    public function __construct(Swift_Mailer $mailer, EngineInterface $engine, TokenStorageInterface $tokenStorage, EntityManagerInterface $entityManager)
     {
         $this->mailer = $mailer;
         $this->engine = $engine;
         $this->tokenStorage = $tokenStorage;
+        $this->entityManager = $entityManager;
     }
 
     public function postPersist(LifecycleEventArgs $args){
@@ -35,9 +42,11 @@ class TicketMailWorkflow implements EventSubscriber
         if(!$entity instanceof Ticket){
             return;
         }
-        $author = $entity->getFromWho()->getEmail();
+
         $coaches = $entity->getAboutWho()->getCoach();
+        $author = $entity->getFromWho()->getEmail();
         $objet = $entity->getObjet();
+
         $destinataires = self::getGroupMemberMailPerYoung($objet, $coaches);
         $body =
             '<html>' .
@@ -59,7 +68,7 @@ class TicketMailWorkflow implements EventSubscriber
         $message = $this->mailer->createMessage()
             ->setSubject("Voici un nouveau ticket: " . $objet)
             ->setFrom($auteur)
-            //->setTo($destinataires)
+            ->setTo($destinataires)
             ->setCc(self::ADMINMAIL)
             ->setBody($body, 'text/html');
         ;
@@ -72,8 +81,14 @@ class TicketMailWorkflow implements EventSubscriber
     //Retrieves emails and creates the object to be used as setTo swiftMailer array
     private function getGroupMemberMailPerYoung($objet, $coaches){
         $destinataires = [];
+
         foreach ($coaches as $coach){
+            // Fetch the coach Staff and set it by default into the array destinataires
+            if($coach->getRole() == 'ROLE_STAFF'){
+                $destinataires[$coach->getEmail()] = $coach->__toString();
+            }
             foreach ($coach->getGroups() as $group){
+                // Fetch the coach's group and compare to the object ticket
                 if($group->getName() == $objet){
                     $destinataires[$coach->getEmail()] = $coach->__toString();
                 }

@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use UserBundle\Entity\User;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Address
@@ -24,28 +25,31 @@ class Address
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="title", type="string", length=100)
+     * @Assert\NotBlank(message="Veuillez sélectionner un titre")
+     * @ORM\Column(name="title", type="string", length=50)
      */
     private $title;
 
     /**
+     * @Assert\NotBlank(message="Merci de renseigner la rue")
      * @ORM\Column(type="string")
      */
     private $street;
 
     /**
+     * @Assert\NotBlank(message="Merci de renseigner la ville")
      * @ORM\Column(type="string")
      */
     private $town;
 
     /**
+     * @Assert\NotBlank(message="Merci de renseigner le code postal")
      * @ORM\Column(type="string")
      */
     private $postalCode;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     private $country;
 

@@ -27,13 +27,13 @@
 
         handleDocumentDelete: function (e) {
             e.preventDefault();
-            var $link = $(e.currentTarget);
+            const $link = $(e.currentTarget);
 
             $link.addClass('text-danger');
 
-            var deleteUrl =  $link.data('url');
-            var $row =  $link.closest('tr');
-            var self = this;
+            const deleteUrl =  $link.data('url');
+            const $row =  $link.closest('tr');
+            const self = this;
 
             $.ajax({
                 url: deleteUrl,
@@ -48,10 +48,10 @@
 
         handleNewFormSubmit: function (e) {
             e.preventDefault();
-            var $form = $(e.currentTarget);
-            var self = this;
+            const $form = $(e.currentTarget);
+            const self = this;
 
-            var formData = {};
+            const formData = {};
             $.each($form.serializeArray(), function (key, fieldData) {
                 formData[fieldData.name] = fieldData.value;
             });
@@ -66,14 +66,14 @@
                     self._addRow(data);
                 },
                 error: function (jqXHR) {
-                    var errorData = JSON.parse(jqXHR.responseText);
+                    const errorData = JSON.parse(jqXHR.responseText);
                     self._mapErrorsToForm(errorData.errors);
                 }
             })
         },
 
         loadDocuments: function () {
-            var self = this;
+            const self = this;
             $.ajax({
                 url: Routing.generate('document_list'),
                 success: function (data) {
@@ -86,16 +86,16 @@
 
         _mapErrorsToForm: function (errorData) {
             this._removeFormErrors();
-            var $form = this.$wrapper.find(this._selector.newDocForm);
+            const $form = this.$wrapper.find(this._selector.newDocForm);
 
             $form.find(':input').each(function () {
-                var fieldName = $(this).attr('name');
-                var $wrapper = $(this).closest('.form-group');
+                const fieldName = $(this).attr('name');
+                const $wrapper = $(this).closest('.form-group');
                 if (!errorData[fieldName]){
                     return;
                 }
 
-                var $error = $('<span class="js-field-error text-danger"></span>');
+                const $error = $('<span class="js-field-error text-danger"></span>');
                 $error.html(errorData[fieldName]);
                 $wrapper.append($error);
                 $wrapper.addClass('has-error');
@@ -103,21 +103,21 @@
         },
 
         _removeFormErrors: function () {
-            var $form = this.$wrapper.find(this._selector.newDocForm);
+            const $form = this.$wrapper.find(this._selector.newDocForm);
             $form.find('.js-field-error').remove();
             $form.find('.form-group').removeClass('has-error');
         },
 
         _clearForm: function () {
             this._removeFormErrors();
-            var $form = this.$wrapper.find(this._selector.newDocForm);
+            const $form = this.$wrapper.find(this._selector.newDocForm);
             $form[0].reset();
         },
 
         _addRow: function (document) {
-            var tplText = $('#js-document-row-template').html();
-            var tpl = _.template(tplText);
-            var html = tpl(document);
+            const tplText = $('#js-document-row-template').html();
+            const tpl = _.template(tplText);
+            const html = tpl(document);
             this.$wrapper.find('tbody').append($.parseHTML(html));
         }
 

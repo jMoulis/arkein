@@ -188,4 +188,28 @@ class Event
     {
         return $this->dateend;
     }
+
+    /**
+     * Set isArchived
+     *
+     * @param boolean $isArchived
+     *
+     * @return Event
+     */
+    public function setIsArchived($isArchived)
+    {
+        $this->isArchived = $isArchived;
+
+        return $this;
+    }
+
+    /**
+     * Get isArchived
+     *
+     * @return boolean
+     */
+    public function getIsArchived()
+    {
+        return $this->isArchived;
+    }
 }

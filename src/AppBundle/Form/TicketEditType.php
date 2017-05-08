@@ -21,15 +21,11 @@ class TicketEditType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('message', TextareaType::class, [
-                'attr' => [
-                    'class' => 'js-message-edit'
-                ]
-            ])
-            ->add('answers', CollectionType::class, [
-                'entry_type' => AnswerType::class,
-                'allow_add' => true,
-                'by_reference' => false,
+            ->add('statut', ChoiceType::class, [
+                'choices' => [
+                    'Clôturé' => 0,
+                    'En cours' => 1
+                ],
             ])
         ;
     }

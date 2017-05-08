@@ -10,6 +10,7 @@ namespace UserBundle\Form;
 
 
 use AppBundle\Form\AddressType;
+use AppBundle\Form\PhoneType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -31,6 +32,7 @@ class RegisterEditType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->remove('plainPassword')
             ->add('name', TextType::class)
             ->add('firstname', TextType::class)
             ->add('email', EmailType::class)
@@ -66,8 +68,13 @@ class RegisterEditType extends AbstractType
                         'Externe' => self::EXTERNAL
                     ]
                 ])
+            ->add('groups', null, [
+                'label' => 'Groupe',
+                'expanded' => true,
+                'multiple' => true
+            ])
             ->add('isActive')
-            //addEventListener(FormEvents::PRE_SET_DATA, array($this, 'onPreSubmitData'))
+            //->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'onPreSubmitData'))
         ;
     }
 

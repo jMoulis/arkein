@@ -2,7 +2,10 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use UserBundle\Entity\User;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Entretien
@@ -32,6 +35,7 @@ class Entretien
      * @var string
      *
      * @ORM\Column(name="compteRendu", type="text")
+     * @Assert\NotBlank(message="Merci de remplir le compte rendu")
      */
     private $compteRendu;
 
@@ -47,13 +51,23 @@ class Entretien
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $interviewer;
+    private $author;
 
     /**
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $interviewee;
+    private $young;
+
+    /**
+     * @ORM\OneToMany(
+     *     targetEntity="AppBundle\Entity\InterviewUser",
+     *     mappedBy="interview",
+     *     fetch="EXTRA_LAZY",
+     *     orphanRemoval=true,
+     *     cascade={"persist"})
+     */
+    private $interviewGuests;
 
     /**
      * @ORM\Column(type="boolean")
@@ -63,6 +77,7 @@ class Entretien
     public function __construct()
     {
         $this->date = new \DateTime();
+        $this->interviewGuests = new ArrayCollection();
         $this->isArchived = false;
     }
 
@@ -148,55 +163,6 @@ class Entretien
         return $this->objet;
     }
 
-
-    /**
-     * Set interviewer
-     *
-     * @param \UserBundle\Entity\User $interviewer
-     *
-     * @return Entretien
-     */
-    public function setInterviewer(\UserBundle\Entity\User $interviewer)
-    {
-        $this->interviewer = $interviewer;
-
-        return $this;
-    }
-
-    /**
-     * Get interviewer
-     *
-     * @return \UserBundle\Entity\User
-     */
-    public function getInterviewer()
-    {
-        return $this->interviewer;
-    }
-
-    /**
-     * Set interviewee
-     *
-     * @param \UserBundle\Entity\User $interviewee
-     *
-     * @return Entretien
-     */
-    public function setInterviewee(\UserBundle\Entity\User $interviewee)
-    {
-        $this->interviewee = $interviewee;
-
-        return $this;
-    }
-
-    /**
-     * Get interviewee
-     *
-     * @return \UserBundle\Entity\User
-     */
-    public function getInterviewee()
-    {
-        return $this->interviewee;
-    }
-
     /**
      * Set isArchived
      *
@@ -220,4 +186,90 @@ class Entretien
     {
         return $this->isArchived;
     }
+
+
+    /**
+     * Set author
+     *
+     * @param User $author
+     *
+     * @return Entretien
+     */
+    public function setAuthor(User $author)
+    {
+        $this->author = $author;
+
+        return $this;
+    }
+
+    /**
+     * Get author
+     *
+     * @return User
+     */
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+
+    /**
+     * Set young
+     *
+     * @param User $young
+     *
+     * @return Entretien
+     */
+    public function setYoung(User $young)
+    {
+        $this->young = $young;
+
+        return $this;
+    }
+
+    /**
+     * Get young
+     *
+     * @return User
+     */
+    public function getYoung()
+    {
+        return $this->young;
+    }
+
+    /**
+     * Add interviewGuest
+     *
+     * @param InterviewUser $interviewGuest
+     *
+     * @return Entretien
+     */
+    public function addInterviewGuest(InterviewUser $interviewGuest)
+    {
+        $this->interviewGuests[] = $interviewGuest;
+
+        $interviewGuest->setInterview($this);
+
+        return $this;
+    }
+
+    /**
+     * Remove interviewGuest
+     *
+     * @param InterviewUser $interviewGuest
+     */
+    public function removeInterviewGuest(InterviewUser $interviewGuest)
+    {
+        $this->interviewGuests->removeElement($interviewGuest);
+    }
+
+    /**
+     * Get interviewGuests
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getInterviewGuests()
+    {
+        return $this->interviewGuests;
+    }
+
 }

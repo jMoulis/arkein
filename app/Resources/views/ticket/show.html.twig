@@ -3,19 +3,82 @@
 {% block dashcontent %}
     <h1>Détail demande</h1>
     <a href="{{ path('ticket_index') }}">Back to the list</a>
+
+
+
     <div class="media">
         <div class="media-body">
-            <h5 class="mt-0">{{ ticket.fromWho.name }} {{ ticket.fromWho.firstname }} posté le {{ ticket.date|date('d/m/Y') }}</h5>
-            <p class="js-message-static">{{ ticket.message }}</p>
+            <div class="message">
+                <p>
+                    <h5 class="mt-0">{{ ticket.fromWho.name }} {{ ticket.fromWho.firstname }}</h5>
+                    <em>posté le {{ ticket.date|date('d/m/Y') }}</em>
+                </p>
+                <span>Message</span>
+                <p>{{ ticket.message }}</p>
+                {% if is_granted('ROLE_ADMIN') %}
+                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">
+                    Clôturer
+                </button>
+                {% endif %}
+            </div>
             <div>{{ render(controller('AppBundle:Ticket:newAnswer', { 'id': ticket.id })) }}</div>
-            {% for answer in ticket.answers %}
-                <div class="media mt-3">
-                    <div class="media-body">
-                        <h5 class="mt-0">{{ answer.user.name }} {{ answer.user.firstname }}</h5>
-                        {{ answer.message }}
-                    </div>
-                </div>
-            {% endfor %}
+            <div class="answer"></div>
         </div>
     </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Confirmation clôture</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div data-id="{{ ticket.id }}">{{ render(controller('AppBundle:Ticket:edit', { 'id': ticket.id })) }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/api/AnswerApp.js') }}"></script>
+    <script src="{{ asset('js/api/TicketAppCreated.js') }}"></script>
+    <script>
+        const $wrapper = $('.answer');
+        const answerApp = new AnswerApp($wrapper);
+
+        const $form = $('.modal-body form');
+        const idTicket = $('.modal-body').find('div').data('id');
+
+        $form.on('submit', function (e) {
+            let statutValue = $('#appbundle_ticket_statut.form-control').val();
+            e.preventDefault();
+            $.ajax({
+                url: Routing.generate('api_ticket_edit'),
+                method: 'POST',
+                data: JSON.stringify({statut: statutValue, id: idTicket}),
+                success: function (data) {
+                    $(".modal").modal("hide");
+                },
+                error: function (jqXHR) {
+                    console.log(jqXHR.responseText);
+                }
+            })
+        });
+    </script>
+    <script type="text/template" id="js-answer-template">
+        <div class="media mt-3">
+            <div class="media-body">
+                <h5 class="mt-0"><%= auteur %></h5>
+                <em> posté le <%= date %></em>
+                <p><%= message %></p>
+            </div>
+        </div>
+    </script>
 {% endblock %}

@@ -14,52 +14,67 @@ use UserBundle\Entity\User;
  */
 class UserRepository extends EntityRepository
 {
-    /**
-     * @return mixed
-     */
-    public function findUserNonAdmin()
-    {
-        return $this->createQueryBuilder('user')
-            ->andWhere('user.role != :role')
-            ->setParameter('role', 'ROLE_ADMIN')
-            ->leftJoin('user.addresses', 'address')
-            ->addSelect('address')
-            ->leftJoin('user.phoneNumbers', 'phonenumber')
-            ->addSelect('phonenumber')
-            ->getQuery()
-            ->execute();
-    }
 
-    public  function findYoungsterByCoach(User $user)
+    // Find the youngsters connected coach
+    public function findMyYoungsters(User $user)
     {
         $qb = $this->createQueryBuilder('user')
-            ->andWhere('user.role = :role ')
+            ->where('user.role = :role')
             ->setParameter('role', 'ROLE_YOUNGSTER')
             ->leftJoin('user.coach', 'coach')
-            ->addSelect('coach')
-            ->andWhere('coach.id = :coach')
+            ->andWhere('coach = :coach')
             ->setParameter('coach', $user)
         ;
         return $qb;
     }
 
-    public function findYoungster()
+    public function findAllYoungsters()
     {
         $qb = $this->createQueryBuilder('user')
-            ->andWhere('user.role = :role ')
+            ->where('user.role = :role')
             ->setParameter('role', 'ROLE_YOUNGSTER')
         ;
         return $qb;
     }
 
-    public function findCoach($user)
+    public function findNonYoungster()
     {
         $qb = $this->createQueryBuilder('user')
-            ->where('user = :user')
-            ->setParameter('user', $user)
+            ->where('user.role != :role')
+            ->setParameter('role', 'ROLE_YOUNGSTER')
             ->getQuery()
             ->execute()
         ;
         return $qb;
     }
+
+    // Fetch the coach of the young connected or link into an action
+    public function findYoungStaffCoach($user)
+    {
+        $qb = $this->createQueryBuilder('user')
+            ->where('user.role = :role')
+            ->setParameter('role', 'ROLE_STAFF')
+            ->leftJoin('user.youngsters', 'youngsters')
+            ->andWhere('youngsters = :youngster')
+            ->setParameter('youngster', $user)
+            ->getQuery()
+            ->execute()
+        ;
+        return $qb;
+    }
+
+    public function findYoungAllCoaches($user)
+    {
+        $qb = $this->createQueryBuilder('user')
+            ->where('user.role != :role')
+            ->setParameter('role', 'ROLE_YOUNGSTER')
+            ->leftJoin('user.youngsters', 'youngsters')
+            ->andWhere('youngsters = :youngster')
+            ->setParameter('youngster', $user)
+            ->getQuery()
+            ->execute()
+        ;
+        return $qb;
+    }
+
 }

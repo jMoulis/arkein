@@ -33,24 +33,15 @@ class FlashMessage implements EventSubscriber
         $this->tokenStorage = $tokenStorage;
     }
 
-    public function prePersist(LifecycleEventArgs $args)
+    public function prePersist()
     {
-        $entity = $args->getEntityManager();
-
-            return $this->session->getFlashBag()->add('success', $this->container->getParameter('new_message_success'));
+        $this->session->getFlashBag()->clear();
+        return $this->session->getFlashBag()->add('success', $this->container->getParameter('new_message_success'));
     }
 
-    public function preUpdate(LifecycleEventArgs $args)
+    public function preUpdate()
     {
-        $entity = $args->getEntity();
-
-
-            $em = $args->getEntityManager();
-            $meta = $em->getClassMetadata(get_class($entity));
-            $em->getUnitOfWork()->recomputeSingleEntityChangeSet($meta, $entity);
-
-            $token = $this->tokenStorage->getToken();
-
+            $this->session->getFlashBag()->clear();
             return $this->session->getFlashBag()->add('success',
                 $this->container->getParameter('update_message_success'));
     }

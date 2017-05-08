@@ -25,7 +25,7 @@ class ApiDocumentController extends BaseController
 {
 
     /**
-     * @Route("/docs", name="document_list", options={"expose" = true})
+     * @Route("api/docs", name="api_document_list", options={"expose" = true})
      * @Method("GET")
      */
     public function indexAction()
@@ -79,7 +79,7 @@ class ApiDocumentController extends BaseController
 
 
     /**
-     * @Route("/docs/{id}", name="doc_show")
+     * @Route("api/doc/{id}", name="api_document_show")
      * @Method("GET")
      */
     public function showAction(Document $document)
@@ -90,7 +90,7 @@ class ApiDocumentController extends BaseController
     }
 
     /**
-     * @Route("/docs/edit", name="api_document_edit", options={"expose" = true})
+     * @Route("api/doc/edit", name="api_document_edit", options={"expose" = true})
      * @Method("POST")
      */
     public function editDocument(Request $request)
@@ -118,7 +118,7 @@ class ApiDocumentController extends BaseController
     }
 
     /**
-     * @Route("/docs/{id}", name="document_delete")
+     * @Route("api/doc/{id}", name="api_document_delete")
      * @Method("DELETE")
      * @Security("has_role('ROLE_ADMIN')")
      */

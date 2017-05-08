@@ -10,9 +10,13 @@ class EntretienApiModel
 
     public $objet;
 
-    public $interviewer;
+    public $author;
 
-    public $interviewee;
+    public $young;
+
+    public $youngId;
+
+    public $guests = [];
 
     public $date;
 

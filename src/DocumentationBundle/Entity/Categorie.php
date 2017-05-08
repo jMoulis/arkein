@@ -51,7 +51,7 @@ class Categorie
     public function __construct()
     {
         $this->documents = new ArrayCollection();
-       // $this->isPrivate = true;
+        $this->isPrivate = true;
     }
 
     /**

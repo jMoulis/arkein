@@ -1,0 +1,103 @@
+{% import _self as formMacros %}
+
+{% extends ':App:layout.html.twig' %}
+
+{% macro printInterviewGuestRow(interviewGuestField) %}
+
+{% endmacro %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/widget/bootstrap-datepicker.css') }}" />
+{% endblock %}
+
+{% block body %}
+    <h1>Nouvel entretien</h1>
+    <p><a class="" href="{{ path('entretien_index') }}">Back to the list</a></p>
+    {{ form_start(edit_form) }}
+        {{ form_row(edit_form.date) }}
+        {{ form_row(edit_form.young, {
+            label: 'Jeune'
+        }) }}
+        {{ form_row(edit_form.guests) }}
+
+    <div class="js-display-guests">
+        <div id="interviewGuests"
+            data-prototype="{{ form_widget(edit_form.interviewGuests.vars.prototype)|e }}">
+            {% for interviewGuestField in edit_form.interviewGuests %}
+                {{ form_errors(interviewGuestField) }}
+                {% if interviewGuestField.user is defined %}
+                    {{ form_row(interviewGuestField.user) }}
+                {% else %}
+                <div class="js-wrapper-badge" data-id="interviewGuests_user_{{ interviewGuestField.vars.data.user }}">
+                    <span class="badge badge-default">{{ interviewGuestField.vars.data.user }}</span>
+                    <span class="js-delete-guest badge badge-danger">X</span>
+                </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+
+    <div class="js-hidden-prototype">
+    {{ form_widget(edit_form.interviewGuests) }}
+    </div>
+
+
+    {{ form_row(edit_form.objet) }}
+    {{ form_row(edit_form.compteRendu) }}
+
+    <button type="submit" class="btn">Créer</button>
+
+    {{ form_end(edit_form) }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/widget/bootstrap-datepicker.js') }}"></script>
+    <script src="//cdn.ckeditor.com/4.6.2/standard/ckeditor.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.js-hidden-prototype').hide();
+            $('.js-datepicker').datepicker({
+                format: 'dd/mm/yyyy',
+                language: "fr"
+            });
+            CKEDITOR.replace('compteRendu');
+            let guestCount = '{{ edit_form.interviewGuests|length }}';
+            $('#guests').change(function (e) {
+                e.preventDefault();
+
+                const guestList = $("#interviewGuests");
+                let newWidget = guestList.attr('data-prototype');
+
+                newWidget = newWidget.replace(/__name__/g, guestCount);
+
+                guestList.append(newWidget);
+
+                const selectValue = parseInt($(this).val());
+
+                $('#interviewGuests_'+ guestCount +'_user').val(selectValue);
+
+                $('.js-display-guests').append('' +
+                    '<div class="js-wrapper-badge" data-id="interviewGuests_'+ guestCount +'_user">' +
+                    '<span class="badge badge-default">'+ $("#guests option:selected").text() +'</span>  ' +
+                    '<span class="js-delete-guest badge badge-danger">X</span>' +
+                    '<div>');
+
+                guestCount++;
+            });
+            $('.js-display-guests').on("click", '.js-delete-guest', function (e) {
+                console.log('test');
+                const $idCurrenttargetDiv = $(this).closest('div').data("id");
+                const $prototypeCurrentWidget = $('#'+ $idCurrenttargetDiv +'');
+                console.log($prototypeCurrentWidget);
+
+                $prototypeCurrentWidget.parent().parent('div').remove();
+
+                $(e.currentTarget).parent('div').remove();
+            });
+
+        });
+    </script>
+{% endblock %}

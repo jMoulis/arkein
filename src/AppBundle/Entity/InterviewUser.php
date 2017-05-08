@@ -1,0 +1,121 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
+use UserBundle\Entity\User;
+
+/**
+ * InterviewUser
+ *
+ * @ORM\Table(name="interview_user")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\InterviewUserRepository")
+ */
+class InterviewUser
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="status", type="boolean", nullable=true)
+     */
+    private $status;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Entretien", inversedBy="interviewGuests")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $interview;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User", inversedBy="guestInterviews")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
+
+
+    public function __construct()
+    {
+        $this->status = 0;
+    }
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set status
+     *
+     * @param boolean $status
+     *
+     * @return InterviewUser
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return bool
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getInterview()
+    {
+        return $this->interview;
+    }
+
+    /**
+     * @param mixed $interview
+     */
+    public function setInterview($interview)
+    {
+        $this->interview = $interview;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param mixed $user
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+    }
+
+    public function __toString()
+    {
+        return $this->getUser()->__toString();
+    }
+}

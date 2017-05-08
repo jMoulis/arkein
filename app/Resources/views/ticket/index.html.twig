@@ -2,8 +2,7 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
-    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+
 {% endblock %}
 
 {% block dashcontent %}
@@ -11,45 +10,91 @@
     <p><a class="btn btn-primary" href="{{ path('ticket_new') }}">Créer un nouveau ticket</a></p>
     <ul class="nav nav-tabs" role="tablist">
         <li class="nav-item">
-            <a class="nav-link active" data-toggle="tab" href="#myTicket" role="tab">Mes Tickets</a>
+            <a class="nav-link active" data-toggle="tab" href="#myTicket" role="tab">Tickets créés</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#myAttribution" role="tab">Mes actions</a>
+            <a class="nav-link" data-toggle="tab" href="#myAttribution" role="tab">Tickets reçus</a>
         </li>
     </ul>
 
     <!-- Tab panes -->
     <div class="tab-content pt-3">
         <div class="tab-pane active" id="myTicket" role="tabpanel">
-            <div class="js-main-content">
-                <table class="js-tickets table table-hover" cellspacing="0" width="100%">
+            <div class="js-main-content-created">
+                <table class="js-tickets table table-hover" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Auteur</th>
+                            <th>Message</th>
+                            <th>Niveau</th>
+                            <th>Commentaires</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
                 </table>
             </div>
         </div>
+
         <div class="tab-pane" id="myAttribution" role="tabpanel">
-            <table class="js-tickets-attribtution table table-hover" cellspacing="0" width="100%">
-            </table>
+            <div class="js-main-content-attribution">
+                <table class="js-tickets-attribtution table table-hover" width="100%">
+                    <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Auteur</th>
+                        <th>Message</th>
+                        <th>Niveau</th>
+                        <th>Commentaires</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
         </div>
     </div>
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
-    <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
-    <script src="{{ asset('js/dataTablesBootstrap4.js') }}"></script>
-    <script src="{{ asset('js/yadcfFilterDataTables.js') }}"></script>
-    <script src="{{ asset('js/getTicket.js') }}"></script>
+    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+    <script src="{{ asset('js/api/TicketAppCreated.js') }}"></script>
+    <script src="{{ asset('js/api/TicketAppAttribution.js') }}"></script>
     <script>
-        $(document).ready(function () {
-            var urlTicketAsAuthor = Routing.generate('json_ticket');
-            var otableTicketAsAuthor = getTicket('.js-tickets', urlTicketAsAuthor);
+        const $wrapperCreatedTicket = $('.js-main-content-created');
+        const ticketApp = new TicketAppCreated($wrapperCreatedTicket);
 
-            var urlTicketAsRecipient = Routing.generate('json_ticket_attribution');
-            var oTicketAsRecipient = getTicket('.js-tickets-attribtution', urlTicketAsRecipient);
+        const $wrapperAttributedTicket = $('.js-main-content-attribution');
+        const ticketAppAttributed = new TicketAppAttribution($wrapperAttributedTicket);
+    </script>
 
-            /*yadcf.init(oTable, [{
-             column_number: 3,
-             filter_default_label: 'Rôle'
-             }]);*/
-        });
+    {# Template pour les users:
+     1- Load du tableau
+     #}
+    <script type="text/template" id="js-ticket-row-template">
+        <tr>
+            <td><%= date %></td>
+            <td><%= auteur %></td>
+            <td><%= message %></td>
+            <td>
+            <% if (niveau == 'urgent') { %>
+                <span class="badge badge-danger"><%= niveau %></span>
+            <% } else { %>
+                <span class="badge badge-success"><%= niveau %></span>
+            <% } %>
+            </td>
+            <td>
+            <% if (reponses > 0) { %>
+                <span class="badge badge-info"><%= reponses %></span>
+            <% } else { %>
+                <span class="badge badge-default">0</span>
+                <% } %>
+            </td>
+            <td>
+                <a href="<%= links._self %>" class="btn btn-warning" data-id="<%= id %>" >Consulter</a>
+            </td>
+        </tr>
     </script>
 {% endblock %}

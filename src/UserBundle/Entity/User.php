@@ -10,19 +10,19 @@ namespace UserBundle\Entity;
 
 use AppBundle\Entity\Address;
 use AppBundle\Entity\Answer;
+use AppBundle\Entity\InterviewUser;
+use AppBundle\Entity\Phone;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use DocumentationBundle\Entity\Document;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-use UserBundle\Repository\UserRepository;
 
 /**
  * @ORM\Entity(repositoryClass="UserBundle\Repository\UserRepository")
  * @ORM\Table(name="user")
- * @UniqueEntity(fields={"email"}, message="It looks like your already have an account!")
+ * @UniqueEntity(fields={"email"}, message="Cet email est déjà inscrit!")
  * @ORM\HasLifecycleCallbacks()
  */
 class User implements UserInterface
@@ -52,18 +52,19 @@ class User implements UserInterface
     private $email;
 
     /**
+     *
      * @ORM\Column(type="string")
      */
     private $password;
 
     /**
-     * @Assert\NotBlank(groups={"Registration"})
+     *
      * @var string
      */
     private $plainPassword;
 
     /**
-     * @ORM\OneToMany(targetEntity="UserBundle\Entity\Phone",
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Phone",
      *     mappedBy="user",
      *     fetch="EXTRA_LAZY",
      *     orphanRemoval=true,
@@ -93,11 +94,15 @@ class User implements UserInterface
     private $answers;
 
     /**
-     * @ORM\ManyToMany(targetEntity="UserBundle\Entity\User")
-     * @ORM\JoinTable(name="young_coach")
+     * @ORM\ManyToMany(targetEntity="UserBundle\Entity\User", inversedBy="youngsters")
+     * @ORM\JoinTable(name="youngster_coach")
      */
     private $coach;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="UserBundle\Entity\User", mappedBy="coach")
+     */
+    private $youngsters;
     /**
      * @ORM\OneToMany(targetEntity="DocumentationBundle\Entity\Document", mappedBy="destinataire")
      */
@@ -109,6 +114,11 @@ class User implements UserInterface
     private $groups;
 
     /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\InterviewUser", mappedBy="user")
+     */
+    private $guestInterviews;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -116,7 +126,9 @@ class User implements UserInterface
         $this->phoneNumbers = new ArrayCollection();
         $this->addresses = new ArrayCollection();
         $this->coach = new ArrayCollection();
+        $this->youngsters = new ArrayCollection();
         $this->documents = new ArrayCollection();
+        $this->guestInterviews = new ArrayCollection();
         $this->isActive = false;
     }
 
@@ -323,7 +335,7 @@ class User implements UserInterface
     /**
      * Add answer
      *
-     * @param \AppBundle\Entity\Answer $answer
+     * @param Answer $answer
      *
      * @return User
      */
@@ -338,7 +350,7 @@ class User implements UserInterface
     /**
      * Remove answer
      *
-     * @param \AppBundle\Entity\Answer $answer
+     * @param Answer $answer
      */
     public function removeAnswer(Answer $answer)
     {
@@ -366,7 +378,7 @@ class User implements UserInterface
     /**
      * Add coach
      *
-     * @param \UserBundle\Entity\User $coach
+     * @param User $coach
      *
      * @return User
      */
@@ -380,7 +392,7 @@ class User implements UserInterface
     /**
      * Remove coach
      *
-     * @param \UserBundle\Entity\User $coach
+     * @param User $coach
      */
     public function removeCoach(User $coach)
     {
@@ -424,11 +436,11 @@ class User implements UserInterface
     /**
      * Add group
      *
-     * @param \UserBundle\Entity\Groups $group
+     * @param Groups $group
      *
      * @return User
      */
-    public function addGroup(\UserBundle\Entity\Groups $group)
+    public function addGroup(Groups $group)
     {
         $this->groups[] = $group;
 
@@ -438,9 +450,9 @@ class User implements UserInterface
     /**
      * Remove group
      *
-     * @param \UserBundle\Entity\Groups $group
+     * @param Groups $group
      */
-    public function removeGroup(\UserBundle\Entity\Groups $group)
+    public function removeGroup(Groups $group)
     {
         $this->groups->removeElement($group);
     }
@@ -453,5 +465,51 @@ class User implements UserInterface
     public function getGroups()
     {
         return $this->groups;
+    }
+
+    /**
+     * Add youngster
+     *
+     * @param User $youngster
+     *
+     * @return User
+     */
+    public function addYoungster(User $youngster)
+    {
+        $this->youngsters[] = $youngster;
+
+        return $this;
+    }
+
+    /**
+     * Remove youngster
+     *
+     * @param User $youngster
+     */
+    public function removeYoungster(User $youngster)
+    {
+        $this->youngsters->removeElement($youngster);
+    }
+
+    /**
+     * Get youngsters
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getYoungsters()
+    {
+        return $this->youngsters;
+    }
+
+
+
+    /**
+     * Get guestInterviews
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getGuestInterviews()
+    {
+        return $this->guestInterviews;
     }
 }

@@ -2,7 +2,9 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use UserBundle\Entity\User;
 
 /**
  * Entretien
@@ -47,13 +49,18 @@ class Entretien
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $interviewer;
+    private $author;
 
     /**
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $interviewee;
+    private $young;
+
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\InterviewUser", mappedBy="interview")
+     */
+    private $interviewGuests;
 
     /**
      * @ORM\Column(type="boolean")
@@ -63,6 +70,7 @@ class Entretien
     public function __construct()
     {
         $this->date = new \DateTime();
+        $this->isArchived = false;
     }
 
     /**
@@ -147,52 +155,76 @@ class Entretien
         return $this->objet;
     }
 
-
     /**
-     * Set interviewer
+     * Set isArchived
      *
-     * @param \UserBundle\Entity\User $interviewer
+     * @param boolean $isArchived
      *
      * @return Entretien
      */
-    public function setInterviewer(\UserBundle\Entity\User $interviewer)
+    public function setIsArchived($isArchived)
     {
-        $this->interviewer = $interviewer;
+        $this->isArchived = $isArchived;
 
         return $this;
     }
 
     /**
-     * Get interviewer
+     * Get isArchived
      *
-     * @return \UserBundle\Entity\User
+     * @return boolean
      */
-    public function getInterviewer()
+    public function getIsArchived()
     {
-        return $this->interviewer;
+        return $this->isArchived;
     }
 
+
     /**
-     * Set interviewee
+     * Set author
      *
-     * @param \UserBundle\Entity\User $interviewee
+     * @param User $author
      *
      * @return Entretien
      */
-    public function setInterviewee(\UserBundle\Entity\User $interviewee)
+    public function setAuthor(User $author)
     {
-        $this->interviewee = $interviewee;
+        $this->author = $author;
 
         return $this;
     }
 
     /**
-     * Get interviewee
+     * Get author
      *
-     * @return \UserBundle\Entity\User
+     * @return User
      */
-    public function getInterviewee()
+    public function getAuthor()
     {
-        return $this->interviewee;
+        return $this->author;
+    }
+
+    /**
+     * Set young
+     *
+     * @param User $young
+     *
+     * @return Entretien
+     */
+    public function setYoung(User $young)
+    {
+        $this->young = $young;
+
+        return $this;
+    }
+
+    /**
+     * Get young
+     *
+     * @return User
+     */
+    public function getYoung()
+    {
+        return $this->young;
     }
 }

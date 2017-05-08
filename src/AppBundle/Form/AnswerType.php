@@ -20,16 +20,9 @@ class AnswerType extends AbstractType
     {
         $builder
             ->add('message', TextareaType::class)
-            ->addEventListener(
-                FormEvents::POST_SET_DATA,
-                array($this, 'onPostSetData')
-            )
         ;
     }
 
-    public function onPostSetData(FormEvent $event)
-    {
-    }
     /**
      * {@inheritdoc}
      */
@@ -39,5 +32,7 @@ class AnswerType extends AbstractType
             'data_class' => 'AppBundle\Entity\Answer'
         ));
     }
+
+
 
 }

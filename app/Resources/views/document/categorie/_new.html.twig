@@ -1,7 +1,6 @@
 {% extends ':App:layout.html.twig' %}
 
 {% block dashcontent %}
-
     <select class="js-category-select">
         {% for category in categories %}
             <option value="{{ category.name }}">{{ category.name }}</option>

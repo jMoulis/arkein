@@ -12,6 +12,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use UserBundle\Entity\User;
+
 
 /**
  * Ticket controller.
@@ -20,6 +22,7 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class TicketController extends Controller
 {
+    const ADMIN = 'ROLE_ADMIN';
     /**
      * Lists all ticket entities.
      *
@@ -27,17 +30,8 @@ class TicketController extends Controller
      */
     public function indexAction(Request $request)
     {
-        return $this->render('ticket/index.html.twig');
-    }
 
-    /**
-     * Lists all ticket entities.
-     *
-     * @Route("/2", name="ticket_index_2")
-     */
-    public function index2Action(Request $request)
-    {
-        return $this->render('ticket/_my_attribution.html.twig');
+        return $this->render('ticket/index.html.twig');
     }
 
     /**
@@ -53,25 +47,30 @@ class TicketController extends Controller
         $form = $this->createForm('AppBundle\Form\TicketType', $ticket);
         $form->handleRequest($request);
 
-
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-
             $ticket->setFromWho($this->getUser());
 
-            /* TODO: Find the coach and setitTowho */
-            //$ticket->getAboutWho()->getCoach();
-            $youngster = $ticket->getAboutWho();
-            $coaches = $youngster->getCoach();
-            $staffCoach = '';
-            foreach ($coaches as $coach){
-                if($coach->getRole() == 'ROLE_STAFF')
+            // The admin can select which coach can receive the message
+            $toWho = $form->getData()->getToWho();
+
+            if (!$toWho) {
+                if(!$this->getUser()->getRole() !== 'ROLE_ADMIN')
                 {
-                    $staffCoach = $coach;
+                    // Fetch the staff coach of the youngster used in the ticket
+                    $coach = $em->getRepository('UserBundle:User')->findYoungStaffCoach($ticket->getAboutWho());
+
+                    // If there's no coach assign it to the admin by default
+                    if(!$coach){
+                        $ticket->setToWho($em->getRepository('UserBundle:User')->findOneBy([
+                            'role' => self::ADMIN
+                        ]));
+                    } else {
+                        $ticket->setToWho($coach[0]);
+                    }
                 }
             }
 
-            $ticket->setToWho($staffCoach);
             $em->persist($ticket);
             $em->flush($ticket);
 
@@ -87,10 +86,10 @@ class TicketController extends Controller
     /**
      * Finds and displays a ticket entity.
      *
-     * @Route("/{id}/show", name="ticket_show", options = { "expose" = true })
+     * @Route("/{id}/show", name="ticket_show")
      * @Method("GET")
      */
-    public function showAction(Ticket $ticket)
+    public function showAction(Ticket $ticket, Request $request = null)
     {
         return $this->render('ticket/show.html.twig', array(
             'ticket' => $ticket
@@ -102,13 +101,12 @@ class TicketController extends Controller
      *
      * @Route("/{id}/edit", name="ticket_edit")
      * @Method({"GET", "POST"})
-     * @Security("is_granted('edit', ticket)")
      */
     public function editAction(Request $request, Ticket $ticket)
     {
         $deleteForm = $this->createDeleteForm($ticket);
 
-        $editForm = $this->createForm('AppBundle\Form\TicketType', $ticket);
+        $editForm = $this->createForm('AppBundle\Form\TicketEditType', $ticket);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
@@ -188,104 +186,5 @@ class TicketController extends Controller
             'ticket' => $ticket,
             'form' => $form->createView(),
         ]);
-    }
-
-    public function addCommentAction(Request $request)
-    {
-        if ($request->isXmlHttpRequest()){
-            $id = $request->get('');
-
-        }
-    }
-
-    /**
-     * @Route("/json/ticket", name="json_ticket",
-     *     options={"expose" = true}
-     *     )
-     *
-     */
-    public function jsonGetMyTicket()
-    {
-        $user = $this->get('security.token_storage')->getToken()->getUser()->getId();
-
-        $em = $this->getDoctrine()->getManager();
-
-        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN'))
-        {
-            $tickets = $em->getRepository('AppBundle:Ticket')
-                ->findBy([
-                    'fromWho' => $user,
-                    'statut' => 1
-                ]);
-        } else {
-            $tickets = $em->getRepository('AppBundle:Ticket')
-                ->findBy([
-                    'statut' => 1
-                ]);
-        }
-
-
-
-        $listTickets = [];
-        $i = 0;
-
-        foreach ($tickets as $ticket)
-        {
-            $listTickets[$i]['id'] = $ticket->getId();
-            $listTickets[$i]['date'] = $ticket->getDate()->format('d/m/Y');
-            $listTickets[$i]['auteur'] = $ticket->getFromWho()->__toString();
-            $listTickets[$i]['message'] = $ticket->getMessage();
-            $listTickets[$i]['commentaire'] = $ticket->getAnswers()->count();
-            $listTickets[$i]['niveau'] = $ticket->getLevel();
-            
-            $i++;
-        }
-
-        return new JsonResponse(['data' => $listTickets]);
-    }
-
-    /**
-     * @Route("/json/ticket_attribution", name="json_ticket_attribution",
-     *     options={"expose" = true}
-     *     )
-     *
-     */
-    public function jsonGetMyAttributions()
-    {
-        $user = $this->get('security.token_storage')->getToken()->getUser()->getId();
-
-        $em = $this->getDoctrine()->getManager();
-
-        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN'))
-        {
-            $tickets = $em->getRepository('AppBundle:Ticket')
-                ->findBy([
-                    'toWho' => $user,
-                    'statut' => 1
-                ]);
-        } else {
-            $tickets = $em->getRepository('AppBundle:Ticket')
-                ->findBy([
-                    'statut' => 1
-                ]);
-        }
-
-
-        $listTickets = [];
-        $i = 0;
-
-        foreach ($tickets as $ticket)
-        {
-            $listTickets[$i]['id'] = $ticket->getId();
-            $listTickets[$i]['date'] = $ticket->getDate()->format('d/m/Y');
-            $listTickets[$i]['auteur'] = $ticket->getFromWho()->__toString();
-            $listTickets[$i]['message'] = $ticket->getMessage();
-            $listTickets[$i]['commentaire'] = $ticket->getAnswers()->count();
-            $listTickets[$i]['niveau'] = $ticket->getLevel();
-
-            $i++;
-        }
-
-        return new JsonResponse(['data' => $listTickets]);
     }
 }

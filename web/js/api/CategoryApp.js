@@ -26,13 +26,13 @@
 
         handleCategoryDelete: function (e) {
             e.preventDefault();
-            var $link = $(e.currentTarget);
+            const $link = $(e.currentTarget);
 
             $link.addClass('text-danger');
 
-            var deleteUrl =  $link.data('url');
-            var $row =  $link.closest('tr');
-            var self = this;
+            const deleteUrl =  $link.data('url');
+            const $row =  $link.closest('tr');
+            const self = this;
 
             $.ajax({
                 url: deleteUrl,
@@ -47,10 +47,10 @@
 
         handleNewFormSubmit: function (e) {
             e.preventDefault();
-            var $form = $(e.currentTarget);
-            var self = this;
+            const $form = $(e.currentTarget);
+            const self = this;
 
-            var formData = {};
+            const formData = {};
             $.each($form.serializeArray(), function (key, fieldData) {
                 formData[fieldData.name] = fieldData.value;
             });
@@ -66,14 +66,14 @@
                     $('#categorie').val(data.id);
                 },
                 error: function (jqXHR) {
-                    var errorData = JSON.parse(jqXHR.responseText);
+                    const errorData = JSON.parse(jqXHR.responseText);
                     self._mapErrorsToForm(errorData.errors);
                 }
             })
         },
 
         loadCategories: function () {
-            var self = this;
+            const self = this;
             $.ajax({
                 url: Routing.generate('category_list'),
                 success: function (data) {
@@ -86,16 +86,16 @@
 
         _mapErrorsToForm: function (errorData) {
             this._removeFormErrors();
-            var $form = this.$wrapper.find(this._selector.newCatForm);
+            const $form = this.$wrapper.find(this._selector.newCatForm);
 
             $form.find(':input').each(function () {
-                var fieldName = $(this).attr('name');
-                var $wrapper = $('.js-new-folder-form');
+                const fieldName = $(this).attr('name');
+                const $wrapper = $('.js-new-folder-form');
                 if (!errorData[fieldName]){
                     return;
                 }
 
-                var $error = $('<span class="js-field-error text-danger"></span>');
+                const $error = $('<span class="js-field-error text-danger"></span>');
                 $error.html(errorData[fieldName]);
                 $wrapper.prepend($error);
                 $wrapper.addClass('has-error');
@@ -103,22 +103,22 @@
         },
 
         _removeFormErrors: function () {
-            var $form = $('.js-new-folder-form');
+            const $form = $('.js-new-folder-form');
             $form.find('.js-field-error').remove();
             $form.removeClass('has-error');
         },
 
         _clearForm: function () {
             this._removeFormErrors();
-            var $form = this.$wrapper.find(this._selector.newDocForm);
+            const $form = this.$wrapper.find(this._selector.newDocForm);
             $('.js-new-folder-form')[0].reset();
 
         },
 
         _addSelect: function (category) {
-            var tplText = $('#js-cat-option-template').html();
-            var tpl = _.template(tplText);
-            var html = tpl(category);
+            const tplText = $('#js-cat-option-template').html();
+            const tpl = _.template(tplText);
+            const html = tpl(category);
             $('.js-select-folder').append($.parseHTML(html));
         }
 

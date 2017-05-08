@@ -20,11 +20,11 @@ services:
         tags:
             - { name: doctrine.event_subscriber }
 
-    app.user_voter:
-        class: UserBundle\Security\UserVoter
-        tags:
-            - { name: security.voter }
-        public: false
+   # app.user_voter:
+    #    class: UserBundle\Security\UserVoter
+     #   tags:
+      #      - { name: security.voter }
+      #  public: false
 
 # Envoie les mails aux différents coach
     app.doctrine.answer_mail_workflow:
@@ -44,3 +44,4 @@ services:
         autowire: true
         tags:
             - { name: form.type }
+

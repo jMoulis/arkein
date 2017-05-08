@@ -28,6 +28,11 @@ app.ticket:
     type:     annotation
     prefix:   /admin
 
+app.api.ticket:
+    resource: "@AppBundle/Controller/ApiTicketController.php"
+    type:     annotation
+    prefix:   /admin
+
 user.security:
     resource: "@UserBundle/Controller/SecurityController.php"
     type:     annotation
@@ -38,6 +43,16 @@ user:
     type:     annotation
     prefix:   /admin
 
+app.api.user:
+    resource: "@UserBundle/Controller/ApiUserController.php"
+    type:     annotation
+    prefix:   /admin
 
+app.answer:
+    resource: "@AppBundle/Controller/ApiAnswerController.php"
+    type:     annotation
+    prefix:   /admin
+
+    resource:
 fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"

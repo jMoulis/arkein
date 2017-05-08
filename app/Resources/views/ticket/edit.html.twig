@@ -1,7 +1,8 @@
-{% extends ':App:layout.html.twig' %}
+{{ form_start(edit_form) }}
+    {{ form_widget(edit_form) }}
+<div class="modal-footer">
+    <button type="submit" class="btn btn-primary" >Modifier</button>
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+</div>
+{{ form_end(edit_form) }}
 
-{% block body %}
-    <h1>Ticket edit</h1>
-    {% set routeIndex = 'ticket_index' %}
-    {{ include(':App:_formEdit.html.twig') }}
-{% endblock %}

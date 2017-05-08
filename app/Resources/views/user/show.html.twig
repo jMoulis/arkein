@@ -30,7 +30,7 @@
                     <div class="mt-5">
                         <div><button class="btn btn-block btn-primary">Envoyer un Message</button></div>
                         <div class="mt-1">
-                            <a class="btn btn-block btn-success" href="{{ path('entretien_new') }}">Nouvel entretien</a>
+                            <a class="btn btn-block btn-success" href="{{ path('page_new') }}">Nouvel entretien</a>
                         </div>
                     </div>
                 </div>
@@ -64,8 +64,8 @@
 
         <!-- Début tab Entretien -->
         <div class="tab-pane js-entretien-wrapper" id="entretiens" role="tabpanel">
-            <p id="loading"><img src="{{ asset('img/ajax-loader.gif') }}" /> PleasWait </p>
-            {%  include 'entretien/index.html.twig' with {'user': user.id} %}
+            <p id="loading"><img src="{{ asset('img/ajax-loader.gif') }}" /> Please Wait </p>
+            {%  include ':entretien:_interviews-by-young.html.twig' with {'user': user.id} %}
             <!-- Modal pour la visualisation du détail des entretiens -->
             <div class="modal fade" id="entretienModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
@@ -112,14 +112,16 @@
             * pour tous les appels ajax
             *
             * */
-            var $wrapper = $('.js-document-table');
-            var documentApp = new DocumentApp($wrapper);
+            const $wrapper = $('.js-document-table');
+            const documentApp = new DocumentApp($wrapper);
 
-            var $folder = $('.js-category');
-            var categoryApp = new CategoryApp($folder);
+            const $folder = $('.js-category');
+            const categoryApp = new CategoryApp($folder);
 
-            var $entretienWrapper = $('.js-entretien-wrapper');
-            var entretienApp = new EntretienApp($entretienWrapper);
+            const $entretienWrapper = $('.js-entretien-wrapper');
+            const entretienApp = new EntretienApp($entretienWrapper);
+
+            entretienApp.loadListEntretiens();
 
 
 
@@ -143,8 +145,8 @@
                 connectWith: ".connectedSortable",
                 items: "tr:not(.notSortable)",
                 receive: function (e, ui) {
-                    var idCat = ($(this)[0].id);
-                    var id = $(ui.item)[0].id;
+                    const idCat = ($(this)[0].id);
+                    const id = $(ui.item)[0].id;
 
                     $.ajax({
                         url: Routing.generate('api_document_edit'),
@@ -152,7 +154,7 @@
                         method: 'POST',
                         success: function (data) {
                             $.each(data, function (key, value) {
-                                var $tbodyLength = ($('.js-table-document').find('tbody#'+ value.idCat +' tr').length) - 1;
+                                let $tbodyLength = ($('.js-table-document').find('tbody#'+ value.idCat +' tr').length) - 1;
                                 $('.js-total-doc-categorie').html($tbodyLength);
                             })
                         },
@@ -187,11 +189,45 @@
             <td><a href="#" class="js-detail-entretien" data-id="<%= id %>" data-toggle="modal" data-target="#entretienModal" >Voir</a></td>
         </tr>
     </script>
+
     <script type="text/template" id="js-entretien-detail-template">
-        <div>
-            <p><%= date %></p>
-            <p><%= objet %></p>
-            <p><%= compteRendu %></p>
-        </div>
+        <form class="js-new-entretien-form" novalidate data-url="{{ path('entretien_new') }}">
+            <div id="appbundle_entretien">
+                <div class="form-group">
+                    <label class="control-label required" for="date">Date</label>
+                    <input type="text" id="date" name="date" required="required" class="js-datepicker form-control" value="<%= date %>" />
+                </div>
+                <div class="form-group">
+                    <label class="control-label required" for="young">Interviewee</label>
+                    <input id="young" name="young" class="form-control js-select-user" value="<%= young %>" />
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label required" for="guests">Invités</label>
+                    <input id="guests" name="guests" class="form-control" value="<%= guests %>" />
+                </div>
+
+                <% _.each(guests, function(guest){ %>
+                    <span class="badge badge-default"><%= guest %></span>
+                    <span class="js-delete-guest badge badge-danger">X</span>
+                <% }); %>
+                <div>
+                    <ul class="js-display-guests">
+
+                    </ul>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label required" for="objet">Objet</label>
+                    <input type="text" id="objet" name="objet" required="required" maxlength="255" class="form-control" value="<%= objet %>"/>
+                </div>
+                <div class="form-group">
+                    <label class="control-label required" for="compteRendu">Compte rendu</label>
+                    <textarea id="compteRendu" name="compteRendu" required="required" class="form-control"><%= compteRendu %></textarea>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Créer</button>
+        </form>
     </script>
+
 {% endblock %}

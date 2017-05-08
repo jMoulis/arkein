@@ -23,8 +23,6 @@
             this.emptyHtmlModalBody.bind(this)
         );
 
-        this.loadEntretiens();
-
     };
 
     $.extend(window.EntretienApp.prototype, {
@@ -35,10 +33,22 @@
 
         handleNewFormSubmit: function (e) {
             e.preventDefault();
-            var $form = $(e.currentTarget);
-            var self = this;
+            const $form = $(e.currentTarget);
+            const $guests = $form.find('ul').children();
+            const self = this;
 
-            var formData = {};
+
+            /* Afin de pouvoir enregistrer des guests, il était nécessaire
+            * de créer un objet avec les id des users
+            * J'ai donc crée une liste avec les id des users que je récupère en forme
+            * d'objet JSON qui sera transmis à l'API
+            */
+            const guestsObject = {};
+            $.each($guests, function (key, fieldData) {
+                guestsObject[fieldData.title] = Number(fieldData.id);
+            });
+
+            const formData = {};
             $.each($form.serializeArray(), function (key, fieldData) {
                 formData[fieldData.name] = fieldData.value;
             });
@@ -46,28 +56,35 @@
             $.ajax({
                 url: $form.data('url'),
                 method: 'POST',
-                data: JSON.stringify(formData),
+                data: JSON.stringify([formData, guestsObject]),
                 success: function (data) {
                     self._clearForm();
-                    self._addRow(data);
+                    window.location = data.links._self;
                 },
                 error: function (jqXHR) {
-                    var errorData = JSON.parse(jqXHR.responseText);
+                    const errorData = JSON.parse(jqXHR.responseText);
                     self._mapErrorsToForm(errorData.errors);
                 }
             })
         },
 
-        loadEntretiens: function () {
-            var self = this;
-            var user = $('h1').data('user');
+        loadListEntretiens: function () {
+            const self = this;
+            const user = $('h1').data('user');
             $.ajax({
-                url: Routing.generate('entretien_list', {id: user}),
+                url: Routing.generate('entretien_list_by_young', {id: user}),
                 success: function (data) {
-                    $.each(data.items, function (key, entretien) {
-                        self._addRow(entretien);
+                    if($(data.items).length <= 0){
+                        self.$wrapper.find('tbody').append('' +
+                            '<br /><div class="alert alert-success" role="alert">' +
+                            'Aucun entretiens trouvés</div>');
                         $('#loading').hide();
-                    })
+                    } else {
+                        $.each(data.items, function (key, entretien) {
+                            self._addRow(entretien);
+                            $('#loading').hide();
+                        })
+                    }
                 },
                 ajaxSend: function () {
                     $('#loading').show();
@@ -76,12 +93,37 @@
         },
 
         loadDetailEntretien: function (e) {
-            var self = this;
-            var entretien = $(e.currentTarget).data('id');
+            const self = this;
+            const entretien = $(e.currentTarget).data('id');
+            console.log('ok');
             $.ajax({
-                url: Routing.generate('entretien_show', {id: entretien}),
+                url: Routing.generate('entretien_modal_detail', {id: entretien}),
                 success: function (data) {
                     self._addDetail(data.item);
+                }
+            })
+        },
+
+        loadUsers: function (e) {
+            const self = this;
+            $.ajax({
+                url: Routing.generate('api_user_list'),
+                success: function (data) {
+                    $.each(data.items, function (key, user) {
+                        self._addSelect(user);
+                    });
+                }
+            })
+        },
+
+        loadGuests: function (e) {
+            const self = this;
+            $.ajax({
+                url: Routing.generate('guest_list'),
+                success: function (data) {
+                    $.each(data.items, function (key, user) {
+                        self._addGuestsSelect(user);
+                    });
                 }
             })
         },
@@ -92,16 +134,16 @@
 
         _mapErrorsToForm: function (errorData) {
             this._removeFormErrors();
-            var $form = this.$wrapper.find(this._selector.newEntretienForm);
+            const $form = this.$wrapper.find(this._selector.newEntretienForm);
 
             $form.find(':input').each(function () {
-                var fieldName = $(this).attr('name');
-                var $wrapper = $(this).closest('.form-group');
+                const fieldName = $(this).attr('name');
+                const $wrapper = $(this).closest('.form-group');
                 if (!errorData[fieldName]){
                     return;
                 }
 
-                var $error = $('<span class="js-field-error text-danger"></span>');
+                const $error = $('<span class="js-field-error text-danger"></span>');
                 $error.html(errorData[fieldName]);
                 $wrapper.append($error);
                 $wrapper.addClass('has-error');
@@ -109,29 +151,43 @@
         },
 
         _removeFormErrors: function () {
-            var $form = this.$wrapper.find(this._selector.newEntretienForm);
+            const $form = this.$wrapper.find(this._selector.newEntretienForm);
             $form.find('.js-field-error').remove();
             $form.find('.form-group').removeClass('has-error');
         },
 
         _clearForm: function () {
             this._removeFormErrors();
-            var $form = this.$wrapper.find(this._selector.newEntretienForm);
+            const $form = this.$wrapper.find(this._selector.newEntretienForm);
             $form[0].reset();
         },
 
+        _addDetail: function (entretien) {
+            const tplText = $('#js-entretien-detail-template').html();
+            const tpl = _.template(tplText);
+            const html = tpl(entretien);
+            this.$wrapper.find(this._selector.modalBody).append($.parseHTML(html));
+        },
+
         _addRow: function (entretien) {
-            var tplText = $('#js-entretien-row-template').html();
-            var tpl = _.template(tplText);
-            var html = tpl(entretien);
+            const tplText = $('#js-entretien-row-template').html();
+            const tpl = _.template(tplText);
+            const html = tpl(entretien);
             this.$wrapper.find('tbody').append($.parseHTML(html));
         },
 
-        _addDetail: function (entretien) {
-            var tplText = $('#js-entretien-detail-template').html();
-            var tpl = _.template(tplText);
-            var html = tpl(entretien);
-            this.$wrapper.find(this._selector.modalBody).append($.parseHTML(html));
+        _addSelect: function (entretien) {
+            const tplText = $('#js-user-option-template').html();
+            const tpl = _.template(tplText);
+            const html = tpl(entretien);
+            $('.js-select-user').append($.parseHTML(html));
+        },
+
+        _addGuestsSelect: function (entretien) {
+            const tplText = $('#js-guests-option-template').html();
+            const tpl = _.template(tplText);
+            const html = tpl(entretien);
+            $('.js-select-guest').append($.parseHTML(html));
         }
     });
 })(window, jQuery, Routing);

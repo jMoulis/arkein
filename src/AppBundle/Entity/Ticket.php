@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use UserBundle\Entity\User;
 
 /**
  * Ticket
@@ -181,11 +182,11 @@ class Ticket
     /**
      * Set fromWho
      *
-     * @param \UserBundle\Entity\User $fromWho
+     * @param User $fromWho
      *
      * @return Ticket
      */
-    public function setFromWho(\UserBundle\Entity\User $fromWho = null)
+    public function setFromWho(User $fromWho = null)
     {
         $this->fromWho = $fromWho;
 
@@ -195,7 +196,7 @@ class Ticket
     /**
      * Get fromWho
      *
-     * @return \UserBundle\Entity\User
+     * @return User
      */
     public function getFromWho()
     {
@@ -205,11 +206,11 @@ class Ticket
     /**
      * Set toWho
      *
-     * @param \UserBundle\Entity\User $toWho
+     * @param User $toWho
      *
      * @return Ticket
      */
-    public function setToWho(\UserBundle\Entity\User $toWho = null)
+    public function setToWho(User $toWho = null)
     {
         $this->toWho = $toWho;
 
@@ -219,7 +220,7 @@ class Ticket
     /**
      * Get toWho
      *
-     * @return \UserBundle\Entity\User
+     * @return User
      */
     public function getToWho()
     {
@@ -229,11 +230,11 @@ class Ticket
     /**
      * Set aboutWho
      *
-     * @param \UserBundle\Entity\User $aboutWho
+     * @param User $aboutWho
      *
      * @return Ticket
      */
-    public function setAboutWho(\UserBundle\Entity\User $aboutWho = null)
+    public function setAboutWho(User $aboutWho = null)
     {
         $this->aboutWho = $aboutWho;
 
@@ -243,7 +244,7 @@ class Ticket
     /**
      * Get aboutWho
      *
-     * @return \UserBundle\Entity\User
+     * @return User
      */
     public function getAboutWho()
     {
@@ -269,11 +270,11 @@ class Ticket
     /**
      * Add answer
      *
-     * @param \AppBundle\Entity\Answer $answer
+     * @param Answer $answer
      *
      * @return Ticket
      */
-    public function addAnswer(\AppBundle\Entity\Answer $answer)
+    public function addAnswer(Answer $answer)
     {
         $this->answers[] = $answer;
         $answer->setTicket($this);
@@ -284,9 +285,9 @@ class Ticket
     /**
      * Remove answer
      *
-     * @param \AppBundle\Entity\Answer $answer
+     * @param Answer $answer
      */
-    public function removeAnswer(\AppBundle\Entity\Answer $answer)
+    public function removeAnswer(Answer $answer)
     {
         $this->answers->removeElement($answer);
     }

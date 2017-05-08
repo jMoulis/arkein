@@ -30,7 +30,7 @@ class Groups
     private $name;
 
     /**
-     * @ORM\ManyToMany(targetEntity="UserBundle\Entity\User")
+     * @ORM\ManyToMany(targetEntity="UserBundle\Entity\User", mappedBy="groups")
      * @ORM\JoinTable("user_groups")
      */
     private $users;
@@ -108,5 +108,10 @@ class Groups
     public function getUsers()
     {
         return $this->users;
+    }
+
+    public function __toString()
+    {
+        return $this->name;
     }
 }
