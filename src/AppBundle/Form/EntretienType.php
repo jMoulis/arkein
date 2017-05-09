@@ -39,8 +39,7 @@ class EntretienType extends AbstractType
                 'prototype' => true,
                 'allow_add' => true,
                 'allow_delete' => true,
-                'by_reference' => false,
-                'allow_extra_fields' => true
+                'by_reference' => false
             ])
             ->add('objet')
             ->add('compteRendu', TextareaType::class)

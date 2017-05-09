@@ -116,6 +116,29 @@ class EntretienController extends BaseController
         return $response;
     }
 
+
+
+    /**
+     * @Route("/api/guest/{id}/", name="entretien_list_by_invitation", options={"expose" = true})
+     * @Method("GET")
+     */
+    public function getInvitationAction(User $user)
+    {
+        if(!$user) {
+            throw new \Exception('erreur object non trouvé', 500);
+        }
+        $entetiens = $this->getDoctrine()->getRepository('AppBundle:Entretien')
+            ->getInterviewByGuest($user)
+        ;
+        $models = [];
+        foreach ($entetiens as $entetien) {
+            $models[] = $this->createEntretienApiModel($entetien);
+        }
+        return $this->createApiResponse([
+            'items' => $models
+        ]);
+    }
+
     /**
      * @Route("/api/author/{id}/", name="entretien_list_by_author", options={"expose" = true})
      * @Method("GET")
@@ -262,6 +285,7 @@ class EntretienController extends BaseController
         $entretien->setCompteRendu($dataFormEntretien['compteRendu']);
 
 
+
         if(!empty($newGuests)){
             /*
              * I add guests
@@ -274,7 +298,7 @@ class EntretienController extends BaseController
                 $entretien->addInterviewGuest($interviewUser);
             }
             /* Then remove
-             * I add guests
+             *
              * */
             foreach ($guestsToRemove as $removeInterviewGuest)
             {
@@ -367,6 +391,7 @@ class EntretienController extends BaseController
             ];
         }
         $model->author = $entretien->getAuthor()->__toString();
+        $model->authorId = $entretien->getAuthor()->getId();
         $model->young = $entretien->getYoung()->__toString();
         $model->youngId = $entretien->getYoung()->getId();
 

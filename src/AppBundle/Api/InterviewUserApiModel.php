@@ -2,25 +2,13 @@
 
 namespace AppBundle\Api;
 
-class EntretienApiModel
+class InterviewUserApiModel
 {
     public $id;
 
-    public $compteRendu;
+    public $user;
 
-    public $objet;
-
-    public $author;
-
-    public $authorId;
-
-    public $young;
-
-    public $youngId;
-
-    public $guests = [];
-
-    public $date;
+    public $status;
 
     private $links = [];
 

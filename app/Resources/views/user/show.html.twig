@@ -54,9 +54,11 @@
                         </tr>
                         </tbody>
                     </table>
+                    {% if is_granted('ROLE_ADMIN') %}
                     <div>
                         <a href="{{ path('user_edit', {'id': user.id}) }}" class="btn btn-success">Modifier</a>
                     </div>
+                    {% endif %}
                 </div>
             </div>
         </div>

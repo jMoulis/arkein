@@ -45,3 +45,14 @@ services:
         tags:
             - { name: form.type }
 
+    app.doctrine.entretien_mail_workflow:
+        class: AppBundle\Doctrine\EntretienMailWorkflow
+        autowire: true
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    app.doctrine.status_mail_workflow:
+        class: AppBundle\Doctrine\StatusMailWorkflow
+        autowire: true
+        tags:
+            - { name: doctrine.event_subscriber }

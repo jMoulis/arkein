@@ -23,10 +23,11 @@ class UserController extends Controller
 {
     /**
      * @Route("/", name="user_index")
-     * @Security("has_role('ROLE_STAFF') or has_role('ROLE_ADMIN')")
+     *
      */
     public function indexAction(Request $request)
     {
+        //@Security("has_role('ROLE_STAFF') or has_role('ROLE_ADMIN')")
         $users = $this->getDoctrine()->getRepository('UserBundle:User')->findAll();
         return $this->render('user/index.html.twig', [
             'users' => $users

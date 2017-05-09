@@ -4,18 +4,50 @@
     <h1>Liste Entretiens Modifier le format date!!!!</h1>
 <p><a class="js-new-entretien-btn btn btn-primary" href="#" data-toggle="modal" data-target="#newEntretienModal">Nouvel entretien</a></p>
     <div class="js-entretien-wrapper" data-user="{{ app.user.id }}">
-        <table class="js-table-wrapper table table-responsive">
-            <thead>
-            <tr>
-                <th>Date</th>
-                <th>Objet</th>
-                <th>Compte rendu</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#myInterview" role="tab">Entretiens Créés</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#myInvitation" role="tab">Invitations</a>
+            </li>
+        </ul>
+
+        <div class="tab-content pt-3">
+            <div class="tab-pane active" id="myInterview" role="tabpanel">
+                <div class="js-main-content-created">
+                     <table class="table table-responsive table-hover">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Objet</th>
+                                <th>Compte rendu</th>
+                                <th>Organisateur</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="tab-pane" id="myInvitation" role="tabpanel">
+                <div class="js-main-content-invitation">
+                    <table class="table table-hover table-responsive">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Objet</th>
+                                <th>Compte rendu</th>
+                                <th>Organisateur</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
         <!-- Modal pour la visualisation du formulaire d'édition des entretiens -->
        {{ include('entretien/_edit_entretien_modal.html.twig') }}
         <!-- Fin modal -->
@@ -29,11 +61,14 @@
 {% block javascripts %}
     {{ parent() }}
     <script src="{{ asset('js/api/EntretienAppAuthor.js') }}"></script>
+    <script src="{{ asset('js/api/StatusApp.js') }}"></script>
     <script>
         const $entretienWrapper = $('.js-entretien-wrapper');
         const entretienApp = new EntretienAppAuthor($entretienWrapper);
 
-        $('.js-new-entretien-btn').on('click', function (e) {
+        const statusApp = new StatusApp($entretienWrapper);
+
+        $('.js-new-entretien-btn').on('click', function () {
             entretienApp._emptyHtmlModalBody();
             entretienApp.loadUsers();
         });
@@ -43,14 +78,22 @@
             entretienApp.loadGuests($user);
         });
 
+        $entretienWrapper.on('click', '.js-participe', function () {
+            $('#status').val(1);
+        });
 
+        $entretienWrapper.on('click', '.js-participe-pas', function () {
+            $('#status').val(0);
+        });
     </script>
+
     <script type="text/template" id="js-entretien-row-template">
 {# TODO Modifier le format de la date #}
         <tr title="id_<%= id %>">
             <td><%= date %></td>
             <td><%= objet %></td>
             <td><%= compteRendu %></td>
+            <td><%= author %></td>
             <td><a href="<%= links._self %>" class="js-detail-entretien btn btn-warning" data-id="<%= id %>" data-toggle="modal" data-target="#editEntretienModal">Consulter</a></td>
         </tr>
     </script>
@@ -63,7 +106,16 @@
         <option value="<%= id %>"><%= fullname %></option>
     </script>
 
-    <script type="text/template" id="js-entretien-detail-template">
+    <script type="text/template" id="js-entretien-detail-template-logged">
         {{ source('entretien/_edit_entretien_template.html.twig') }}
     </script>
+
+    <script type="text/template" id="js-entretien-detail-template-non-logged">
+        {{ source('entretien/_edit_entretien_template_non_logged.html.twig') }}
+    </script>
+
+    <script type="text/template" id="js-status-update">
+        {{ source('entretien/_edit_status_template.html.twig') }}
+    </script>
+
 {% endblock %}

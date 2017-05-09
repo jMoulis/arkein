@@ -26,13 +26,13 @@
 
         handleUserDelete: function (e) {
             e.preventDefault();
-            var $link = $(e.currentTarget);
+            const $link = $(e.currentTarget);
 
             $link.addClass('text-danger');
 
-            var deleteUrl =  $link.data('url');
-            var $row =  $link.closest('tr');
-            var self = this;
+            const deleteUrl =  $link.data('url');
+            const $row =  $link.closest('tr');
+            const self = this;
 
             $.ajax({
                 url: deleteUrl,
@@ -47,10 +47,10 @@
 
         handleNewFormSubmit: function (e) {
             e.preventDefault();
-            var $form = $(e.currentTarget);
-            var self = this;
+            const $form = $(e.currentTarget);
+            const self = this;
 
-            var formData = {};
+            const formData = {};
             $.each($form.serializeArray(), function (key, fieldData) {
                 formData[fieldData.name] = fieldData.value;
             });
@@ -65,16 +65,16 @@
                     $('#user').val(data.id);
                 },
                 error: function (jqXHR) {
-                    var errorData = JSON.parse(jqXHR.responseText);
+                    const errorData = JSON.parse(jqXHR.responseText);
                     self._mapErrorsToForm(errorData.errors);
                 }
             })
         },
 
         loadUsers: function () {
-            var self = this;
+            const self = this;
             $.ajax({
-                url: Routing.generate('api_user_list'),
+                url: Routing.generate('young_list'),
                 success: function (data) {
                     $.each(data.items, function (key, user) {
                         self._addRow(user);
@@ -88,16 +88,16 @@
 
         _mapErrorsToForm: function (errorData) {
             this._removeFormErrors();
-            var $form = this.$wrapper.find(this._selector.newUserForm);
+            const $form = this.$wrapper.find(this._selector.newUserForm);
 
             $form.find(':input').each(function () {
-                var fieldName = $(this).attr('name');
-                var $wrapper = $('.js-new-user-form');
+                const fieldName = $(this).attr('name');
+                const $wrapper = $('.js-new-user-form');
                 if (!errorData[fieldName]){
                     return;
                 }
 
-                var $error = $('<span class="js-field-error text-danger"></span>');
+                const $error = $('<span class="js-field-error text-danger"></span>');
                 $error.html(errorData[fieldName]);
                 $wrapper.prepend($error);
                 $wrapper.addClass('has-error');
@@ -105,22 +105,22 @@
         },
 
         _removeFormErrors: function () {
-            var $form = $('.js-new-user-form');
+            const $form = $('.js-new-user-form');
             $form.find('.js-field-error').remove();
             $form.removeClass('has-error');
         },
 
         _clearForm: function () {
             this._removeFormErrors();
-            var $form = this.$wrapper.find(this._selector.newUserForm);
+            const $form = this.$wrapper.find(this._selector.newUserForm);
             $('.js-new-user-form')[0].reset();
 
         },
 
         _addRow: function (user) {
-            var tplText = $('#js-user-row-template').html();
-            var tpl = _.template(tplText);
-            var html = tpl(user);
+            const tplText = $('#js-user-row-template').html();
+            const tpl = _.template(tplText);
+            const html = tpl(user);
             this.$wrapper.find('tbody').append($.parseHTML(html));
         }
 

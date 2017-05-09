@@ -1,0 +1,39 @@
+{% extends ':App:layout.html.twig' %}
+
+{% block body %}
+    <h1>Interviewusers list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for interviewUser in interviewUsers %}
+            <tr>
+                <td><a href="{{ path('interviewuser_show', { 'id': interviewUser.id }) }}">{{ interviewUser.id }}</a></td>
+                <td>{% if interviewUser.status %}Yes{% else %}No{% endif %}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('interviewuser_show', { 'id': interviewUser.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('interviewuser_edit', { 'id': interviewUser.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('interviewuser_new') }}">Create a new interviewUser</a>
+        </li>
+    </ul>
+{% endblock %}

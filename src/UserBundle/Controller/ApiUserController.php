@@ -46,7 +46,6 @@ class ApiUserController extends BaseController
      */
     public function getGuestsAction($user)
     {
-
         $users = $this->getDoctrine()->getRepository('UserBundle:User')
             ->findYoungAllCoaches($user);
         $models = [];

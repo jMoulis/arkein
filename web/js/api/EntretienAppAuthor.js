@@ -55,6 +55,8 @@
 
         this.loadEntretiens();
 
+        this.loadInvitations();
+
     };
 
     $.extend(window.EntretienAppAuthor.prototype, {
@@ -62,6 +64,7 @@
             newEntretienForm: '.js-new-entretien-form',
             editEntretienForm: '.js-edit-entretien-form',
             editModalBody: '#editEntretienModal .modal-body',
+            editModalFooter: '#editEntretienModal .modal-footer',
             guestSelect: '#guests',
             youngSelect: '#young'
         },
@@ -70,7 +73,7 @@
             e.preventDefault();
             const $form = $(e.currentTarget);
             const self = this;
-            const alertNoRecordFound = self.$wrapper.find('.js-table-wrapper tbody .alert');
+            const alertNoRecordFound = $('#myInterview').find('.js-table-wrapper tbody .alert');
             const $guests = $form.find('ul').children();
             /* Afin de pouvoir enregistrer des guests, il était nécessaire
              * de créer un objet avec les id des users
@@ -94,7 +97,7 @@
                 success: function (data) {
                     $(alertNoRecordFound).remove();
                     self._clearForm();
-                    self._addRow(data);
+                    self._addInterviewsRow(data);
                     $('#newEntretienModal').modal('hide');
 
 
@@ -112,7 +115,7 @@
             const self = this;
             const entretienId = $form.data('entretien');
             const $guests = $form.find('.js-actual-guests').children();
-            const tr = self.$wrapper.find('.js-table-wrapper tbody tr[title=id_'+  entretienId +']');
+            const tr = self.$wrapper.find('.js-main-content-created table tbody tr[title=id_'+  entretienId +']');
 
             /* Afin de pouvoir enregistrer des guests, il était nécessaire
              * de créer un objet avec les id des users
@@ -132,12 +135,15 @@
             let arrayToBeSend = [formData, guestsObject];
 
             $.ajax({
+                beforeSend: function(){
+                    $('#editEntretienModal').modal('hide');
+                },
                 url: Routing.generate('entretien_edit', {id: entretienId}),
                 method: 'POST',
                 data: JSON.stringify(arrayToBeSend),
                 success: function (data) {
                     self._updateActualRow(tr, data.date, data.objet, data.compteRendu);
-                    $('#editEntretienModal').modal('hide');
+
                     self._clearForm();
                 },
                 error: function (jqXHR) {
@@ -151,21 +157,46 @@
             const self = this;
             const user = $('.js-entretien-wrapper').data('user');
             $.ajax({
+                beforeSend: function(){
+                    $('#myInterview').append('<span class="loading">Chargement...</span>');
+                },
                 url: Routing.generate('entretien_list_by_author', {id: user}),
                 success: function (data) {
                     if($(data.items).length <= 0){
-                        self.$wrapper.find('tbody').append('' +
+                        $('#myInterview').find('.loading').remove();
+                        $('#myInterview').find('tbody').append('' +
                             '<div class="alert alert-success" role="alert">' +
                             'Aucun entretiens trouvés</div>');
                     } else {
                         $.each(data.items, function (key, entretien) {
-                            self._addRow(entretien);
-                            $('#loading').hide();
+                            $('#myInterview').find('.loading').remove();
+                            self._addInterviewsRow(entretien);
                         })
                     }
+                }
+            })
+        },
+
+        loadInvitations: function () {
+            const self = this;
+            const user = $('.js-entretien-wrapper').data('user');
+            $.ajax({
+                beforeSend: function(){
+                    $('#myInvitation').append("<span class='loading'>Chargement...</span>");
                 },
-                ajaxSend: function () {
-                    $('#loading').show();
+                url: Routing.generate('entretien_list_by_invitation', {id: user}),
+                success: function (data) {
+                    if($(data.items).length <= 0){
+                        $('#myInvitation').find('.loading').remove();
+                        $('#myInvitation').find('tbody').append('' +
+                            '<div class="alert alert-success" role="alert">' +
+                            'Aucun entretiens trouvés</div>');
+                    } else {
+                        $.each(data.items, function (key, entretien) {
+                            $('#myInvitation').find('.loading').remove();
+                            self._addInvitationsRow(entretien);
+                        })
+                    }
                 }
             })
         },
@@ -173,13 +204,24 @@
         loadEditFormData: function (e) {
             const self = this;
             const entretien = $(e.currentTarget).data('id');
+            const user = $('.js-entretien-wrapper').data('user');
+            const tplTextLoggedIn = $('#js-entretien-detail-template-logged').html();
+            const tplTextNonLoggedIn = $('#js-entretien-detail-template-non-logged').html();
+
             $.ajax({
+                beforeSend: function(){
+                    $('#editEntretienModal .modal-footer').append("<p>Chargement...</p>");
+                },
                 url: Routing.generate('entretien_modal_detail', {id: entretien}),
                 success: function (data) {
-                    self._addEditForm(data.item);
-                    self.loadUsers();
-                    self.loadGuests($('#young').val());
-
+                    $('#loading').hide();
+                    if(data.item.authorId !== user){
+                        self._addEditForm(data.item, tplTextNonLoggedIn);
+                    } else {
+                        self._addEditForm(data.item, tplTextLoggedIn);
+                        self.loadUsers();
+                        self.loadGuests($('#young').val());
+                    }
                 }
             })
         },
@@ -220,6 +262,7 @@
 
         _emptyHtmlModalBody: function () {
             this.$wrapper.find(this._selector.editModalBody).html('');
+            this.$wrapper.find(this._selector.editModalFooter).html('');
         },
 
         _mapErrorsToForm: function (errorData) {
@@ -254,18 +297,27 @@
 
         },
 
-        _addEditForm: function (entretien) {
-            const tplText = $('#js-entretien-detail-template').html();
+        _addEditForm: function (entretien, tplText) {
+            const self = this;
             const tpl = _.template(tplText);
             const html = tpl(entretien);
             this.$wrapper.find(this._selector.editModalBody).append($.parseHTML(html));
+            this.$wrapper.find(this._selector.editModalFooter).html('');
+            self._loadStatusUpdateForm(entretien);
         },
 
-        _addRow: function (entretien) {
+        _addInterviewsRow: function (entretien) {
             const tplText = $('#js-entretien-row-template').html();
             const tpl = _.template(tplText);
             const html = tpl(entretien);
-            this.$wrapper.find('tbody').append($.parseHTML(html));
+            $('#myInterview').find('tbody').append($.parseHTML(html));
+        },
+
+        _addInvitationsRow: function (entretien) {
+            const tplText = $('#js-entretien-row-template').html();
+            const tpl = _.template(tplText);
+            const html = tpl(entretien);
+            $('#myInvitation').find('tbody').append($.parseHTML(html));
         },
 
         _addSelect: function (user) {
@@ -282,7 +334,7 @@
             this.$wrapper.find('.js-select-guest select').append($.parseHTML(html));
         },
 
-        addSpanGuest: function () {
+        addSpanGuest: function (e) {
             const guest = '#guests option:selected';
             $('.js-actual-guests').append('' +
                 '<li id="'+ $(guest).val()+'" title="'+ $(guest).text() +'">' +
@@ -297,20 +349,28 @@
         },
 
         _emptySelectGuest: function () {
-            this.$wrapper.find(this._selector.guestSelect).html('<option value="" selected>Sélectionnez les invités</option>');
+            this.$wrapper.find(this._selector.guestSelect).html('<option value="" selected="selected">Ajouter des participants</option>');
         },
 
         _emptySelectYoung: function () {
-            this.$wrapper.find(this._selector.youngSelect).html('<option value="" selected>Sélectionnez les invités</option>');
+            this.$wrapper.find(this._selector.youngSelect).html('<option value="" selected="selected">Sélectionner un jeune</option>');
         },
 
         _updateActualRow: function (tr, date, objet, compteRendu) {
             const $columnDate = $(tr).find('td').first();
             const $columnObjet = $columnDate.next();
             const $columnCompteRendu = $columnObjet.next();
+
             $columnDate.text(date);
             $columnObjet.text(objet);
             $columnCompteRendu.text(compteRendu);
+        },
+
+        _loadStatusUpdateForm: function (status) {
+            const tplText = $('#js-status-update').html();
+            const tpl = _.template(tplText);
+            const html = tpl(status);
+            this.$wrapper.find(this._selector.editModalFooter).append($.parseHTML(html));
         }
     });
 })(window, jQuery, Routing);

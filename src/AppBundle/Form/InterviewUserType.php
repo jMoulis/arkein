@@ -5,6 +5,7 @@ namespace AppBundle\Form;
 use AppBundle\Entity\InterviewUser;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -23,14 +24,18 @@ class InterviewUserType extends AbstractType
                 'class' => User::class,
                 'label' => false
             ])
-            ->add('status')
+            ->add('status', ChoiceType::class, [
+                'choices' => [
+                    'true' => true,
+                    'false' => false
+                ]
+            ])
             /*->addEventListener(
                 FormEvents::POST_SET_DATA,
                 [$this, 'onPostSetData']
             )*/
         ;
     }
-
 
     public function onPostSetData(FormEvent $event)
     {
@@ -48,6 +53,11 @@ class InterviewUserType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => InterviewUser::class
         ));
+    }
+
+    public function getBlockPrefix()
+    {
+        return '';
     }
 
 
