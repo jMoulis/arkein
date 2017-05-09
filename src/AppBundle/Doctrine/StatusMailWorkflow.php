@@ -36,13 +36,13 @@ class StatusMailWorkflow implements EventSubscriber
     }
 
     public function preUpdate(PreUpdateEventArgs $args){
+
         $entity = $args->getEntity();
-
-        $entretien = $args->getObject()->getInterview();
-
         if (!$entity instanceof InterviewUser){
             return;
         }
+
+        $entretien = $args->getObject()->getInterview();
         $author = $this->tokenStorage->getToken()->getUser()->getEmail();
         $objet = 'Mise à jour de présence';
 
