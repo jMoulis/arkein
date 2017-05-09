@@ -83,9 +83,7 @@
     <br/>
 
     {% if is_granted('ROLE_ADMIN') %}
-        {% if edit_form.role.vars.value == ('ROLE_YOUNGSTER') %}
-            {{ form_row(edit_form.coach) }}
-        {% endif %}
+        {{ form_row(edit_form.coach) }}
         {{ form_row(edit_form.groups) }}
         {% do edit_form.coach.setRendered() %}
             {{ form_row(edit_form.role) }}
