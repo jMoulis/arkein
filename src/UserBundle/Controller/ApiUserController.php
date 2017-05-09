@@ -27,7 +27,7 @@ class ApiUserController extends BaseController
      */
     public function indexAction()
     {
-        if($this->getUser()->getRole() !== 'ROLE_ADMIN')
+        if($this->getUser()->getRole() === 'ROLE_ADMIN')
         {
             $users = $this->getDoctrine()->getRepository('UserBundle:User')
                 ->findAll();
@@ -37,7 +37,7 @@ class ApiUserController extends BaseController
                 ->findMyYoungsters($this->getUser())->getQuery()->execute();
 
         }
-        
+
         $models = [];
         foreach ($users as $user) {
             $models[] = $this->createUserApiModel($user);
