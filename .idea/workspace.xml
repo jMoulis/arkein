@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e0c1a732-22ed-40a4-a7fb-e83046043b4d" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Resources/views/user/edit.html.twig" afterPath="$PROJECT_DIR$/app/Resources/views/user/edit.html.twig" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/UserBundle/Controller/ApiUserController.php" afterPath="$PROJECT_DIR$/src/UserBundle/Controller/ApiUserController.php" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -78,9 +78,12 @@
         <entry file="file://$PROJECT_DIR$/src/UserBundle/Controller/UserController.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="270">
-              <caret line="119" column="37" lean-forward="false" selection-start-line="119" selection-start-column="37" selection-end-line="119" selection-end-column="37" />
+              <caret line="30" column="54" lean-forward="true" selection-start-line="30" selection-start-column="54" selection-end-line="30" selection-end-column="54" />
               <folding>
+                <element signature="e#862#879#1#PHP" expanded="true" />
+                <element signature="e#922#944#0#PHP" expanded="true" />
                 <element signature="e#1655#1675#0#PHP" expanded="true" />
+                <element signature="e#3577#3598#0#PHP" expanded="true" />
                 <marker date="1494315283000" expanded="false" signature="5257:5272" ph="User" />
                 <marker date="1494315283000" expanded="false" signature="5404:5419" ph="User" />
               </folding>
@@ -88,10 +91,20 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="edit.html.twig" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ApiUserController.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/UserBundle/Controller/ApiUserController.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="321">
+              <caret line="39" column="8" lean-forward="true" selection-start-line="39" selection-start-column="8" selection-end-line="39" selection-end-column="8" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="edit.html.twig" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Resources/views/user/edit.html.twig">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="281">
+            <state relative-caret-position="1178">
               <caret line="87" column="18" lean-forward="true" selection-start-line="87" selection-start-column="18" selection-end-line="87" selection-end-column="18" />
               <folding />
             </state>
@@ -124,26 +137,6 @@
             <state relative-caret-position="441">
               <caret line="70" column="0" lean-forward="true" selection-start-line="70" selection-start-column="0" selection-end-line="70" selection-end-column="0" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="InterviewUserController.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/InterviewUserController.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="334">
-              <caret line="116" column="11" lean-forward="true" selection-start-line="116" selection-start-column="11" selection-end-line="116" selection-end-column="11" />
-              <folding>
-                <element signature="e#40#80#0#PHP" expanded="true" />
-                <element signature="e#883#914#0#PHP" expanded="true" />
-                <element signature="e#1587#1607#0#PHP" expanded="true" />
-                <element signature="e#1690#1720#0#PHP" expanded="true" />
-                <element signature="e#2145#2175#0#PHP" expanded="true" />
-                <element signature="e#3911#3927#0#PHP" expanded="true" />
-                <element signature="e#4560#4581#1#PHP" expanded="true" />
-                <element signature="e#4959#4981#0#PHP" expanded="true" />
-                <element signature="e#5329#5345#0#PHP" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -247,7 +240,6 @@
         <option value="$PROJECT_DIR$/app/Resources/views/entretien/_new_entretien_modal.html.twig" />
         <option value="$PROJECT_DIR$/app/Resources/views/dashboard/_sidebar.html.twig" />
         <option value="$PROJECT_DIR$/src/UserBundle/Controller/UserController.php" />
-        <option value="$PROJECT_DIR$/src/UserBundle/Controller/ApiUserController.php" />
         <option value="$PROJECT_DIR$/web/js/api/UserApp.js" />
         <option value="$PROJECT_DIR$/app/Resources/views/user/show.html.twig" />
         <option value="$PROJECT_DIR$/src/AppBundle/Repository/EntretienRepository.php" />
@@ -281,6 +273,7 @@
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/src/AppBundle/Doctrine/StatusMailWorkflow.php" />
         <option value="$PROJECT_DIR$/app/Resources/views/user/edit.html.twig" />
+        <option value="$PROJECT_DIR$/src/UserBundle/Controller/ApiUserController.php" />
       </list>
     </option>
   </component>
@@ -1205,12 +1198,12 @@
       <workItem from="1493005161310" duration="143390000" />
       <workItem from="1493989634516" duration="13411000" />
       <workItem from="1494229076206" duration="5334000" />
-      <workItem from="1494245032858" duration="47831000" />
+      <workItem from="1494245032858" duration="47994000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="759272000" />
+    <option name="totallyTimeSpent" value="759435000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1257,14 +1250,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/config/security.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/AppBundle/Form/TicketType.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="430">
@@ -1683,22 +1668,33 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/Resources/views/user/edit.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1178">
+          <caret line="87" column="18" lean-forward="true" selection-start-line="87" selection-start-column="18" selection-end-line="87" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/UserBundle/Controller/UserController.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
-          <caret line="119" column="37" lean-forward="false" selection-start-line="119" selection-start-column="37" selection-end-line="119" selection-end-column="37" />
+          <caret line="30" column="54" lean-forward="true" selection-start-line="30" selection-start-column="54" selection-end-line="30" selection-end-column="54" />
           <folding>
+            <element signature="e#862#879#1#PHP" expanded="true" />
+            <element signature="e#922#944#0#PHP" expanded="true" />
             <element signature="e#1655#1675#0#PHP" expanded="true" />
+            <element signature="e#3577#3598#0#PHP" expanded="true" />
             <marker date="1494315283000" expanded="false" signature="5257:5272" ph="User" />
             <marker date="1494315283000" expanded="false" signature="5404:5419" ph="User" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Resources/views/user/edit.html.twig">
+    <entry file="file://$PROJECT_DIR$/src/UserBundle/Controller/ApiUserController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="281">
-          <caret line="87" column="18" lean-forward="true" selection-start-line="87" selection-start-column="18" selection-end-line="87" selection-end-column="18" />
+        <state relative-caret-position="321">
+          <caret line="39" column="8" lean-forward="true" selection-start-line="39" selection-start-column="8" selection-end-line="39" selection-end-column="8" />
           <folding />
         </state>
       </provider>
