@@ -2,46 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e0c1a732-22ed-40a4-a7fb-e83046043b4d" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/app/Resources/views/interviewuser/edit.html.twig" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/app/Resources/views/interviewuser/index.html.twig" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/app/Resources/views/interviewuser/new.html.twig" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/app/Resources/views/interviewuser/show.html.twig" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/app/Resources/views/security/registrationcomplete.html.twig" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/UserBundle/DoctrineEvent/MailTicketListener.php" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/web/js/api/TicketAppCreated.js" afterPath="$PROJECT_DIR$/web/js/api/TicketApp.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Resources/views/dashboard/_sidebar.html.twig" afterPath="$PROJECT_DIR$/app/Resources/views/dashboard/_sidebar.html.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Resources/views/entretien/_edit_entretien_template_non_logged.html.twig" afterPath="$PROJECT_DIR$/app/Resources/views/entretien/_edit_entretien_template_non_logged.html.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Resources/views/entretien/_interviews-by-author.html.twig" afterPath="$PROJECT_DIR$/app/Resources/views/entretien/_interviews-by-author.html.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Resources/views/entretien/_interviews-by-young.html.twig" afterPath="$PROJECT_DIR$/app/Resources/views/entretien/_interviews-by-young.html.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Resources/views/ticket/index.html.twig" afterPath="$PROJECT_DIR$/app/Resources/views/ticket/index.html.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Resources/views/ticket/show.html.twig" afterPath="$PROJECT_DIR$/app/Resources/views/ticket/show.html.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Resources/views/user/_responsive-xs-index.html.twig" afterPath="$PROJECT_DIR$/app/Resources/views/user/_responsive-xs-index.html.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Resources/views/user/edit.html.twig" afterPath="$PROJECT_DIR$/app/Resources/views/user/edit.html.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Resources/views/user/index.html.twig" afterPath="$PROJECT_DIR$/app/Resources/views/user/index.html.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Resources/views/user/new.html.twig" afterPath="$PROJECT_DIR$/app/Resources/views/user/new.html.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Resources/views/user/show.html.twig" afterPath="$PROJECT_DIR$/app/Resources/views/user/show.html.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Api/TicketApiModel.php" afterPath="$PROJECT_DIR$/src/AppBundle/Api/TicketApiModel.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Controller/ApiAnswerController.php" afterPath="$PROJECT_DIR$/src/AppBundle/Controller/ApiAnswerController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Controller/ApiTicketController.php" afterPath="$PROJECT_DIR$/src/AppBundle/Controller/ApiTicketController.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Controller/EntretienController.php" afterPath="$PROJECT_DIR$/src/AppBundle/Controller/EntretienController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Controller/InterviewUserController.php" afterPath="$PROJECT_DIR$/src/AppBundle/Controller/InterviewUserController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Controller/TicketController.php" afterPath="$PROJECT_DIR$/src/AppBundle/Controller/TicketController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Doctrine/AnswerMailWorkflow.php" afterPath="$PROJECT_DIR$/src/AppBundle/Doctrine/AnswerMailWorkflow.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Doctrine/EntretienMailWorkflow.php" afterPath="$PROJECT_DIR$/src/AppBundle/Doctrine/EntretienMailWorkflow.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Doctrine/TicketMailWorkflow.php" afterPath="$PROJECT_DIR$/src/AppBundle/Doctrine/TicketMailWorkflow.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Entity/Answer.php" afterPath="$PROJECT_DIR$/src/AppBundle/Entity/Answer.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Entity/InterviewUser.php" afterPath="$PROJECT_DIR$/src/AppBundle/Entity/InterviewUser.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Repository/AnswerRepository.php" afterPath="$PROJECT_DIR$/src/AppBundle/Repository/AnswerRepository.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/DocumentationBundle/Controller/ApiDocumentController.php" afterPath="$PROJECT_DIR$/src/DocumentationBundle/Controller/ApiDocumentController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/UserBundle/Controller/ApiUserController.php" afterPath="$PROJECT_DIR$/src/UserBundle/Controller/ApiUserController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/UserBundle/Controller/UserController.php" afterPath="$PROJECT_DIR$/src/UserBundle/Controller/UserController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/UserBundle/Entity/User.php" afterPath="$PROJECT_DIR$/src/UserBundle/Entity/User.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/UserBundle/Form/RegisterEditType.php" afterPath="$PROJECT_DIR$/src/UserBundle/Form/RegisterEditType.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/UserBundle/Form/RegisterType.php" afterPath="$PROJECT_DIR$/src/UserBundle/Form/RegisterType.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/css/main.css" afterPath="$PROJECT_DIR$/web/css/main.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/api/AnswerApp.js" afterPath="$PROJECT_DIR$/web/js/api/AnswerApp.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/api/EntretienAppAuthor.js" afterPath="$PROJECT_DIR$/web/js/api/EntretienAppAuthor.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/api/TicketApp.js" afterPath="$PROJECT_DIR$/web/js/api/TicketApp.js" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -67,11 +29,62 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="index.html.twig" pinned="false" current-in-tab="true">
+      <file leaf-file-name="index.html.twig" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Resources/views/ticket/index.html.twig">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="182">
+            <state relative-caret-position="210">
               <caret line="72" column="7" lean-forward="true" selection-start-line="72" selection-start-column="7" selection-end-line="72" selection-end-column="7" />
+              <folding>
+                <element signature="e#12#33#0#Twig" expanded="false" />
+                <element signature="e#198#208#0#Twig" expanded="false" />
+                <element signature="e#2250#2267#0#Twig" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="EntretienAppAuthor.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web/js/api/EntretienAppAuthor.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="314">
+              <caret line="174" column="21" lean-forward="true" selection-start-line="164" selection-start-column="20" selection-end-line="174" selection-end-column="21" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TicketApp.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web/js/api/TicketApp.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="454">
+              <caret line="120" column="41" lean-forward="true" selection-start-line="120" selection-start-column="41" selection-end-line="120" selection-end-column="41" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="EntretienController.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/EntretienController.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="404">
+              <caret line="390" column="56" lean-forward="false" selection-start-line="390" selection-start-column="56" selection-end-line="390" selection-end-column="56" />
+              <folding>
+                <element signature="e#1009#1030#1#PHP" expanded="true" />
+                <element signature="e#3231#3248#1#PHP" expanded="true" />
+                <element signature="e#8091#8112#1#PHP" expanded="true" />
+                <element signature="e#9204#9221#1#PHP" expanded="true" />
+                <element signature="e#9565#9590#1#PHP" expanded="true" />
+                <element signature="e#9919#9944#1#PHP" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="InterviewUser.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/AppBundle/Entity/InterviewUser.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="242">
+              <caret line="95" column="44" lean-forward="true" selection-start-line="95" selection-start-column="44" selection-end-line="95" selection-end-column="44" />
               <folding />
             </state>
           </provider>
@@ -159,7 +172,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/app/Resources/views/interviewuser/show.html.twig" />
         <option value="$PROJECT_DIR$/app/Resources/views/interviewuser/_edit_interviewStatus.html.twig" />
         <option value="$PROJECT_DIR$/src/AppBundle/Api/InterviewUserApiModel.php" />
         <option value="$PROJECT_DIR$/web/js/api/InterviewUserApp.js" />
@@ -195,7 +207,6 @@
         <option value="$PROJECT_DIR$/src/AppBundle/Doctrine/TicketMailWorkflow.php" />
         <option value="$PROJECT_DIR$/src/AppBundle/Doctrine/EntretienMailWorkflow.php" />
         <option value="$PROJECT_DIR$/src/AppBundle/Entity/InterviewUser.php" />
-        <option value="$PROJECT_DIR$/src/AppBundle/Controller/EntretienController.php" />
         <option value="$PROJECT_DIR$/app/Resources/views/entretien/_edit_entretien_template_non_logged.html.twig" />
         <option value="$PROJECT_DIR$/app/Resources/views/dashboard/_sidebar.html.twig" />
         <option value="$PROJECT_DIR$/app/Resources/views/interviewuser/index.html.twig" />
@@ -210,6 +221,8 @@
         <option value="$PROJECT_DIR$/app/Resources/views/user/show.html.twig" />
         <option value="$PROJECT_DIR$/web/js/api/TicketAppCreated.js" />
         <option value="$PROJECT_DIR$/app/Resources/views/ticket/index.html.twig" />
+        <option value="$PROJECT_DIR$/web/js/api/TicketApp.js" />
+        <option value="$PROJECT_DIR$/src/AppBundle/Controller/EntretienController.php" />
       </list>
     </option>
   </component>
@@ -1275,12 +1288,12 @@
       <workItem from="1493989634516" duration="13411000" />
       <workItem from="1494229076206" duration="5334000" />
       <workItem from="1494245032858" duration="48911000" />
-      <workItem from="1494396154944" duration="14691000" />
+      <workItem from="1494396154944" duration="15469000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="775043000" />
+    <option name="totallyTimeSpent" value="775821000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1419,14 +1432,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/EventController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1539">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/ReservationController.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1363">
@@ -1557,21 +1562,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/EntretienController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="292">
-          <caret line="312" column="0" lean-forward="true" selection-start-line="312" selection-start-column="0" selection-end-line="312" selection-end-column="0" />
-          <folding>
-            <element signature="e#1009#1030#1#PHP" expanded="true" />
-            <element signature="e#3231#3248#1#PHP" expanded="true" />
-            <element signature="e#8091#8112#1#PHP" expanded="true" />
-            <element signature="e#9071#9088#1#PHP" expanded="true" />
-            <element signature="e#9432#9457#1#PHP" expanded="true" />
-            <element signature="e#9786#9811#1#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Resources/views/user/new.html.twig">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="400">
@@ -1599,14 +1589,6 @@
           <folding>
             <element signature="e#126#155#0#PHP" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Entity/InterviewUser.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="231">
-          <caret line="95" column="44" lean-forward="true" selection-start-line="95" selection-start-column="44" selection-end-line="95" selection-end-column="44" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1681,7 +1663,7 @@
         <state relative-caret-position="478">
           <caret line="125" column="38" lean-forward="false" selection-start-line="125" selection-start-column="38" selection-end-line="125" selection-end-column="38" />
           <folding>
-            <element signature="e#4673#4692#0#PHP" expanded="true" />
+            <element signature="e#4673#4692#0#PHP" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1702,14 +1684,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/js/api/TicketApp.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="283">
-          <caret line="22" column="0" lean-forward="true" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Resources/views/entretien/_interviews-by-author.html.twig">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="234">
@@ -1723,7 +1697,7 @@
         <state relative-caret-position="1392">
           <caret line="182" column="33" lean-forward="true" selection-start-line="182" selection-start-column="33" selection-end-line="182" selection-end-column="33" />
           <folding>
-            <element signature="e#12#33#0#Twig" expanded="true" />
+            <element signature="e#12#33#0#Twig" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1744,19 +1718,62 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/Resources/views/ticket/index.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="72" column="7" lean-forward="true" selection-start-line="72" selection-start-column="7" selection-end-line="72" selection-end-column="7" />
+          <folding>
+            <element signature="e#12#33#0#Twig" expanded="false" />
+            <element signature="e#198#208#0#Twig" expanded="false" />
+            <element signature="e#2250#2267#0#Twig" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/web/js/api/EntretienAppAuthor.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="263">
-          <caret line="320" column="16" lean-forward="false" selection-start-line="320" selection-start-column="16" selection-end-line="320" selection-end-column="16" />
+        <state relative-caret-position="314">
+          <caret line="174" column="21" lean-forward="true" selection-start-line="164" selection-start-column="20" selection-end-line="174" selection-end-column="21" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Resources/views/ticket/index.html.twig">
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/EventController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="182">
-          <caret line="72" column="7" lean-forward="true" selection-start-line="72" selection-start-column="7" selection-end-line="72" selection-end-column="7" />
+        <state relative-caret-position="285">
+          <caret line="24" column="7" lean-forward="true" selection-start-line="24" selection-start-column="7" selection-end-line="24" selection-end-column="7" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/js/api/TicketApp.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="454">
+          <caret line="120" column="41" lean-forward="true" selection-start-line="120" selection-start-column="41" selection-end-line="120" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Entity/InterviewUser.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="242">
+          <caret line="95" column="44" lean-forward="true" selection-start-line="95" selection-start-column="44" selection-end-line="95" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/EntretienController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="404">
+          <caret line="390" column="56" lean-forward="false" selection-start-line="390" selection-start-column="56" selection-end-line="390" selection-end-column="56" />
+          <folding>
+            <element signature="e#1009#1030#1#PHP" expanded="true" />
+            <element signature="e#3231#3248#1#PHP" expanded="true" />
+            <element signature="e#8091#8112#1#PHP" expanded="true" />
+            <element signature="e#9204#9221#1#PHP" expanded="true" />
+            <element signature="e#9565#9590#1#PHP" expanded="true" />
+            <element signature="e#9919#9944#1#PHP" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

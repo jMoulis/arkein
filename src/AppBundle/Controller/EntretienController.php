@@ -281,6 +281,11 @@ class EntretienController extends BaseController
         $guestsToRemove = array_diff($existingGuests, $newGuests);
         $guestsToAdd = array_diff($newGuests, $existingGuests);
 
+        $entretien->setObjet($dataFormEntretien['objet']);
+        $entretien->setCompteRendu($dataFormEntretien['compteRendu']);
+
+
+
         if(!empty($newGuests)){
             /*
              * I add guests
@@ -312,10 +317,9 @@ class EntretienController extends BaseController
         }
 
         $date = new \DateTime(($dataFormEntretien['date']));
+
+
         $entretien->setDate($date);
-        $entretien->setObjet($dataFormEntretien['objet']);
-        $entretien->setCompteRendu($dataFormEntretien['compteRendu']);
-        $entretien->setYoung($dataFormEntretien['young']);
 
         $em->persist($entretien);
         $em->flush();

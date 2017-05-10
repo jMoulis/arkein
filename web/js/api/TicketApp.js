@@ -74,11 +74,23 @@
         loadTicketsCreated: function () {
             const self = this;
             $.ajax({
+                beforeSend: function(){
+                    $('#myTicket').append('<span class="loading">Chargement...</span>');
+                },
                 url: Routing.generate('api_ticket_created_list'),
                 success: function (data) {
-                    $.each(data.items, function (key, ticket) {
-                        self._addCreatedRow(ticket);
-                    })
+
+                    if($(data.items).length <= 0){
+                        $('#myTicket').find('.loading').remove();
+                        $('#myTicket').find('tbody').append('' +
+                            '<div class="alert alert-success" role="alert">' +
+                            'Aucun entretiens trouvés</div>');
+                    } else {
+                        $.each(data.items, function (key, ticket) {
+                            $('#myTicket').find('.loading').remove();
+                            self._addCreatedRow(ticket);
+                        })
+                    }
                 },
                 error: function (jqXHR) {
                     console.log(jqXHR.responseText);
@@ -89,11 +101,22 @@
         loadTicketsAttributed: function () {
             const self = this;
             $.ajax({
+                beforeSend: function(){
+                    $('#myAttribution').append('<span class="loading">Chargement...</span>');
+                },
                 url: Routing.generate('api_ticket_attributed_list'),
                 success: function (data) {
-                    $.each(data.items, function (key, ticket) {
-                        self._addAttributedRow(ticket);
-                    })
+                    if($(data.items).length <= 0){
+                        $('#myAttribution').find('.loading').remove();
+                        $('#myAttribution').find('tbody').append('' +
+                            '<div class="alert alert-success" role="alert">' +
+                            'Aucun entretiens trouvés</div>');
+                    } else {
+                        $.each(data.items, function (key, ticket) {
+                            $('#myAttribution').find('.loading').remove();
+                            self._addAttributedRow(ticket);
+                        })
+                    }
                 },
                 error: function (jqXHR) {
                     console.log(jqXHR.responseText);
