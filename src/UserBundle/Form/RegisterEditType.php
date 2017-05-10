@@ -59,9 +59,9 @@ class RegisterEditType extends AbstractType
                 },
                 'group_by' => 'role'
             ])
+            ->add('titre')
             ->add('role', ChoiceType::class,
                 [
-                    'expanded' => true,
                     'choices' => [
                         'Personnel' => self::STAFF,
                         'Jeune' => self::YOUNGSTER,

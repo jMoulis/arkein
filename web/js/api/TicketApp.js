@@ -1,7 +1,7 @@
 (function (window, $, Routing) {
     'use strict';
 
-    window.TicketAppCreated = function ($wrapper) {
+    window.TicketApp = function ($wrapper) {
         this.$wrapper = $wrapper;
 
         this.$wrapper.on(
@@ -17,10 +17,11 @@
         );
 
         this.loadTicketsCreated();
+        this.loadTicketsAttributed();
 
     };
 
-    $.extend(window.TicketAppCreated.prototype, {
+    $.extend(window.TicketApp.prototype, {
         _selector: {
             newTicketForm: '.js-new-ticket-form'
         },
@@ -76,7 +77,22 @@
                 url: Routing.generate('api_ticket_created_list'),
                 success: function (data) {
                     $.each(data.items, function (key, ticket) {
-                        self._addRow(ticket);
+                        self._addCreatedRow(ticket);
+                    })
+                },
+                error: function (jqXHR) {
+                    console.log(jqXHR.responseText);
+                }
+            })
+        },
+
+        loadTicketsAttributed: function () {
+            const self = this;
+            $.ajax({
+                url: Routing.generate('api_ticket_attributed_list'),
+                success: function (data) {
+                    $.each(data.items, function (key, ticket) {
+                        self._addAttributedRow(ticket);
                     })
                 },
                 error: function (jqXHR) {
@@ -111,16 +127,22 @@
 
         _clearForm: function () {
             this._removeFormErrors();
-            const $form = this.$wrapper.find(this._selector.newTicketForm);
             $('.js-new-ticket-form')[0].reset();
 
         },
 
-        _addRow: function (ticket) {
+        _addCreatedRow: function (ticket) {
             const tplText = $('#js-ticket-row-template').html();
             const tpl = _.template(tplText);
             const html = tpl(ticket);
-            this.$wrapper.find('tbody').append($.parseHTML(html));
+            $('#myTicket').find('tbody').append($.parseHTML(html));
+        },
+
+        _addAttributedRow: function (ticket) {
+            const tplText = $('#js-ticket-row-template').html();
+            const tpl = _.template(tplText);
+            const html = tpl(ticket);
+            $('#myAttribution').find('tbody').append($.parseHTML(html));
         }
 
     });

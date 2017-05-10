@@ -21,7 +21,6 @@ class AnswerMailWorkflow implements EventSubscriber
 {
     const NOUVEAUCOMMENTAIRE= "Nouveau Commentaire";
 
-
     private $mailer;
     private $engine;
     private $tokenStorage;
@@ -40,19 +39,22 @@ class AnswerMailWorkflow implements EventSubscriber
         if (!$entity instanceof Answer){
             return;
         }
-        $user = $this->tokenStorage->getToken()->getUser()->getEmail();
-        $author = $entity->getTicket()->getFromWho()->getEmail();
-        $destinataire = $entity->getTicket()->getToWho()->getEmail();
-        $destinataireName = $entity->getTicket()->getToWho()->__toString();
+
+        $answerWriter = $this->tokenStorage->getToken()->getUser()->getEmail();
+        $ticketAuthor = $entity->getTicket()->getFromWho()->getEmail();
+        $destinataireAnswer = $entity->getTicket()->getToWho()->getEmail();
         $body = $entity->getMessage();
 
-        if($user == $author)
+
+        if($answerWriter == $ticketAuthor)
         {
-            $this->sendEmail($user, $destinataire, $body, $destinataireName);
+            $destinataireName = $entity->getTicket()->getToWho()->getFullName();
+            $this->sendEmail($answerWriter, $destinataireAnswer, $body, $destinataireName);
         }
-        elseif ($user == $destinataire)
+        elseif ($answerWriter == $destinataireAnswer)
         {
-            $this->sendEmail($user, $author, $body, $destinataireName);
+            $destinataireName = $entity->getTicket()->getFromWho()->getFullName();
+            $this->sendEmail($answerWriter, $ticketAuthor, $body, $destinataireName);
         }
 
     }
@@ -68,7 +70,6 @@ class AnswerMailWorkflow implements EventSubscriber
             ->setSubject(self::NOUVEAUCOMMENTAIRE)
             ->setFrom($auteur)
             ->setTo([$destinataire => $destinataireName])
-            ->setCc('julien.moulis@moulis.me')
             ->setBody($body);
         ;
         $this->mailer->send($message);

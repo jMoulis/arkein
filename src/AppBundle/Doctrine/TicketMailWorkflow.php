@@ -76,12 +76,12 @@ class TicketMailWorkflow implements EventSubscriber
         foreach ($coaches as $coach){
             // Fetch the coach Staff and set it by default into the array destinataires
             if($coach->getRole() == 'ROLE_STAFF'){
-                $destinataires[$coach->getEmail()] = $coach->__toString();
+                $destinataires[$coach->getEmail()] = $coach->getFullName();
             }
             foreach ($coach->getGroups() as $group){
                 // Fetch the coach's group and compare to the object ticket
                 if($group->getName() == $objet){
-                    $destinataires[$coach->getEmail()] = $coach->__toString();
+                    $destinataires[$coach->getEmail()] = $coach->getFullName();
                 }
             }
         }

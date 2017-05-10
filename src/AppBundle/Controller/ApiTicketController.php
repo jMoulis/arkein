@@ -19,27 +19,21 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 class ApiTicketController extends BaseController
 {
 
+
     /**
-     * @Route("api/tickets/created", name="api_ticket_created_list", options={"expose" = true})
+     * @Route("api/tickets/created",
+     *     name="api_ticket_created_list",
+     *     options={"expose" = true})
      * @Method("GET")
      */
     public function ticketCreatedAction()
     {
         $em = $this->getDoctrine()->getManager();
         $user = $this->getUser();
-        if ($user->getRole() !== 'ROLE_ADMIN')
-        {
-            $tickets = $em->getRepository('AppBundle:Ticket')
-                ->findBy([
-                    'fromWho' => $user,
-                    'statut' => 1
-                ]);
-        } else {
-            $tickets = $em->getRepository('AppBundle:Ticket')
-                ->findBy([
-                    'statut' => 1
-                ]);
-        }
+        $tickets = $em->getRepository('AppBundle:Ticket')->findBy([
+            'fromWho' => $user,
+            'statut' => 1
+        ]);
         $models = [];
         foreach ($tickets as $ticket) {
             $models[] = $this->createTicketApiModel($ticket);
@@ -50,26 +44,19 @@ class ApiTicketController extends BaseController
     }
 
     /**
-     * @Route("api/tickets/attributed", name="api_ticket_attributed_list", options={"expose" = true})
+     * @Route("api/tickets/attributed",
+     *     name="api_ticket_attributed_list",
+     *     options={"expose" = true})
      * @Method("GET")
      */
     public function ticketAttributeAction()
     {
         $em = $this->getDoctrine()->getManager();
         $user = $this->getUser();
-        if ($user->getRole() !== 'ROLE_ADMIN')
-        {
-            $tickets = $em->getRepository('AppBundle:Ticket')
-                ->findBy([
-                    'toWho' => $user,
-                    'statut' => 1
-                ]);
-        } else {
-            $tickets = $em->getRepository('AppBundle:Ticket')
-                ->findBy([
-                    'statut' => 1
-                ]);
-        }
+        $tickets = $em->getRepository('AppBundle:Ticket')->findBy([
+            'toWho' => $user,
+            'statut' => 1
+        ]);
         $models = [];
         foreach ($tickets as $ticket) {
             $models[] = $this->createTicketApiModel($ticket);
@@ -82,7 +69,9 @@ class ApiTicketController extends BaseController
 
 
     /**
-     * @Route("api/ticket/edit", name="api_ticket_edit", options={"expose" = true})
+     * @Route("api/ticket/edit",
+     *     name="api_ticket_edit",
+     *     options={"expose" = true})
      * @Method("POST")
      */
     public function editAction(Request $request)
@@ -99,7 +88,7 @@ class ApiTicketController extends BaseController
                 $params = json_decode($content, true);
                 $ticket = $em->getRepository('AppBundle:Ticket')->findOneBy(['id' => $params['id']]);
                 $ticket->setStatut($params['statut']);
-                dump($params);
+
                 $em->persist($ticket);
                 $em->flush();
             }
@@ -134,9 +123,9 @@ class ApiTicketController extends BaseController
         $model->id = $ticket->getId();
         $model->date = $ticket->getDate()->format('d-M-y');
         $model->message = $ticket->getMessage();
-        $model->auteur = $ticket->getFromWho()->__toString();
+        $model->auteur = $ticket->getFromWho()->getFullName();
         $model->reponses = count($ticket->getAnswers());
-
+        $model->destinataire = $ticket->getToWho()->getFullName();
         $model->niveau = $ticket->getLevel();
 
         $selfUrl = $this->generateUrl(

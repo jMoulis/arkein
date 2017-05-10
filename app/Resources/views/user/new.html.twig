@@ -1,7 +1,50 @@
 {% extends ':App:layout.html.twig' %}
 {% block body %}
     <h1>Nouveau membre</h1>
-    {{ include(':App:_formNew.html.twig') }}
+    {{ form_start(form) }}
+        {{ form_row(form.name) }}
+        {{ form_row(form.firstname) }}
+        {{ form_row(form.email) }}
+        {{ form_row(form.plainPassword) }}
+        {{ form_row(form.titre) }}
+        {{ form_row(form.role) }}
+
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                {{ form_label(form.youngsters, 'Jeunes', {
+                    'attr': {
+                        'class': 'control-label'
+                    }
+                }) }}
+                {{ form_errors(form.youngsters) }}
+                {{ form_widget(form.youngsters, {
+                    'attr': {
+                        'class': 'form-control'
+                    }
+                }) }}
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                {{ form_label(form.youngsters, 'Groupe', {
+                    'attr': {
+                        'class': 'control-label'
+                    }
+                }) }}
+                {{ form_errors(form.groups) }}
+                {{ form_widget(form.groups, {
+                    'attr': {
+                        'class': 'form-control'
+                    }
+                }) }}
+            </div>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary" formnovalidate>Save</button>
+
+    {{ form_end(form) }}
+
 {% endblock %}
 
 {% block footer %}

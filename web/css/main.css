@@ -62,3 +62,8 @@ body >.container {
 #map {
     height: 300px;
 }
+
+.answer{
+    border: 1px lightgray solid;
+    padding: 1rem;
+}

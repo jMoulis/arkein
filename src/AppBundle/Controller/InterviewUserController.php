@@ -18,65 +18,6 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 class InterviewUserController extends BaseController
 {
     /**
-     * Lists all $interviewUser entities.
-     *
-     * @Route("/", name="interviewuser_index")
-     * @Method("GET")
-     */
-    public function indexAction()
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $interviewUsers = $em->getRepository('AppBundle:InterviewUser')->findAll();
-
-        return $this->render('interviewuser/index.html.twig', array(
-            'interviewUsers' => $interviewUsers,
-        ));
-    }
-
-    /**
-     * Creates a new $interviewUser entity.
-     *
-     * @Route("/new", name="interviewuser_new")
-     * @Method({"GET", "POST"})
-     */
-    public function newAction(Request $request)
-    {
-        $interviewUser = new Interviewuser();
-        $form = $this->createForm('AppBundle\Form\InterviewUserType', $interviewUser);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($interviewUser);
-            $em->flush();
-
-            return $this->redirectToRoute('interviewuser_show', array('id' => $interviewUser->getId()));
-        }
-
-        return $this->render(':interviewuser:new.html.twig', array(
-            '$interviewUser' => $interviewUser,
-            'form' => $form->createView(),
-        ));
-    }
-
-    /**
-     * Finds and displays a $interviewUser entity.
-     *
-     * @Route("/{id}", name="interviewuser_show")
-     * @Method("GET")
-     */
-    public function showAction(InterviewUser $interviewUser)
-    {
-        $deleteForm = $this->createDeleteForm($interviewUser);
-
-        return $this->render('interviewuser/show.html.twig', array(
-            '$interviewUser' => $interviewUser,
-            'delete_form' => $deleteForm->createView(),
-        ));
-    }
-
-    /**
      * Displays a form to edit an existing $interviewUser entity.
      *
      * @Route("api/{id}/edit", name="api_interviewuser_edit",
@@ -129,42 +70,6 @@ class InterviewUserController extends BaseController
         );
 
         return $response;
-    }
-
-    /**
-     * Deletes a $interviewUser entity.
-     *
-     * @Route("/{id}", name="interviewuser_delete")
-     * @Method("DELETE")
-     */
-    public function deleteAction(Request $request, InterviewUser $interviewUser)
-    {
-        $form = $this->createDeleteForm($interviewUser);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($interviewUser);
-            $em->flush();
-        }
-
-        return $this->redirectToRoute('interviewuser_index');
-    }
-
-    /**
-     * Creates a form to delete a $interviewUser entity.
-     *
-     * @param InterviewUser $interviewUser The $interviewUser entity
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createDeleteForm(InterviewUser $interviewUser)
-    {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('interviewuser_delete', array('id' => $interviewUser->getId())))
-            ->setMethod('DELETE')
-            ->getForm()
-        ;
     }
 
     private function createInterviewUserApiModel(InterviewUser $interviewUser)

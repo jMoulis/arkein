@@ -46,7 +46,7 @@ class ApiDocumentController extends BaseController
     /**
      * Creates a new document entity.
      *
-     * @Route("/new/{user}/", name="document_new")
+     * @Route("/api/new/{user}/", name="document_new")
      * @Method({"GET", "POST"})
      */
     public function newAction(Request $request, User $user)
@@ -61,7 +61,7 @@ class ApiDocumentController extends BaseController
             $document->setAuthor($this->getUser());
             $document->setDestinataire($user);
             $em->persist($document);
-            $em->flush($document);
+            $em->flush();
 
             return $this->redirectToRoute('user_show', ['id' => $user->getId()]);
         }
@@ -79,7 +79,7 @@ class ApiDocumentController extends BaseController
 
 
     /**
-     * @Route("api/doc/{id}", name="api_document_show")
+     * @Route("/api/doc/{id}", name="api_document_show")
      * @Method("GET")
      */
     public function showAction(Document $document)
@@ -90,7 +90,7 @@ class ApiDocumentController extends BaseController
     }
 
     /**
-     * @Route("api/doc/edit", name="api_document_edit", options={"expose" = true})
+     * @Route("/api/doc/edit", name="api_document_edit", options={"expose" = true})
      * @Method("POST")
      */
     public function editDocument(Request $request)
@@ -118,9 +118,8 @@ class ApiDocumentController extends BaseController
     }
 
     /**
-     * @Route("api/doc/{id}", name="api_document_delete")
+     * @Route("/api/doc/{id}", name="api_document_delete")
      * @Method("DELETE")
-     * @Security("has_role('ROLE_ADMIN')")
      */
     public function deleteDocumentAction(Document $document)
     {
@@ -146,7 +145,7 @@ class ApiDocumentController extends BaseController
         $model->fileTemporary = $document->getFileTemporary();
 
         $selfUrl = $this->generateUrl(
-            'doc_show',
+            'api_document_show',
             ['id' => $document->getId()]
         );
         $model->addLink('_self', $selfUrl);

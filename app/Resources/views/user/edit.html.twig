@@ -81,52 +81,57 @@
         <button class="btn btn-success js-add-address" type="button">+</button><span> Ajouter une adresse</span>
     </div>
     <br/>
-
-    {% if is_granted('ROLE_ADMIN') %}
-        {{ form_row(edit_form.coach) }}
-        {{ form_row(edit_form.groups) }}
-        {% do edit_form.coach.setRendered() %}
-            {{ form_row(edit_form.role) }}
-            {{ form_row(edit_form.isActive) }}
-    {% else %}
-        {% do edit_form.coach.setRendered() %}
-        {% do edit_form.role.setRendered() %}
-        {% do edit_form.isActive.setRendered() %}
+    {% if (user.role != 'ROLE_YOUNGSTER') %}
+        {{ form_row(edit_form.titre) }}
     {% endif %}
+    {% do edit_form.titre.setRendered() %}
+    {{ form_row(edit_form.role) }}
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                {{ form_label(edit_form.coach, 'Coach', {
+                    'attr': {
+                        'class': 'control-label'
+                    }
+                }) }}
+                {{ form_errors(edit_form.coach) }}
+                {{ form_widget(edit_form.coach, {
+                    'attr': {
+                        'class': 'form-control'
+                    }
+                }) }}
+            </div>
+        </div>
 
-
-
-
+        {# Je n'affiche pas la case Role si l'utilisateur edité est un jeune #}
+        {% if (user.role != 'ROLE_YOUNGSTER') %}
+        <div class="col">
+            <div class="form-group">
+                {{ form_label(edit_form.coach, 'Groupe', {
+                    'attr': {
+                        'class': 'control-label'
+                    }
+                }) }}
+                {{ form_errors(edit_form.groups) }}
+                {{ form_widget(edit_form.groups, {
+                    'attr': {
+                        'class': 'form-control'
+                    }
+                }) }}
+            </div>
+        </div>
+        {% endif %}
+        {% do edit_form.groups.setRendered() %}
+    </div>
+    {{ form_row(edit_form.isActive, {
+        'label': 'Activer/Désactiver'
+    }) }}
     {# Avoid seeing the colelction title #}
     {{ form_widget((edit_form.phoneNumbers)) }}
     {{ form_widget((edit_form.addresses)) }}
 
     <button type="submit" class="btn btn-primary" formnovalidate>Save</button>
-    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Supprimer</button>
-
     {{ form_end(edit_form) }}
-
-    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteLongTitle" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deleteLongTitle">Confirmation Suppression</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    {{ form_start(delete_form) }}
-                    <p>Attention, vous êtes sur le point de supprimer une entrée</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                    <input type="submit" class="btn btn-danger" value="Supprimer" />
-                </div>
-                {{ form_end(delete_form) }}
-            </div>
-        </div>
-    </div>
 
 {% endblock %}
 
@@ -138,17 +143,17 @@
     <script src="{{ asset('js/add-remove-collectionType.js') }}"></script>
     <script>
         jQuery(document).ready(function () {
-            var $wrapperPhone = $('.js-phone-wrapper');
-            var $addPhone = '.js-add-phone';
-            var $removePhone = '.js-remove-phone';
-            var $phoneItem = '.js-phone-item';
+            const $wrapperPhone = $('.js-phone-wrapper');
+            const $addPhone = '.js-add-phone';
+            const $removePhone = '.js-remove-phone';
+            const $phoneItem = '.js-phone-item';
 
             actionPhone($wrapperPhone, $addPhone, $removePhone, $phoneItem);
 
-            var $wrapperAddress = $('.js-address-wrapper');
-            var $addAddress = '.js-add-address';
-            var $removeAddress = '.js-remove-address';
-            var $addressItem = '.js-address-item';
+            const $wrapperAddress = $('.js-address-wrapper');
+            const $addAddress = '.js-add-address';
+            const $removeAddress = '.js-remove-address';
+            const $addressItem = '.js-address-item';
 
             actionPhone($wrapperAddress, $addAddress, $removeAddress, $addressItem);
         });

@@ -19,9 +19,8 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class ApiUserController extends BaseController
 {
-
+/*TODO Afficher le staff pour les externes*/
     /**
-     *
      * @Route("/api/youngs/", name="young_list", options={"expose" = true})
      * @Method("GET")
      */
@@ -30,14 +29,14 @@ class ApiUserController extends BaseController
         if($this->getUser()->getRole() === 'ROLE_ADMIN')
         {
             $users = $this->getDoctrine()->getRepository('UserBundle:User')
-                ->findAll();
-
+                ->findBy([
+                    'isActive' => 1
+                ]);
         } else {
             $users = $this->getDoctrine()->getRepository('UserBundle:User')
                 ->findMyYoungsters($this->getUser())->getQuery()->execute();
 
         }
-
         $models = [];
         foreach ($users as $user) {
             $models[] = $this->createUserApiModel($user);
@@ -66,7 +65,7 @@ class ApiUserController extends BaseController
     }
 
     /**
-     * @Route("api/user/edit", name="api_user_edit", options={"expose" = true})
+     * @Route("api/user/{id}/edit", name="api_user_edit", options={"expose" = true})
      * @Method("POST")
      */
     public function editUser(Request $request)
@@ -117,7 +116,7 @@ class ApiUserController extends BaseController
         $model->id = $user->getId();
         $model->name = $user->getName();
         $model->firstname = $user->getFirstname();
-        $model->fullname = $user->__toString();
+        $model->fullname = $user->getFullName();
         $model->email = $user->getEmail();
         $model->role = $user->getRole();
 

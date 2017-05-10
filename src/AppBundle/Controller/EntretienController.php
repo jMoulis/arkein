@@ -281,11 +281,6 @@ class EntretienController extends BaseController
         $guestsToRemove = array_diff($existingGuests, $newGuests);
         $guestsToAdd = array_diff($newGuests, $existingGuests);
 
-        $entretien->setObjet($dataFormEntretien['objet']);
-        $entretien->setCompteRendu($dataFormEntretien['compteRendu']);
-
-
-
         if(!empty($newGuests)){
             /*
              * I add guests
@@ -317,11 +312,10 @@ class EntretienController extends BaseController
         }
 
         $date = new \DateTime(($dataFormEntretien['date']));
-
-
         $entretien->setDate($date);
-
-        $entretien->getYoung($dataFormEntretien['young']);
+        $entretien->setObjet($dataFormEntretien['objet']);
+        $entretien->setCompteRendu($dataFormEntretien['compteRendu']);
+        $entretien->setYoung($dataFormEntretien['young']);
 
         $em->persist($entretien);
         $em->flush();
@@ -385,14 +379,14 @@ class EntretienController extends BaseController
         $model->date = $entretien->getDate()->format('d/m/Y');
         foreach ($entretien->getInterviewGuests() as $interviewGuest) {
             $model->guests[] = [
-                'name' => $interviewGuest->__toString(),
+                'name' => $interviewGuest->getUser()->getFullName(),
                 'id' => $interviewGuest->getId(),
                 'status' => $interviewGuest->getStatus()
             ];
         }
-        $model->author = $entretien->getAuthor()->__toString();
+        $model->author = $entretien->getAuthor()->getFullName();
         $model->authorId = $entretien->getAuthor()->getId();
-        $model->young = $entretien->getYoung()->__toString();
+        $model->young = $entretien->getYoung()->getFullName();
         $model->youngId = $entretien->getYoung()->getId();
 
         $selfUrl = $this->generateUrl(

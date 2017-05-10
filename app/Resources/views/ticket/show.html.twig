@@ -1,18 +1,15 @@
 {% extends ':dashboard:dashboard.html.twig' %}
 
 {% block dashcontent %}
-    <h1>Détail demande</h1>
+    <h1 data-id="{{ ticket.id }}">Détail demande</h1>
     <a href="{{ path('ticket_index') }}">Back to the list</a>
-
-
-
     <div class="media">
         <div class="media-body">
             <div class="message">
-                <p>
+                <div>
                     <h5 class="mt-0">{{ ticket.fromWho.name }} {{ ticket.fromWho.firstname }}</h5>
                     <em>posté le {{ ticket.date|date('d/m/Y') }}</em>
-                </p>
+                </div>
                 <span>Message</span>
                 <p>{{ ticket.message }}</p>
                 {% if is_granted('ROLE_ADMIN') %}
@@ -21,11 +18,16 @@
                 </button>
                 {% endif %}
             </div>
-            <div>{{ render(controller('AppBundle:Ticket:newAnswer', { 'id': ticket.id })) }}</div>
-            <div class="answer"></div>
+            <div class="js-form-answer-wrapper">
+                {{ include('ticket/_new_Answer_form.html.twig') }}
+            </div>
+            <div class="js-answer-wrapper">
+
+            </div>
         </div>
     </div>
 
+    {# Modal pour confirmer la clôture#}
     <!-- Modal -->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -50,30 +52,12 @@
     <script src="{{ asset('js/api/AnswerApp.js') }}"></script>
     <script src="{{ asset('js/api/TicketAppCreated.js') }}"></script>
     <script>
-        const $wrapper = $('.answer');
+        const $wrapper = $('.js-form-answer-wrapper');
         const answerApp = new AnswerApp($wrapper);
 
-        const $form = $('.modal-body form');
-        const idTicket = $('.modal-body').find('div').data('id');
-
-        $form.on('submit', function (e) {
-            let statutValue = $('#appbundle_ticket_statut.form-control').val();
-            e.preventDefault();
-            $.ajax({
-                url: Routing.generate('api_ticket_edit'),
-                method: 'POST',
-                data: JSON.stringify({statut: statutValue, id: idTicket}),
-                success: function (data) {
-                    $(".modal").modal("hide");
-                },
-                error: function (jqXHR) {
-                    console.log(jqXHR.responseText);
-                }
-            })
-        });
     </script>
     <script type="text/template" id="js-answer-template">
-        <div class="media mt-3">
+        <div class="media mt-3 answer">
             <div class="media-body">
                 <h5 class="mt-0"><%= auteur %></h5>
                 <em> posté le <%= date %></em>

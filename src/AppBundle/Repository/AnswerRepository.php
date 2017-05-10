@@ -10,9 +10,11 @@ namespace AppBundle\Repository;
  */
 class AnswerRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function findAnswerFilteredByDate()
+    public function findAnswerOrderedByDate($ticket)
     {
         return $this->createQueryBuilder('answer')
+            ->where('answer.ticket = :ticket')
+            ->setParameter('ticket', $ticket)
             ->orderBy('answer.dateCreated', 'DESC')
             ->getQuery()
             ->execute()

@@ -82,7 +82,7 @@ class EntretienMailWorkflow implements EventSubscriber
         $destinataires = [];
 
         foreach ($guests as $guest){
-            $destinataires[$guest->getUser()->getEmail()] = $guest->__toString();
+            $destinataires[$guest->getUser()->getEmail()] = $guest->getUser()->getFullName();
         }
         return $destinataires;
     }

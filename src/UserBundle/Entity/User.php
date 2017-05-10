@@ -10,7 +10,6 @@ namespace UserBundle\Entity;
 
 use AppBundle\Entity\Address;
 use AppBundle\Entity\Answer;
-use AppBundle\Entity\InterviewUser;
 use AppBundle\Entity\Phone;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -35,12 +34,14 @@ class User implements UserInterface
     private $id;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @Assert\NotBlank()
+     * @ORM\Column(type="string")
      */
     private $name;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @Assert\NotBlank()
+     * @ORM\Column(type="string")
      */
     private $firstname;
 
@@ -118,6 +119,12 @@ class User implements UserInterface
      */
     private $guestInterviews;
 
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $titre;
+
     /**
      * Constructor
      */
@@ -129,7 +136,7 @@ class User implements UserInterface
         $this->youngsters = new ArrayCollection();
         $this->documents = new ArrayCollection();
         $this->guestInterviews = new ArrayCollection();
-        $this->isActive = false;
+        $this->isActive = true;
     }
 
     /**
@@ -193,6 +200,11 @@ class User implements UserInterface
     }
 
     public function __toString()
+    {
+        return (string) $this->firstname .', '. $this->name.' - '. $this->titre;
+    }
+
+    public function getFullName()
     {
         return (string) $this->firstname .', '. $this->name;
     }
@@ -331,6 +343,23 @@ class User implements UserInterface
     {
         $this->isActive = $isActive;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getTitre()
+    {
+        return $this->titre;
+    }
+
+    /**
+     * @param mixed $titre
+     */
+    public function setTitre($titre)
+    {
+        $this->titre = $titre;
+    }
+
 
     /**
      * Add answer
@@ -500,8 +529,6 @@ class User implements UserInterface
     {
         return $this->youngsters;
     }
-
-
 
     /**
      * Get guestInterviews

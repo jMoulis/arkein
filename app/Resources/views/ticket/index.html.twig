@@ -26,6 +26,7 @@
                         <tr>
                             <th>Date</th>
                             <th>Auteur</th>
+                            <th>Destinataire</th>
                             <th>Message</th>
                             <th>Niveau</th>
                             <th>Commentaires</th>
@@ -43,6 +44,7 @@
                     <tr>
                         <th>Date</th>
                         <th>Auteur</th>
+                        <th>Destinataire</th>
                         <th>Message</th>
                         <th>Niveau</th>
                         <th>Commentaires</th>
@@ -59,14 +61,11 @@
     {{ parent() }}
     <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
     <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
-    <script src="{{ asset('js/api/TicketAppCreated.js') }}"></script>
+    <script src="{{ asset('js/api/TicketApp.js') }}"></script>
     <script src="{{ asset('js/api/TicketAppAttribution.js') }}"></script>
     <script>
         const $wrapperCreatedTicket = $('.js-main-content-created');
-        const ticketApp = new TicketAppCreated($wrapperCreatedTicket);
-
-        const $wrapperAttributedTicket = $('.js-main-content-attribution');
-        const ticketAppAttributed = new TicketAppAttribution($wrapperAttributedTicket);
+        const ticketApp = new TicketApp($wrapperCreatedTicket);
     </script>
 
     {# Template pour les users:
@@ -76,6 +75,7 @@
         <tr>
             <td><%= date %></td>
             <td><%= auteur %></td>
+            <td><%= destinataire %></td>
             <td><%= message %></td>
             <td>
             <% if (niveau == 'urgent') { %>

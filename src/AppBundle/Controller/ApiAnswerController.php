@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Api\AnswerApiModel;
 use AppBundle\Entity\Answer;
 use AppBundle\Entity\Ticket;
+use AppBundle\Form\AnswerType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,19 +19,18 @@ class ApiAnswerController extends BaseController
 {
 
     /**
-     * @Route("api/answers/list", name="api_answer_list", options={"expose" = true})
+     * @Route("api/answers/{id}/list", name="api_answer_list", options={"expose" = true})
      * @Method("GET")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        /*TODO Find the ticket number to display the right answers*/
+        $ticketId = $request->attributes->get('id');
+
         $em = $this->getDoctrine()->getManager();
-        $answers = $em->getRepository('AppBundle:Answer')->findBy([
-            'ticket' => 230
-        ]);
-
+        $answers = $em->getRepository('AppBundle:Answer')
+                ->findAnswerOrderedByDate($em->getRepository('AppBundle:Ticket')
+                ->find($ticketId));
         $models = [];
-
         foreach ($answers as $answer) {
             $models[] = $this->createAnswerApiModel($answer);
         }
@@ -40,19 +40,21 @@ class ApiAnswerController extends BaseController
     }
 
     /**
-     * @Route("api/answers/new/", name="api_answer_new", options={"expose" = true})
+     * @Route("api/answers/{id}/new/",
+     *     name="api_answer_new",
+     *     options={"expose" = true})
      * @Method("POST")
      */
     public function newAnswerAction(Request $request)
     {
-
         /* $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');*/
         $data = json_decode($request->getContent(), true);
+        $ticketId = $request->attributes->get('id');
 
         if ($data === null) {
             throw new BadRequestHttpException('Invalid JSON');
         }
-        $form = $this->createForm(Answer::class, null, [
+        $form = $this->createForm(AnswerType::class, null, [
             'csrf_protection' => false,
         ]);
         $form->submit($data);
@@ -67,7 +69,8 @@ class ApiAnswerController extends BaseController
         /** @var Answer $answer */
         $answer = $form->getData();
         $em = $this->getDoctrine()->getManager();
-
+        $answer->setUser($this->getUser());
+        $answer->setTicket($em->getRepository('AppBundle:Ticket')->find($ticketId));
         $em->persist($answer);
         $em->flush();
 
@@ -93,7 +96,7 @@ class ApiAnswerController extends BaseController
         $model->id = $answer->getId();
         $model->date = $answer->getDateCreated()->format('d-M-y');
         $model->message = $answer->getMessage();
-        $model->auteur = $answer->getUser()->__toString();
+        $model->auteur = $answer->getUser()->getFullName();
         return $model;
     }
 

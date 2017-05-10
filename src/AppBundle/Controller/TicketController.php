@@ -34,6 +34,8 @@ class TicketController extends Controller
         return $this->render('ticket/index.html.twig');
     }
 
+
+    /*TODO: Display coach list instead of young list for youngster*/
     /**
      * Creates a new ticket entity.
      *
@@ -72,7 +74,7 @@ class TicketController extends Controller
             }
 
             $em->persist($ticket);
-            $em->flush($ticket);
+            $em->flush();
 
             return $this->redirectToRoute('ticket_show', array('id' => $ticket->getId()));
         }
@@ -138,7 +140,7 @@ class TicketController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($ticket);
-            $em->flush($ticket);
+            $em->flush();
         }
 
         return $this->redirectToRoute('ticket_index');
@@ -158,33 +160,5 @@ class TicketController extends Controller
             ->setMethod('DELETE')
             ->getForm()
         ;
-    }
-
-    /**
-     * @Route("answer/{id}/new", name="answer_new")
-     * @Method("POST")
-     */
-    public function newAnswerAction(Request $request, Ticket $ticket)
-    {
-        $form = $this->createForm(AnswerType::class);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            /** @var Answer $answer */
-
-            $answer = $form->getData();
-            $answer->setTicket($ticket);
-            $answer->setUser($this->getUser());
-
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($answer);
-            $em->flush();
-
-            return $this->redirectToRoute('ticket_show', ['id' => $ticket->getId()]);
-        }
-        return $this->render('ticket/comment_form_error.html.twig', [
-            'ticket' => $ticket,
-            'form' => $form->createView(),
-        ]);
     }
 }

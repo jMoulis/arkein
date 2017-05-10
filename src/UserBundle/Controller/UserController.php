@@ -23,11 +23,9 @@ class UserController extends Controller
 {
     /**
      * @Route("/", name="user_index")
-     *
      */
     public function indexAction(Request $request)
     {
-        //@Security("has_role('ROLE_STAFF') or has_role('ROLE_ADMIN')")
         $users = $this->getDoctrine()->getRepository('UserBundle:User')->findAll();
         return $this->render('user/index.html.twig', [
             'users' => $users
@@ -81,7 +79,7 @@ class UserController extends Controller
             $document->setDestinataire($this->getUser());
 
             $em->persist($document);
-            $em->flush($document);
+            $em->flush();
 
             return $this->redirectToRoute('user_show', array('id' => $user->getId()));
         }
@@ -100,7 +98,7 @@ class UserController extends Controller
     /**
      * @Route("/{id}/edit", name="user_edit")
      * @Method({"GET", "POST"})
-     *
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function editAction(Request $request, User $user)
     {
@@ -140,7 +138,7 @@ class UserController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($user);
-            $em->flush($user);
+            $em->flush();
         }
 
         return $this->redirectToRoute('dashboard');
@@ -161,42 +159,4 @@ class UserController extends Controller
             ->getForm()
             ;
     }
-
-    /**
-     * @Route("/json", name="json_user",
-     *     options={"expose" = true}
-     *     )
-     *
-     */
-    /*public function jsonData()
-    {
-        $coach = $this->get('security.token_storage')->getToken()->getUser();
-
-        $em = $this->getDoctrine()->getManager();
-
-        //If admin is connected, he can view all the users
-        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN'))
-        {
-            $users = $em->getRepository('UserBundle:User')
-                ->findYoungsterByCoach($coach)->getQuery()->execute();
-        } else {
-            $users = $em->getRepository('UserBundle:User')
-                ->findAll();
-        }
-
-        $listUsers = [];
-        $i = 0;
-
-        foreach ($users as $user)
-        {
-            $listUsers[$i]['id'] = $user->getId();
-            $listUsers[$i]['firstname'] = $user->getFirstname();
-            $listUsers[$i]['name'] = $user->getName();
-            $listUsers[$i]['email'] = $user->getEmail();
-            $listUsers[$i]['role'] = $user->getRole();
-            $i++;
-        }
-
-        return new JsonResponse(['data' => $listUsers]);
-    }*/
 }

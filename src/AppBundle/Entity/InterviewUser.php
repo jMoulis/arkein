@@ -113,9 +113,4 @@ class InterviewUser
     {
         $this->user = $user;
     }
-
-    public function __toString()
-    {
-        return $this->getUser()->__toString();
-    }
 }

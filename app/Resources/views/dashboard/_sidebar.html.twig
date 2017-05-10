@@ -6,17 +6,18 @@
         <li class="nav-item">
             <a class="nav-link" href="{{ path('user_index') }}">Membres</a>
         </li>
-        {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_STAFF') %}
-
+        {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_STAFF') or is_granted('ROLE_EXTERNAL') %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('entretien_index') }}">Entretiens</a>
+            </li>
         {% endif %}
-        <li class="nav-item">
-            <a class="nav-link" href="{{ path('ticket_index') }}">Tickets</a>
-        </li>
+        {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_STAFF') %}
         <li class="nav-item">
             <a class="nav-link" href="{{ path('event_index') }}">Evènements</a>
         </li>
+        {% endif %}
         <li class="nav-item">
-            <a class="nav-link" href="{{ path('entretien_index') }}">Entretiens</a>
+            <a class="nav-link" href="{{ path('ticket_index') }}">Tickets</a>
         </li>
     </ul>
 </nav>

@@ -47,21 +47,22 @@
 
         handleNewFormSubmit: function (e) {
             e.preventDefault();
+            const ticketId = $('h1').data('id');
             const $form = $(e.currentTarget);
             const self = this;
-
             let formData = {};
+
             $.each($form.serializeArray(), function (key, fieldData) {
                 formData[fieldData.name] = fieldData.value;
             });
 
             $.ajax({
-                url: $form.data('url'),
+                url: Routing.generate('api_answer_new', {id: ticketId}),
                 method: 'POST',
                 data: JSON.stringify(formData),
                 success: function (data) {
                     self._clearForm();
-                    console.log('Nouveau'+ data);
+                    self._addNewDiv(data);
                 },
                 error: function (jqXHR) {
                     const errorData = JSON.parse(jqXHR.responseText);
@@ -72,12 +73,13 @@
 
         loadAnswers: function () {
             const self = this;
+            const ticketId = $('h1').data('id');
+
             $.ajax({
-                url: Routing.generate('api_answer_list'),
+                url: Routing.generate('api_answer_list', {id: ticketId}),
                 success: function (data) {
                     $.each(data.items, function (key, answer) {
-                        console.log(answer);
-                        self._addDiv(answer);
+                        self._addListDiv(answer);
                     })
                 },
                 error: function (jqXHR) {
@@ -117,11 +119,18 @@
 
         },
 
-        _addDiv: function (answer) {
+        _addListDiv: function (answer) {
             const tplText = $('#js-answer-template').html();
             const tpl = _.template(tplText);
             const html = tpl(answer);
-            this.$wrapper.append($.parseHTML(html));
+            $('.js-answer-wrapper').append($.parseHTML(html));
+        },
+
+        _addNewDiv: function (answer) {
+            const tplText = $('#js-answer-template').html();
+            const tpl = _.template(tplText);
+            const html = tpl(answer);
+            $('.js-answer-wrapper').prepend($.parseHTML(html));
         }
 
     });

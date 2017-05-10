@@ -217,6 +217,7 @@
                     $('#loading').hide();
                     if(data.item.authorId !== user){
                         self._addEditForm(data.item, tplTextNonLoggedIn);
+                        self._loadStatusUpdateForm(data.item);
                     } else {
                         self._addEditForm(data.item, tplTextLoggedIn);
                         self.loadUsers();
@@ -303,7 +304,7 @@
             const html = tpl(entretien);
             this.$wrapper.find(this._selector.editModalBody).append($.parseHTML(html));
             this.$wrapper.find(this._selector.editModalFooter).html('');
-            self._loadStatusUpdateForm(entretien);
+
         },
 
         _addInterviewsRow: function (entretien) {

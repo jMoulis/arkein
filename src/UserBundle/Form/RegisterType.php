@@ -9,6 +9,7 @@
 namespace UserBundle\Form;
 
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -21,6 +22,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use UserBundle\Entity\User;
+use UserBundle\Repository\UserRepository;
 
 class RegisterType extends AbstractType
 {
@@ -46,8 +48,8 @@ class RegisterType extends AbstractType
                     'label' => 'Confirmation'
                 ],
                 'invalid_message' => 'Les mots de passes ne correspondent pas'
-
             ])
+            ->add('titre')
             ->add('role', ChoiceType::class,
                 [
                     'label' => 'Rôle',
@@ -63,7 +65,27 @@ class RegisterType extends AbstractType
                 'expanded' => true,
                 'multiple' => true
             ])
+            ->add('youngsters', EntityType::class, [
+                'class' => User::class,
+                'expanded' => true,
+                'multiple' => true,
+                'query_builder' => function(UserRepository $repository) {
+                    return $repository->createQueryBuilder('user')
+                        ->where('user.role = :role')
+                        ->setParameter('role', 'ROLE_YOUNGSTER');
+                }
+
+            ])
+            ->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'onPreSubmitData'))
         ;
+    }
+
+    public function onPreSubmitData(FormEvent $event)
+    {
+        if($event->getData() && $event->getData()->getId()){
+            $form = $event->getForm();
+            unset($form['plainPassword']);
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver)
