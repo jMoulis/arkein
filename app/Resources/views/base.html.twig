@@ -106,6 +106,8 @@
     {% endblock %}
         {% block javascripts %}
             <script src="{{ asset('js/third-library/jquery/jquery-3.2.1.min.js') }}"></script>
+            <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+            <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
             {% javascripts
                 'js/third-library/bootstrap4/tether.min.js'
                 'js/third-library/bootstrap4/bootstrap.min.js'
@@ -138,9 +140,7 @@
             <script src="{{ asset('js/api/EntretienApp.js') }}"></script>
             <script src="{{ asset('js/fileUploadInput.js') }}"></script>
             <script src="{{ asset('js/navTab.js') }}"></script>#}
-            <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
 
-            <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
         {% endblock %}
     </body>
 </html>
