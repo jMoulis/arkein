@@ -105,8 +105,8 @@
         </footer>
     {% endblock %}
         {% block javascripts %}
+            <script src="{{ asset('js/third-library/jquery/jquery-3.2.1.min.js') }}"></script>
             {% javascripts
-                'js/third-library/jquery/jquery-3.2.1.min.js'
                 'js/third-library/bootstrap4/tether.min.js'
                 'js/third-library/bootstrap4/bootstrap.min.js'
                 'js/third-library/underscore.js'
@@ -120,12 +120,11 @@
                 'js/api/EntretienApp.js'
                 'js/fileUploadInput.js'
                 'js/navTab.js'
-                'bundles/fosjsrouting/js/router.js'
                 output='js/compiled/compiled.js'
             %}
                 <script src="{{ asset_url }}"></script>
             {% endjavascripts %}
-            <script src="{{ asset('js/third-library/jquery/jquery-3.2.1.min.js') }}"></script>
+
             {#<script src="{{ asset('js/third-library/bootstrap4/tether.min.js') }}"></script>
             <script src="{{ asset('js/third-library/bootstrap4/bootstrap.min.js') }}"></script>
             <script src="{{ asset('js/third-library/underscore.js') }}"></script>
