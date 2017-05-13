@@ -2,9 +2,7 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    {% stylesheets 'css/app/upload-btn.css' filter="cssrewrite" output='css/compiled/compiled.css' %}
-        <link rel="stylesheet" href="{{ asset_url }}" />
-    {% endstylesheets %}
+
 {% endblock %}
 
 {% block body %}
@@ -50,16 +48,7 @@
 
 {% block javascripts %}
     {{ parent() }}
-    {% javascripts
-        'js/api/DocumentApp.js'
-        'js/api/CategoryApp.js'
-        'js/api/EntretienApp.js'
-        'js/fileUploadInput.js'
-        'js/navTab.js'
-        output='js/compiled/compiled.js'
-    %}
-    <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
+
 
     <script>
         $(document).ready(function () {

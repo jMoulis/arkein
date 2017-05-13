@@ -30,9 +30,8 @@
 
 {% block javascripts %}
     {{ parent() }}
-    {% javascripts 'js/api/TicketApp.js' output='js/compiled/compiled.js' %}
-        <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
+    <script src="{{ asset('js/api/TicketApp.js') }}"></script>
+
     <script>
         const $wrapperCreatedTicket = $('.js-main-content-created');
         const ticketApp = new TicketApp($wrapperCreatedTicket);

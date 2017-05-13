@@ -47,13 +47,7 @@
 
 {% block javascripts %}
     {{ parent() }}
-    {% javascripts
-        'js/api/AnswerApp.js'
-        'js/api/TicketApp.js'
-        output='js/compiled/compiled.js'
-        %}
-        <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
+
 
     <script>
         const $wrapper = $('.js-form-answer-wrapper');

@@ -2,10 +2,6 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    {% stylesheets 'css/widget/bootstrap-datepicker.css' filter="cssrewrite" output='css/compiled/compiled.css' %}
-        <link rel="stylesheet" href="{{ asset_url }}" />
-    {% endstylesheets %}
-
 {% endblock %}
 {% block body %}
     <h1>Nouvel entretien</h1>
@@ -14,15 +10,9 @@
 
 {% block javascripts %}
     {{ parent() }}
-    {% javascripts
-        'js/widget/bootstrap-datepicker.js'
-        'js/api/EntretienAppAuthor.js'
-        'js/api/UserApp.js'
-        output='js/compiled/compiled.js'
-    %}
-        <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
-
+    <script src="{{ asset('js/widget/bootstrap-datepicker.js') }}"></script>
+    <script src="{{ asset('js/api/EntretienAppAuthor.js') }}"></script>
+    <script src="{{ asset('js/api/UserApp.js') }}"></script>
     <script>
         const $entretienWrapper = $('.js-new-interview-form-wrapper');
         const entretienApp = new EntretienAppAuthor($entretienWrapper);

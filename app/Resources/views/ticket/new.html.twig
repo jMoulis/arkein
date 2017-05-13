@@ -34,9 +34,10 @@
         <button class="btn btn-primary" type="submit">Créer</button>
     {{ form_end(form) }}
 {% endblock %}
+
 {% block javascripts %}
     {{ parent() }}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js"></script>
+
     <script>
         jQuery(document).ready(function() {
             const $div = $('.js-wrapper-input-autre');
@@ -47,7 +48,6 @@
                 $div.append($label);
                 $div.append($input);
             }
-
 
             $('.js-datepicker').datepicker({
                 format: "dd/mm/yyyy",
