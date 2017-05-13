@@ -6,9 +6,9 @@
         <title>{% block title %}Welcome!{% endblock %}</title>
 
         {% block stylesheets %}
+            <link rel="stylesheet" href="{{ asset('css/third-library/bootstrap4/min/bootstrap.min.css') }}" />
+            <link rel="stylesheet" href="{{ asset('css/third-library/jquery/jquery-ui.min.css') }}"/>
             {% stylesheets
-                'css/third-library/bootstrap4/min/bootstrap.min.css'
-                'css/third-library/jquery/jquery-ui.min.css'
                 'css/app/upload-btn.css'
                 'css/app/bootstrap-select.min.css'
                 'css/app/dashboard.css'
@@ -23,8 +23,7 @@
             %}
                 <script src="{{ asset_url }}"></script>
             {% endstylesheets %}
-           {# <link rel="stylesheet" href="{{ asset('css/third-library/bootstrap4/min/bootstrap.min.css') }}" />
-            <link rel="stylesheet" href="{{ asset('css/third-library/jquery/jquery-ui.min.css') }}"/>
+           {#
             <link rel="stylesheet" href="{{ asset('css/app/upload-btn.css') }}" />
             <link rel="stylesheet" href="{{ asset('css/app/bootstrap-select.min.css') }}" />
             <link rel="stylesheet" href="{{ asset('css/app/dashboard.css') }}" />
