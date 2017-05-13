@@ -11,8 +11,6 @@
             {% stylesheets
                 'css/app/upload-btn.css'
                 'css/app/bootstrap-select.min.css'
-                'css/app/dashboard.css'
-                'css/app/homePage.css'
                 'css/app/main.css'
                 'css/app/login.css'
                 'css/app/security.css'
@@ -105,13 +103,13 @@
     {% endblock %}
         {% block javascripts %}
             <script src="{{ asset('js/third-library/jquery/jquery-3.2.1.min.js') }}"></script>
+            <script src="{{ asset('js/third-library/bootstrap4/tether.min.js') }}"></script>
+            <script src="{{ asset('js/third-library/bootstrap4/bootstrap.min.js') }}"></script>
+            <script src="{{ asset('js/third-library/underscore.js') }}"></script>
+            <script src="{{ asset('js/third-library/jquery/jquery-ui.min.js') }}"></script>
             <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
             <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
             {% javascripts
-                'js/third-library/bootstrap4/tether.min.js'
-                'js/third-library/bootstrap4/bootstrap.min.js'
-                'js/third-library/underscore.js'
-                'js/third-library/jquery/jquery-ui.min.js'
                 'js/widget/bootstrap-datepicker.js'
                 'js/api/UserApp.js'
                 'js/api/AnswerApp.js'
