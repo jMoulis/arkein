@@ -10,6 +10,10 @@ class CategoryApiModel
 
     public $isPrivate;
 
+    public $documents;
+
+    public $documentCount;
+
     private $links = [];
 
     public function addLink($ref, $url)

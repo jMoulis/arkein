@@ -19,7 +19,7 @@
 
         this.$wrapper.on(
             'hidden.bs.modal',
-            '#entretienModal',
+            '#editEntretienModal',
             this.emptyHtmlModalBody.bind(this)
         );
 
@@ -28,7 +28,7 @@
     $.extend(window.EntretienApp.prototype, {
         _selector: {
             newEntretienForm: '.js-new-entretien-form',
-            modalBody: '#entretienModal .modal-body'
+            modalBody: '#editEntretienModal .modal-body'
         },
 
         handleNewFormSubmit: function (e) {

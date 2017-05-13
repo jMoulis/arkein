@@ -99,33 +99,6 @@ class TicketController extends Controller
     }
 
     /**
-     * Displays a form to edit an existing ticket entity.
-     *
-     * @Route("/{id}/edit", name="ticket_edit")
-     * @Method({"GET", "POST"})
-     */
-    public function editAction(Request $request, Ticket $ticket)
-    {
-        $deleteForm = $this->createDeleteForm($ticket);
-
-        $editForm = $this->createForm('AppBundle\Form\TicketEditType', $ticket);
-        $editForm->handleRequest($request);
-
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
-
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('ticket_edit', array('id' => $ticket->getId()));
-        }
-
-        return $this->render('ticket/edit.html.twig', array(
-            'ticket' => $ticket,
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ));
-    }
-
-    /**
      * Deletes a ticket entity.
      *
      * @Route("/{id}", name="ticket_delete")

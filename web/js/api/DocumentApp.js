@@ -17,7 +17,23 @@
             this.handleNewFormSubmit.bind(this)
         );
 
-        //this.loadDocuments();
+        this.$wrapper.on(
+            'click',
+            '.card',
+            this.sortingFile.bind(this)
+        );
+
+        this.$wrapper.on(
+            'hidden.bs.modal',
+            '#modalAddDoc',
+            this._clearForm.bind(this)
+        );
+
+        this.$wrapper.on('click',
+            '.js-new-doc-btn',
+            this.setSelectedValue.bind(this)
+        );
+
     };
 
     $.extend(window.DocumentApp.prototype, {
@@ -28,10 +44,10 @@
         handleDocumentDelete: function (e) {
             e.preventDefault();
             const $link = $(e.currentTarget);
-
+            const idDoc = $(e.currentTarget).closest('tr').data('id');
             $link.addClass('text-danger');
 
-            const deleteUrl =  $link.data('url');
+            const deleteUrl =  Routing.generate('api_document_delete', {id: idDoc});
             const $row =  $link.closest('tr');
             const self = this;
 
@@ -40,7 +56,11 @@
                 method: 'DELETE',
                 success: function () {
                     $row.fadeOut('normal', function () {
+                        let totalDocReceiver = Number($(this).closest('ul').find('.js-total-doc-categorie').text());
+                        totalDocReceiver = totalDocReceiver - 1;
+                        $link.closest('ul').find('.js-total-doc-categorie').text(totalDocReceiver);
                         $(this).remove();
+
                     });
                 }
             })
@@ -51,19 +71,23 @@
             const $form = $(e.currentTarget);
             const self = this;
 
-            const formData = {};
-            $.each($form.serializeArray(), function (key, fieldData) {
-                formData[fieldData.name] = fieldData.value;
-            });
+            let formData = new FormData($form[0]);
 
             $.ajax({
                 url: $form.data('url'),
                 method: 'POST',
-                data: JSON.stringify(formData),
+                data: formData,
+                processData: false,
+                contentType: false,
                 success: function (data) {
-                    console.log('success');
-                    /*self._clearForm();*/
-                    self._addRow(data);
+                    $('#modalAddDoc').modal('hide');
+                    const $wrapper = $('tbody#tbody_'+ data.categories + '');
+                    self._addNewDoc(data, $wrapper);
+                    self._clearForm();
+
+                    let totalDocReceiver = Number($wrapper.closest('ul').find('.js-total-doc-categorie').text());
+                    totalDocReceiver = totalDocReceiver + 1;
+                    $wrapper.closest('ul').find('.js-total-doc-categorie').text(totalDocReceiver);
                 },
                 error: function (jqXHR) {
                     const errorData = JSON.parse(jqXHR.responseText);
@@ -72,16 +96,41 @@
             })
         },
 
-        loadDocuments: function () {
-            const self = this;
-            $.ajax({
-                url: Routing.generate('document_list'),
-                success: function (data) {
-                    $.each(data.items, function (key, document) {
-                        self._addRow(document);
+        sortingFile: function(){
+            $(".sortable").sortable({
+                connectWith: ".connectedSortable",
+                items: "tr:not(.notSortable)",
+                receive: function (e, ui) {
+                    const self = this;
+                    const idCat = ($(self)[0].id.match(/\d+/));
+                    const id = $(ui.item)[0].id;
+
+                    let totalDocReceiver = Number($(self).closest('ul').find('.js-total-doc-categorie').text());
+                    $.ajax({
+                        url: Routing.generate('api_document_edit'),
+                        data: JSON.stringify({id: id, idCat: idCat}),
+                        method: 'POST',
+                        success: function (data) {
+                            totalDocReceiver = totalDocReceiver + 1;
+                            $(self).closest('ul').find('.js-total-doc-categorie').text(totalDocReceiver);
+                        },
+                        error: function (jqXHR) {
+                            const errorData = JSON.parse(jqXHR.responseText);
+                            self._mapErrorsToForm(errorData.errors);
+                        }
                     })
+                },
+                remove: function (e, ui) {
+                    let totalDocReceiver = Number($(this).closest('ul').find('.js-total-doc-categorie').text());
+                    totalDocReceiver = totalDocReceiver - 1;
+                    $(this).closest('ul').find('.js-total-doc-categorie').text(totalDocReceiver);
                 }
-            })
+            }).disableSelection()
+        },
+
+        setSelectedValue: function (e) {
+            e.preventDefault();
+            $('.js-select-folder').val($(e.currentTarget).data('id'));
         },
 
         _mapErrorsToForm: function (errorData) {
@@ -111,6 +160,7 @@
         _clearForm: function () {
             this._removeFormErrors();
             const $form = this.$wrapper.find(this._selector.newDocForm);
+            $form.find('.js-inputfile-text').html('Télécharger un fichier');
             $form[0].reset();
         },
 
@@ -119,7 +169,13 @@
             const tpl = _.template(tplText);
             const html = tpl(document);
             this.$wrapper.find('tbody').append($.parseHTML(html));
-        }
+        },
 
+        _addNewDoc: function (document, wrapper) {
+            const tplText = $('#js-document-add-template').html();
+            const tpl = _.template(tplText);
+            const html = tpl(document);
+            $(wrapper).append($.parseHTML(html));
+        }
     });
 })(window, jQuery, Routing);

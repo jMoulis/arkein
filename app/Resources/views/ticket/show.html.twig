@@ -18,12 +18,11 @@
                 </button>
                 {% endif %}
             </div>
-            <div class="js-form-answer-wrapper">
-                {{ include('ticket/_new_Answer_form.html.twig') }}
-            </div>
-            <div class="js-answer-wrapper">
 
+            <div class="js-form-answer-wrapper">
+                {{ include('ticket/_new_answer_form.html.twig') }}
             </div>
+            <div class="js-answer-wrapper">{# Displays the answers list #}</div>
         </div>
     </div>
 
@@ -44,25 +43,25 @@
             </div>
         </div>
     </div>
-
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
-    <script src="{{ asset('js/api/AnswerApp.js') }}"></script>
-    <script src="{{ asset('js/api/TicketAppCreated.js') }}"></script>
+    {% javascripts
+        'js/api/AnswerApp.js'
+        'js/api/TicketApp.js'
+        output='js/compiled/compiled.js'
+        %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
     <script>
         const $wrapper = $('.js-form-answer-wrapper');
         const answerApp = new AnswerApp($wrapper);
-
     </script>
+
+    {# Template #}
     <script type="text/template" id="js-answer-template">
-        <div class="media mt-3 answer">
-            <div class="media-body">
-                <h5 class="mt-0"><%= auteur %></h5>
-                <em> posté le <%= date %></em>
-                <p><%= message %></p>
-            </div>
-        </div>
+        {{ source('ticket/template/_ticket_show_answer_template.html.twig') }}
     </script>
 {% endblock %}

@@ -20,80 +20,25 @@
     <!-- Tab panes -->
     <div class="tab-content pt-3">
         <div class="tab-pane active" id="myTicket" role="tabpanel">
-            <div class="js-main-content-created">
-                <table class="js-tickets table table-hover" width="100%">
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Auteur</th>
-                            <th>Destinataire</th>
-                            <th>Message</th>
-                            <th>Niveau</th>
-                            <th>Commentaires</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </div>
+            {{ include('ticket/_my_ticket.html.twig') }}
         </div>
         <div class="tab-pane" id="myAttribution" role="tabpanel">
-            <div class="js-main-content-attribution">
-                <table class="js-tickets-attribtution table table-hover" width="100%">
-                    <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Auteur</th>
-                        <th>Destinataire</th>
-                        <th>Message</th>
-                        <th>Niveau</th>
-                        <th>Commentaires</th>
-                        <th>Actions</th>
-                    </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </div>
+            {{ include('ticket/_my_attribution.html.twig') }}
         </div>
     </div>
 {% endblock %}
+
 {% block javascripts %}
     {{ parent() }}
-    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
-    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
-    <script src="{{ asset('js/api/TicketApp.js') }}"></script>
-    <script src="{{ asset('js/api/TicketAppAttribution.js') }}"></script>
+    {% javascripts 'js/api/TicketApp.js' output='js/compiled/compiled.js' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
     <script>
         const $wrapperCreatedTicket = $('.js-main-content-created');
         const ticketApp = new TicketApp($wrapperCreatedTicket);
     </script>
 
-    {# Template pour les users:
-     1- Load du tableau
-     #}
     <script type="text/template" id="js-ticket-row-template">
-        <tr>
-            <td><%= date %></td>
-            <td><%= auteur %></td>
-            <td><%= destinataire %></td>
-            <td><%= message %></td>
-            <td>
-            <% if (niveau == 'urgent') { %>
-                <span class="badge badge-danger"><%= niveau %></span>
-            <% } else { %>
-                <span class="badge badge-success"><%= niveau %></span>
-            <% } %>
-            </td>
-            <td>
-            <% if (reponses > 0) { %>
-                <span class="badge badge-info"><%= reponses %></span>
-            <% } else { %>
-                <span class="badge badge-default">0</span>
-                <% } %>
-            </td>
-            <td>
-                <a href="<%= links._self %>" class="btn btn-warning" data-id="<%= id %>" >Consulter</a>
-            </td>
-        </tr>
+        {{ source('ticket/template/_ticket_show_list_template.html.twig') }}
     </script>
 {% endblock %}

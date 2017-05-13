@@ -1,9 +1,0 @@
-<tr>
-    <td><a href="{{ vich_uploader_asset(document, 'fileTemporary') }}">{{ document.fileName }}</a></td>
-    <td align="center">
-        <a href="#"
-           class="js-delete-document btn btn-danger"
-           data-url="{{ path('api_document_delete', {id: document.id}) }}"
-        >x</a>
-    </td>
-</tr>

@@ -1,33 +1,16 @@
-<table class="table table-responsive">
-    <thead>
-    <tr>
-        <th>Date</th>
-        <th>Auteur</th>
-        <th>Message</th>
-        <th>Niveau</th>
-        <th>Commentaires</th>
-        <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for ticket in tickets %}
+<div class="js-main-content-created">
+    <table class="js-tickets table table-responsive table-hover">
+        <thead>
         <tr>
-            <td>{% if ticket.date %}{{ ticket.date|date('d/m/Y') }}{% endif %}</td>
-            <td>{{ ticket.fromWho }}</td>
-            <td>{{ ticket.message }}</td>
-            {% if ticket.level == 'normal'%}
-                <td><span class="badge badge-info">{{ ticket.level }}</span></td>
-            {% else %}
-                <td><span class="badge badge-danger">{{ ticket.level }}</span></td>
-            {% endif %}
-            {% if ticket.answers.count %}
-                <td><span class="badge badge-pill badge-success">{{ ticket.answers.count }}</span></td>
-            {% else %}
-                <td></td>
-            {% endif %}
-
-            <td><a class="btn btn-warning" href="{{ path('ticket_show', { 'id': ticket.id }) }}">Consulter</a></td>
+            <th>Date</th>
+            <th>Auteur</th>
+            <th>Destinataire</th>
+            <th>Message</th>
+            <th>Niveau</th>
+            <th>Commentaires</th>
+            <th>Actions</th>
         </tr>
-    {% endfor %}
-    </tbody>
-</table>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>

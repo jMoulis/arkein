@@ -5,12 +5,11 @@
         <meta name="viewport" content="initial-scale=1, maximum-scale=1" />
         <title>{% block title %}Welcome!{% endblock %}</title>
         {% block stylesheets %}
-            <link rel="stylesheet" href="{{ asset('css/Library/bootstrap4/bootstrap.min.css') }}" />
-            <link rel="stylesheet" href="{{ asset('js/Library/jquery/jquery-ui.min.css') }}">
             {% stylesheets
-                "font/css/font-awesome.css"
-                "css/main.css"
-            "css/*" filter="cssrewrite" %}
+                'css/third-library/bootstrap4/min/*'
+                'css/third-library/jquery/jquery-ui.min.css'
+                'font/css/font-awesome.css'
+                'css/app/*' filter="cssrewrite" output='css/compiled/compiled.css' %}
             <link rel="stylesheet" href="{{ asset_url }}" />
             {% endstylesheets %}
         {% endblock %}
@@ -35,9 +34,6 @@
                         <a class="nav-link" href="#">Projets</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('contact') }}">Contact</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="#">Partenaires</a>
                     </li>
                     <li class="nav-item">
@@ -48,6 +44,12 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Actualités</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('contact') }}">Contact</a>
+                    </li>
+                    <li class="nav-item hidden-lg-up">
+                        <a class="nav-link" href="{{ path('security_login') }}">Connexion</a>
                     </li>
                 </ul>
                 {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
@@ -69,17 +71,28 @@
     {% block footer %}
         <footer class="footer">
             <div class="container">
-                Informations pieds de page
+                <ul class="list-unstyled">
+                    <li>
+                        <a href="{{ path('contact') }}">Contact</a>
+                    </li>
+                </ul>
+
             </div>
         </footer>
     {% endblock %}
         {% block javascripts %}
-            <script src="{{ asset('js/Library/jquery/jquery-3.2.1.min.js') }}"></script>
-            <script src="{{ asset('js/Library/bootstrap4/tether.min.js') }}"></script>
-            <script src="{{ asset('js/Library/bootstrap4/bootstrap.min.js') }}"></script>
-            <script src="{{ asset('js/Library/underscore.js') }}"></script>
-            <script src="{{ asset('js/Library/jquery/jquery-ui.min.js') }}"></script>
-            <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+            {% javascripts
+                'js/third-library/jquery/jquery-3.2.1.min.js'
+                'js/third-library/bootstrap4/tether.min.js'
+                'js/third-library/bootstrap4/bootstrap.min.js'
+                'js/third-library/underscore.js'
+                'js/third-library/jquery/jquery-ui.min.js'
+                'bundles/fosjsrouting/js/router.js'
+                output='js/compiled/compiled.js'
+            %}
+                <script src="{{ asset_url }}"></script>
+            {% endjavascripts %}
+
             <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
         {% endblock %}
     </body>

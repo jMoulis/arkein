@@ -25,13 +25,40 @@ class ApiDocumentController extends BaseController
 {
 
     /**
-     * @Route("api/docs", name="api_document_list", options={"expose" = true})
+     * @Route("api/docs/{userid}", name="api_document_list_by_destinataire", options={"expose" = true})
      * @Method("GET")
      */
-    public function indexAction()
+    public function indexAction($userid)
     {
+        $user = $this->getDoctrine()->getRepository('UserBundle:User')->find($userid);
         $documents = $this->getDoctrine()->getRepository('DocumentationBundle:Document')
-            ->findAll();
+            ->getDocumentsByDestinataire($user);
+
+        $models = [];
+        foreach ($documents as $document) {
+            $models[] = $this->createDocumentApiModel($document);
+        }
+
+        return $this->createApiResponse([
+            'items' => $models
+        ]);
+    }
+
+
+    /**
+     * @Route("api/docs/{categorie}",
+     *     name="api_document_list",
+     *     options={"expose" = true}
+     *     )
+     * @Method("GET")
+     */
+    public function getDocsByCategorieAction(Categorie $categorie)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $documents = $this->getDoctrine()->getRepository('DocumentationBundle:Document')
+            ->findBy([
+                'categorie' => $em->getRepository('DocumentationBundle:Categorie')->find($categorie)
+            ]);
 
         $models = [];
         foreach ($documents as $document) {
@@ -44,39 +71,54 @@ class ApiDocumentController extends BaseController
     }
 
     /**
-     * Creates a new document entity.
-     *
-     * @Route("/api/new/{user}/", name="document_new")
-     * @Method({"GET", "POST"})
+     * @Route("/load/{id}", name="api_new_doc", options={"expose" = true})
+     * @Method({"GET","POST"})
      */
-    public function newAction(Request $request, User $user)
+    public  function newAction(Request $request, $id)
     {
-        $form = $this->createForm('DocumentationBundle\Form\DocumentType');
-        $form->handleRequest($request);
-        $categories = $this->getDoctrine()->getRepository('DocumentationBundle:Categorie')->getCategoryDocumentByUserDisplayed($user);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
 
-            $document = $form->getData();
-            $document->setAuthor($this->getUser());
-            $document->setDestinataire($user);
-            $em->persist($document);
-            $em->flush();
+        /* $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');*/
+        $data = $request->files;
 
-            return $this->redirectToRoute('user_show', ['id' => $user->getId()]);
+        if ($data === null) {
+            throw new BadRequestHttpException('Files Empty');
         }
-        $documents = $this->getDoctrine()->getRepository('DocumentationBundle:Document')->findBy([
-            'destinataire' => $user
+        $form = $this->createForm(DocumentType::class, null, [
+            'csrf_protection' => false,
         ]);
+        $form->handleRequest($request);
 
-        return $this->render('document/_doc_index.html.twig', array(
-            'categories' => $categories,
-            'user' => $user,
-            'documents' => $documents,
-            'form' => $form->createView(),
-        ));
+        if (!$form->isValid()) {
+            $errors = $this->getErrorsFromForm($form);
+
+            return $this->createApiResponse([
+                'errors' => $errors
+            ], 400);
+        }
+
+        /** @var Document $document */
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository('UserBundle:User')->find($id);
+        //
+        $document = $form->getData();
+        $document->setAuthor($this->getUser());
+        $document->setDestinataire($user);
+
+        $em->persist($document);
+        $em->flush();
+
+        $apiModel = $this->createDocumentApiModel($document);
+
+        $response = $this->createApiResponse($apiModel);
+        // setting the Location header... it's a best-practice
+        $response->headers->set(
+            'Location',
+            $this->generateUrl('api_document_show', ['id' => $document->getId()])
+        );
+
+        return $response;
+
     }
-
 
     /**
      * @Route("/api/doc/{id}", name="api_document_show")
@@ -99,7 +141,6 @@ class ApiDocumentController extends BaseController
         if ($content === null) {
             throw new BadRequestHttpException('Invalid JSON');
         }
-
         if($request->isXmlHttpRequest()){
 
             if(!empty($content))
@@ -107,7 +148,9 @@ class ApiDocumentController extends BaseController
                 $em = $this->getDoctrine()->getManager();
                 $params = json_decode($content, true);
                 $document = $em->getRepository('DocumentationBundle:Document')->findOneBy(['id' => $params['id']]);
+
                 $categorie = $em->getRepository('DocumentationBundle:Categorie')->findOneBy(['id' => $params['idCat']]);
+
                 $document->setCategorie($categorie);
                 $em->persist($document);
                 $em->flush();
@@ -118,7 +161,7 @@ class ApiDocumentController extends BaseController
     }
 
     /**
-     * @Route("/api/doc/{id}", name="api_document_delete")
+     * @Route("/api/doc/{id}", name="api_document_delete", options={"expose" = true})
      * @Method("DELETE")
      */
     public function deleteDocumentAction(Document $document)
@@ -143,11 +186,12 @@ class ApiDocumentController extends BaseController
         $model->id = $document->getId();
         $model->fileName = $document->getFileName();
         $model->fileTemporary = $document->getFileTemporary();
-
+        $model->categories = $document->getCategorie()->getId();
         $selfUrl = $this->generateUrl(
             'api_document_show',
             ['id' => $document->getId()]
         );
+        $deleteUrl = $this->generateUrl('api_document_delete', ['id' => $document->getId()]);
         $model->addLink('_self', $selfUrl);
 
         return $model;

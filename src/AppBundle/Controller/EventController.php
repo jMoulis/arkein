@@ -39,7 +39,7 @@ class EventController extends Controller
      *
      * @Route("/new", name="event_new")
      * @Method({"GET", "POST"})
-     * @Security("has_role('ROLE_ADMIN')")
+     * @Security("has_role('ROLE_ADMIN') or has_role('ROLE_STAFF')")
      */
     public function newAction(Request $request)
     {

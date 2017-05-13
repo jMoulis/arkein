@@ -1,0 +1,31 @@
+<div class="row d-flex justify-content-start">
+    <div class="" style="margin: 2rem">
+        <img class="" src="{{ asset('img/unknown-speaker.gif') }}" width="250px" alt="avatar" />
+    </div>
+    <div style="margin: 2rem">
+        <h3>{{ user.firstname }} {{ user.name }}</h3>
+        <table class="table table-responsive">
+            <tbody>
+            {% for phoneNumbers in user.phoneNumbers %}
+                <tr>
+                    <th>{{ phoneNumbers.title }}</th>
+                    <td>{{ phoneNumbers.phoneNumber }}</td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <th>Adresse</th>
+                <td>{{ user.addresses.first }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ user.email }}</td>
+            </tr>
+            </tbody>
+        </table>
+        {% if is_granted('ROLE_ADMIN') %}
+            <div>
+                <a href="{{ path('user_edit', {'id': user.id}) }}" class="btn btn-success">Modifier</a>
+            </div>
+        {% endif %}
+    </div>
+</div>

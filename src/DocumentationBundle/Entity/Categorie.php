@@ -39,6 +39,11 @@ class Categorie
      */
     private $documents;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $owner;
 
     /**
      * @ORM\Column(type="boolean")
@@ -122,10 +127,12 @@ class Categorie
         return $this->documents;
     }
 
+
     public function __toString()
     {
         return $this->getName();
     }
+
 
     /**
      * @return mixed
@@ -141,5 +148,30 @@ class Categorie
     public function setIsPrivate($isPrivate)
     {
         $this->isPrivate = $isPrivate;
+    }
+
+
+    /**
+     * Set owner
+     *
+     * @param \UserBundle\Entity\User $owner
+     *
+     * @return Categorie
+     */
+    public function setOwner(\UserBundle\Entity\User $owner = null)
+    {
+        $this->owner = $owner;
+
+        return $this;
+    }
+
+    /**
+     * Get owner
+     *
+     * @return \UserBundle\Entity\User
+     */
+    public function getOwner()
+    {
+        return $this->owner;
     }
 }

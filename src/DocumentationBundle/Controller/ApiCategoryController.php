@@ -24,13 +24,18 @@ class ApiCategoryController extends BaseController
 {
 
     /**
-     * @Route("api/docs/cat", name="category_list", options={"expose" = true})
+     * @Route("api/list/{userid}/cat",
+     *     name="category_list",
+     *     options={"expose" = true}
+     *     )
      * @Method("GET")
      */
-    public function getCategoriesAction()
+    public function getCategoriesAction($userid)
     {
+        $user = $this->getDoctrine()->getRepository(User::class)->find($userid);
+
         $categories = $this->getDoctrine()->getRepository('DocumentationBundle:Categorie')
-            ->findOrderASCCategorie();
+            ->findOrderASCCategorie($user);
         $models = [];
         foreach ($categories as $category) {
             $models[] = $this->createCategoryApiModel($category);
@@ -41,7 +46,7 @@ class ApiCategoryController extends BaseController
     }
 
     /**
-     * @Route("api/docs/cat/{id}", name="cat_get")
+     * @Route("api/get/{id}/cat/", name="cat_get")
      * @Method("GET")
      */
     public function getCategoryAction(Categorie $category)
@@ -52,7 +57,7 @@ class ApiCategoryController extends BaseController
     }
 
     /**
-     * @Route("api/docs/cat/{id}", name="cat_delete")
+     * @Route("api/delete/{id}/cat/", name="cat_delete")
      * @Method("DELETE")
      */
     public function deleteRepLogAction(Categorie $category)
@@ -66,10 +71,13 @@ class ApiCategoryController extends BaseController
     }
 
     /**
-     * @Route("api/docs/cat/", name="api_category_new")
+     * @Route("api/new/{userid}/cat/",
+     *     name="api_category_new",
+     *     options={"expose" = true}
+     * )
      * @Method("POST")
      */
-    public function newCategoryAction(Request $request)
+    public function newCategoryAction(Request $request, $userid = null)
     {
 
         /* $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');*/
@@ -93,6 +101,9 @@ class ApiCategoryController extends BaseController
         /** @var Categorie $category */
         $category = $form->getData();
         $em = $this->getDoctrine()->getManager();
+        if($userid){
+            $category->setOwner($em->getRepository('UserBundle:User')->find($userid));
+        }
 
         $em->persist($category);
         $em->flush();
@@ -110,6 +121,28 @@ class ApiCategoryController extends BaseController
     }
 
     /**
+     * @Route("/api/list/categories/{id}",
+     *     name="categorie_treeview",
+     *     options={"expose" = true})
+     */
+    public function loadCategoriesAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository('UserBundle:User')->find($id);
+        $categories = $em->getRepository('DocumentationBundle:Categorie')->findOrderASCCategorie($user);
+        //getCategoryDocumentByUserDisplayed($user);
+
+        $models = [];
+        foreach ($categories as $category) {
+            $models[] = $this->createCategoryApiModel($category);
+        }
+
+        return $this->createApiResponse([
+            'items' => $models
+        ]);
+    }
+
+    /**
      *
      *
      * This could be moved into a service if it needed to be
@@ -120,11 +153,19 @@ class ApiCategoryController extends BaseController
      */
     private function createCategoryApiModel(Categorie $category)
     {
-
         $model = new CategoryApiModel();
         $model->id = $category->getId();
         $model->name = $category->getName();
         $model->isPrivate = $category->getIsPrivate();
+        $model->documentCount = count($category->getDocuments());
+
+        foreach ($category->getDocuments() as $document) {
+            $model->documents[] = [
+                'file' => $document->getFileTemporary(),
+                'name' => $document->getFileName(),
+                'id' => $document->getId()
+            ];
+        }
 
         $selfUrl = $this->generateUrl(
             'cat_get',

@@ -2,6 +2,7 @@
     <div class="js-main-content">
         <ul class="js-list-user list-group">
             {% for user in users %}
+                {# TODO Ajaxify the displayed contacts#}
             <div class="list-group-item d-flex justify-content-between">
                 <div><a href="{{ path('user_show', {'id': user.id}) }}">{{ user.name }} {{ user.firstname }}</a></div>
                 <div>{{ user.phonenumbers.first }}</div>

@@ -25,9 +25,11 @@ class CategorieRepository extends EntityRepository
             ;
     }
 
-    public function findOrderASCCategorie()
+    public function findOrderASCCategorie($user)
     {
         return $this->createQueryBuilder('categorie')
+            ->where('categorie.owner is NULL or categorie.owner = :owner')
+            ->setParameter('owner', $user)
             ->orderBy('categorie.name', 'ASC')
             ->getQuery()
             ->execute()

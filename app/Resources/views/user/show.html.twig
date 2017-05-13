@@ -2,11 +2,14 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('css/upload-btn.css') }}" />
+    {% stylesheets 'css/app/upload-btn.css' filter="cssrewrite" output='css/compiled/compiled.css' %}
+        <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
 {% endblock %}
 
 {% block body %}
     <h1 data-user="{{ user.id }}">Bienvenue, {{ user.firstname }}</h1>
+
     <!-- Tabs navigation -->
     <ul class="nav nav-tabs" id="tabs" role="tablist">
         <li class="nav-item w-100">
@@ -19,75 +22,27 @@
             <a class="nav-link text-center" data-toggle="tab" href="#documents" role="tab">Documents</a>
         </li>
     </ul>
+
     <!-- Tab panes -->
     <div class="tab-content pt-3" >
-
         <!-- Début tab Profile -->
         <div class="tab-pane" id="profile" role="tabpanel">
-            <div class="row d-flex justify-content-start">
-                <div class="" style="margin: 2rem">
-                    <img class="" src="http://trenchlessleakdetection.com/wp-content/themes/trenchless-leak-detection/images/unknown-speaker.gif" width="250px" alt="avatar" />
-                </div>
-                <div style="margin: 2rem">
-                    <h3>{{ user.firstname }} {{ user.name }}</h3>
-                    <table class="table table-responsive">
-                        <tbody>
-                        {% for phoneNumbers in user.phoneNumbers %}
-                        <tr>
-                            <th>{{ phoneNumbers.title }}</th>
-                            <td>{{ phoneNumbers.phoneNumber }}</td>
-                        </tr>
-                        {% endfor %}
-                        <tr>
-                            <th>Adresse</th>
-                            <td>{{ user.addresses.first }}</td>
-                        </tr>
-                        <tr>
-                            <th>Email</th>
-                            <td>{{ user.email }}</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    {% if is_granted('ROLE_ADMIN') %}
-                    <div>
-                        <a href="{{ path('user_edit', {'id': user.id}) }}" class="btn btn-success">Modifier</a>
-                    </div>
-                    {% endif %}
-                </div>
-            </div>
+            {{ include('user/_tab_profile.html.twig') }}
         </div>
         <!--Fin tab profile-->
-
         <!-- Début tab Entretien -->
         <div class="tab-pane js-entretien-wrapper" id="entretiens" role="tabpanel">
             <p id="loading"><img src="{{ asset('img/ajax-loader.gif') }}" /> Please Wait </p>
-            {%  include ':entretien:_interviews-by-young.html.twig' with {'user': user.id} %}
-            <!-- Modal pour la visualisation du détail des entretiens -->
-            <div class="modal fade" id="entretienModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="myModalLabel">Détail entretien</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
+            {{ include('entretien/_interviews-by-young.html.twig') }}
 
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <!-- Modal pour la visualisation du détail des entretiens -->
+            {{ include('entretien/_edit_entretien_modal.html.twig') }}
             <!-- Fin modal -->
         </div>
         <!--Fin tab Entretien-->
-
         <!--Début tab Document-->
-        <div class="tab-pane" id="documents" role="tabpanel">
-            {{ render(controller('DocumentationBundle:ApiDocument:new', {'user': user.id })) }}
+        <div class="tab-pane js-documentation-wrapper" id="documents" role="tabpanel">
+            {{ include('document/_doc_index.html.twig') }}
         </div>
         <!--Fin tab Document-->
     </div>
@@ -95,11 +50,16 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script src="{{ asset('js/api/DocumentApp.js') }}"></script>
-    <script src="{{ asset('js/api/CategoryApp.js') }}"></script>
-    <script src="{{ asset('js/api/EntretienApp.js') }}"></script>
-    <script src="{{ asset('js/fileUploadInput.js') }}"></script>
-    <script src="{{ asset('js/navTab.js') }}"></script>
+    {% javascripts
+        'js/api/DocumentApp.js'
+        'js/api/CategoryApp.js'
+        'js/api/EntretienApp.js'
+        'js/fileUploadInput.js'
+        'js/navTab.js'
+        output='js/compiled/compiled.js'
+    %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 
     <script>
         $(document).ready(function () {
@@ -108,10 +68,10 @@
             * pour tous les appels ajax
             *
             * */
-            const $wrapper = $('.js-document-table');
+            const $wrapper = $('.js-documentation-wrapper');
             const documentApp = new DocumentApp($wrapper);
 
-            const $folder = $('.js-category');
+            const $folder = $('.js-documentation-wrapper');
             const categoryApp = new CategoryApp($folder);
 
             const $entretienWrapper = $('.js-entretien-wrapper');
@@ -119,75 +79,33 @@
 
             entretienApp.loadListEntretiens();
 
-
-
-            /*
-            * Petite fonction qui permet lors de l'ajout d'un nouveau document
-            * de récupérer le numéro de catégorie et de mettre celle-ci en selected
-            * sur la select box de création de document
-            *
-            * */
-            $('.js-new-doc-btn').on('click', function (e) {
-                e.preventDefault();
-                $('#categorie').val($(this).data('id'));
-            });
-
-            /*
-            * Affichage des documents dans le tab document.
-            * Cela permet le système de drag&drop des fichiers
-            * avec une requête ajax pour la mise à jour en bdd
-            * */
-            $(".sortable").sortable({
-                connectWith: ".connectedSortable",
-                items: "tr:not(.notSortable)",
-                receive: function (e, ui) {
-                    const idCat = ($(this)[0].id);
-                    const id = $(ui.item)[0].id;
-
-                    $.ajax({
-                        url: Routing.generate('api_document_edit'),
-                        data: JSON.stringify({id: id, idCat: idCat}),
-                        method: 'POST',
-                        success: function (data) {
-                            $.each(data, function (key, value) {
-                                let $tbodyLength = ($('.js-table-document').find('tbody#'+ value.idCat +' tr').length) - 1;
-                                $('.js-total-doc-categorie').html($tbodyLength);
-                            })
-                        },
-                        error: function (jqXHR) {
-                            console.log(jqXHR.responseText);
-                        }
-                    })
-                }
-            }).disableSelection();
-
             $('#isPrivate').prop("checked", "true");
+
         });
     </script>
 
-    {# Script pour les template underscore.js -
-    Le lien de chacun se retrouve dans les api js
-    #}
 
-    {# Template pour loader la selectbox du formulaire (Modal) d'ajout de document #}
+
+    {# Template pour les entretiens:
+     1- loader la selectbox du formulaire (Modal) d'ajout de document
+     2- Load du tableau
+     3- Load du détail dans le modal
+     #}
+
     <script type="text/template" id="js-cat-option-template">
         <option value="<%= id %>"><%= name %></option>
     </script>
-    {# Template pour les entretiens:
-     1- Load du tableau
-     2- Load du détail dans le modal
-     #}
+
     <script type="text/template" id="js-entretien-row-template">
-        <tr class="trTest">
-            <td><%= date %></td>
-            <td><%= objet %></td>
-            <td><%= compteRendu %></td>
-            <td><a href="#" class="js-detail-entretien" data-id="<%= id %>" data-toggle="modal" data-target="#entretienModal" >Voir</a></td>
-        </tr>
+        {{ source('entretien/template/_list_entretien_template.html.twig') }}
     </script>
 
     <script type="text/template" id="js-entretien-detail-template">
-            {{ source('entretien/_edit_entretien_template_non_logged.html.twig') }}
+        {{ source('entretien/_edit_entretien_template_non_logged.html.twig') }}
+    </script>
+
+    <script type="text/template" id="js-document-add-template">
+        {{ source('document/template/_add_row_document.html.twig') }}
     </script>
 
 {% endblock %}

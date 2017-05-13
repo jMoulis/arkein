@@ -10,6 +10,7 @@ class DocumentApiModel
 
     public $fileName;
 
+    public $categories;
 
     private $links = [];
 

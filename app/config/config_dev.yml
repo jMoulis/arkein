@@ -32,3 +32,16 @@ monolog:
 
 #swiftmailer:
 #    delivery_addresses: ['me@example.com']
+
+# app/config/config.yml
+vich_uploader:
+    db_driver: orm
+    twig: true
+    storage: file_system
+    mappings:
+        file_youngster:
+            uri_prefix: /youngster/
+            upload_destination: '%kernel.root_dir%/../web/youngster'
+            inject_on_load:     false
+            delete_on_update:   true
+            delete_on_remove:   true

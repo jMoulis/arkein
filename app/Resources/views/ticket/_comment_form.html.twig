@@ -1,8 +1,0 @@
-{{ form_start(form, { method: 'POST', action: path('answer_new', {'id': ticket.id }) }) }}
-<div class="form-group">
-    {{ form_errors(form) }}
-    {{ form_label(form.message, 'Réponse') }}
-    {{ form_widget(form.message) }}
-</div>
-    <input class="btn btn-success" type="submit" value="Répondre" />
-{{ form_end(form) }}

@@ -21,6 +21,7 @@ security:
                     - app.security.login_form_authenticator
             logout:
                 path: /logout
+                target: /login
 
 
     access_control:

@@ -16,7 +16,15 @@
             this.handleNewFormSubmit.bind(this)
         );
 
-        this.loadCategories();
+        this.$wrapper.on(
+            'hidden.bs.modal',
+            '#modalAddDoc',
+            this._clearForm.bind(this)
+        );
+
+        this.loadListSelectCategorie();
+
+        this.loadListTreeViewCategorie();
     };
 
     $.extend(window.CategoryApp.prototype, {
@@ -48,6 +56,7 @@
         handleNewFormSubmit: function (e) {
             e.preventDefault();
             const $form = $(e.currentTarget);
+            const userid = $('h1').data('user');
             const self = this;
 
             const formData = {};
@@ -56,14 +65,15 @@
             });
 
             $.ajax({
-                url: $form.data('url'),
+                url: Routing.generate('api_category_new', {userid: userid}),
                 method: 'POST',
                 data: JSON.stringify(formData),
                 success: function (data) {
-                    self._clearForm();
                     self._addSelect(data);
+                    $('.js-select-folder').val(data.id);
                     $('#addFolderForm').collapse('toggle');
-                    $('#categorie').val(data.id);
+                    self._addTreeView(data);
+                    self._clearForm();
                 },
                 error: function (jqXHR) {
                     const errorData = JSON.parse(jqXHR.responseText);
@@ -72,13 +82,56 @@
             })
         },
 
-        loadCategories: function () {
+        loadListSelectCategorie: function () {
             const self = this;
+            const userid = $('h1').data('user');
             $.ajax({
-                url: Routing.generate('category_list'),
+                url: Routing.generate('category_list', {userid: userid}),
                 success: function (data) {
                     $.each(data.items, function (key, category) {
                         self._addSelect(category);
+                    })
+                }
+            })
+        },
+
+        loadListTreeViewCategorie: function () {
+            const self = this;
+            const userid = $('h1').data('user');
+
+            $.ajax({
+                beforeSend: function () {
+                    const html = "<span class='loader'>Chargement des dossiers en cours... </span>";
+                    $('.js-document-table').append(html);
+                },
+                url: Routing.generate('categorie_treeview', {id: userid}),
+                success: function (data) {
+                    $('.loader').remove();
+
+                    $('.js-document-table').append('<h4>Documents <button type="button" ' +
+                        'class="btn btn-success btn-sm" ' +
+                        'data-toggle="modal" ' +
+                        'data-target="#modalAddDoc"> +</button>' +
+                        '</h4>');
+                    $.each(data.items, function (key, category) {
+                        self._addTreeView(category);
+                    });
+                    self.loadDocuments();
+                }
+            })
+        },
+
+        loadDocuments: function () {
+            const self = this;
+            const userid = $('h1').data('user');
+
+            $.ajax({
+                url: Routing.generate('api_document_list_by_destinataire', {userid: userid}),
+                success: function (data) {
+
+                    $.each(data.items, function (key, document) {
+                        let $wrapper = $('tbody#tbody_'+ document.categories);
+                        self._addNewDoc(document, $wrapper);
                     })
                 }
             })
@@ -110,9 +163,8 @@
 
         _clearForm: function () {
             this._removeFormErrors();
-            const $form = this.$wrapper.find(this._selector.newDocForm);
-            $('.js-new-folder-form')[0].reset();
-
+            const $form = this.$wrapper.find(this._selector.newCatForm);
+            $form[0].reset();
         },
 
         _addSelect: function (category) {
@@ -120,6 +172,20 @@
             const tpl = _.template(tplText);
             const html = tpl(category);
             $('.js-select-folder').append($.parseHTML(html));
+        },
+
+        _addTreeView: function (category) {
+            const tplText = $('#js-treeview-categorie-template').html();
+            const tpl = _.template(tplText);
+            const html = tpl(category);
+            $('.js-document-table').append($.parseHTML(html));
+        },
+
+        _addNewDoc: function (document, wrapper) {
+            const tplText = $('#js-document-add-template').html();
+            const tpl = _.template(tplText);
+            const html = tpl(document);
+            $(wrapper).append($.parseHTML(html));
         }
 
     });

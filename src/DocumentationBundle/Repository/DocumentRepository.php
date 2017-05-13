@@ -18,4 +18,14 @@ class DocumentRepository extends EntityRepository
         return $this->createQueryBuilder('document')
             ->groupBy('document.categorie');
     }
+
+    public function getDocumentsByDestinataire($destinataire)
+    {
+        return $this->createQueryBuilder('document')
+            ->where('document.destinataire = :destinataire')
+            ->setParameter('destinataire', $destinataire)
+            ->getQuery()
+            ->execute()
+            ;
+    }
 }
