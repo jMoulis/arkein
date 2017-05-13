@@ -7,32 +7,28 @@
 
         {% block stylesheets %}
             <link rel="stylesheet" href="{{ asset('css/third-library/bootstrap4/min/bootstrap.min.css') }}" />
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css"/>
-            {% stylesheets
-                'css/app/upload-btn.css'
-                'css/app/bootstrap-select.min.css'
-                'css/app/main.css'
-                'css/app/login.css'
-                'css/app/security.css'
-                'font/css/font-awesome.min.css'
-                'css/widget/bootstrap-datepicker.min.css'
-                'css/app/upload-btn.css'
-                output='css/compiled/compiled.css'
-            %}
-                <script src="{{ asset_url }}"></script>
-            {% endstylesheets %}
-           {#
-            <link rel="stylesheet" href="{{ asset('css/app/upload-btn.css') }}" />
+            <link rel="stylesheet" href="{{ asset('css/third-library/jquery/jquery-ui.min.css') }}"/>
             <link rel="stylesheet" href="{{ asset('css/app/bootstrap-select.min.css') }}" />
-            <link rel="stylesheet" href="{{ asset('css/app/dashboard.css') }}" />
-            <link rel="stylesheet" href="{{ asset('css/app/homePage.css') }}" />
             <link rel="stylesheet" href="{{ asset('css/app/main.css') }}" />
             <link rel="stylesheet" href="{{ asset('css/app/login.css') }}" />
             <link rel="stylesheet" href="{{ asset('css/app/security.css') }}" />
             <link rel="stylesheet" href="{{ asset('font/css/font-awesome.min.css') }}" />
             <link rel="stylesheet" href="{{ asset('css/widget/bootstrap-datepicker.min.css') }}" />
-            <link rel="stylesheet" href="{{ asset('css/app/upload-btn.css') }}" />
-            #}
+            {#
+                {% stylesheets
+                    'css/app/upload-btn.css'
+                    'css/app/bootstrap-select.min.css'
+                    'css/app/main.css'
+                    'css/app/login.css'
+                    'css/app/security.css'
+                    'font/css/font-awesome.min.css'
+                    'css/widget/bootstrap-datepicker.min.css'
+                    'css/app/upload-btn.css'
+                    output='css/compiled/compiled.css'
+                %}
+                    <script src="{{ asset_url }}"></script>
+                {% endstylesheets %}
+           #}
         {% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
@@ -109,6 +105,17 @@
             <script src="{{ asset('js/third-library/jquery/jquery-ui.min.js') }}"></script>
             <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
             <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+            <script src="{{ asset('js/widget/bootstrap-datepicker.js') }}"></script>
+            <script src="{{ asset('js/api/UserApp.js') }}"></script>
+            <script src="{{ asset('js/api/AnswerApp.js') }}"></script>
+            <script src="{{ asset('js/api/TicketApp.js') }}"></script>
+            <script src="{{ asset('js/api/DocumentApp.js') }}"></script>
+            <script src="{{ asset('js/api/CategoryApp.js') }}"></script>
+            <script src="{{ asset('js/api/EntretienApp.js') }}"></script>
+            <script src="{{ asset('js/fileUploadInput.js') }}"></script>
+            <script src="{{ asset('js/navTab.js') }}"></script>
+
+            {#
             {% javascripts
                 'js/widget/bootstrap-datepicker.js'
                 'js/api/UserApp.js'
@@ -123,20 +130,8 @@
             %}
                 <script src="{{ asset_url }}"></script>
             {% endjavascripts %}
+            #}
 
-            {#<script src="{{ asset('js/third-library/bootstrap4/tether.min.js') }}"></script>
-            <script src="{{ asset('js/third-library/bootstrap4/bootstrap.min.js') }}"></script>
-            <script src="{{ asset('js/third-library/underscore.js') }}"></script>
-            <script src="{{ asset('js/third-library/jquery/jquery-ui.min.js') }}"></script>
-            <script src="{{ asset('js/widget/bootstrap-datepicker.js') }}"></script>
-            <script src="{{ asset('js/api/UserApp.js') }}"></script>
-            <script src="{{ asset('js/api/AnswerApp.js') }}"></script>
-            <script src="{{ asset('js/api/TicketApp.js') }}"></script>
-            <script src="{{ asset('js/api/DocumentApp.js') }}"></script>
-            <script src="{{ asset('js/api/CategoryApp.js') }}"></script>
-            <script src="{{ asset('js/api/EntretienApp.js') }}"></script>
-            <script src="{{ asset('js/fileUploadInput.js') }}"></script>
-            <script src="{{ asset('js/navTab.js') }}"></script>#}
 
         {% endblock %}
     </body>

@@ -141,3 +141,13 @@ h1 {
 .nav-link:hover {
     border-bottom: none;
 }
+
+#categorie {
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+}
+
+.file {
+    visibility: hidden;
+    position: absolute;
+}
