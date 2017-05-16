@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <div class="container">
+        <div class="row text-center">
+            <div class="col">
+                <h1 class="">{{ billet.titre }}</h1>
+                <div>
+                    <ul class="list-unstyled top-header">
+                        <li class=""><span>Posté par {{ billet.author }}</span></li>
+                        <li class=""><span>{{ billet.date|date('d/m/Y') }}</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row billet-contenu-wrapper">
+            <div>
+                {{ billet.contenu|raw }}
+            </div>
+        </div>
+        <div class="row admin-footer">
+             <div>
+                <span>Administrteur: </span>
+                <a class="btn btn-success btn-sm" href="{{ path('billet_edit', {'id': billet.id}) }}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                </a>
+             </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+   <script>
+
+   </script>
+{% endblock %}

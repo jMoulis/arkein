@@ -21,7 +21,7 @@
                             <tr>
                                 <th>Date</th>
                                 <th>Objet</th>
-                                <th>Compte rendu</th>
+                                <th>Ordre du jour</th>
                                 <th>Organisateur</th>
                                 <th>Actions</th>
                             </tr>
@@ -37,7 +37,7 @@
                             <tr>
                                 <th>Date</th>
                                 <th>Objet</th>
-                                <th>Compte rendu</th>
+                                <th>Ordre du jour</th>
                                 <th>Organisateur</th>
                                 <th>Actions</th>
                             </tr>
@@ -47,7 +47,8 @@
                 </div>
             </div>
         </div>
-
+        {{ include('entretien/_new_compte_rendu_modal.html.twig') }}
+        {{ include('entretien/_edit_compterendu_modal.html.twig') }}
         <!-- Modal pour la visualisation du formulaire d'édition des entretiens -->
        {{ include('entretien/_edit_entretien_modal.html.twig') }}
         <!-- Fin modal -->
@@ -55,19 +56,15 @@
         <!-- Modal pour la visualisation du formulaire d'ajout des entretiens -->
         {{ include('entretien/_new_entretien_modal.html.twig') }}
         <!-- Fin modal -->
+
+
+
+
     </div>
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
-    {% javascripts
-        'js/api/EntretienAppAuthor.js'
-        'js/api/StatusApp.js'
-        output='js/compiled/compiled.js'
-    %}
-    <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
-
     <script>
         const $entretienWrapper = $('.js-entretien-wrapper');
         const entretienApp = new EntretienAppAuthor($entretienWrapper);
@@ -91,6 +88,14 @@
         $entretienWrapper.on('click', '.js-participe-pas', function () {
             $('#status').val(0);
         });
+
+        $entretienWrapper.on('click', '.js-saisir-compteRendu', function (e) {
+            const entretien = $(e.currentTarget).data('id');
+            $('.js-entretien-input').val(entretien);
+        });
+
+        CKEDITOR.replace('odj1');
+        CKEDITOR.replace('compteRendu');
     </script>
 
     <script type="text/template" id="js-entretien-row-template">
@@ -115,6 +120,10 @@
 
     <script type="text/template" id="js-status-update">
         {{ source('entretien/_edit_status_template.html.twig') }}
+    </script>
+
+    <script type="text/template" id="js-compterendu-form-template">
+        {{ source('entretien/_edit_compterendu_template.html.twig') }}
     </script>
 
 {% endblock %}

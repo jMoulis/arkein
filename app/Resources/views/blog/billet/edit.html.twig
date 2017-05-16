@@ -1,0 +1,26 @@
+{% extends ':App:layout.html.twig' %}
+
+{% block body %}
+    <h1>Billet edit</h1>
+
+    <a class="btn btn-primary" href="{{ path('billet_index') }}">Retour à la liste</a>
+    {{ form_start(edit_form) }}
+        {{ form_widget(edit_form) }}
+        <input class="btn btn-primary" type="submit" value="Enregistrer" />
+        <a class="btn btn-success" href="{{ path('billet_show', {'id': billet.id} ) }}">Voir</a>
+    {{ form_end(edit_form) }}
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        CKEDITOR.replace('billet_contenu', {
+            extraPlugins: 'autogrow',
+            autoGrow_minHeight: 200,
+            autoGrow_maxHeight: 600,
+            autoGrow_bottomSpace: 50,
+            removePlugins: 'resize'
+        });
+    </script>
+{% endblock %}

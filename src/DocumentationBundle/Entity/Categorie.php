@@ -51,12 +51,18 @@ class Categorie
     private $isPrivate;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $classified;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->documents = new ArrayCollection();
         $this->isPrivate = true;
+        $this->classified = false;
     }
 
     /**
@@ -174,4 +180,22 @@ class Categorie
     {
         return $this->owner;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getClassified()
+    {
+        return $this->classified;
+    }
+
+    /**
+     * @param mixed $classified
+     */
+    public function setClassified($classified)
+    {
+        $this->classified = $classified;
+    }
+
+
 }

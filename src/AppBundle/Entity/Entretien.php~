@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use UserBundle\Entity\User;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Entretien
@@ -31,15 +32,14 @@ class Entretien
     private $date;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="compteRendu", type="text")
+     * @ORM\Column(name="odj", type="text")
+     * @Assert\NotBlank(message="Merci de remplir l'ordre du jour")
      */
-    private $compteRendu;
+    private $odj;
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank(message="Merci de remplir l'objet")
      * @ORM\Column(name="objet", type="string", length=255)
      */
     private $objet;
@@ -54,11 +54,18 @@ class Entretien
     /**
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotBlank(message="Merci de sélectionner un jeune")
      */
     private $young;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\InterviewUser", mappedBy="interview")
+     * @Assert\NotBlank(message="Merci de sélectionner au moins un participant")
+     * @ORM\OneToMany(
+     *     targetEntity="AppBundle\Entity\InterviewUser",
+     *     mappedBy="interview",
+     *     fetch="EXTRA_LAZY",
+     *     orphanRemoval=true,
+     *     cascade={"persist"})
      */
     private $interviewGuests;
 
@@ -67,9 +74,15 @@ class Entretien
      */
     private $isArchived;
 
+    /**
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\CompteRendu", mappedBy="entretien")
+     */
+    private $compteRendu;
+
     public function __construct()
     {
         $this->date = new \DateTime();
+        $this->interviewGuests = new ArrayCollection();
         $this->isArchived = false;
     }
 
@@ -105,30 +118,6 @@ class Entretien
     public function getDate()
     {
         return $this->date;
-    }
-
-    /**
-     * Set compteRendu
-     *
-     * @param string $compteRendu
-     *
-     * @return Entretien
-     */
-    public function setCompteRendu($compteRendu)
-    {
-        $this->compteRendu = $compteRendu;
-
-        return $this;
-    }
-
-    /**
-     * Get compteRendu
-     *
-     * @return string
-     */
-    public function getCompteRendu()
-    {
-        return $this->compteRendu;
     }
 
     /**
@@ -226,5 +215,57 @@ class Entretien
     public function getYoung()
     {
         return $this->young;
+    }
+
+    /**
+     * Add interviewGuest
+     *
+     * @param InterviewUser $interviewGuest
+     *
+     * @return Entretien
+     */
+    public function addInterviewGuest(InterviewUser $interviewGuest)
+    {
+        $this->interviewGuests[] = $interviewGuest;
+
+        $interviewGuest->setInterview($this);
+
+        return $this;
+    }
+
+    /**
+     * Remove interviewGuest
+     *
+     * @param InterviewUser $interviewGuest
+     */
+    public function removeInterviewGuest(InterviewUser $interviewGuest)
+    {
+        $this->interviewGuests->removeElement($interviewGuest);
+    }
+
+    /**
+     * Get interviewGuests
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getInterviewGuests()
+    {
+        return $this->interviewGuests;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOdj()
+    {
+        return $this->odj;
+    }
+
+    /**
+     * @param mixed $odj
+     */
+    public function setOdj($odj)
+    {
+        $this->odj = $odj;
     }
 }

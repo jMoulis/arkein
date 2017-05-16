@@ -1,12 +1,17 @@
-app_entretien:
+app.entretien:
     resource: "@AppBundle/Controller/EntretienController.php"
+    type:     annotation
+    prefix:   /admin
+
+app.compterendu:
+    resource: "@AppBundle/Controller/CompteRenduController.php"
     type:     annotation
     prefix:   /admin
 
 app.documentation:
     resource: "@DocumentationBundle/Controller/"
     type:     annotation
-    prefix:   /
+    prefix:   /admin
 
 app:
     resource: "@AppBundle/Controller/AppController.php"
@@ -57,6 +62,16 @@ app.interviewUser:
     resource: "@AppBundle/Controller/InterviewUserController.php"
     type:     annotation
     prefix:   /admin
+
+blog:
+    resource: "@BlogBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+blog_billet:
+    resource: "@BlogBundle/Controller/BilletController.php"
+    type:     annotation
+    prefix:   /blog
 
 fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"

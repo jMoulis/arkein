@@ -17,61 +17,33 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use UserBundle\Entity\User;
 
 /**
- * @Route("category")
+ * @Route("categorie")
  */
 
 class ApiCategoryController extends BaseController
 {
 
     /**
-     * @Route("api/list/{userid}/cat",
-     *     name="category_list",
-     *     options={"expose" = true}
-     *     )
-     * @Method("GET")
+     * Lists all document entities.
+     *
+     * @Route("/", name="categorie_index")
+     * @Method({"GET", "POST"})
      */
-    public function getCategoriesAction($userid)
+    public function indexAction()
     {
-        $user = $this->getDoctrine()->getRepository(User::class)->find($userid);
-
-        $categories = $this->getDoctrine()->getRepository('DocumentationBundle:Categorie')
-            ->findOrderASCCategorie($user);
-        $models = [];
-        foreach ($categories as $category) {
-            $models[] = $this->createCategoryApiModel($category);
-        }
-        return $this->createApiResponse([
-            'items' => $models
-        ]);
-    }
-
-    /**
-     * @Route("api/get/{id}/cat/", name="cat_get")
-     * @Method("GET")
-     */
-    public function getCategoryAction(Categorie $category)
-    {
-        $apiModel = $this->createCategoryApiModel($category);
-
-        return $this->createApiResponse($apiModel);
-    }
-
-    /**
-     * @Route("api/delete/{id}/cat/", name="cat_delete")
-     * @Method("DELETE")
-     */
-    public function deleteRepLogAction(Categorie $category)
-    {
-        /*$this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');*/
         $em = $this->getDoctrine()->getManager();
-        $em->remove($category);
-        $em->flush();
+        $categories = $em->getRepository('DocumentationBundle:Categorie')->findBy([
+            'owner' => null,
+            'classified' => 0
+        ]);
 
-        return new Response(null, 204);
+        return $this->render('document/categorie/index.html.twig', array(
+            'categories' => $categories
+        ));
     }
 
     /**
-     * @Route("api/new/{userid}/cat/",
+     * @Route("/api/new/cat/{userid}",
      *     name="api_category_new",
      *     options={"expose" = true}
      * )
@@ -121,6 +93,29 @@ class ApiCategoryController extends BaseController
     }
 
     /**
+     * @Route("/api/list/{userid}/cat",
+     *     name="category_list",
+     *     options={"expose" = true}
+     *     )
+     * @Method("GET")
+     */
+    public function getCategoriesByUserAction($userid)
+    {
+        $user = $this->getDoctrine()->getRepository(User::class)->find($userid);
+
+        $categories = $this->getDoctrine()->getRepository('DocumentationBundle:Categorie')
+            ->findOrderASCCategorie($user);
+        $models = [];
+        foreach ($categories as $category) {
+            $models[] = $this->createCategoryApiModel($category);
+        }
+        return $this->createApiResponse([
+            'items' => $models
+        ]);
+    }
+
+    /**
+     * Used to load the categories for the treeview
      * @Route("/api/list/categories/{id}",
      *     name="categorie_treeview",
      *     options={"expose" = true})
@@ -130,7 +125,6 @@ class ApiCategoryController extends BaseController
         $em = $this->getDoctrine()->getManager();
         $user = $em->getRepository('UserBundle:User')->find($id);
         $categories = $em->getRepository('DocumentationBundle:Categorie')->findOrderASCCategorie($user);
-        //getCategoryDocumentByUserDisplayed($user);
 
         $models = [];
         foreach ($categories as $category) {
@@ -143,8 +137,113 @@ class ApiCategoryController extends BaseController
     }
 
     /**
-     *
-     *
+     * @Route("/api/list/{id}/cat/", name="cat_get")
+     * @Method("GET")
+     */
+    public function getCategoryByIdAction(Categorie $category)
+    {
+        $apiModel = $this->createCategoryApiModel($category);
+
+        return $this->createApiResponse($apiModel);
+    }
+
+    /**
+     * @Route("/api/modal/cat/{id}/show",
+     *     name="categorie_modal_detail",
+     *     options={"expose" = true})
+     * @Method("GET")
+     */
+    public function detailModalAction(Categorie $categorie)
+    {
+
+        if(!$categorie) {
+            throw new \Exception('erreur object non trouvé', 500);
+        }
+        $categorie = $this->getDoctrine()->getRepository('DocumentationBundle:Categorie')
+            ->find($categorie->getId())
+        ;
+        $model = $this->createCategoryApiModel($categorie);
+        return $this->createApiResponse([
+            'item' => $model
+        ]);
+    }
+
+
+    /**
+     * @Route("/api/edit/{catid}/cat/{userid}",
+     *     name="api_category_edit",
+     *     options={"expose" = true}
+     * )
+     * @Method("POST")
+     */
+    public function editCategoryAction(Request $request, $catid ,$userid = null)
+    {
+
+        /* $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');*/
+        $data = json_decode($request->getContent(), true);
+
+        if ($data === null) {
+            throw new BadRequestHttpException('Invalid JSON');
+        }
+        $form = $this->createForm(CategorieType::class, null, [
+            'csrf_protection' => false,
+        ]);
+        $form->submit($data);
+
+        if (!$form->isValid()) {
+            $errors = $this->getErrorsFromForm($form);
+
+            return $this->createApiResponse([
+                'errors' => $errors
+            ], 400);
+        }
+
+        /** @var Categorie $category */
+
+        $em = $this->getDoctrine()->getManager();
+        $category = $em->getRepository('DocumentationBundle:Categorie')->find($catid);
+
+        if($userid){
+            $category->setOwner($em->getRepository('UserBundle:User')->find($userid));
+        }
+        $category->setName($data['name']);
+
+        if($data['classified'] === true)
+        {
+
+        }
+        $category->setClassified($data['classified']);
+
+        $em->persist($category);
+        $em->flush();
+
+        $apiModel = $this->createCategoryApiModel($category);
+
+        $response = $this->createApiResponse($apiModel);
+        // setting the Location header... it's a best-practice
+        $response->headers->set(
+            'Location',
+            $this->generateUrl('cat_get', ['id' => $category->getId()])
+        );
+
+        return $response;
+    }
+
+    /**
+     * @Route("/api/delete/{id}/cat/", name="cat_delete")
+     * @Method("DELETE")
+     */
+    public function deleteRepLogAction(Categorie $category)
+    {
+        /*$this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');*/
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($category);
+        $em->flush();
+
+        return new Response(null, 204);
+    }
+
+    /**
      * This could be moved into a service if it needed to be
      * re-used elsewhere.
      *
@@ -158,6 +257,11 @@ class ApiCategoryController extends BaseController
         $model->name = $category->getName();
         $model->isPrivate = $category->getIsPrivate();
         $model->documentCount = count($category->getDocuments());
+        $model->archive = $category->getClassified();
+        if($category->getOwner())
+        {
+            $model->owner = $category->getOwner()->getFullName();
+        }
 
         foreach ($category->getDocuments() as $document) {
             $model->documents[] = [

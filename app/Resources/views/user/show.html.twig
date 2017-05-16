@@ -2,7 +2,6 @@
 
 {% block stylesheets %}
     {{ parent() }}
-
 {% endblock %}
 
 {% block body %}
@@ -95,6 +94,10 @@
 
     <script type="text/template" id="js-document-add-template">
         {{ source('document/template/_add_row_document.html.twig') }}
+    </script>
+
+    <script type="text/template" id="js-new-folder-template">
+        {{ source('document/template/_new_folder_template.html.twig') }}
     </script>
 
 {% endblock %}

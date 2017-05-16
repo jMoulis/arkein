@@ -42,7 +42,7 @@ class EntretienType extends AbstractType
                 'by_reference' => false
             ])
             ->add('objet')
-            ->add('compteRendu', TextareaType::class)
+            ->add('odj', TextareaType::class)
         ;
     }
 

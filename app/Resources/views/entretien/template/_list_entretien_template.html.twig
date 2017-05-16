@@ -2,7 +2,14 @@
 <tr title="id_<%= id %>">
     <td><%= date %></td>
     <td><%= objet %></td>
-    <td><%= compteRendu %></td>
+    <td><%= odj %></td>
     <td><%= author %></td>
-    <td><a href="<%= links._self %>" class="js-detail-entretien btn btn-warning" data-id="<%= id %>" data-toggle="modal" data-target="#editEntretienModal">Consulter</a></td>
+    <td>
+        <a href="<%= links._self %>" class="js-detail-entretien btn btn-warning" data-id="<%= id %>" data-toggle="modal" data-target="#editEntretienModal">Consulter</a>
+        <% if (!compteRendu) { %>
+            <a href="#" class="js-saisir-compteRendu btn btn-primary" data-id="<%= id %>" data-toggle="modal" data-target="#saisirCompteRenduModal">Nouveau Compte Rendu</a>
+        <% } else { %>
+            <a href="<%= compteRenduLien %>" class="btn btn-success" data-id="<%= id %>">Voir Compte Rendu</a>
+        <% } %>
+    </td>
 </tr>

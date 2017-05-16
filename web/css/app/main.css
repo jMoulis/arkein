@@ -26,7 +26,7 @@ html {
 body {
     /* Margin bottom by footer height */
     margin-bottom: 60px;
-    padding-top: 50px;
+    padding-top: 60px;
 }
 
 body >.container {
@@ -151,3 +151,27 @@ h1 {
     visibility: hidden;
     position: absolute;
 }
+
+.top-header li {
+    display: inline;
+}
+
+.homepage .container {
+    border: solid rgb(238, 238, 238) 1px;
+    border-radius: 2px;
+    padding-top: 1em;
+    padding-bottom: 0;
+}
+
+.admin-footer {
+    border: solid rgb(238, 238, 238) 1px;
+    border-radius: 2px;
+    padding-top: 1em;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.billet-contenu-wrapper {
+    margin-left: 2em;
+}
+

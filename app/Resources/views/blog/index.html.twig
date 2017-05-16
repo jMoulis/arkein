@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h1>Blog</h1>
+                <div class="js-billet-wrapper">
+                    <div class="js-content"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+<script>
+    const billetWrapper = $('.js-billet-wrapper');
+    const billetApp = new BlogApp(billetWrapper);
+</script>
+<script type="text/template" id="js-billet-row-template">
+    {{ source('blog/template/_list_billet_template.html.twig') }}
+</script>
+{% endblock %}

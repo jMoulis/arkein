@@ -19,5 +19,16 @@
         <li class="nav-item">
             <a class="nav-link" href="{{ path('ticket_index') }}">Tickets</a>
         </li>
+        {% if is_granted('ROLE_ADMIN') %}
+            <li class="nav-item">
+                <a class="nav-link active" href="#">Administration <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('categorie_index') }}">Création de dossier</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('billet_new') }}">Créer un billet</a>
+            </li>
+        {% endif %}
     </ul>
 </nav>

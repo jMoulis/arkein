@@ -1,41 +1,35 @@
-<div class="js-document-table mt-5"></div>
-
-{{ include('document/_add_document.html.twig') }}
-
-<script type="text/template" id="js-new-folder-template">
-        <ul>
-            <div class="card" data-id="<%= id %>">
-                <div class="card-header" role="tab" data-id="heading_<%= id %>">
-                    <h5 class="mb-0 d-flex justify-content-between">
-                        <a href="#collapseFile_<%= id %>" data-toggle="collapse">
-                            <i class="fa fa-folder" aria-hidden="true"></i>  <%= name %>
-                        </a>
-                        <span class="js-total-doc-categorie badge badge-warning"><%= documentCount %></span>
-                    </h5>
-                </div>
-            </div>
-            <div class="collapse" id="collapseFile_<%= id %>">
-                <div class="card-block">
-                    <table class="js-table-document table table-sm table-responsive">
-                        <tbody class="sortable connectedSortable" id="tbody_<%= id %>">
-                            <tr class="notSortable">
-                                <td>
-                                    <button type="button" class="js-new-doc-btn btn btn-success btn-sm" data-id="<%= id %>" data-toggle="modal" data-target="#modalAddDoc">Nouveau Document</button>
-                                </td>
-                            </tr>
-                            <% _.each(documents, function(document){ %>
-                            <tr id="<%= document.id %>" data-id="<%= document.id %>">
-                                <td><a href="/arkein/web/youngster/<%= document.name %>"><i class="fa fa-file" aria-hidden="true"></i>  <%= document.name %></a></td>
-                                <td align="center">
-                                    <a href="#"
-                                       class="js-delete-document btn btn-danger btn-sm"
-                                    >x</a>
-                                </td>
-                            </tr>
-                        <% }); %>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </ul>
-</script>
+<ul>
+    <div class="card" data-id="<%= id %>">
+        <div class="card-header" role="tab" data-id="heading_<%= id %>">
+            <h5 class="mb-0 d-flex justify-content-between">
+                <a href="#collapseFile_<%= id %>" data-toggle="collapse">
+                    <i class="fa fa-folder" aria-hidden="true"></i>  <%= name %>
+                </a>
+                <span class="js-total-doc-categorie badge badge-warning"><%= documentCount %></span>
+            </h5>
+        </div>
+    </div>
+    <div class="collapse" id="collapseFile_<%= id %>">
+        <div class="card-block">
+            <table class="js-table-document table table-sm table-responsive">
+                <tbody class="sortable connectedSortable" id="tbody_<%= id %>">
+                    <tr class="notSortable">
+                        <td>
+                            <button type="button" class="js-new-doc-btn btn btn-success btn-sm" data-id="<%= id %>" data-toggle="modal" data-target="#modalAddDoc">Nouveau Document</button>
+                        </td>
+                    </tr>
+                    <% _.each(documents, function(document){ %>
+                    <tr id="<%= document.id %>" data-id="<%= document.id %>">
+                        <td><a href="/arkein/web/youngster/<%= document.name %>"><i class="fa fa-file" aria-hidden="true"></i>  <%= document.name %></a></td>
+                        <td align="center">
+                            <a href="#"
+                               class="js-delete-document btn btn-danger btn-sm"
+                            >x</a>
+                        </td>
+                    </tr>
+                <% }); %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</ul>

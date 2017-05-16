@@ -1,0 +1,19 @@
+<form class="js-edit-categorie" data-id="<%= id %>">
+    <div class="form-group">
+        <input class="form-control" type="text" value="<%= name %>" name="name" placeholder="Nom du Dossier"/>
+    </div>
+    <label class="mr-sm-2" for="classified">Archivé</label>
+    <select class="custom-select mb-2 mr-sm-2 mb-sm-0" id="classified" name="classified">
+        <option value="0">Non</option>
+        <option value="1">Oui</option>
+    </select>
+    <!--
+        <div class="form-group">
+            <label for="js-select-user"></label>
+            <select id="js-select-user" class="js-select-user" name="owner">
+                <option value="">Sélectionner un propritaire</option>
+            </select>
+        </div>
+    -->
+    <button class="btn btn-block btn-warning" type="submit">Modifier</button>
+</form>

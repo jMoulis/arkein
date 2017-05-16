@@ -26,9 +26,10 @@
         <div class="form-group">
             <label class="control-label required" for="objet">Objet</label>
             <input type="text" id="objet" name="objet" required="required" maxlength="255" class="form-control" />
-        </div><div class="form-group">
-            <label class="control-label required" for="compteRendu">Compte rendu</label>
-            <textarea id="compteRendu" name="compteRendu" required="required" class="form-control"></textarea>
+        </div>
+        <div class="form-group">
+            <label class="control-label required" for="odj">Ordre du jour</label>
+            <textarea id="odj" name="odj" required="required" class="form-control"><%= odj %></textarea>
         </div>
     </div>
     <button type="submit" class="btn btn-primary">Créer</button>

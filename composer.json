@@ -36,7 +36,8 @@
         "friendsofsymfony/jsrouting-bundle": "^1.6",
         "symfony/serializer": "^3.2",
         "vich/uploader-bundle": "^1.4",
-        "fresh/vich-uploader-serialization-bundle": "~1.0"
+        "fresh/vich-uploader-serialization-bundle": "~1.0",
+        "mpdf/mpdf": "^6.1"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",

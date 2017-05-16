@@ -282,7 +282,7 @@ class EntretienController extends BaseController
         $guestsToAdd = array_diff($newGuests, $existingGuests);
 
         $entretien->setObjet($dataFormEntretien['objet']);
-        $entretien->setCompteRendu($dataFormEntretien['compteRendu']);
+        $entretien->setOdj($dataFormEntretien['odj']);
 
 
 
@@ -378,9 +378,9 @@ class EntretienController extends BaseController
     {
         $model = new EntretienApiModel();
         $model->id = $entretien->getId();
-        $model->compteRendu = $entretien->getCompteRendu();
         $model->objet = $entretien->getObjet();
         $model->date = $entretien->getDate()->format('d/m/Y');
+        $model->odj = $entretien->getOdj();
         foreach ($entretien->getInterviewGuests() as $interviewGuest) {
             $model->guests[] = [
                 'name' => $interviewGuest->getUser()->getFullName(),
@@ -392,6 +392,10 @@ class EntretienController extends BaseController
         $model->authorId = $entretien->getAuthor()->getId();
         $model->young = $entretien->getYoung()->getFullName();
         $model->youngId = $entretien->getYoung()->getId();
+        if($entretien->getCompteRendu()){
+            $model->compteRendu = $entretien->getCompteRendu()->getId();
+            $model->compteRenduLien = $entretien->getCompteRendu()->getLienpdf();
+        }
 
         $selfUrl = $this->generateUrl(
             'entretien_show',

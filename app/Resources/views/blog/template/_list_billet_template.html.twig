@@ -1,0 +1,10 @@
+<h3>
+    <a href="<%= links._self %>" class="js-detail-billet"><%= titre %></a>
+</h3>
+<div>
+    <ul class="list-unstyled top-header">
+        <li class=""><span>par <%= titre %></span></li>
+        <li class=""><span><% var d = new Date(date); print(d.toLocaleDateString()); %></span></li>
+    </ul>
+</div>
+<div>Résumé du contenu</div>

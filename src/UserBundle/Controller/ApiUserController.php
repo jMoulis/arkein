@@ -65,6 +65,24 @@ class ApiUserController extends BaseController
     }
 
     /**
+     *
+     * @Route("/api/users/", name="user_list", options={"expose" = true})
+     * @Method("GET")
+     */
+    public function getAllUsersAction()
+    {
+        $users = $this->getDoctrine()->getRepository('UserBundle:User')
+            ->findAll();
+        $models = [];
+        foreach ($users as $user) {
+            $models[] = $this->createUserApiModel($user);
+        }
+        return $this->createApiResponse([
+            'items' => $models
+        ]);
+    }
+
+    /**
      * @Route("api/user/{id}/edit", name="api_user_edit", options={"expose" = true})
      * @Method("POST")
      */

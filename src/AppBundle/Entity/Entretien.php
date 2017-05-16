@@ -32,16 +32,14 @@ class Entretien
     private $date;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="compteRendu", type="text")
-     * @Assert\NotBlank(message="Merci de remplir le compte rendu")
+     * @ORM\Column(name="odj", type="text")
+     * @Assert\NotBlank(message="Merci de remplir l'ordre du jour")
      */
-    private $compteRendu;
+    private $odj;
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank(message="Merci de remplir l'objet")
      * @ORM\Column(name="objet", type="string", length=255)
      */
     private $objet;
@@ -56,10 +54,12 @@ class Entretien
     /**
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotBlank(message="Merci de sélectionner un jeune")
      */
     private $young;
 
     /**
+     * @Assert\NotBlank(message="Merci de sélectionner au moins un participant")
      * @ORM\OneToMany(
      *     targetEntity="AppBundle\Entity\InterviewUser",
      *     mappedBy="interview",
@@ -73,6 +73,11 @@ class Entretien
      * @ORM\Column(type="boolean")
      */
     private $isArchived;
+
+    /**
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\CompteRendu", mappedBy="entretien")
+     */
+    private $compteRendu;
 
     public function __construct()
     {
@@ -113,30 +118,6 @@ class Entretien
     public function getDate()
     {
         return $this->date;
-    }
-
-    /**
-     * Set compteRendu
-     *
-     * @param string $compteRendu
-     *
-     * @return Entretien
-     */
-    public function setCompteRendu($compteRendu)
-    {
-        $this->compteRendu = $compteRendu;
-
-        return $this;
-    }
-
-    /**
-     * Get compteRendu
-     *
-     * @return string
-     */
-    public function getCompteRendu()
-    {
-        return $this->compteRendu;
     }
 
     /**
@@ -272,4 +253,43 @@ class Entretien
         return $this->interviewGuests;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getOdj()
+    {
+        return $this->odj;
+    }
+
+    /**
+     * @param mixed $odj
+     */
+    public function setOdj($odj)
+    {
+        $this->odj = $odj;
+    }
+
+    /**
+     * Set compteRendu
+     *
+     * @param \AppBundle\Entity\CompteRendu $compteRendu
+     *
+     * @return Entretien
+     */
+    public function setCompteRendu(\AppBundle\Entity\CompteRendu $compteRendu = null)
+    {
+        $this->compteRendu = $compteRendu;
+
+        return $this;
+    }
+
+    /**
+     * Get compteRendu
+     *
+     * @return \AppBundle\Entity\CompteRendu
+     */
+    public function getCompteRendu()
+    {
+        return $this->compteRendu;
+    }
 }

@@ -11,6 +11,7 @@ namespace UserBundle\Entity;
 use AppBundle\Entity\Address;
 use AppBundle\Entity\Answer;
 use AppBundle\Entity\Phone;
+use BlogBundle\Entity\Billet;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use DocumentationBundle\Entity\Document;
@@ -85,6 +86,16 @@ class User implements UserInterface
     private $addresses;
 
     /**
+     * @ORM\OneToMany(targetEntity="BlogBundle\Entity\Billet",
+     *     mappedBy="author",
+     *     fetch="EXTRA_LAZY",
+     *     orphanRemoval=true,
+     *     cascade={"persist"}
+     * )
+     */
+    private $billet;
+
+    /**
      * @ORM\Column(type="boolean")
      */
     private $isActive;
@@ -135,6 +146,7 @@ class User implements UserInterface
         $this->coach = new ArrayCollection();
         $this->youngsters = new ArrayCollection();
         $this->documents = new ArrayCollection();
+        $this->billet = new ArrayCollection();
         $this->guestInterviews = new ArrayCollection();
         $this->isActive = true;
     }
@@ -538,5 +550,64 @@ class User implements UserInterface
     public function getGuestInterviews()
     {
         return $this->guestInterviews;
+    }
+
+    /**
+     * Add author
+     *
+     * @param Billet $billet
+     *
+     * @return User
+     */
+    public function addAuthor(Billet $billet)
+    {
+        $this->billet[] = $billet;
+        $billet->setAuthor($this);
+
+        return $this;
+    }
+
+    /**
+     * Remove author
+     *
+     * @param Billet $billet
+     */
+    public function removeAuthor( Billet $billet)
+    {
+        $this->billet->removeElement($billet);
+    }
+
+    /**
+     * Get author
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getAuthor()
+    {
+        return $this->billet;
+    }
+
+    /**
+     * Add guestInterview
+     *
+     * @param \AppBundle\Entity\InterviewUser $guestInterview
+     *
+     * @return User
+     */
+    public function addGuestInterview(\AppBundle\Entity\InterviewUser $guestInterview)
+    {
+        $this->guestInterviews[] = $guestInterview;
+
+        return $this;
+    }
+
+    /**
+     * Remove guestInterview
+     *
+     * @param \AppBundle\Entity\InterviewUser $guestInterview
+     */
+    public function removeGuestInterview(\AppBundle\Entity\InterviewUser $guestInterview)
+    {
+        $this->guestInterviews->removeElement($guestInterview);
     }
 }

@@ -14,6 +14,8 @@ class CategorieType extends AbstractType
         $builder
             ->add('name')
             ->add('isPrivate')
+            ->add('owner')
+            ->add('classified')
         ;
     }
 

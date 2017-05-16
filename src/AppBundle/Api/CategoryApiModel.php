@@ -14,6 +14,10 @@ class CategoryApiModel
 
     public $documentCount;
 
+    public $archive;
+
+    public $owner;
+
     private $links = [];
 
     public function addLink($ref, $url)

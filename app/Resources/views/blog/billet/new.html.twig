@@ -1,0 +1,25 @@
+{% extends ':App:layout.html.twig' %}
+
+{% block body %}
+    <h1>Billet creation</h1>
+    <div>
+        <a class="" href="{{ path('billet_index') }}">Retour list</a>
+    </div>
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <input class="btn btn-primary" type="submit" value="Créer" />
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        CKEDITOR.replace('billet_contenu', {
+            extraPlugins: 'autogrow',
+            autoGrow_minHeight: 200,
+            autoGrow_maxHeight: 600,
+            autoGrow_bottomSpace: 50,
+            removePlugins: 'resize'
+        });
+    </script>
+{% endblock %}

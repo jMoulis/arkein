@@ -8,7 +8,11 @@ class EntretienApiModel
 
     public $compteRendu;
 
+    public $compteRenduLien;
+
     public $objet;
+
+    public $odj;
 
     public $author;
 

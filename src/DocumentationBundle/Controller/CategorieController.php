@@ -15,42 +15,11 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use UserBundle\Entity\User;
 
 /**
- * @Route("categorie")
+ * @Route("")
  */
 
 class CategorieController extends BaseController
 {
-    /**
-     * Lists all document entities.
-     *
-     * @Route("/", name="categorie_index")
-     * @Method({"GET", "POST"})
-     */
-    public function indexAction(Request $request)
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $categories = $em->getRepository('DocumentationBundle:Categorie')->findAll();
-
-        $form = $this->createForm('DocumentationBundle\Form\CategorieType');
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $categorie = $form->getData();
-
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($categorie);
-            $em->flush($categorie);
-
-            return $this->redirectToRoute('categorie_index');
-        }
-
-        return $this->render('document/categorie/index.html.twig', array(
-            'categories' => $categories,
-            'form' => $form->createView(),
-        ));
-    }
-
     /**
      * Creates a new document entity.
      *

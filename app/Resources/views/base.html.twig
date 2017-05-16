@@ -60,7 +60,7 @@
                         <a class="nav-link" href="#">Boutique</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Actualités</a>
+                        <a class="nav-link" href="{{ path('index_blog') }}">Actualités</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('contact') }}">Contact</a>
@@ -82,7 +82,7 @@
     </div>
         {% block dashbody %}{% endblock %}
 
-    <div class="homepage container-fluid">
+    <div class="homepage">
         {% block content %}{% endblock %}
     </div>
     {% block footer %}
@@ -98,6 +98,7 @@
         </footer>
     {% endblock %}
         {% block javascripts %}
+            <script src="{{ asset('js/third-library/ckeditor/ckeditor.js') }}"></script>
             <script src="{{ asset('js/third-library/jquery/jquery-3.2.1.min.js') }}"></script>
             <script src="{{ asset('js/third-library/bootstrap4/tether.min.js') }}"></script>
             <script src="{{ asset('js/third-library/bootstrap4/bootstrap.min.js') }}"></script>
@@ -114,6 +115,7 @@
             <script src="{{ asset('js/api/CategoryApp.js') }}"></script>
             <script src="{{ asset('js/api/EntretienApp.js') }}"></script>
             <script src="{{ asset('js/api/EntretienAppAuthor.js') }}"></script>
+            <script src="{{ asset('js/api/BlogApp.js') }}"></script>
             <script src="{{ asset('js/fileUploadInput.js') }}"></script>
             <script src="{{ asset('js/navTab.js') }}"></script>
 

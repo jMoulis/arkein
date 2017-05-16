@@ -1,31 +1,60 @@
 {% extends ':App:layout.html.twig' %}
 {% block dashcontent %}
-
-    <h3>Dossiers</h3>
-<ul class="js-categorie-hierarchy">
-    {% for category in categories %}
-        <li>{{ category.name }}</li>
-        <li class="js-id-categorie" data-id="{{ category.id }}">{{ category.id }}</li>
-        <ul>
-            {% for document in category.documents %}
-                <li>{{ document.filename }}</li>
-            {% endfor %}
-            <li><a class="js-new-doc" href="#">Nouveau</a></li>
-            <div class="js-doc-form-wrapper" style="display: none;">
-
-            </div>
-        </ul>
-    {% endfor %}
-</ul>
+<h3>Dossiers</h3>
+    <div class="js-categorie-wrapper">
+        <div>
+            <a href="#" class="js-new-categorie-btn btn btn-primary" data-toggle="modal" data-target="#catNewModal">Nouvelle catégorie</a>
+        </div>
+        <br />
+        <table class="table table-responsive table-bordered table-hover">
+            <thead>
+            <tr>
+                <th>Nom dossier</th>
+                <th>Propriétaire</th>
+                <th>Total fichier</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for category in categories %}
+                    <tr class="js-id-categorie"><td>{{ category.name }}</td>
+                        {% if category.owner %}
+                            <td>
+                                <span class="badge badge-primary">{{ category.owner }}</span>
+                            </td>
+                        {% else %}
+                            <td>
+                                <span class="badge badge-success">Générique</span>
+                            </td>
+                        {% endif %}
+                        <td>
+                            <span class="badge badge-info">{{ category.documents|length }}</span>
+                        </td>
+                        <td>
+                            <a href="#" class="js-edit-categorie-btn btn btn-warning" data-id="{{ category.id }}" data-toggle="modal" data-target="#catEditModal">Modifier</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {{ include('document/categorie/_modal_edit_categorie.html.twig') }}
+        {{ include('document/categorie/_modal_new_categorie.html.twig') }}
+    </div>
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
     <script>
-        $(document).ready(function () {
-            $('.js-new-doc').on('click', function (e) {
-                var $listCategorie = $('js-categorie-hierarchy');
-            })
-        });
+        const $categorieWrapper = $('.js-categorie-wrapper');
+        const categorieApp = new CategoryApp($categorieWrapper);
+        $('.js-new-categorie-btn').on('click', categorieApp.loadUsers());
+    </script>
+
+    <script type="text/template" id="js-categorie-edit-template">
+        {{ source('/document/categorie/_edit_categorie.html.twig') }}
+    </script>
+
+    <script type="text/template" id="js-users-option-template">
+        <option value="<%= id %>"><%= fullname %></option>
     </script>
 {% endblock %}
