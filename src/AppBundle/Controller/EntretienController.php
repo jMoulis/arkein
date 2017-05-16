@@ -63,7 +63,7 @@ class EntretienController extends BaseController
      */
     public function newAction(Request $request)
     {
-        /*TODO Mettre en place le workflow mail et l'outil de validation des présences*/
+
         /* $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');*/
         $data = json_decode($request->getContent(), true);
         $dataFormEntretien = $data[0];

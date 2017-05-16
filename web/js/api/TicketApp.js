@@ -16,6 +16,12 @@
             this.handleNewFormSubmit.bind(this)
         );
 
+        this.$wrapper.on(
+            'submit',
+            this._selector.editTicketForm,
+            this.handleEditFormSubmit.bind(this)
+        );
+
         this.loadTicketsCreated();
         this.loadTicketsAttributed();
 
@@ -23,7 +29,8 @@
 
     $.extend(window.TicketApp.prototype, {
         _selector: {
-            newTicketForm: '.js-new-ticket-form'
+            newTicketForm: '.js-new-ticket-form',
+            editTicketForm: '.js-edit-ticket-form'
         },
 
         handleTicketDelete: function (e) {
@@ -63,6 +70,31 @@
                 success: function (data) {
                     self._clearForm();
                     $('#ticket').val(data.id);
+                },
+                error: function (jqXHR) {
+                    const errorData = JSON.parse(jqXHR.responseText);
+                    self._mapErrorsToForm(errorData.errors);
+                }
+            })
+        },
+
+        handleEditFormSubmit: function (e) {
+            e.preventDefault();
+            const $form = $(e.currentTarget);
+            const self = this;
+            const ticketid = $('h1').data('id');
+
+            let formData = {};
+            $.each($form.serializeArray(), function (key, fieldData) {
+                formData[fieldData.name] = fieldData.value;
+            });
+
+            $.ajax({
+                url: Routing.generate('api_ticket_edit', {id: ticketid}),
+                method: 'POST',
+                data: JSON.stringify(formData),
+                success: function (data) {
+                    $('#myModal').modal('hide');
                 },
                 error: function (jqXHR) {
                     const errorData = JSON.parse(jqXHR.responseText);

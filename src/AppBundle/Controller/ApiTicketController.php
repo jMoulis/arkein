@@ -4,6 +4,8 @@ namespace AppBundle\Controller;
 
 use AppBundle\Api\TicketApiModel;
 use AppBundle\Entity\Ticket;
+use AppBundle\Form\TicketEditType;
+use AppBundle\Tests\Controller\TicketControllerTest;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -66,35 +68,42 @@ class ApiTicketController extends BaseController
         ]);
     }
 
-
-
     /**
-     * @Route("api/ticket/edit",
+     * @Route("api/ticket/{id}edit",
      *     name="api_ticket_edit",
      *     options={"expose" = true})
      * @Method("POST")
      */
-    public function editAction(Request $request)
+    public function editAction(Request $request, $id)
     {
-        $content = $request->getContent();
-        if ($content === null) {
+        $data = json_decode($request->getContent(), true);
+
+        if ($data === null) {
             throw new BadRequestHttpException('Invalid JSON');
         }
-        if($request->isXmlHttpRequest()){
+        $form = $this->createForm(TicketEditType::class, null, [
+            'csrf_protection' => false,
+        ]);
 
-            if(!empty($content))
-            {
-                $em = $this->getDoctrine()->getManager();
-                $params = json_decode($content, true);
-                $ticket = $em->getRepository('AppBundle:Ticket')->findOneBy(['id' => $params['id']]);
-                $ticket->setStatut($params['statut']);
+        $form->submit($data);
 
-                $em->persist($ticket);
-                $em->flush();
-            }
-            return new JsonResponse(['data' => $params]);
-        }
-        return new Response("Error", 400);
+        $em = $this->getDoctrine()->getManager();
+        $ticket = $em->getRepository('AppBundle:Ticket')->find($id);
+        $ticket->setStatut($data['statut']);
+
+        $em->persist($ticket);
+        $em->flush();
+
+        $apiModel = $this->createTicketApiModel($ticket);
+
+        $response = $this->createApiResponse($apiModel);
+        // setting the Location header... it's a best-practice
+        $response->headers->set(
+            'Location',
+            $this->generateUrl('ticket_show', ['id' => $ticket->getId()])
+        );
+
+        return $response;
     }
 
     /**
@@ -127,6 +136,7 @@ class ApiTicketController extends BaseController
         $model->reponses = count($ticket->getAnswers());
         $model->destinataire = $ticket->getToWho()->getFullName();
         $model->niveau = $ticket->getLevel();
+        $model->statut = $ticket->getStatut();
 
         $selfUrl = $this->generateUrl(
             'ticket_show',

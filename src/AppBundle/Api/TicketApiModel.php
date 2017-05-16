@@ -18,6 +18,8 @@ class TicketApiModel
 
     public $destinataire;
 
+    public $statut;
+
     private $links = [];
 
     public function addLink($ref, $url)

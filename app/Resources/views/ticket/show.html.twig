@@ -3,6 +3,7 @@
 {% block dashcontent %}
     <h1 data-id="{{ ticket.id }}">Détail demande</h1>
     <a href="{{ path('ticket_index') }}">Back to the list</a>
+    <div class="ticket-wrapper">
     <div class="media">
         <div class="media-body">
             <div class="message">
@@ -38,10 +39,17 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div data-id="{{ ticket.id }}">{{ render(controller('AppBundle:Ticket:edit', { 'id': ticket.id })) }}</div>
+                    <form class="js-edit-ticket-form" name="statut" method="post" action="" novalidate>
+                        <select id="select-statuts" name="statut">
+                            <option value="1">Ouvert</option>
+                            <option value="0">Clôturer</option>
+                        </select>
+                        <button class="btn btn-primary" type="submit">Modifier</button>
+                    </form>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 {% endblock %}
 
@@ -52,6 +60,9 @@
     <script>
         const $wrapper = $('.js-form-answer-wrapper');
         const answerApp = new AnswerApp($wrapper);
+
+        const $statutWrapper = $('.ticket-wrapper');
+        const ticketApp = new TicketApp($statutWrapper);
     </script>
 
     {# Template #}
