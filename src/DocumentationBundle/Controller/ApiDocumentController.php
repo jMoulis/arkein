@@ -3,6 +3,7 @@
 namespace DocumentationBundle\Controller;
 
 use AppBundle\Api\DocumentApiModel;
+use AppBundle\Api\FileSystemApiModel;
 use AppBundle\Controller\BaseController;
 use DocumentationBundle\Entity\Categorie;
 use DocumentationBundle\Entity\Document;
@@ -11,6 +12,9 @@ use DocumentationBundle\Form\DocumentType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,10 +27,15 @@ use UserBundle\Entity\User;
 
 class ApiDocumentController extends BaseController
 {
-
+    const REPERTOIRE =  'Sites/arkein/documents';
     /**
-     * @Route("api/docs/{userid}", name="api_document_list_by_destinataire", options={"expose" = true})
+     * @Route("/api/d/{userid}",
+     *     name="api_document_list_by_destinataire",
+     *     options={"expose" = true}
+     *     )
      * @Method("GET")
+     * @Security("has_role('ROLE_ADMIN')")
+     *
      */
     public function indexAction($userid)
     {
@@ -44,9 +53,8 @@ class ApiDocumentController extends BaseController
         ]);
     }
 
-
     /**
-     * @Route("api/docs/{categorie}",
+     * @Route("/api/d/get/{categorie}/c",
      *     name="api_document_list",
      *     options={"expose" = true}
      *     )
@@ -71,12 +79,11 @@ class ApiDocumentController extends BaseController
     }
 
     /**
-     * @Route("/load/{id}", name="api_new_doc", options={"expose" = true})
+     * @Route("/api/d/load/{id}/d", name="api_new_doc", options={"expose" = true})
      * @Method({"GET","POST"})
      */
     public  function newAction(Request $request, $id)
     {
-
         /* $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');*/
         $data = $request->files;
 
@@ -86,6 +93,7 @@ class ApiDocumentController extends BaseController
         $form = $this->createForm(DocumentType::class, null, [
             'csrf_protection' => false,
         ]);
+
         $form->handleRequest($request);
 
         if (!$form->isValid()) {
@@ -110,7 +118,6 @@ class ApiDocumentController extends BaseController
         $apiModel = $this->createDocumentApiModel($document);
 
         $response = $this->createApiResponse($apiModel);
-        // setting the Location header... it's a best-practice
         $response->headers->set(
             'Location',
             $this->generateUrl('api_document_show', ['id' => $document->getId()])
@@ -121,7 +128,7 @@ class ApiDocumentController extends BaseController
     }
 
     /**
-     * @Route("/api/doc/{id}", name="api_document_show")
+     * @Route("/api/d/show/{id}/d", name="api_document_show")
      * @Method("GET")
      */
     public function showAction(Document $document)
@@ -132,7 +139,7 @@ class ApiDocumentController extends BaseController
     }
 
     /**
-     * @Route("/api/doc/edit", name="api_document_edit", options={"expose" = true})
+     * @Route("/api/d/edit/d", name="api_document_edit", options={"expose" = true})
      * @Method("POST")
      */
     public function editDocument(Request $request)
@@ -161,8 +168,11 @@ class ApiDocumentController extends BaseController
     }
 
     /**
-     * @Route("/api/doc/{id}", name="api_document_delete", options={"expose" = true})
+     * @Route("/api/d/delete/{id}/d",
+     *     name="api_document_delete",
+     *     options={"expose" = true})
      * @Method("DELETE")
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function deleteDocumentAction(Document $document)
     {
@@ -174,18 +184,99 @@ class ApiDocumentController extends BaseController
         return new Response(null, 204);
     }
 
+    /**
+     * @Route("/test/", name="test_show_doc")
+     */
+    public function testShowDoc()
+    {
+        return $this->render('document/test_show_doc.html.twig');
+    }
+
+    /**
+     * @Route("/api/check/",
+     *     name="api_check",
+     *     options={"expose" = true}
+     *  )
+     */
+    public function downloadImageAction(Request $request)
+    {
+
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
+        $id = $request->query->get('document');
+
+        $document = $this->getDoctrine()->getRepository('DocumentationBundle:Document')->find($id);
+        $nomDocument = $document->getFileName();
+
+        $this->envoi_fichier($nomDocument, false);
+
+    }
+
+    private function envoi_fichier($documentName, $download = FALSE)
+    {
+        $document = $this->getParameter('repertoire_documents').'/'.$documentName;
+
+        $mime = $this->get_mime_type($document);
+        header('Content-type: ' . $mime);
+        if($download) {
+            header('Content-Disposition: attachement; filename="'. $documentName .'"');
+        }
+
+        readfile($document);
+    }
+
+    private function get_mime_type($document = '')
+    {
+        if (empty($document))
+        {
+            exit ('Paramètre invalide');
+        }
+        if(function_exists('finfo_open'))
+        {
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $retour = finfo_file($finfo, $document);
+            finfo_close($finfo);
+        } elseif (file_exists('mime.ini')){
+            $retour = $this->typeMime($document);
+        } else {
+            $retour = mime_content_type($document);
+        }
+        return $retour;
+    }
+
+    private function typeMime($documentName)
+    {
+        if(preg_match("@Opera(/| )([0-9].[0-9]{1,2})@", $_SERVER['HTTP_USER_AGENT'], $resultats))
+            $navigateur="Opera";
+        elseif(preg_match("@MSIE ([0-9].[0-9]{1,2})@", $_SERVER['HTTP_USER_AGENT'], $resultats))
+            $navigateur="Internet Explorer";
+        else $navigateur="Mozilla";
+
+        $mime=parse_ini_file("mime.ini");
+        $extension=substr($documentName, strrpos($documentName, ".")+1);
+
+        if(array_key_exists($extension, $mime)){
+            $type=$mime[$extension];
+        }
+        else{
+            $type=($navigateur!="Mozilla") ? 'application/octetstream' : 'application/octet-stream';
+        }
+        return $type;
+    }
 
     /**
      * @param Document $document
      * @return DocumentApiModel
+     * @Security("has_role('ROLE_ADMIN')")
      */
     private function createDocumentApiModel(Document $document)
     {
+        $helper = $this->container->get('vich_uploader.templating.helper.uploader_helper');
+        $path = $helper->asset($document, 'fileTemporary');
 
         $model = new DocumentApiModel();
         $model->id = $document->getId();
         $model->fileName = $document->getFileName();
-        $model->fileTemporary = $document->getFileTemporary();
+        $model->fileTemporary = $path;
         $model->categories = $document->getCategorie()->getId();
         $selfUrl = $this->generateUrl(
             'api_document_show',

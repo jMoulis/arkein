@@ -102,4 +102,3 @@ stof_doctrine_extensions:
             sluggable: true
             blameable: true
             tree: true
-

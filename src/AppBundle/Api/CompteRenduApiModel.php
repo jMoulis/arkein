@@ -14,6 +14,8 @@ class CompteRenduApiModel
 
     public $entretien;
 
+    public $authorId;
+
     private $links = [];
 
     public function addLink($ref, $url)

@@ -34,6 +34,12 @@
             this.setSelectedValue.bind(this)
         );
 
+        this.$wrapper.on(
+            'click',
+            '.js-display-file',
+            this.displaySecuredFile.bind(this)
+        )
+
     };
 
     $.extend(window.DocumentApp.prototype, {
@@ -94,6 +100,21 @@
                     self._mapErrorsToForm(errorData.errors);
                 }
             })
+        },
+
+        displaySecuredFile: function (e) {
+            const id = $(e.currentTarget).closest('tr').data('id');
+                $.ajax({
+                    url: Routing.generate('api_check', {id: id}),
+                    method: 'POST',
+                    success: function (data) {
+                        $("#image").attr("src", 'http://127.0.0.1/arkein/web/app_dev.php/dashboard/document/api/check/?document=152&submit=afficher');
+                        //
+                    },
+                    error: function (jqXHR) {
+                        console.log(JSON.parse(jqXHR.responseText));
+                    }
+                })
         },
 
         sortingFile: function(){

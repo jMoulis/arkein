@@ -6,11 +6,17 @@
 
 {% block body %}
     <h1 data-user="{{ user.id }}">Bienvenue, {{ user.firstname }}</h1>
-
+    <form action="{{ path('api_check') }}">
+        <select name="document">
+            <option value="152">Fichier 1</option>
+        </select>
+        <input type="submit" name="submit" value="afficher" />
+        <a href="#">test</a>
+    </form>
     <!-- Tabs navigation -->
     <ul class="nav nav-tabs" id="tabs" role="tablist">
         <li class="nav-item w-100">
-            <a class="nav-link text-center" data-toggle="tab" href="#profile" role="tab">Profile</a>
+            <a class="nav-link text-center active" data-toggle="tab" href="#profile" role="tab">Profile</a>
         </li>
         <li class="nav-item w-100">
             <a class="nav-link text-center" data-toggle="tab" href="#entretiens" role="tab">Entretiens</a>
@@ -42,22 +48,22 @@
             {{ include('document/_doc_index.html.twig') }}
         </div>
         <!--Fin tab Document-->
+
     </div>
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
 
-
-    <script>
+<script>
         $(document).ready(function () {
             /*
             * Instantiation des différents objets
             * pour tous les appels ajax
             *
             * */
-            const $wrapper = $('.js-documentation-wrapper');
-            const documentApp = new DocumentApp($wrapper);
+            const $DocWrapper = $('.js-documentation-wrapper');
+            const documentApp = new DocumentApp($DocWrapper);
 
             const $folder = $('.js-documentation-wrapper');
             const categoryApp = new CategoryApp($folder);
@@ -67,8 +73,12 @@
 
             entretienApp.loadListEntretiens();
 
-            $('#isPrivate').prop("checked", "true");
+            $DocWrapper.on('click', '.js-load-file', function (e) {
+                e.preventDefault();
+                $('.js-form-file').submit();
+            });
 
+            $('#isPrivate').prop("checked", "true");
         });
     </script>
 

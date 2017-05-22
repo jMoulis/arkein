@@ -1,17 +1,17 @@
 app.entretien:
     resource: "@AppBundle/Controller/EntretienController.php"
     type:     annotation
-    prefix:   /admin
+    prefix:   /dashboard
 
 app.compterendu:
     resource: "@AppBundle/Controller/CompteRenduController.php"
     type:     annotation
-    prefix:   /admin
+    prefix:   /dashboard
 
 app.documentation:
     resource: "@DocumentationBundle/Controller/"
     type:     annotation
-    prefix:   /admin
+    prefix:   /dashboard
 
 app:
     resource: "@AppBundle/Controller/AppController.php"
@@ -26,42 +26,42 @@ app.event:
 app.reservation:
     resource: "@AppBundle/Controller/ReservationController.php"
     type:     annotation
-    prefix:   /admin
+    prefix:   /dashboard
 
 app.ticket:
     resource: "@AppBundle/Controller/TicketController.php"
     type:     annotation
-    prefix:   /admin
+    prefix:   /dashboard
 
 app.api.ticket:
     resource: "@AppBundle/Controller/ApiTicketController.php"
     type:     annotation
-    prefix:   /admin
+    prefix:   /dashboard
 
 user.security:
     resource: "@UserBundle/Controller/SecurityController.php"
     type:     annotation
-    prefix: /
+    prefix:   /
 
 user:
     resource: "@UserBundle/Controller/UserController.php"
     type:     annotation
-    prefix:   /admin
+    prefix:   /dashboard
 
 app.api.user:
     resource: "@UserBundle/Controller/ApiUserController.php"
     type:     annotation
-    prefix:   /admin
+    prefix:   /dashboard
 
 app.answer:
     resource: "@AppBundle/Controller/ApiAnswerController.php"
     type:     annotation
-    prefix:   /admin
+    prefix:   /dashboard
 
 app.interviewUser:
     resource: "@AppBundle/Controller/InterviewUserController.php"
     type:     annotation
-    prefix:   /admin
+    prefix:   /dashboard
 
 blog:
     resource: "@BlogBundle/Controller/"

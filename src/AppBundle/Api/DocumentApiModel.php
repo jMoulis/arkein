@@ -14,6 +14,10 @@ class DocumentApiModel
 
     private $links = [];
 
+    public $folderName;
+
+    public $files = [];
+
     public function addLink($ref, $url)
     {
         $this->links[$ref] = $url;

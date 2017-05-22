@@ -1,0 +1,10 @@
+{% extends 'App/layout.html.twig' %}
+{% block dashcontent %}
+    <form action="{{ path('api_check') }}">
+        <select name="document">
+            <option value="152">Fichier 1</option>
+        </select>
+    <input type="submit" name="submit" value="afficher" />
+        <a href="#">test</a>
+    </form>
+{% endblock %}

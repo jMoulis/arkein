@@ -23,6 +23,5 @@ security:
                 path: /logout
                 target: /login
 
-
     access_control:
-        - { path: '^/admin', roles: 'IS_AUTHENTICATED_FULLY' }
+        - { path: '^/dashboard', roles: 'IS_AUTHENTICATED_FULLY' }

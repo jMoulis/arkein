@@ -23,7 +23,7 @@
                                 <th>Objet</th>
                                 <th>Ordre du jour</th>
                                 <th>Organisateur</th>
-                                <th>Actions</th>
+                                <th colspan="2">Actions</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -39,7 +39,7 @@
                                 <th>Objet</th>
                                 <th>Ordre du jour</th>
                                 <th>Organisateur</th>
-                                <th>Actions</th>
+                                <th colspan="2">Actions</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -47,6 +47,7 @@
                 </div>
             </div>
         </div>
+        {{ include('entretien/_pdf_loader_modal.html.twig') }}
         {{ include('entretien/_new_compte_rendu_modal.html.twig') }}
         {{ include('entretien/_edit_compterendu_modal.html.twig') }}
         <!-- Modal pour la visualisation du formulaire d'édition des entretiens -->
@@ -60,11 +61,13 @@
 
 
 
+
     </div>
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
+    <script src="{{ asset('js/third-library/PDFObject/pdfobject.min.js') }}"></script>
     <script>
         const $entretienWrapper = $('.js-entretien-wrapper');
         const entretienApp = new EntretienAppAuthor($entretienWrapper);
@@ -89,13 +92,23 @@
             $('#status').val(0);
         });
 
-        $entretienWrapper.on('click', '.js-saisir-compteRendu', function (e) {
-            const entretien = $(e.currentTarget).data('id');
-            $('.js-entretien-input').val(entretien);
-        });
+
 
         CKEDITOR.replace('odj1');
         CKEDITOR.replace('compteRendu');
+
+        const linkPdf = $('.js-load-pdf').attr("href");
+
+
+        $entretienWrapper.on('shown.bs.modal', '.js-modal-viewer', function (e) {
+            $('#pdfViewer .modal-body').css(
+                {
+                    height: '50rem'
+                }
+            );
+            PDFObject.embed('/pdf/102.pdf', '#pdfViewer .modal-body');
+        })
+
     </script>
 
     <script type="text/template" id="js-entretien-row-template">

@@ -51,7 +51,6 @@ class ApiCategoryController extends BaseController
      */
     public function newCategoryAction(Request $request, $userid = null)
     {
-
         /* $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');*/
         $data = json_decode($request->getContent(), true);
 
@@ -168,7 +167,6 @@ class ApiCategoryController extends BaseController
         ]);
     }
 
-
     /**
      * @Route("/api/edit/{catid}/cat/{userid}",
      *     name="api_category_edit",
@@ -258,6 +256,7 @@ class ApiCategoryController extends BaseController
         $model->isPrivate = $category->getIsPrivate();
         $model->documentCount = count($category->getDocuments());
         $model->archive = $category->getClassified();
+
         if($category->getOwner())
         {
             $model->owner = $category->getOwner()->getFullName();

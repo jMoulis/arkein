@@ -1,0 +1,38 @@
+<ul>
+    <div class="card" data-id="">
+        <div class="card-header" role="tab" data-id="heading_<%= folderId %>">
+            <h5 class="mb-0 d-flex justify-content-between"  data-route="<%= folderPath %>">
+                <a href="#collapseFile_<%= folderId %>" data-toggle="collapse">
+                    <i class="fa fa-folder" aria-hidden="true"></i>  <%= folderName %>
+                </a>
+                <span class="js-total-doc-categorie badge badge-warning">0</span>
+            </h5>
+        </div>
+    </div>
+    <div class="collapse" id="collapseFile_<%= folderId %>">
+        <div class="card-block">
+            <table class="js-table-document table table-sm table-responsive">
+                <tbody class="sortable connectedSortable" id="tbody_<%= folderId %>" data-folder="tbody_<%= folderId %>">
+                <tr class="notSortable">
+                    <td>
+                        <button type="button" class="js-new-doc-btn btn btn-success btn-sm" data-id="<%= folderId %>" data-toggle="modal" data-target="#modalAddDoc">Nouveau Document</button>
+                    </td>
+                </tr>
+                <% _.each(files, function(file){ %>
+                <tr id="<%= file.id %>" data-id="<%= file.id %>">
+                    <td>
+                        <a class="js-display-file" href="#"><i class="fa fa-file" aria-hidden="true"></i>  <%= file.name %></a></td>
+                    <td align="center">
+                        <a href="#"
+                           class="js-delete-document btn btn-danger btn-sm"
+                        >x</a>
+                    </td>
+                </tr>
+                <% }); %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</ul>
+
+

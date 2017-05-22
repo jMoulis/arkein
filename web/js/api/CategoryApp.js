@@ -58,6 +58,12 @@
             this.handleEditFormSubmit.bind(this)
         );
 
+        this.$wrapper.on(
+            'click',
+            '.js-new-folder',
+            this.lockNewDocBtn.bind(this)
+        );
+
         this.loadListSelectCategorie();
 
         this.loadListTreeViewCategorie();
@@ -112,11 +118,11 @@
                 method: 'POST',
                 data: JSON.stringify(formData),
                 success: function (data) {
-                    self._addSelect(data);
-                    $('.js-select-folder').val(data.id);
+                    self._addSelect(data, data.id);
                     $('#addFolderForm').collapse('toggle');
                     self._addTreeView(data);
                     self._clearForm();
+                    self._unlockNewDocBtn();
                 },
                 error: function (jqXHR) {
                     const errorData = JSON.parse(jqXHR.responseText);
@@ -233,10 +239,15 @@
             $.ajax({
                 url: Routing.generate('api_document_list_by_destinataire', {userid: userid}),
                 success: function (data) {
+
                     $.each(data.items, function (key, document) {
+                        let testArray =[];
                         let $wrapper = $('tbody#tbody_'+ document.categories);
                         self._addNewDoc(document, $wrapper);
-                    })
+                        testArray.push(document);
+                        $('#collapseFile_'+ document.categories).prev('.card').find('span').text($('#collapseFile_'+ document.categories).length)
+                    });
+
                 }
             })
         },
@@ -298,6 +309,7 @@
             this._removeFormErrors();
             const $form = this.$wrapper.find('.modal-body').find('form');
             $form[0].reset();
+            $form[1].reset();
             this._removeWaiting();
         },
 
@@ -311,11 +323,12 @@
             $('.waiting').remove();
         },
 
-        _addSelect: function (category) {
+        _addSelect: function (category, id) {
             const tplText = $('#js-cat-option-template').html();
             const tpl = _.template(tplText);
             const html = tpl(category);
             $('.js-select-folder').append($.parseHTML(html));
+            $('.js-select-folder').val(id);
         },
 
         _addTreeView: function (category) {
@@ -344,6 +357,14 @@
             const tpl = _.template(tplText);
             const html = tpl(user);
             $('.js-select-user').append($.parseHTML(html));
+        },
+        
+        lockNewDocBtn: function () {
+            $('.modal-footer .btn-group .btn').prop('disabled', true);
+        },
+
+        _unlockNewDocBtn: function () {
+            $('.modal-footer .btn-group .btn').prop('disabled', false);
         }
     });
 })(window, jQuery, Routing);

@@ -1,0 +1,37 @@
+{% extends 'App/layout.html.twig' %}
+{% block dashcontent %}
+    <div class="row js-filesystem-wrapper">
+        <div class="col">
+            <div class="">
+                <form class="js-add-folder">
+                    <label for="name"></label>
+                    <input type="text" id="name" name="name" />
+                    <input type="submit" value="Créer" />
+                </form>
+
+                <div class="js-filesystem-treeview-wrapper">
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="js-file-wrapper">
+
+            </div>
+        </div>
+        {{ include('testFileSystem/template/_add_file_modal.html.twig') }}
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/api/FileSystemApp.js') }}"></script>
+
+    <script type="text/template" id="js-treeview-folder-template">
+        {{ source('testFileSystem/template/_load_folder_template.html.twig') }}
+    </script>
+    <script>
+            $fileSystemWrapper = $('.js-filesystem-wrapper');
+            $fileSystemApp = new FileSystemApp($fileSystemWrapper);
+    </script>
+
+{% endblock %}
+

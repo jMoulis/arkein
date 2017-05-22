@@ -1,0 +1,24 @@
+<!-- Modal -->
+<div class="modal fade" id="modalAddDoc" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Nouveau document</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="js-upload-file" method="post" enctype="multipart/form-data" >
+                    <label for="folder"></label>
+                    <input type="text" value="" name="folder" id="folder" class="js-folder"/>
+                    <label for="file"></label>
+                    <input type="file" id="file" name="file" />
+                    <input type="submit" value="Créer" />
+                </form>
+            </div>
+            <div class="modal-footer d-flex justify-content-between">
+            </div>
+        </div>
+    </div>
+</div>

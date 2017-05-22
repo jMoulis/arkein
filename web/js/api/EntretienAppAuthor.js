@@ -38,8 +38,9 @@
 
         this.$wrapper.on(
             'click',
-            '.js-detail-compteRendu',
-            this.loadEditCompteRenduFormData.bind(this)
+            '.js-detail-compteRendu', function () {
+                $('#editEntretienModal').modal('hide');
+            }
         );
 
         this.$wrapper.on(
@@ -72,6 +73,12 @@
             this._updateActualRow.bind(this)
         );
 
+        this.$wrapper.on(
+            'click',
+            '.js-saisir-compteRendu',
+            this.setInputIdEntretienNewCompteRenduForm.bind(this)
+        );
+
         this.loadEntretiens();
 
         this.loadInvitations();
@@ -87,21 +94,24 @@
             editModalFooter: '#editEntretienModal .modal-footer',
             guestSelect: '#guests',
             youngSelect: '#young',
-            tabInvitation: '#myInitation' ,
+            tabInvitation: '#myInvitation' ,
             tabInterview: '#myInterview',
             newModal: '#newEntretienModal',
             newModalFooter: '#newEntretienModal .modal-footer',
             newCompteRendu: '#js-compte-rendu-form',
             newCompteRenduModal: '#saisirCompteRenduModal',
             newCompteRenduModalFooter: '#saisirCompteRenduModal .modal-footer',
-            editCompteRenduModalBody: '#editCompteRenduModal .modal-body'
+            editCompteRenduModalBody: '#editCompteRenduModal .modal-body',
+            modalFooter: '.modal-footer',
+            modalForm: '.modal-body form',
+            tbody: '.tab-content tbody'
         },
 
         handleNewFormSubmit: function (e) {
             e.preventDefault();
             const $form = $(e.currentTarget);
             const self = this;
-            const alertNoRecordFound = $(self._selector.tabInterview).find('.js-table-wrapper tbody .alert');
+
             const $guests = $form.find('ul').children();
             /* Afin de pouvoir enregistrer des guests, il était nécessaire
              * de créer un objet avec les id des users
@@ -120,13 +130,13 @@
 
             $.ajax({
                 beforeSend: function(){
-                    $(self._selector.newModalFooter).append("<span class='loading'>Enregistrement...</span>");
+                    self.beforeSendAction();
                 },
                 url: $form.data('url'),
                 method: 'POST',
                 data: JSON.stringify([formData, guestsObject]),
                 success: function (data) {
-                    $(alertNoRecordFound).remove();
+                    self.sucessSendAction();
                     self._clearForm();
                     self._addInterviewsRow(data);
                     $(self._selector.newModal).modal('hide');
@@ -165,13 +175,14 @@
 
             $.ajax({
                 beforeSend: function(){
-                    $(self._selector.editModalFooter).append("<span class='loading'>Enregistrement...</span>");
+                    self.beforeSendAction();
                 },
                 url: Routing.generate('entretien_edit', {id: entretienId}),
                 method: 'POST',
                 data: JSON.stringify(arrayToBeSend),
                 success: function (data) {
                     self._updateActualRow(tr, data.date, data.objet, data.odj);
+                    self.sucessSendAction();
                     self._clearForm();
                     $(self._selector.editEntretienModal).modal('hide');
                 },
@@ -193,23 +204,20 @@
             });
             $.ajax({
                 beforeSend: function(){
-                    $(self._selector.newCompteRenduModalFooter).append("<span class='loading'>Enregistrement...</span>");
-                    $(self._selector.newCompteRenduModal).find('.js-btn-submit-compterendu').prop("disabled", true);
+                    self.beforeSendAction();
                 },
                 url: Routing.generate('compterendu_new'),
                 method: 'POST',
                 data: JSON.stringify(formData),
                 success: function (data) {
-                    $('.loading').remove();
+                    self.sucessSendAction();
                     self._clearForm();
                     self._CKupdate();
-                    $(self._selector.newCompteRenduModal).find('.js-btn-submit-compterendu').prop("disabled", false);
                     $(self._selector.newCompteRenduModal).modal('hide');
                 },
                 error: function (jqXHR) {
                     const errorData = JSON.parse(jqXHR.responseText);
-                    $(self._selector.newCompteRenduModal).find('.js-btn-submit-compterendu').prop("disabled", false);
-                    $('.loading').remove();
+                    self.sucessSendAction();
                     self._mapErrorsToForm(errorData.errors);
 
                 }
@@ -227,9 +235,7 @@
                 success: function (data) {
                     if($(data.items).length <= 0){
                         $(self._selector.tabInterview).find('.loading').remove();
-                        $(self._selector.tabInterview).find('tbody').append('' +
-                            '<div class="alert alert-success" role="alert">' +
-                            'Aucun entretiens trouvés</div>');
+                        self.noDataFound();
                     } else {
                         $.each(data.items, function (key, entretien) {
                             $(self._selector.tabInterview).find('.loading').remove();
@@ -251,9 +257,6 @@
                 success: function (data) {
                     if($(data.items).length <= 0){
                         $(self._selector.tabInvitation).find('.loading').remove();
-                        $(self._selector.tabInvitation).find('tbody').append('' +
-                            '<div class="alert alert-success" role="alert">' +
-                            'Aucun entretiens trouvés</div>');
                     } else {
                         $.each(data.items, function (key, entretien) {
                             $(self._selector.tabInvitation).find('.loading').remove();
@@ -278,11 +281,21 @@
                 url: Routing.generate('entretien_modal_detail', {id: entretien}),
                 success: function (data) {
                     $('#loading').hide();
-                    if(data.item.authorId !== user){
+                    if(data.item.compteRendu){
                         self._addEditForm(data.item, tplTextNonLoggedIn);
-                        self._loadStatusUpdateForm(data.item);
-                        CKEDITOR.replace('odj_edit_1');
-
+                        $('#odj_edit_2').prop('disabled', true);
+                        CKEDITOR.replace('odj_edit_2', {
+                            removePlugins: 'toolbar, elementspath',
+                            resize_enabled: false
+                        });
+                    } else if(data.item.authorId !== user){
+                        self._addEditForm(data.item, tplTextNonLoggedIn);
+                        self._loadStatusUpdateForm();
+                        $('#odj_edit_2').prop('disabled', true);
+                        CKEDITOR.replace('odj_edit_2', {
+                            removePlugins: 'toolbar, elementspath',
+                            resize_enabled: false
+                        });
                     } else {
                         self._addEditForm(data.item, tplTextLoggedIn);
                         self.loadUsers();
@@ -296,9 +309,7 @@
         loadEditCompteRenduFormData: function (e) {
             const self = this;
             const compterendu = $(e.currentTarget).data('id');
-            console.log(compterendu);
             const user = $('.js-entretien-wrapper').data('user');
-            const tplTextLoggedIn = $('#js-compterendu-detail-template').html();
 
             $.ajax({
                 beforeSend: function(){
@@ -308,6 +319,7 @@
                 success: function (data) {
                     $('#loading').hide();
                     self._addEditCompteRenduForm(data.item);
+
                     if(data.item.authorId !== user){
                         CKEDITOR.replace('compteRendu');
                         $('#compteRendu').prop('disabled', true);
@@ -318,6 +330,7 @@
                 }
             })
         },
+
         loadUsers: function () {
             const self = this;
             self._emptySelectYoung();
@@ -465,7 +478,7 @@
             $columnCompteRendu.text(compteRendu);
         },
 
-        _loadStatusUpdateForm: function (status) {
+        _loadStatusUpdateForm: function () {
             const tplText = $('#js-status-update').html();
             const tpl = _.template(tplText);
             const html = tpl(status);
@@ -477,6 +490,29 @@
                 CKEDITOR.instances[instance].updateElement();
                 CKEDITOR.instances[instance].setData('');
             }
+        },
+
+        setInputIdEntretienNewCompteRenduForm: function (e) {
+            const entretien = $(e.currentTarget).data('id');
+            console.log(entretien);
+            $('.js-entretien-input').val(entretien);
+        },
+
+        beforeSendAction: function () {
+            $(this._selector.modalFooter).append("<span class='loading'>Enregistrement...</span>");
+            $(this._selector.modalForm).find('button').prop("disabled", true);
+        },
+
+        sucessSendAction : function () {
+            $('.loading').remove();
+            $(this._selector.modalForm).find('button').prop("disabled", false);
+            $(this._selector.tbody).find('.alert').remove();
+        },
+
+        noDataFound: function () {
+            $(this._selector.tbody).append('' +
+                '<div class="alert alert-success" role="alert">' +
+                'Aucun entretiens trouvés</div>');
         }
 
     });

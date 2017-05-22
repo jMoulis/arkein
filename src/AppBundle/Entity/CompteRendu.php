@@ -58,6 +58,11 @@ class CompteRendu
      */
     private $lienpdf;
 
+    public function __construct()
+    {
+        $this->date = new \DateTime();
+    }
+
     /**
      * Get id
      *

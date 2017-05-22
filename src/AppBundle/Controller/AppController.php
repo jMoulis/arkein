@@ -22,7 +22,7 @@ use UserBundle\Entity\User;
 class AppController extends BaseController
 {
     /**
-     * @Route("/")
+     * @Route("/", name="homepage")
      */
     public function indexAction()
     {
@@ -88,6 +88,13 @@ class AppController extends BaseController
             'events' => $events
         ]);
 
+    }
+    /**
+     * @Route("/filesystem", name="filesystem")
+     */
+    public function filesystemAction()
+    {
+        return $this->render(':testFileSystem:index.html.twig');
     }
 
     /**
