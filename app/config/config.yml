@@ -101,3 +101,8 @@ stof_doctrine_extensions:
             sluggable: true
             blameable: true
             tree: true
+
+rules:
+  # ...
+  symfony.application_not_bootable:
+    enabled: true
