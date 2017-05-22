@@ -9,9 +9,7 @@
 namespace AppBundle\EventListener;
 
 use Doctrine\Common\EventSubscriber;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
 class FlashMessage implements EventSubscriber
 {
