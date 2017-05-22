@@ -9,7 +9,6 @@ use AppBundle\Form\EntretienType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use UserBundle\Entity\User;
@@ -63,8 +62,6 @@ class EntretienController extends BaseController
      */
     public function newAction(Request $request)
     {
-
-        /* $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');*/
         $data = json_decode($request->getContent(), true);
         $dataFormEntretien = $data[0];
         $newGuests = $data[1];
@@ -263,6 +260,8 @@ class EntretienController extends BaseController
 
         $em = $this->getDoctrine()->getManager();
         $entretien = $em->getRepository('AppBundle:Entretien')->findOneBy(['id' => $entretienId]);
+
+
 
         /*
          * This function's role is to:

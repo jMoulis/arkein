@@ -24,16 +24,10 @@ class EntretienMailWorkflow implements EventSubscriber
 
 
     private $mailer;
-    private $engine;
-    private $tokenStorage;
-    private $entityManager;
 
-    public function __construct(Swift_Mailer $mailer, EngineInterface $engine, TokenStorageInterface $tokenStorage, EntityManagerInterface $entityManager)
+    public function __construct(Swift_Mailer $mailer)
     {
         $this->mailer = $mailer;
-        $this->engine = $engine;
-        $this->tokenStorage = $tokenStorage;
-        $this->entityManager = $entityManager;
     }
 
     public function postPersist(LifecycleEventArgs $args){

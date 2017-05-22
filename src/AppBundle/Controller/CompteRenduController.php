@@ -29,7 +29,6 @@ class CompteRenduController extends BaseController
      */
     public function newAction(Request $request)
     {
-        /* $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');*/
         $data = json_decode($request->getContent(), true);
 
         if ($data === null) {

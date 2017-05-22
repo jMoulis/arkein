@@ -3,7 +3,6 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Api\InterviewUserApiModel;
-use AppBundle\Entity\Entretien;
 use AppBundle\Entity\InterviewUser;
 use AppBundle\Form\InterviewUserType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;

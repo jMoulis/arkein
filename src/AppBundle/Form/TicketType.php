@@ -73,7 +73,7 @@ class TicketType extends AbstractType
                     $formOptions = [
                         'class' => User::class,
                         'placeholder' => 'Sélectionner le jeune',
-                        'query_builder' => function(UserRepository $repository) use ($user){
+                        'query_builder' => function(UserRepository $repository) {
                             return $repository->findAllYoungsters();
                     }
                     ];

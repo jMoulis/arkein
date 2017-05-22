@@ -19,7 +19,6 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class ApiUserController extends BaseController
 {
-/*TODO Afficher le staff pour les externes*/
     /**
      * @Route("/api/youngs/", name="young_list", options={"expose" = true})
      * @Method("GET")
@@ -115,7 +114,6 @@ class ApiUserController extends BaseController
      */
     public function deleteUserAction(User $user)
     {
-        /*$this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');*/
         $em = $this->getDoctrine()->getManager();
         $em->remove($user);
         $em->flush();

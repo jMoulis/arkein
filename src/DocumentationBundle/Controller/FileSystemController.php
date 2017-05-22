@@ -9,15 +9,12 @@ use DocumentationBundle\Form\FolderType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**
  * @Route("filesystem")
@@ -32,9 +29,8 @@ class FileSystemController extends BaseController
      *     options={"expose" = true}
      *  )
      */
-    public function createFolder(Request $request)
+    public function createFolderAction(Request $request)
     {
-        /* $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');*/
         $data = json_decode($request->getContent(), true);
 
         if ($data === null) {
@@ -53,7 +49,6 @@ class FileSystemController extends BaseController
         }
 
         $fs = new Filesystem();
-        $user = $this->getUser();
         $baseDir = $this->get('kernel')->getRootDir().'/../src/documents';
 
         try {
@@ -86,9 +81,8 @@ class FileSystemController extends BaseController
      *  )
      * @Method("POST")
      */
-    public function createFile(Request $request)
+    public function createFileAction(Request $request)
     {
-        /* $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');*/
         $data = $request->files;
         $folder = $request->request->get('folder');
 

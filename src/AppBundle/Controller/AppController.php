@@ -4,19 +4,11 @@ namespace AppBundle\Controller;
 
 use AppBundle\Api\DocumentApiModel;
 use AppBundle\Entity\Mail;
-use ClassesWithParents\D;
 use DocumentationBundle\Entity\Document;
-use DocumentationBundle\Form\DocumentType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\HttpKernel\Exception\HttpException;
-use UserBundle\Entity\User;
 
 
 class AppController extends BaseController
@@ -97,30 +89,4 @@ class AppController extends BaseController
         return $this->render(':testFileSystem:index.html.twig');
     }
 
-    /**
-     *
-     *
-     * This could be moved into a service if it needed to be
-     * re-used elsewhere.
-     *
-     * @param Document $document
-     * @return DocumentApiModel
-     */
-    private function createCategoryApiModel(Document $document)
-    {
-
-        $model = new DocumentApiModel();
-        $model->id = $document->getId();
-        $model->filename = $document->getFileName();
-        $model->fileTemporary = $document->getFileTemporary();
-        $model->isPrivate = $document->getIsPrivate();
-
-        $selfUrl = $this->generateUrl(
-            'api_document_show',
-            ['id' => $document->getId()]
-        );
-        $model->addLink('_self', $selfUrl);
-
-        return $model;
-    }
 }

@@ -22,13 +22,11 @@ class AnswerMailWorkflow implements EventSubscriber
     const NOUVEAUCOMMENTAIRE= "Nouveau Commentaire";
 
     private $mailer;
-    private $engine;
     private $tokenStorage;
 
-    public function __construct(Swift_Mailer $mailer, EngineInterface $engine, TokenStorageInterface $tokenStorage)
+    public function __construct(Swift_Mailer $mailer, TokenStorageInterface $tokenStorage)
     {
         $this->mailer = $mailer;
-        $this->engine = $engine;
         $this->tokenStorage = $tokenStorage;
     }
 

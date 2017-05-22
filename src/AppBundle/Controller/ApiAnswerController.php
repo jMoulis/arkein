@@ -4,7 +4,6 @@ namespace AppBundle\Controller;
 
 use AppBundle\Api\AnswerApiModel;
 use AppBundle\Entity\Answer;
-use AppBundle\Entity\Ticket;
 use AppBundle\Form\AnswerType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;

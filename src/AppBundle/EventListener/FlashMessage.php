@@ -23,14 +23,12 @@ class FlashMessage implements EventSubscriber
     /**
      * @var TokenStorage
      */
-    private $tokenStorage;
 
-    public function __construct(Session $session, ContainerInterface $container, TokenStorage $tokenStorage)
+    public function __construct(Session $session, ContainerInterface $container)
     {
 
         $this->session = $session;
         $this->container = $container;
-        $this->tokenStorage = $tokenStorage;
     }
 
     public function prePersist()

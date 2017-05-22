@@ -58,7 +58,6 @@ class Address
      */
     private $user;
 
-    private $fullAddress;
     /**
      * Get id
      *

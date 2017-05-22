@@ -2,17 +2,13 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Answer;
+
 use AppBundle\Entity\Ticket;
-use AppBundle\Form\AnswerType;
-use AppBundle\Form\TicketType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use UserBundle\Entity\User;
 
 
 /**
@@ -34,8 +30,6 @@ class TicketController extends Controller
         return $this->render('ticket/index.html.twig');
     }
 
-
-    /*TODO: Display coach list instead of young list for youngster*/
     /**
      * Creates a new ticket entity.
      *

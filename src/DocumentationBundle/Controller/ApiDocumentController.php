@@ -78,7 +78,6 @@ class ApiDocumentController extends BaseController
      */
     public  function newAction(Request $request, $id)
     {
-        /* $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');*/
         $data = $request->files;
 
         if ($data === null) {
@@ -170,7 +169,6 @@ class ApiDocumentController extends BaseController
      */
     public function deleteDocumentAction(Document $document)
     {
-        /*$this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');*/
         $em = $this->getDoctrine()->getManager();
         $em->remove($document);
         $em->flush();
@@ -181,7 +179,7 @@ class ApiDocumentController extends BaseController
     /**
      * @Route("/test/", name="test_show_doc")
      */
-    public function testShowDoc()
+    public function testShowDocAction()
     {
         return $this->render('document/test_show_doc.html.twig');
     }
@@ -222,7 +220,7 @@ class ApiDocumentController extends BaseController
     {
         if (empty($document))
         {
-            exit ('Paramètre invalide');
+            throw new BadRequestHttpException('Paramètre invalide');
         }
         if(function_exists('finfo_open'))
         {
@@ -276,7 +274,6 @@ class ApiDocumentController extends BaseController
             'api_document_show',
             ['id' => $document->getId()]
         );
-        $deleteUrl = $this->generateUrl('api_document_delete', ['id' => $document->getId()]);
         $model->addLink('_self', $selfUrl);
 
         return $model;
