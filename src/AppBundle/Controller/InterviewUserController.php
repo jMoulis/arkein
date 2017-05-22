@@ -4,7 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Api\InterviewUserApiModel;
 use AppBundle\Entity\InterviewUser;
-use AppBundle\Form\InterviewUserType;
+use AppBundle\Form\Type\InterviewUserType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;

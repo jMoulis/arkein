@@ -2,7 +2,6 @@
 
 namespace UserBundle\Repository;
 
-use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityRepository;
 use UserBundle\Entity\User;
 

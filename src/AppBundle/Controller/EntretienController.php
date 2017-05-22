@@ -5,7 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Api\EntretienApiModel;
 use AppBundle\Entity\Entretien;
 use AppBundle\Entity\InterviewUser;
-use AppBundle\Form\EntretienType;
+use AppBundle\Form\Type\EntretienType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;

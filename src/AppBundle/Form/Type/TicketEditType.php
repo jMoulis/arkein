@@ -1,37 +1,47 @@
 <?php
 
-namespace DocumentationBundle\Form;
+namespace AppBundle\Form\Type;
 
-use DocumentationBundle\Entity\Categorie;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class DocumentType extends AbstractType
+class TicketEditType extends AbstractType
 {
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('fileTemporary', FileType::class, [
-                'label' => false
+            ->add('statut', ChoiceType::class, [
+                'choices' => [
+                    'Clôturé' => 0,
+                    'En cours' => 1
+                ],
             ])
-            ->add('categorie')
-            ->add('isPrivate')
         ;
     }
-
+    
+    /**
+     * {@inheritdoc}
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'DocumentationBundle\Entity\Document'
+            'data_class' => 'AppBundle\Entity\Ticket'
         ));
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getBlockPrefix()
     {
-        return '';
+        return 'appbundle_ticket';
     }
+
+
 }

@@ -11,10 +11,7 @@ namespace AppBundle\Doctrine;
 
 use AppBundle\Entity\Entretien;
 use Doctrine\Common\EventSubscriber;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\LifecycleEventArgs;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Swift_Mailer;
 
 class EntretienMailWorkflow implements EventSubscriber

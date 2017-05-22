@@ -199,15 +199,15 @@ class ApiDocumentController extends BaseController
         $document = $this->getDoctrine()->getRepository('DocumentationBundle:Document')->find($id);
         $nomDocument = $document->getFileName();
 
-        $this->envoi_fichier($nomDocument, false);
+        $this->envoiFichier($nomDocument, false);
 
     }
 
-    private function envoi_fichier($documentName, $download = FALSE)
+    private function envoiFichier($documentName, $download = FALSE)
     {
         $document = $this->getParameter('repertoire_documents').'/'.$documentName;
 
-        $mime = $this->get_mime_type($document);
+        $mime = $this->getMimeType($document);
         header('Content-type: ' . $mime);
         if($download) {
             header('Content-Disposition: attachement; filename="'. $documentName .'"');
@@ -216,7 +216,7 @@ class ApiDocumentController extends BaseController
         readfile($document);
     }
 
-    private function get_mime_type($document = '')
+    private function getMimeType($document = '')
     {
         if (empty($document))
         {

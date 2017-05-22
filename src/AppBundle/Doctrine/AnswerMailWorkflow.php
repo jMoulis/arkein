@@ -10,10 +10,8 @@ namespace AppBundle\Doctrine;
 
 
 use AppBundle\Entity\Answer;
-use AppBundle\Entity\Ticket;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Swift_Mailer;
 
@@ -74,5 +72,4 @@ class AnswerMailWorkflow implements EventSubscriber
 
         return $message;
     }
-
 }

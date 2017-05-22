@@ -4,7 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Api\AnswerApiModel;
 use AppBundle\Entity\Answer;
-use AppBundle\Form\AnswerType;
+use AppBundle\Form\Type\AnswerType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -46,7 +46,6 @@ class ApiAnswerController extends BaseController
      */
     public function newAnswerAction(Request $request)
     {
-        /* $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');*/
         $data = json_decode($request->getContent(), true);
         $ticketId = $request->attributes->get('id');
 

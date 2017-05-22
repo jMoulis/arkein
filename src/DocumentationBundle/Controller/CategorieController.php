@@ -2,17 +2,11 @@
 
 namespace DocumentationBundle\Controller;
 
-use AppBundle\Api\DocumentApiModel;
+
 use AppBundle\Controller\BaseController;
-use DocumentationBundle\Entity\Categorie;
-use DocumentationBundle\Entity\Document;
-use DocumentationBundle\Form\DocumentType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use UserBundle\Entity\User;
 
 /**
  * @Route("")
@@ -28,7 +22,7 @@ class CategorieController extends BaseController
      */
     public function newAction(Request $request)
     {
-        $form = $this->createForm('DocumentationBundle\Form\CategorieType');
+        $form = $this->createForm('DocumentationBundle\Form\Type\CategorieType');
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

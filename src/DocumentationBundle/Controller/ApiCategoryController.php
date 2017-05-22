@@ -3,12 +3,9 @@
 namespace DocumentationBundle\Controller;
 
 use AppBundle\Api\CategoryApiModel;
-use AppBundle\Api\DocumentApiModel;
 use AppBundle\Controller\BaseController;
 use DocumentationBundle\Entity\Categorie;
-use DocumentationBundle\Entity\Document;
-use DocumentationBundle\Form\CategorieType;
-use DocumentationBundle\Form\DocumentType;
+use DocumentationBundle\Form\Type\CategorieType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -51,7 +48,6 @@ class ApiCategoryController extends BaseController
      */
     public function newCategoryAction(Request $request, $userid = null)
     {
-        /* $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');*/
         $data = json_decode($request->getContent(), true);
 
         if ($data === null) {
@@ -177,7 +173,6 @@ class ApiCategoryController extends BaseController
     public function editCategoryAction(Request $request, $catid ,$userid = null)
     {
 
-        /* $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');*/
         $data = json_decode($request->getContent(), true);
 
         if ($data === null) {
@@ -233,7 +228,6 @@ class ApiCategoryController extends BaseController
      */
     public function deleteRepLogAction(Categorie $category)
     {
-        /*$this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');*/
         $em = $this->getDoctrine()->getManager();
         $em->remove($category);
         $em->flush();

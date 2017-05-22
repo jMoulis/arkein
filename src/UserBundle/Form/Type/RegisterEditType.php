@@ -6,7 +6,7 @@
  * Time: 13:32
  */
 
-namespace UserBundle\Form;
+namespace UserBundle\Form\Type;
 
 
 use AppBundle\Form\AddressType;

@@ -1,43 +1,32 @@
 <?php
 
-namespace AppBundle\Form;
+namespace DocumentationBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ReservationType extends AbstractType
+class CategorieType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('name')
-            ->add('firstname')
-            ->add('qty')
-            ->add('email')
+            ->add('isPrivate')
+            ->add('owner')
+            ->add('classified')
         ;
     }
-    
-    /**
-     * {@inheritdoc}
-     */
+
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Reservation'
+            'data_class' => 'DocumentationBundle\Entity\Categorie'
         ));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
-        return 'appbundle_reservation';
+        return '';
     }
-
-
 }

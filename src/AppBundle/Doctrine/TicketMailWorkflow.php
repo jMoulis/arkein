@@ -10,12 +10,8 @@ namespace AppBundle\Doctrine;
 
 use AppBundle\Entity\Ticket;
 use Doctrine\Common\EventSubscriber;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\LifecycleEventArgs;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Swift_Mailer;
-use UserBundle\Entity\User;
 
 class TicketMailWorkflow implements EventSubscriber
 {

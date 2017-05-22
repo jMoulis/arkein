@@ -4,10 +4,7 @@ namespace UserBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
-use UserBundle\Entity\User;
-use UserBundle\Form\LoginType;
-use UserBundle\Form\RegisterType;
+use UserBundle\Form\Type\LoginType;
 
 class SecurityController extends Controller
 {

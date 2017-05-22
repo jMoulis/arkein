@@ -1,14 +1,14 @@
 <?php
 
-namespace BlogBundle\Form;
+namespace AppBundle\Form\Type;
+
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class BilletType extends AbstractType
+class AnswerType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -16,27 +16,20 @@ class BilletType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('titre')
-            ->add('contenu', TextareaType::class);
+            ->add('message', TextareaType::class)
+        ;
     }
-    
+
     /**
      * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'BlogBundle\Entity\Billet'
+            'data_class' => 'AppBundle\Entity\Answer'
         ));
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
-    {
-        return 'billet';
-    }
 
 
 }

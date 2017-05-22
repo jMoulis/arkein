@@ -1,19 +1,15 @@
 <?php
 
-namespace AppBundle\Form;
+namespace AppBundle\Form\Type;
 
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Date;
 
-class TicketEditType extends AbstractType
+class EventType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -21,12 +17,16 @@ class TicketEditType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('statut', ChoiceType::class, [
-                'choices' => [
-                    'Clôturé' => 0,
-                    'En cours' => 1
-                ],
-            ])
+            ->add('title', TextType::class)
+            ->add('description', TextareaType::class)
+            ->add('datestart', DateType::class, array(
+                'format' => 'ddMMyyyy'
+            ))
+            ->add('dateend', DateType::class, array(
+                'format' => 'ddMMyyyy'
+            ))
+            ->add('place', TextareaType::class)
+            ->add('isArchived')
         ;
     }
     
@@ -36,7 +36,7 @@ class TicketEditType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Ticket'
+            'data_class' => 'AppBundle\Entity\Event'
         ));
     }
 
@@ -45,7 +45,7 @@ class TicketEditType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'appbundle_ticket';
+        return 'appbundle_event';
     }
 
 

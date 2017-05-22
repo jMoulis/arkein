@@ -1,33 +1,41 @@
 <?php
 
-namespace DocumentationBundle\Form;
+namespace BlogBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class CategorieType extends AbstractType
+class BilletType extends AbstractType
 {
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name')
-            ->add('isPrivate')
-            ->add('owner')
-            ->add('classified')
-        ;
+            ->add('titre')
+            ->add('contenu', TextareaType::class);
     }
-
+    
+    /**
+     * {@inheritdoc}
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'DocumentationBundle\Entity\Categorie'
+            'data_class' => 'BlogBundle\Entity\Billet'
         ));
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getBlockPrefix()
     {
-        return '';
+        return 'billet';
     }
+
+
 }

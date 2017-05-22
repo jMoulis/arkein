@@ -4,7 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Api\TicketApiModel;
 use AppBundle\Entity\Ticket;
-use AppBundle\Form\TicketEditType;
+use AppBundle\Form\Type\TicketEditType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;

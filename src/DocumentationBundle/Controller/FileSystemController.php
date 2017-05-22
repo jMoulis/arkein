@@ -4,8 +4,8 @@ namespace DocumentationBundle\Controller;
 
 use AppBundle\Api\FileSystemApiModel;
 use AppBundle\Controller\BaseController;
-use DocumentationBundle\Form\FileFormType;
-use DocumentationBundle\Form\FolderType;
+use DocumentationBundle\Form\Type\FileFormType;
+use DocumentationBundle\Form\Type\FolderType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
