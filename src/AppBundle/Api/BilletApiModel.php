@@ -25,5 +25,4 @@ class BilletApiModel
     {
         return $this->links;
     }
-
 }

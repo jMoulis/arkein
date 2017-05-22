@@ -85,5 +85,4 @@ class MailUserListener implements EventSubscriber
     {
         return ['postPersist', 'preUpdate'];
     }
-
 }

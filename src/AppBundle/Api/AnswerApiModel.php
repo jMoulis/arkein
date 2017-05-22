@@ -11,5 +11,4 @@ class AnswerApiModel
     public $auteur;
 
     public $message;
-
 }

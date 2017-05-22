@@ -22,5 +22,4 @@ class LoginType extends AbstractType
             ->add('_password', PasswordType::class)
             ;
     }
-
 }

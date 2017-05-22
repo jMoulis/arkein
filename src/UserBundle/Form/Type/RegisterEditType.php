@@ -99,5 +99,4 @@ class RegisterEditType extends AbstractType
             'data_class' => User::class,
         ]);
     }
-
 }

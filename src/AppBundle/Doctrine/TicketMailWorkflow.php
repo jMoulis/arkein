@@ -83,5 +83,4 @@ class TicketMailWorkflow implements EventSubscriber
         }
         return $destinataires;
     }
-
 }

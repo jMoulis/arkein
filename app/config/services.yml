@@ -40,7 +40,7 @@ services:
             - { name: doctrine.event_subscriber }
 
     app.form.youngster_coach:
-        class:  AppBundle\Form\TicketType
+        class:  AppBundle\Form\Type\TicketType
         autowire: true
         tags:
             - { name: form.type }

@@ -47,6 +47,4 @@ class FlashMessage implements EventSubscriber
     {
         return ['prePersist', 'preUpdate'];
     }
-
-
 }
