@@ -17,3 +17,4 @@
 /app/DoctrinesMigrations/*
 /web/css/compiled/*
 /web/js/compiled/*
+/.idea/*
