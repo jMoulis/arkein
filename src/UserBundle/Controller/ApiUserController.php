@@ -86,7 +86,7 @@ class ApiUserController extends BaseController
      * @Route("api/user/{id}/edit", name="api_user_edit", options={"expose" = true})
      * @Method("POST")
      */
-    public function editUser(Request $request)
+    public function editUserAction(Request $request)
     {
         $content = $request->getContent();
         if ($content === null) {

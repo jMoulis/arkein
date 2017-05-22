@@ -3,23 +3,17 @@
 namespace DocumentationBundle\Controller;
 
 use AppBundle\Api\DocumentApiModel;
-use AppBundle\Api\FileSystemApiModel;
 use AppBundle\Controller\BaseController;
 use DocumentationBundle\Entity\Categorie;
 use DocumentationBundle\Entity\Document;
-use DocumentationBundle\Form\CategorieType;
 use DocumentationBundle\Form\DocumentType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use UserBundle\Entity\User;
 
 /**
  * @Route("document")
@@ -142,7 +136,7 @@ class ApiDocumentController extends BaseController
      * @Route("/api/d/edit/d", name="api_document_edit", options={"expose" = true})
      * @Method("POST")
      */
-    public function editDocument(Request $request)
+    public function editDocumentAction(Request $request)
     {
         $content = $request->getContent();
         if ($content === null) {
