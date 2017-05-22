@@ -6,7 +6,7 @@ use AppBundle\Api\DocumentApiModel;
 use AppBundle\Controller\BaseController;
 use DocumentationBundle\Entity\Categorie;
 use DocumentationBundle\Entity\Document;
-use DocumentationBundle\Form\DocumentType;
+use DocumentationBundle\Form\Type\DocumentType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -192,7 +192,6 @@ class ApiDocumentController extends BaseController
      */
     public function downloadImageAction(Request $request)
     {
-
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
         $id = $request->query->get('document');
 
@@ -203,11 +202,11 @@ class ApiDocumentController extends BaseController
 
     }
 
-    private function envoiFichier($documentName, $download = FALSE)
+    private function envoiFichier(Request $request, $documentName, $download = FALSE)
     {
         $document = $this->getParameter('repertoire_documents').'/'.$documentName;
 
-        $mime = $this->getMimeType($document);
+        $mime = $this->getMimeType($request, $document);
         header('Content-type: ' . $mime);
         if($download) {
             header('Content-Disposition: attachement; filename="'. $documentName .'"');
@@ -216,7 +215,7 @@ class ApiDocumentController extends BaseController
         readfile($document);
     }
 
-    private function getMimeType($document = '')
+    private function getMimeType(Request $request, $document = '')
     {
         if (empty($document))
         {
@@ -228,29 +227,29 @@ class ApiDocumentController extends BaseController
             $retour = finfo_file($finfo, $document);
             finfo_close($finfo);
         } elseif (file_exists('mime.ini')){
-            $retour = $this->typeMime($document);
+            $retour = $this->typeMime($document, $request);
         } else {
             $retour = mime_content_type($document);
         }
         return $retour;
     }
 
-    private function typeMime($documentName)
+    private function typeMime($documentName, Request $request)
     {
-        if(preg_match("@Opera(/| )([0-9].[0-9]{1,2})@", $_SERVER['HTTP_USER_AGENT'], $resultats))
+        if(preg_match("@Opera(/| )([0-9].[0-9]{1,2})@", $request->server['HTTP_USER_AGENT'], $resultats))
             $navigateur="Opera";
-        elseif(preg_match("@MSIE ([0-9].[0-9]{1,2})@", $_SERVER['HTTP_USER_AGENT'], $resultats))
+        elseif(preg_match("@MSIE ([0-9].[0-9]{1,2})@", $request->server['HTTP_USER_AGENT'], $resultats))
             $navigateur="Internet Explorer";
         else $navigateur="Mozilla";
 
-        $mime=parse_ini_file("mime.ini");
-        $extension=substr($documentName, strrpos($documentName, ".")+1);
+        $mime = parse_ini_file("mime.ini");
+        $extension = substr($documentName, strrpos($documentName, ".")+1);
 
         if(array_key_exists($extension, $mime)){
-            $type=$mime[$extension];
+            $type = $mime[$extension];
         }
         else{
-            $type=($navigateur!="Mozilla") ? 'application/octetstream' : 'application/octet-stream';
+            $type = ($navigateur!="Mozilla") ? 'application/octetstream' : 'application/octet-stream';
         }
         return $type;
     }

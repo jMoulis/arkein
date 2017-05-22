@@ -111,7 +111,6 @@ class ApiTicketController extends BaseController
      */
     public function deleteTicketAction(Ticket $ticket)
     {
-        /*$this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');*/
         $em = $this->getDoctrine()->getManager();
         $em->remove($ticket);
         $em->flush();

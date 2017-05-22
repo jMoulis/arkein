@@ -33,14 +33,13 @@ class FlashMessage implements EventSubscriber
     public function prePersist()
     {
         $this->session->getFlashBag()->clear();
-        return $this->session->getFlashBag()->add('success', $this->container->getParameter('new_message_success'));
+        return $this->session->getFlashBag()->add('success', 'Données correctements enregistrées');
     }
 
     public function preUpdate()
     {
             $this->session->getFlashBag()->clear();
-            return $this->session->getFlashBag()->add('success',
-                $this->container->getParameter('update_message_success'));
+            return $this->session->getFlashBag()->add('success', 'Modifications validées');
     }
 
     public function getSubscribedEvents()
