@@ -43,7 +43,7 @@ class FileSystemController extends BaseController
         if (!$form->isValid()) {
             $errors = $this->getErrorsFromForm($form);
 
-            return $this->createApiResponse([
+            return $this->createApiResponseAction([
                 'errors' => $errors
             ], 400);
         }
@@ -62,7 +62,7 @@ class FileSystemController extends BaseController
                 $apiModel = $this->createFolderApiModel($folder);
             }
 
-            $response = $this->createApiResponse($apiModel);
+            $response = $this->createApiResponseAction($apiModel);
             // setting the Location header... it's a best-practice
 
             return $response;
@@ -98,7 +98,7 @@ class FileSystemController extends BaseController
         if (!$form->isValid()) {
             $errors = $this->getErrorsFromForm($form);
 
-            return $this->createApiResponse([
+            return $this->createApiResponseAction([
                 'errors' => $errors
             ], 400);
         }
@@ -134,7 +134,7 @@ class FileSystemController extends BaseController
             $models[] = $this->createFolderApiModel($folder);
         }
 
-        return $this->createApiResponse([
+        return $this->createApiResponseAction([
             'items' => $models
         ]);
     }

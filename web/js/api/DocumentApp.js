@@ -108,8 +108,7 @@
                     url: Routing.generate('api_check', {id: id}),
                     method: 'POST',
                     success: function (data) {
-                        $("#image").attr("src", 'http://127.0.0.1/arkein/web/app_dev.php/dashboard/document/api/check/?document=152&submit=afficher');
-                        //
+                        console.log('test');
                     },
                     error: function (jqXHR) {
                         console.log(JSON.parse(jqXHR.responseText));

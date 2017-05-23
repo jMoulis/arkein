@@ -43,7 +43,7 @@ class InterviewUserController extends BaseController
 
         $apiModel = $this->createInterviewUserApiModel($interviewUser);
 
-        $response = $this->createApiResponse($apiModel);
+        $response = $this->createApiResponseAction($apiModel);
         // setting the Location header... it's a best-practice
         $response->headers->set(
             'Location',

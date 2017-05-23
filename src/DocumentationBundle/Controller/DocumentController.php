@@ -6,13 +6,14 @@ use AppBundle\Api\DocumentApiModel;
 use AppBundle\Controller\BaseController;
 use DocumentationBundle\Entity\Categorie;
 use DocumentationBundle\Entity\Document;
-use DocumentationBundle\Form\Type\CategorieType;
+use DocumentationBundle\Form\Type\DocumentType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
@@ -22,6 +23,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 class DocumentController extends BaseController
 {
     const REPERTOIRE =  'Sites/arkein/documents';
+
     /**
      * @Route("/api/d/{userid}",
      *     name="api_document_list_by_destinataire",
@@ -40,7 +42,7 @@ class DocumentController extends BaseController
         foreach ($documents as $document) {
             $models[] = $this->createDocumentApiModel($document);
         }
-        return $this->createApiResponse([
+        return $this->createApiResponseAction([
             'items' => $models
         ]);
     }
@@ -64,7 +66,7 @@ class DocumentController extends BaseController
             $models[] = $this->createDocumentApiModel($document);
         }
 
-        return $this->createApiResponse([
+        return $this->createApiResponseAction([
             'items' => $models
         ]);
     }
@@ -80,7 +82,22 @@ class DocumentController extends BaseController
     public  function newAction(Request $request, $id)
     {
         $data = $request->files;
-        $form = $this->ajaxResponse(CategorieType::class, $data, $request);
+        if ($data === null) {
+            throw new BadRequestHttpException('Files Empty');
+        }
+        $form = $this->createForm(DocumentType::class, null, [
+            'csrf_protection' => false,
+        ]);
+
+        $form->handleRequest($request);
+
+        if (!$form->isValid()) {
+            $errors = $this->getErrorsFromFormAction($form);
+
+            return $this->createApiResponseAction([
+                'errors' => $errors
+            ], 400);
+        }
 
         /** @var Document $document */
         $em = $this->getDoctrine()->getManager();
@@ -95,7 +112,7 @@ class DocumentController extends BaseController
 
         $apiModel = $this->createDocumentApiModel($document);
 
-        $response = $this->createApiResponse($apiModel);
+        $response = $this->createApiResponseAction($apiModel);
         $response->headers->set(
             'Location',
             $this->generateUrl('api_document_show', ['id' => $document->getId()])
@@ -113,7 +130,7 @@ class DocumentController extends BaseController
     {
         $apiModel = $this->createDocumentApiModel($document);
 
-        return $this->createApiResponse($apiModel);
+        return $this->createApiResponseAction($apiModel);
     }
 
     /**
@@ -179,7 +196,7 @@ class DocumentController extends BaseController
      * @Route("/api/check/",
      *     name="api_check",
      *     options={"expose" = true}
-     *  )
+     * )
      */
     public function downloadImageAction(Request $request)
     {
@@ -190,19 +207,22 @@ class DocumentController extends BaseController
         $nomDocument = $document->getFileName();
 
         $this->envoiFichier($nomDocument, false);
-
     }
 
-    private function envoiFichier(Request $request, $documentName, $download = FALSE)
+   private function envoiFichier(Request $request, $documentName, $download = FALSE)
     {
+        $response = new Response();
+
         $document = $this->getParameter('repertoire_documents').'/'.$documentName;
-
         $mime = $this->getMimeType($request, $document);
-        header('Content-type: ' . $mime);
-        if($download) {
-            header('Content-Disposition: attachement; filename="'. $documentName .'"');
-        }
+        $response->headers->set('Content-Type', $mime);
+        $disposition = $response->headers->makeDisposition(
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT, $documentName
+        );
 
+        if($download) {
+            $response->headers->set('Content-Disposition', $disposition);
+        }
         readfile($document);
     }
 
@@ -243,30 +263,6 @@ class DocumentController extends BaseController
             $type = ($navigateur!="Mozilla") ? 'application/octetstream' : 'application/octet-stream';
         }
         return $type;
-    }
-
-    /**
-     * Get the validation api answer
-     */
-    private function ajaxResponse($formType, $data, $request)
-    {
-        if ($data === null) {
-            throw new BadRequestHttpException('Files Empty');
-        }
-        $form = $this->createForm($formType, null, [
-            'csrf_protection' => false,
-        ]);
-
-        $form->handleRequest($request);
-
-        if (!$form->isValid()) {
-            $errors = $this->getErrorsFromForm($form);
-
-            return $this->createApiResponse([
-                'errors' => $errors
-            ], 400);
-        }
-        return $form;
     }
 
     /**

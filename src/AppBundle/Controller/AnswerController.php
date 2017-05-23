@@ -32,7 +32,7 @@ class AnswerController extends BaseController
         foreach ($answers as $answer) {
             $models[] = $this->createAnswerApiModel($answer);
         }
-        return $this->createApiResponse([
+        return $this->createApiResponseAction([
             'items' => $models
         ]);
     }
@@ -59,7 +59,7 @@ class AnswerController extends BaseController
 
         $apiModel = $this->createAnswerApiModel($answer);
 
-        $response = $this->createApiResponse($apiModel);
+        $response = $this->createApiResponseAction($apiModel);
         $response->headers->set(
             'Location',
             $this->generateUrl('ticket_show', ['id' => $answer->getTicket()->getId()])

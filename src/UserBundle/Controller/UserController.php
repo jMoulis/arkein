@@ -54,7 +54,7 @@ class UserController extends BaseController
         foreach ($users as $user) {
             $models[] = $this->createUserApiModel($user);
         }
-        return $this->createApiResponse([
+        return $this->createApiResponseAction([
             'items' => $models
         ]);
     }
@@ -100,7 +100,7 @@ class UserController extends BaseController
         foreach ($users as $user) {
             $models[] = $this->createUserApiModel($user);
         }
-        return $this->createApiResponse([
+        return $this->createApiResponseAction([
             'items' => $models
         ]);
     }
@@ -154,7 +154,7 @@ class UserController extends BaseController
         foreach ($users as $user) {
             $models[] = $this->createUserApiModel($user);
         }
-        return $this->createApiResponse([
+        return $this->createApiResponseAction([
             'items' => $models
         ]);
     }

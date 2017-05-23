@@ -45,7 +45,7 @@ class CompteRenduController extends BaseController
 
         $apiModel = $this->createCompteRenduApiModel($compterendu);
 
-        $response = $this->createApiResponse($apiModel);
+        $response = $this->createApiResponseAction($apiModel);
         $response->headers->set(
             'Location',
             $this->generateUrl('compterendu_show', ['id' => $compterendu->getId()])
@@ -86,7 +86,7 @@ class CompteRenduController extends BaseController
             ->find($compterendu->getId())
         ;
         $model = $this->createcompterenduApiModel($compterendu);
-        return $this->createApiResponse([
+        return $this->createApiResponseAction([
             'item' => $model
         ]);
     }
@@ -120,7 +120,7 @@ class CompteRenduController extends BaseController
 
         $apiModel = $this->createcompterenduApiModel($compterendu);
 
-        $response = $this->createApiResponse($apiModel);
+        $response = $this->createApiResponseAction($apiModel);
         $response->headers->set(
             'Location',
             $this->generateUrl('compterendu_show', ['id' => $compterendu->getId()])

@@ -6,13 +6,6 @@
 
 {% block body %}
     <h1 data-user="{{ user.id }}">Bienvenue, {{ user.firstname }}</h1>
-    <form action="{{ path('api_check') }}">
-        <select name="document">
-            <option value="152">Fichier 1</option>
-        </select>
-        <input type="submit" name="submit" value="afficher" />
-        <a href="#">test</a>
-    </form>
     <!-- Tabs navigation -->
     <ul class="nav nav-tabs" id="tabs" role="tablist">
         <li class="nav-item w-100">

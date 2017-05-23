@@ -75,7 +75,7 @@ class EntretienController extends BaseController
 
         $apiModel = $this->createEntretienApiModel($entretien);
 
-        $response = $this->createApiResponse($apiModel);
+        $response = $this->createApiResponseAction($apiModel);
         $response->headers->set(
             'Location',
             $this->generateUrl('entretien_show', ['id' => $entretien->getId()])
@@ -116,7 +116,7 @@ class EntretienController extends BaseController
         foreach ($entetiens as $entetien) {
             $models[] = $this->createEntretienApiModel($entetien);
         }
-        return $this->createApiResponse([
+        return $this->createApiResponseAction([
             'items' => $models
         ]);
     }
@@ -138,7 +138,7 @@ class EntretienController extends BaseController
         foreach ($entetiens as $entetien) {
             $models[] = $this->createEntretienApiModel($entetien);
         }
-        return $this->createApiResponse([
+        return $this->createApiResponseAction([
             'items' => $models
         ]);
     }
@@ -166,7 +166,7 @@ class EntretienController extends BaseController
         foreach ($entetiens as $entetien) {
             $models[] = $this->createEntretienApiModel($entetien);
         }
-        return $this->createApiResponse([
+        return $this->createApiResponseAction([
             'items' => $models
         ]);
     }
@@ -189,7 +189,7 @@ class EntretienController extends BaseController
         $entetien = $this->getDoctrine()->getRepository('AppBundle:Entretien')
             ->find($entretien->getId());
         $model = $this->createEntretienApiModel($entetien);
-        return $this->createApiResponse([
+        return $this->createApiResponseAction([
             'item' => $model
         ]);
     }
@@ -225,7 +225,7 @@ class EntretienController extends BaseController
 
         $apiModel = $this->createEntretienApiModel($entretien);
 
-        $response = $this->createApiResponse($apiModel);
+        $response = $this->createApiResponseAction($apiModel);
         // setting the Location header... it's a best-practice
         $response->headers->set(
             'Location',

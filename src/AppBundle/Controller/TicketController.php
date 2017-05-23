@@ -110,7 +110,7 @@ class TicketController extends BaseController
         foreach ($tickets as $ticket) {
             $models[] = $this->createTicketApiModel($ticket);
         }
-        return $this->createApiResponse([
+        return $this->createApiResponseAction([
             'items' => $models
         ]);
     }
@@ -133,7 +133,7 @@ class TicketController extends BaseController
         foreach ($tickets as $ticket) {
             $models[] = $this->createTicketApiModel($ticket);
         }
-        return $this->createApiResponse([
+        return $this->createApiResponseAction([
             'items' => $models
         ]);
     }
@@ -159,7 +159,7 @@ class TicketController extends BaseController
 
         $apiModel = $this->createTicketApiModel($ticket);
 
-        $response = $this->createApiResponse($apiModel);
+        $response = $this->createApiResponseAction($apiModel);
         $response->headers->set(
             'Location',
             $this->generateUrl('ticket_show', ['id' => $ticket->getId()])

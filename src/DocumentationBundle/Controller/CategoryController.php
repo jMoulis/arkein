@@ -62,7 +62,7 @@ class CategoryController extends BaseController
 
         $apiModel = $this->createCategoryApiModel($category);
 
-        $response = $this->createApiResponse($apiModel);
+        $response = $this->createApiResponseAction($apiModel);
         // setting the Location header... it's a best-practice
         $response->headers->set(
             'Location',
@@ -88,7 +88,7 @@ class CategoryController extends BaseController
         foreach ($categories as $category) {
             $models[] = $this->createCategoryApiModel($category);
         }
-        return $this->createApiResponse([
+        return $this->createApiResponseAction([
             'items' => $models
         ]);
     }
@@ -108,7 +108,7 @@ class CategoryController extends BaseController
         foreach ($categories as $category) {
             $models[] = $this->createCategoryApiModel($category);
         }
-        return $this->createApiResponse([
+        return $this->createApiResponseAction([
             'items' => $models
         ]);
     }
@@ -121,7 +121,7 @@ class CategoryController extends BaseController
     {
         $apiModel = $this->createCategoryApiModel($category);
 
-        return $this->createApiResponse($apiModel);
+        return $this->createApiResponseAction($apiModel);
     }
 
     /**
@@ -139,7 +139,7 @@ class CategoryController extends BaseController
         $categorie = $this->getDoctrine()->getRepository('DocumentationBundle:Categorie')
             ->find($categorie->getId());
         $model = $this->createCategoryApiModel($categorie);
-        return $this->createApiResponse([
+        return $this->createApiResponseAction([
             'item' => $model
         ]);
     }
@@ -171,7 +171,7 @@ class CategoryController extends BaseController
         $em->flush();
 
         $apiModel = $this->createCategoryApiModel($category);
-        $response = $this->createApiResponse($apiModel);
+        $response = $this->createApiResponseAction($apiModel);
         $response->headers->set(
             'Location',
             $this->generateUrl('cat_get', ['id' => $category->getId()])
