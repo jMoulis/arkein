@@ -12,7 +12,7 @@ use AppBundle\Controller\BaseController;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
-class ajaxResponse
+class AjaxResponse
 {
 
     /**
@@ -43,9 +43,9 @@ class ajaxResponse
         ]);
         $form->submit($data);
         if (!$form->isValid()) {
-            $errors = $this->baseController->getErrorsFromForm($form);
+            $errors = $this->baseController->getErrorsFromFormAction($form);
 
-            return $this->baseController->createApiResponse([
+            return $this->baseController->createApiResponseAction([
                 'errors' => $errors
             ], 400);
         }

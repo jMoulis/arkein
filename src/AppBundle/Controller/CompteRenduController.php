@@ -5,7 +5,6 @@ namespace AppBundle\Controller;
 use AppBundle\Api\CompteRenduApiModel;
 use AppBundle\Entity\CompteRendu;
 use AppBundle\Form\Type\CompteRenduType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Config\Definition\Exception\Exception;
