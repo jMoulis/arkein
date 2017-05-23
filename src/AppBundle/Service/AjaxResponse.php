@@ -14,7 +14,6 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class AjaxResponse
 {
-
     /**
      * @var FormFactoryInterface
      */

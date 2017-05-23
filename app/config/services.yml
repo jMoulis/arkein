@@ -58,5 +58,5 @@ services:
             - { name: doctrine.event_subscriber }
 
     app.api_response:
-        class: AppBundle\Service\ajaxResponse
+        class: AppBundle\Service\AjaxResponse
         autowire: true
