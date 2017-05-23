@@ -8,9 +8,8 @@
 
 namespace UserBundle\Form\Type;
 
-
-use AppBundle\Form\AddressType;
-use AppBundle\Form\PhoneType;
+use AppBundle\Form\Type\AddressType;
+use AppBundle\Form\Type\PhoneType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -74,7 +73,6 @@ class RegisterEditType extends AbstractType
                 'multiple' => true
             ])
             ->add('isActive')
-            //->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'onPreSubmitData'))
         ;
     }
 

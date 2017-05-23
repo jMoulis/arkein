@@ -31,36 +31,12 @@ class CompteRenduController extends BaseController
     {
         $data = json_decode($request->getContent(), true);
 
-        if ($data === null) {
-            throw new BadRequestHttpException('Invalid JSON');
-        }
-        $form = $this->createForm(CompteRenduType::class, null, [
-            'csrf_protection' => false,
-        ]);
-
-        $form->submit($data);
-
-        if (!$form->isValid()) {
-
-            $errors = $this->getErrorsFromForm($form);
-
-            return $this->createApiResponse([
-                'errors' => $errors
-            ], 400);
-        }
+        $form = $this->get('app.api_response')->ajaxResponse(CompteRenduType::class, $data);
 
         /** @var compterendu $compterendu */
         $compterendu = $form->getData();
 
-        $post_editor = trim($data['compteRendu']);
-        $fileName = $compterendu->getEntretien()->getId();
-        $pathSave = "../web/pdf/".$fileName.".pdf";
-        $pathLoad = "/pdf/".$fileName.".pdf";
-
-        if(!$this->exportPDF($post_editor,$pathSave))
-        {
-            throw new BadRequestHttpException('Fichier pdf non sauvegardé');
-        }
+        $pathLoad = $this->pdfProcess($data, $compterendu);
 
         $em = $this->getDoctrine()->getManager();
         $compterendu->setLienpdf($pathLoad);
@@ -77,6 +53,21 @@ class CompteRenduController extends BaseController
         );
 
         return $response;
+    }
+
+    /**
+     * Finds and displays a compterendu entity.
+     *
+     * @Route("/{id}/show",
+     *     name="compterendu_show",
+     *     options={"expose" = true})
+     * @Method("GET")
+     */
+    public function showAction(CompteRendu $compteRendu)
+    {
+        return $this->render('compterendu/show.html.twig', array(
+            'compterendu' => $compteRendu
+        ));
     }
 
     /**
@@ -102,21 +93,6 @@ class CompteRenduController extends BaseController
     }
 
     /**
-     * Finds and displays a compterendu entity.
-     *
-     * @Route("/{id}/show",
-     *     name="compterendu_show",
-     *     options={"expose" = true})
-     * @Method("GET")
-     */
-    public function showAction(CompteRendu $compteRendu)
-    {
-        return $this->render('compterendu/show.html.twig', array(
-            'compterendu' => $compteRendu
-        ));
-    }
-
-    /**
      * Displays a form to edit an existing compterendu entity.
      *
      * @Route("api/compterendu/{id}/edit", name="compterendu_edit",
@@ -128,26 +104,10 @@ class CompteRenduController extends BaseController
     {
 
         $data = json_decode($request->getContent(), true);
-
-        if ($data === null) {
-            throw new BadRequestHttpException('Invalid JSON');
-        }
-        $form = $this->createForm(compterenduType::class, null, [
-            'csrf_protection' => false,
-        ]);
-
-        $form->submit($data);
-
-        if (!$form->isValid()) {
-
-            $errors = $this->getErrorsFromForm($form);
-
-            return $this->createApiResponse([
-                'errors' => $errors
-            ], 400);
-        }
+        $this->get('app.api_response')->ajaxResponse(CompteRenduType::class, $data);
 
         $em = $this->getDoctrine()->getManager();
+
         $compterendu = $em->getRepository('AppBundle:compterendu')->findOneBy(['id' => $id]);
 
         $date = new \DateTime(($data['date']));
@@ -171,43 +131,6 @@ class CompteRenduController extends BaseController
 
     }
 
-    /**
-     * Deletes a compterendu entity.
-     *
-     * @Route("/{id}", name="compterendu_delete")
-     * @Method("DELETE")
-     * @Security("has_role('ROLE_ADMIN')")
-     */
-    public function deleteAction(Request $request, compterendu $compterendu)
-    {
-        $form = $this->createDeleteForm($compterendu);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($compterendu);
-            $em->flush();
-        }
-
-        return $this->redirectToRoute('compterendu_index');
-    }
-
-    /**
-     * Creates a form to delete a compterendu entity.
-     *
-     * @param compterendu $compterendu The compterendu entity
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createDeleteForm(compterendu $compterendu)
-    {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('compterendu_delete', array('id' => $compterendu->getId())))
-            ->setMethod('DELETE')
-            ->getForm()
-        ;
-    }
-
     private function createCompteRenduApiModel(CompteRendu $compterendu)
     {
         $model = new CompteRenduApiModel();
@@ -225,6 +148,20 @@ class CompteRenduController extends BaseController
         return $model;
     }
 
+    private function pdfProcess($data, $entity)
+    {
+        $post_editor = trim($data['compteRendu']);
+        $fileName = $entity->getEntretien()->getId();
+        $pathSave = "../web/pdf/".$fileName.".pdf";
+        $pathLoad = "/pdf/".$fileName.".pdf";
+
+        if(!$this->exportPDF($post_editor,$pathSave))
+        {
+            throw new BadRequestHttpException('Fichier pdf non sauvegardé');
+        }
+        return $pathLoad;
+    }
+
     private function exportPDF($fileName, $path)
     {
         try
@@ -239,5 +176,6 @@ class CompteRenduController extends BaseController
             return false;
         }
     }
+
 
 }

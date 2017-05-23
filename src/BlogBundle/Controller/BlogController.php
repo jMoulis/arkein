@@ -25,7 +25,11 @@ class BlogController extends BaseController
     }
 
     /**
-     * @Route("/api/billets/list", name="api_billet_list", options={"expose" = true})
+     * @Route("/api/billets/list",
+     *     name="api_billet_list",
+     *     options={"expose" = true}
+     * )
+     *
      * @Method("GET")
      */
     public function getBilletsAction(Request $request)

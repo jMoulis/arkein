@@ -8,13 +8,12 @@ use AppBundle\Form\Type\AnswerType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
  * @Route("answer")
  */
 
-class ApiAnswerController extends BaseController
+class AnswerController extends BaseController
 {
 
     /**
@@ -46,23 +45,9 @@ class ApiAnswerController extends BaseController
      */
     public function newAnswerAction(Request $request)
     {
-        $data = json_decode($request->getContent(), true);
         $ticketId = $request->attributes->get('id');
-
-        if ($data === null) {
-            throw new BadRequestHttpException('Invalid JSON');
-        }
-        $form = $this->createForm(AnswerType::class, null, [
-            'csrf_protection' => false,
-        ]);
-        $form->submit($data);
-        if (!$form->isValid()) {
-            $errors = $this->getErrorsFromForm($form);
-
-            return $this->createApiResponse([
-                'errors' => $errors
-            ], 400);
-        }
+        $data = json_decode($request->getContent(), true);
+        $form = $this->get('app.api_response')->ajaxResponse(AnswerType::class, $data);
 
         /** @var Answer $answer */
         $answer = $form->getData();
@@ -75,7 +60,6 @@ class ApiAnswerController extends BaseController
         $apiModel = $this->createAnswerApiModel($answer);
 
         $response = $this->createApiResponse($apiModel);
-        // setting the Location header... it's a best-practice
         $response->headers->set(
             'Location',
             $this->generateUrl('ticket_show', ['id' => $answer->getTicket()->getId()])
@@ -83,7 +67,7 @@ class ApiAnswerController extends BaseController
 
         return $response;
     }
-    
+
     /**
      * @param Answer $answer
      * @return AnswerApiModel

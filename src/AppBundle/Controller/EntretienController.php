@@ -6,11 +6,9 @@ use AppBundle\Api\EntretienApiModel;
 use AppBundle\Entity\Entretien;
 use AppBundle\Entity\InterviewUser;
 use AppBundle\Form\Type\EntretienType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use UserBundle\Entity\User;
 
 /**
@@ -27,25 +25,15 @@ class EntretienController extends BaseController
      * @Method("GET")
      *
      */
-    public function indexAction(Request $request, User $user = null)
+    public function indexAction(User $user = null)
     {
         $em = $this->getDoctrine()->getManager();
-
         $entretiens = $em->getRepository('AppBundle:Entretien')->findBy([
             'author' => $this->getUser()
         ]);
-
         return $this->render('entretien/_interviews-by-author.html.twig', array(
             'entretiens' => $entretiens,
         ));
-    }
-
-    /**
-     * @Route("/new/", name="page_new")
-     */
-    public function newPageAction()
-    {
-        return $this->render('entretien/new.html.twig');
     }
 
     /**
@@ -66,23 +54,7 @@ class EntretienController extends BaseController
         $dataFormEntretien = $data[0];
         $newGuests = $data[1];
 
-        if ($data === null) {
-            throw new BadRequestHttpException('Invalid JSON');
-        }
-        $form = $this->createForm(EntretienType::class, null, [
-            'csrf_protection' => false,
-        ]);
-
-        $form->submit($dataFormEntretien);
-
-        if (!$form->isValid()) {
-
-            $errors = $this->getErrorsFromForm($form);
-
-            return $this->createApiResponse([
-                'errors' => $errors
-            ], 400);
-        }
+        $form = $this->get('app.api_response')->ajaxResponse(EntretienType::class, $dataFormEntretien);
 
         /** @var Entretien $entretien */
         $entretien = $form->getData();
@@ -104,7 +76,6 @@ class EntretienController extends BaseController
         $apiModel = $this->createEntretienApiModel($entretien);
 
         $response = $this->createApiResponse($apiModel);
-        // setting the Location header... it's a best-practice
         $response->headers->set(
             'Location',
             $this->generateUrl('entretien_show', ['id' => $entretien->getId()])
@@ -113,7 +84,22 @@ class EntretienController extends BaseController
         return $response;
     }
 
-
+    /**
+     * Finds and displays a entretien entity.
+     *
+     * @Route("/{id}/show",
+     *     name="entretien_show",
+     *     options={"expose" = true}
+     * )
+     *
+     * @Method("GET")
+     */
+    public function showAction(Entretien $entretien)
+    {
+        return $this->render('entretien/show.html.twig', array(
+            'entretien' => $entretien
+        ));
+    }
 
     /**
      * @Route("/api/guest/{id}/", name="entretien_list_by_invitation", options={"expose" = true})
@@ -125,8 +111,7 @@ class EntretienController extends BaseController
             throw new \Exception('erreur object non trouvé', 500);
         }
         $entetiens = $this->getDoctrine()->getRepository('AppBundle:Entretien')
-            ->getInterviewByGuest($user)
-        ;
+            ->getInterviewByGuest($user);
         $models = [];
         foreach ($entetiens as $entetien) {
             $models[] = $this->createEntretienApiModel($entetien);
@@ -148,8 +133,7 @@ class EntretienController extends BaseController
         $entetiens = $this->getDoctrine()->getRepository('AppBundle:Entretien')
             ->findBy([
                 'author' => $user
-            ])
-        ;
+            ]);
         $models = [];
         foreach ($entetiens as $entetien) {
             $models[] = $this->createEntretienApiModel($entetien);
@@ -160,10 +144,14 @@ class EntretienController extends BaseController
     }
 
     /**
-     * @Route("/api/young/{id}/", name="entretien_list_by_young", options={"expose" = true})
+     * @Route("/api/young/{id}/",
+     *     name="entretien_list_by_young",
+     *     options={"expose" = true}
+     * )
+     *
      * @Method("GET")
      *
-     * This is for the loading entretiens in the show user
+     * Load entretiens in the show user
      */
     public function getEntretiensByYoungAction(User $user)
     {
@@ -173,8 +161,7 @@ class EntretienController extends BaseController
         $entetiens = $this->getDoctrine()->getRepository('AppBundle:Entretien')
             ->findBy([
                 'young' => $user
-            ])
-        ;
+            ]);
         $models = [];
         foreach ($entetiens as $entetien) {
             $models[] = $this->createEntretienApiModel($entetien);
@@ -189,7 +176,9 @@ class EntretienController extends BaseController
      *
      * @Route("/api/modal/{id}/show",
      *     name="entretien_modal_detail",
-     *     options={"expose" = true})
+     *     options={"expose" = true}
+     * )
+     *
      * @Method("GET")
      */
     public function detailModalAction(Entretien $entretien)
@@ -198,8 +187,7 @@ class EntretienController extends BaseController
             throw new \Exception('erreur object non trouvé', 500);
         }
         $entetien = $this->getDoctrine()->getRepository('AppBundle:Entretien')
-            ->find($entretien->getId())
-        ;
+            ->find($entretien->getId());
         $model = $this->createEntretienApiModel($entetien);
         return $this->createApiResponse([
             'item' => $model
@@ -207,117 +195,29 @@ class EntretienController extends BaseController
     }
 
     /**
-     * Finds and displays a entretien entity.
-     *
-     * @Route("/{id}/show",
-     *     name="entretien_show",
-     *     options={"expose" = true})
-     * @Method("GET")
-     */
-    public function showAction(Entretien $entretien)
-    {
-        return $this->render('entretien/show.html.twig', array(
-            'entretien' => $entretien
-        ));
-    }
-
-    /**
      * Displays a form to edit an existing entretien entity.
      *
-     * @Route("/{id}/edit", name="entretien_edit",
-     *     options={"expose" = true})
+     * @Route("/{id}/edit",
+     *     name="entretien_edit",
+     *     options={"expose" = true}
+     * )
+     *
      * @Method({"GET", "POST"})
      *
      */
     public function editAction(Request $request)
     {
         $entretienId = $request->attributes->get('id');
-
         $data = json_decode($request->getContent(), true);
-
-        // First array that retreive the sumbitted form
-        // Second array that retreive the guests
         $dataFormEntretien = $data[0];
-        $newGuests = $data[1];
 
-        if ($data === null) {
-            throw new BadRequestHttpException('Invalid JSON');
-        }
-        $form = $this->createForm(EntretienType::class, null, [
-            'csrf_protection' => false,
-        ]);
-
-        $form->submit($dataFormEntretien);
-
-        if (!$form->isValid()) {
-
-            $errors = $this->getErrorsFromForm($form);
-
-            return $this->createApiResponse([
-                'errors' => $errors
-            ], 400);
-        }
+        $this->get('app.api_response')->ajaxResponse(EntretienType::class, $dataFormEntretien);
 
         $em = $this->getDoctrine()->getManager();
         $entretien = $em->getRepository('AppBundle:Entretien')->findOneBy(['id' => $entretienId]);
 
-
-
-        /*
-         * This function's role is to:
-         * 1st: Retreive the guest already invited - $existingGuests
-         * 2nd: Retreive the guest submitted by the form - $newGuest
-         *
-         * Then it compares the two arrays twice:
-         * 1st: Check the guests to be remove
-         * 2nd: Check the guests to add
-         * Then
-         * */
-        $existingGuests = [];
-        foreach ($entretien->getInterviewGuests() as $interviewGuest){
-            $existingGuests[] = $interviewGuest->getId();
-        };
-        $guestsToRemove = array_diff($existingGuests, $newGuests);
-        $guestsToAdd = array_diff($newGuests, $existingGuests);
-
-        $entretien->setObjet($dataFormEntretien['objet']);
-        $entretien->setOdj($dataFormEntretien['odj']);
-
-
-
-        if(!empty($newGuests)){
-            /*
-             * I add guests
-             * */
-            foreach ($guestsToAdd as $guest) {
-                $interviewUser = new InterviewUser();
-                $interviewUser->setUser($em->getRepository('UserBundle:User')->find($guest));
-
-                $interviewUser->setInterview($entretien);
-                $entretien->addInterviewGuest($interviewUser);
-            }
-            /* Then remove
-             *
-             * */
-            foreach ($guestsToRemove as $removeInterviewGuest)
-            {
-                $interviewGuest = $em->getRepository('AppBundle:InterviewUser')->find($removeInterviewGuest);
-                $entretien->removeInterviewGuest( $interviewGuest);
-            }
-        } else {
-            /*
-             * I remove all guests
-             * */
-            foreach ($guestsToRemove as $removeInterviewGuest)
-            {
-                $interviewGuest = $em->getRepository('AppBundle:InterviewUser')->find($removeInterviewGuest);
-                $entretien->removeInterviewGuest( $interviewGuest);
-            }
-        }
-
+        $this->guestManager($entretien, $data, $dataFormEntretien, $em);
         $date = new \DateTime(($dataFormEntretien['date']));
-
-
         $entretien->setDate($date);
 
         $em->persist($entretien);
@@ -337,40 +237,48 @@ class EntretienController extends BaseController
     }
 
     /**
-     * Deletes a entretien entity.
+     * This function's role is to:
+     * 1st: Retreive the guest already invited - $existingGuests
+     * 2nd: Retreive the guest submitted by the form - $newGuest
      *
-     * @Route("/{id}", name="entretien_delete")
-     * @Method("DELETE")
-     * @Security("has_role('ROLE_ADMIN')")
+     * Then it compares the two arrays twice:
+     * 1st: Check the guests to be remove
+     * 2nd: Check the guests to add
+     *
      */
-    public function deleteAction(Request $request, Entretien $entretien)
+    private function guestManager($entity, $data, $data2, $em)
     {
-        $form = $this->createDeleteForm($entretien);
-        $form->handleRequest($request);
+        $newGuests = $data[1];
+        $existingGuests = [];
+        foreach ($entity->getInterviewGuests() as $interviewGuest){
+            $existingGuests[] = $interviewGuest->getId();
+        };
+        $guestsToRemove = array_diff($existingGuests, $newGuests);
+        $guestsToAdd = array_diff($newGuests, $existingGuests);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($entretien);
-            $em->flush();
+        $entity->setObjet($data2['objet']);
+        $entity->setOdj($data2['odj']);
+
+        if(!empty($newGuests)){
+            foreach ($guestsToAdd as $guest) {
+                $interviewUser = new InterviewUser();
+                $interviewUser->setUser($em->getRepository('UserBundle:User')->find($guest));
+
+                $interviewUser->setInterview($entity);
+                $entity->addInterviewGuest($interviewUser);
+            }
+            foreach ($guestsToRemove as $removeInterviewGuest)
+            {
+                $interviewGuest = $em->getRepository('AppBundle:InterviewUser')->find($removeInterviewGuest);
+                $entity->removeInterviewGuest( $interviewGuest);
+            }
+        } else {
+            foreach ($guestsToRemove as $removeInterviewGuest)
+            {
+                $interviewGuest = $em->getRepository('AppBundle:InterviewUser')->find($removeInterviewGuest);
+                $entity->removeInterviewGuest( $interviewGuest);
+            }
         }
-
-        return $this->redirectToRoute('entretien_index');
-    }
-
-    /**
-     * Creates a form to delete a entretien entity.
-     *
-     * @param Entretien $entretien The entretien entity
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createDeleteForm(Entretien $entretien)
-    {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('entretien_delete', array('id' => $entretien->getId())))
-            ->setMethod('DELETE')
-            ->getForm()
-        ;
     }
 
     private function createEntretienApiModel(Entretien $entretien)
@@ -404,5 +312,4 @@ class EntretienController extends BaseController
 
         return $model;
     }
-
 }

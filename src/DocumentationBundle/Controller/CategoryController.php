@@ -17,7 +17,7 @@ use UserBundle\Entity\User;
  * @Route("categorie")
  */
 
-class ApiCategoryController extends BaseController
+class CategoryController extends BaseController
 {
 
     /**
@@ -49,21 +49,7 @@ class ApiCategoryController extends BaseController
     public function newCategoryAction(Request $request, $userid = null)
     {
         $data = json_decode($request->getContent(), true);
-
-        if ($data === null) {
-            throw new BadRequestHttpException('Invalid JSON');
-        }
-        $form = $this->createForm(CategorieType::class, null, [
-            'csrf_protection' => false,
-        ]);
-        $form->submit($data);
-        if (!$form->isValid()) {
-            $errors = $this->getErrorsFromForm($form);
-
-            return $this->createApiResponse([
-                'errors' => $errors
-            ], 400);
-        }
+        $form = $this->get('app.api_response')->ajaxResponse(CategorieType::class, $data);
 
         /** @var Categorie $category */
         $category = $form->getData();
@@ -97,7 +83,6 @@ class ApiCategoryController extends BaseController
     public function getCategoriesByUserAction($userid)
     {
         $user = $this->getDoctrine()->getRepository(User::class)->find($userid);
-
         $categories = $this->getDoctrine()->getRepository('DocumentationBundle:Categorie')
             ->findOrderASCCategorie($user);
         $models = [];
@@ -120,12 +105,10 @@ class ApiCategoryController extends BaseController
         $em = $this->getDoctrine()->getManager();
         $user = $em->getRepository('UserBundle:User')->find($id);
         $categories = $em->getRepository('DocumentationBundle:Categorie')->findOrderASCCategorie($user);
-
         $models = [];
         foreach ($categories as $category) {
             $models[] = $this->createCategoryApiModel($category);
         }
-
         return $this->createApiResponse([
             'items' => $models
         ]);
@@ -155,8 +138,7 @@ class ApiCategoryController extends BaseController
             throw new \Exception('erreur object non trouvé', 500);
         }
         $categorie = $this->getDoctrine()->getRepository('DocumentationBundle:Categorie')
-            ->find($categorie->getId())
-        ;
+            ->find($categorie->getId());
         $model = $this->createCategoryApiModel($categorie);
         return $this->createApiResponse([
             'item' => $model
@@ -172,27 +154,11 @@ class ApiCategoryController extends BaseController
      */
     public function editCategoryAction(Request $request, $catid ,$userid = null)
     {
-
         $data = json_decode($request->getContent(), true);
 
-        if ($data === null) {
-            throw new BadRequestHttpException('Invalid JSON');
-        }
-        $form = $this->createForm(CategorieType::class, null, [
-            'csrf_protection' => false,
-        ]);
-        $form->submit($data);
-
-        if (!$form->isValid()) {
-            $errors = $this->getErrorsFromForm($form);
-
-            return $this->createApiResponse([
-                'errors' => $errors
-            ], 400);
-        }
+        $this->get('app.api_response')->ajaxResponse(CategorieType::class, $data);
 
         /** @var Categorie $category */
-
         $em = $this->getDoctrine()->getManager();
         $category = $em->getRepository('DocumentationBundle:Categorie')->find($catid);
 
@@ -200,20 +166,13 @@ class ApiCategoryController extends BaseController
             $category->setOwner($em->getRepository('UserBundle:User')->find($userid));
         }
         $category->setName($data['name']);
-
-        if($data['classified'] === true)
-        {
-
-        }
         $category->setClassified($data['classified']);
 
         $em->persist($category);
         $em->flush();
 
         $apiModel = $this->createCategoryApiModel($category);
-
         $response = $this->createApiResponse($apiModel);
-        // setting the Location header... it's a best-practice
         $response->headers->set(
             'Location',
             $this->generateUrl('cat_get', ['id' => $category->getId()])
@@ -226,7 +185,7 @@ class ApiCategoryController extends BaseController
      * @Route("/api/delete/{id}/cat/", name="cat_delete")
      * @Method("DELETE")
      */
-    public function deleteRepLogAction(Categorie $category)
+    public function deleteCategorieAction(Categorie $category)
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($category);

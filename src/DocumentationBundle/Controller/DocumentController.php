@@ -6,7 +6,7 @@ use AppBundle\Api\DocumentApiModel;
 use AppBundle\Controller\BaseController;
 use DocumentationBundle\Entity\Categorie;
 use DocumentationBundle\Entity\Document;
-use DocumentationBundle\Form\Type\DocumentType;
+use DocumentationBundle\Form\Type\CategorieType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -19,7 +19,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
  * @Route("document")
  */
 
-class ApiDocumentController extends BaseController
+class DocumentController extends BaseController
 {
     const REPERTOIRE =  'Sites/arkein/documents';
     /**
@@ -36,12 +36,10 @@ class ApiDocumentController extends BaseController
         $user = $this->getDoctrine()->getRepository('UserBundle:User')->find($userid);
         $documents = $this->getDoctrine()->getRepository('DocumentationBundle:Document')
             ->getDocumentsByDestinataire($user);
-
         $models = [];
         foreach ($documents as $document) {
             $models[] = $this->createDocumentApiModel($document);
         }
-
         return $this->createApiResponse([
             'items' => $models
         ]);
@@ -51,7 +49,7 @@ class ApiDocumentController extends BaseController
      * @Route("/api/d/get/{categorie}/c",
      *     name="api_document_list",
      *     options={"expose" = true}
-     *     )
+     * )
      * @Method("GET")
      */
     public function getDocsByCategorieAction(Categorie $categorie)
@@ -61,7 +59,6 @@ class ApiDocumentController extends BaseController
             ->findBy([
                 'categorie' => $em->getRepository('DocumentationBundle:Categorie')->find($categorie)
             ]);
-
         $models = [];
         foreach ($documents as $document) {
             $models[] = $this->createDocumentApiModel($document);
@@ -73,34 +70,22 @@ class ApiDocumentController extends BaseController
     }
 
     /**
-     * @Route("/api/d/load/{id}/d", name="api_new_doc", options={"expose" = true})
+     * @Route("/api/d/load/{id}/d",
+     *     name="api_new_doc",
+     *     options={"expose" = true}
+     * )
+     *
      * @Method({"GET","POST"})
      */
     public  function newAction(Request $request, $id)
     {
         $data = $request->files;
-
-        if ($data === null) {
-            throw new BadRequestHttpException('Files Empty');
-        }
-        $form = $this->createForm(DocumentType::class, null, [
-            'csrf_protection' => false,
-        ]);
-
-        $form->handleRequest($request);
-
-        if (!$form->isValid()) {
-            $errors = $this->getErrorsFromForm($form);
-
-            return $this->createApiResponse([
-                'errors' => $errors
-            ], 400);
-        }
+        $form = $this->ajaxResponse(CategorieType::class, $data, $request);
 
         /** @var Document $document */
         $em = $this->getDoctrine()->getManager();
         $user = $em->getRepository('UserBundle:User')->find($id);
-        //
+
         $document = $form->getData();
         $document->setAuthor($this->getUser());
         $document->setDestinataire($user);
@@ -117,8 +102,8 @@ class ApiDocumentController extends BaseController
         );
 
         return $response;
-
     }
+
 
     /**
      * @Route("/api/d/show/{id}/d", name="api_document_show")
@@ -132,7 +117,11 @@ class ApiDocumentController extends BaseController
     }
 
     /**
-     * @Route("/api/d/edit/d", name="api_document_edit", options={"expose" = true})
+     * @Route("/api/d/edit/d",
+     *     name="api_document_edit",
+     *     options={"expose" = true}
+     * )
+     *
      * @Method("POST")
      */
     public function editDocumentAction(Request $request)
@@ -163,7 +152,9 @@ class ApiDocumentController extends BaseController
     /**
      * @Route("/api/d/delete/{id}/d",
      *     name="api_document_delete",
-     *     options={"expose" = true})
+     *     options={"expose" = true}
+     * )
+     *
      * @Method("DELETE")
      * @Security("has_role('ROLE_ADMIN')")
      */
@@ -252,6 +243,30 @@ class ApiDocumentController extends BaseController
             $type = ($navigateur!="Mozilla") ? 'application/octetstream' : 'application/octet-stream';
         }
         return $type;
+    }
+
+    /**
+     * Get the validation api answer
+     */
+    private function ajaxResponse($formType, $data, $request)
+    {
+        if ($data === null) {
+            throw new BadRequestHttpException('Files Empty');
+        }
+        $form = $this->createForm($formType, null, [
+            'csrf_protection' => false,
+        ]);
+
+        $form->handleRequest($request);
+
+        if (!$form->isValid()) {
+            $errors = $this->getErrorsFromForm($form);
+
+            return $this->createApiResponse([
+                'errors' => $errors
+            ], 400);
+        }
+        return $form;
     }
 
     /**

@@ -1,3 +1,8 @@
+app:
+    resource: "@AppBundle/Controller/AppController.php"
+    type:     annotation
+    prefix:   /
+
 app.entretien:
     resource: "@AppBundle/Controller/EntretienController.php"
     type:     annotation
@@ -12,11 +17,6 @@ app.documentation:
     resource: "@DocumentationBundle/Controller/"
     type:     annotation
     prefix:   /dashboard
-
-app:
-    resource: "@AppBundle/Controller/AppController.php"
-    type:     annotation
-    prefix:   /
 
 app.event:
     resource: "@AppBundle/Controller/EventController.php"
@@ -33,28 +33,18 @@ app.ticket:
     type:     annotation
     prefix:   /dashboard
 
-app.api.ticket:
-    resource: "@AppBundle/Controller/ApiTicketController.php"
-    type:     annotation
-    prefix:   /dashboard
-
-user.security:
+app.user.security:
     resource: "@UserBundle/Controller/SecurityController.php"
     type:     annotation
     prefix:   /
 
-user:
+app.user:
     resource: "@UserBundle/Controller/UserController.php"
     type:     annotation
     prefix:   /dashboard
 
-app.api.user:
-    resource: "@UserBundle/Controller/ApiUserController.php"
-    type:     annotation
-    prefix:   /dashboard
-
 app.answer:
-    resource: "@AppBundle/Controller/ApiAnswerController.php"
+    resource: "@AppBundle/Controller/AnswerController.php"
     type:     annotation
     prefix:   /dashboard
 

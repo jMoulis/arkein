@@ -4,10 +4,9 @@ namespace AppBundle\Controller;
 
 use AppBundle\Api\InterviewUserApiModel;
 use AppBundle\Entity\InterviewUser;
-use AppBundle\Form\Type\InterviewUserType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Interviewuser controller.
@@ -26,26 +25,9 @@ class InterviewUserController extends BaseController
     public function editAction(Request $request)
     {
         $entretienId = $request->attributes->get('id');
-
         $data = json_decode($request->getContent(), true);
 
-        if ($data === null) {
-            throw new BadRequestHttpException('Invalid JSON');
-        }
-        $form = $this->createForm(InterviewUserType::class, null, [
-            'csrf_protection' => false,
-        ]);
-
-        $form->submit($data);
-
-        if (!$form->isValid()) {
-
-            $errors = $this->getErrorsFromForm($form);
-
-            return $this->createApiResponse([
-                'errors' => $errors
-            ], 400);
-        }
+        $this->get('app.api_response')->ajaxResponse(InterviewUser::class, $data);
 
         /** @var InterviewUser $interviewUser */
         $em = $this->getDoctrine()->getManager();
@@ -75,8 +57,6 @@ class InterviewUserController extends BaseController
     {
         $model = new InterviewUserApiModel();
         $model->id = $interviewUser->getId();
-
-
         $selfUrl = $this->generateUrl(
             'entretien_show',
             ['id' => $interviewUser->getId()]

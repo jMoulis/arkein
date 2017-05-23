@@ -13,7 +13,7 @@ class BaseController extends Controller
      * @param int $statusCode
      * @return JsonResponse
      */
-    protected function createApiResponse($data, $statusCode = 200)
+    public function createApiResponse($data, $statusCode = 200)
     {
         $json = $this->get('serializer')
             ->serialize($data, 'json');
@@ -34,7 +34,7 @@ class BaseController extends Controller
      * @param FormInterface $form
      * @return array|string
      */
-    protected function getErrorsFromForm(FormInterface $form)
+    public function getErrorsFromForm(FormInterface $form)
     {
         foreach ($form->getErrors() as $error) {
             // only supporting 1 error per field
