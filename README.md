@@ -1,4 +1,5 @@
 arkein
 ======
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/mini.png)](https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0)
 
-A Symfony project created on February 28, 2017, 5:42 am.
+Gestion de centre d'accueil
