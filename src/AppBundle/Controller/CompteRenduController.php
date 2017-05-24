@@ -153,7 +153,7 @@ class CompteRenduController extends BaseController
         $post_editor = trim($data['compteRendu']);
         $fileName = $entity->getEntretien()->getId();
         $pathSave = "../web/pdf/".$fileName.".pdf";
-        $pathLoad = "/pdf/".$fileName.".pdf";
+        $pathLoad = "../pdf/".$fileName.".pdf";
 
         if(!$this->exportPDF($post_editor,$pathSave))
         {
