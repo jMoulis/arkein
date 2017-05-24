@@ -186,10 +186,10 @@
             e.preventDefault();
             const $form = $(e.currentTarget);
             const self = this;
+            const entretienId = $form.data('entretien');
             const $guests = $form.find('.js-actual-guests').children();
-            const tr = self.$wrapper.find('.js-main-content-created table tbody tr').data('id');
-
-
+            const tr = self.$wrapper.find('.js-main-content-created table tbody tr[title=id_'+  entretienId +']');
+            
             /* Afin de pouvoir enregistrer des guests, il était nécessaire
              * de créer un objet avec les id des users
              * J'ai donc crée une liste avec les id des users que je récupère en forme
