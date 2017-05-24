@@ -213,7 +213,6 @@
         loadListTreeViewCategorie: function () {
             const self = this;
             const userid = $('h1').data('user');
-
             $.ajax({
                 beforeSend: function () {
                     const html = "<span class='waiting'>Chargement des dossiers en cours... </span>";
