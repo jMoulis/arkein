@@ -138,6 +138,7 @@ class CompteRenduController extends BaseController
         $model->compteRendu = $compterendu->getCompteRendu();
         $model->presence = $compterendu->getPresence();
         $model->entretien = $compterendu->getEntretien()->getId();
+        $model->lienPdf = $compterendu->getLienpdf();
         $selfUrl = $this->generateUrl(
             'compterendu_show',
             ['id' => $compterendu->getId()]

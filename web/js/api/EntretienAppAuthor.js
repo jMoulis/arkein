@@ -4,6 +4,7 @@
 
     window.EntretienAppAuthor = function ($wrapper) {
         this.$wrapper = $wrapper;
+        const self = this;
 
         this.$wrapper.on(
             'submit',
@@ -37,15 +38,12 @@
 
         this.$wrapper.on(
             'click',
-            '.js-detail-compteRendu', function () {
+            '.js-detail-compteRendu', function (e) {
                 $('#editEntretienModal').modal('toggle');
+                let entretienId = $(e.currentTarget).closest('.js-edit-entretien-form').data('entretien');
+                let modal = $('.js-modal-viewer h5').attr('data-id', entretienId);
+                self.loadPdf(entretienId);
             }
-        );
-
-        this.$wrapper.on(
-            'shown.bs.modal',
-            '.js-modal-viewer',
-            this.loadPdf.bind(this)
         );
 
         this.$wrapper.on(
@@ -189,7 +187,7 @@
             const entretienId = $form.data('entretien');
             const $guests = $form.find('.js-actual-guests').children();
             const tr = self.$wrapper.find('.js-main-content-created table tbody tr[title=id_'+  entretienId +']');
-            
+
             /* Afin de pouvoir enregistrer des guests, il était nécessaire
              * de créer un objet avec les id des users
              * J'ai donc crée une liste avec les id des users que je récupère en forme
@@ -325,13 +323,25 @@
             })
         },
 
-        loadPdf: function () {
-            $('#pdfViewer .modal-body').css(
-                {
-                    height: '50rem'
+        loadPdf: function (entretienId) {
+            const self = this;
+            $('#pdfViewer').modal('show');
+            $.ajax({
+                beforeSend: function(){
+                    $(self._selector.editModalFooter).append("<span class='loading'>Chargement...</span>");
+                },
+                url: Routing.generate('entretien_modal_detail', {id: entretienId}),
+                success: function (data) {
+                    const lienpdf = data.item.compteRenduLien;
+
+                    PDFObject.embed(lienpdf, '#pdfViewer .modal-body');
                 }
+            });
+
+            $('#pdfViewer .modal-body').css(
+                { height: '50rem'}
             );
-            PDFObject.embed('/pdf/102.pdf', '#pdfViewer .modal-body');
+
         },
 
         loadUsers: function () {

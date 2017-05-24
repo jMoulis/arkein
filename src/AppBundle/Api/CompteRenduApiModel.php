@@ -16,6 +16,8 @@ class CompteRenduApiModel
 
     public $authorId;
 
+    public $lienPdf;
+
     private $links = [];
 
     public function addLink($ref, $url)
