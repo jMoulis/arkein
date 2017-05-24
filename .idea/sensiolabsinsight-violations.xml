@@ -1,0 +1,437 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<analysis>
+  <link href="https://insight.sensiolabs.com/api/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/20" rel="self" type="application/vnd.com.sensiolabs.insight+xml"/>
+  <link href="https://insight.sensiolabs.com/api/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/20/status" rel="status" type="application/vnd.com.sensiolabs.insight+xml"/>
+  <link href="https://insight.sensiolabs.com/api/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0" rel="project" type="application/vnd.com.sensiolabs.insight+xml"/>
+  <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/20" rel="self" type="text/html"/>
+  <status><![CDATA[finished]]></status>
+  <violations>
+    <violation severity="major" category="bugrisk" ignored="true">
+      <line>1</line>
+      <resource><![CDATA[composer.json]]></resource>
+      <title>The composer.json file should be valid</title>
+      <message><![CDATA[description : The property description is required]]></message>
+      <context start-line="1" end-line="6"><![CDATA[{
+    "name": "julienmoulis/arkein",
+    "license": "proprietary",
+    "type": "project",
+    "autoload": {
+        "psr-4": {]]></context>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/20?status=ignored#523693422" rel="self" type="text/html"/>
+    </violation>
+    <violation severity="info" category="bugrisk" ignored="true">
+      <line>0</line>
+      <resource><![CDATA[composer.json]]></resource>
+      <title>The composer.json file should not raise warnings</title>
+      <message><![CDATA[Defining autoload.psr-4 with an empty namespace prefix is a bad idea for performance]]></message>
+      <context/>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/20?status=ignored#523693434" rel="self" type="text/html"/>
+    </violation>
+    <violation severity="minor" category="codestyle" ignored="true">
+      <line>20</line>
+      <resource><![CDATA[.gitignore]]></resource>
+      <title>User specific files should not appear in .gitignore</title>
+      <message><![CDATA[/.idea/* is user-specific and should not appear in a project .gitignore. Consider adding it to the user global .gitignore instead.]]></message>
+      <context start-line="15" end-line="21"><![CDATA[/vendor/
+/web/bundles/
+/app/DoctrinesMigrations/*
+/web/css/compiled/*
+/web/js/compiled/*
+/.idea/*
+]]></context>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/20?status=ignored#523693432" rel="self" type="text/html"/>
+    </violation>
+    <violation severity="info" category="codestyle" ignored="true">
+      <line>0</line>
+      <title>Project files should not mix end of lines</title>
+      <message><![CDATA[            
+                Some files contain mixed and/or invalid end of lines ( \r\n instead of \n). Homogenize
+                them to improve compatibility across different platforms.
+            
+            web/js/third-library/ckeditor/CHANGES.mdweb/js/third-library/ckeditor/LICENSE.mdweb/js/third-library/ckeditor/plugins/scayt/CHANGELOG.mdweb/js/third-library/ckeditor/plugins/scayt/LICENSE.mdweb/js/third-library/ckeditor/plugins/scayt/README.mdweb/js/third-library/ckeditor/plugins/wsc/LICENSE.mdweb/js/third-library/ckeditor/plugins/wsc/README.mdweb/js/third-library/ckeditor/skins/moono-lisa/readme.md
+            To solve this issue, run the below command:]]></message>
+      <context/>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/20?status=ignored#523693441" rel="self" type="text/html"/>
+    </violation>
+    <violation severity="info" category="codestyle" ignored="true">
+      <line>1</line>
+      <resource><![CDATA[web/js/third-library/PDFObject/.gitignore]]></resource>
+      <title>Text files should end with a newline character</title>
+      <message><![CDATA[This file ends with no newline character. It won't render properly on a terminal, and it's considered a bad practice. Add a simple line feed as the last character to fix it.]]></message>
+      <context start-line="1" end-line="1"><![CDATA[.DS_Store]]></context>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/20?status=ignored#523693423" rel="self" type="text/html"/>
+    </violation>
+    <violation severity="minor" category="codestyle" ignored="true">
+      <line>154</line>
+      <resource><![CDATA[src/AppBundle/Entity/Entretien.php]]></resource>
+      <title>Boolean property should not be prefixed by "is"</title>
+      <message><![CDATA[Boolean property accessor should not be setIsXXX nor getIsXXX but setXXX and isXXX.]]></message>
+      <context start-line="149" end-line="159"><![CDATA[     *
+     * @param boolean $isArchived
+     *
+     * @return Entretien
+     */
+    public function setIsArchived($isArchived)
+    {
+        $this->isArchived = $isArchived;
+
+        return $this;
+    }]]></context>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/20?status=ignored#523693442" rel="self" type="text/html"/>
+    </violation>
+    <violation severity="minor" category="codestyle" ignored="true">
+      <line>166</line>
+      <resource><![CDATA[src/AppBundle/Entity/Entretien.php]]></resource>
+      <title>Boolean property should not be prefixed by "is"</title>
+      <message><![CDATA[Boolean property accessor should not be setIsXXX nor getIsXXX but setXXX and isXXX.]]></message>
+      <context start-line="161" end-line="171"><![CDATA[    /**
+     * Get isArchived
+     *
+     * @return boolean
+     */
+    public function getIsArchived()
+    {
+        return $this->isArchived;
+    }
+
+]]></context>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/20?status=ignored#523693436" rel="self" type="text/html"/>
+    </violation>
+    <violation severity="minor" category="codestyle" ignored="true">
+      <line>199</line>
+      <resource><![CDATA[src/AppBundle/Entity/Event.php]]></resource>
+      <title>Boolean property should not be prefixed by "is"</title>
+      <message><![CDATA[Boolean property accessor should not be setIsXXX nor getIsXXX but setXXX and isXXX.]]></message>
+      <context start-line="194" end-line="204"><![CDATA[     *
+     * @param boolean $isArchived
+     *
+     * @return Event
+     */
+    public function setIsArchived($isArchived)
+    {
+        $this->isArchived = $isArchived;
+
+        return $this;
+    }]]></context>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/20?status=ignored#523693437" rel="self" type="text/html"/>
+    </violation>
+    <violation severity="minor" category="codestyle" ignored="true">
+      <line>211</line>
+      <resource><![CDATA[src/AppBundle/Entity/Event.php]]></resource>
+      <title>Boolean property should not be prefixed by "is"</title>
+      <message><![CDATA[Boolean property accessor should not be setIsXXX nor getIsXXX but setXXX and isXXX.]]></message>
+      <context start-line="206" end-line="216"><![CDATA[    /**
+     * Get isArchived
+     *
+     * @return boolean
+     */
+    public function getIsArchived()
+    {
+        return $this->isArchived;
+    }
+}
+]]></context>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/20?status=ignored#523693435" rel="self" type="text/html"/>
+    </violation>
+    <violation severity="minor" category="codestyle" ignored="true">
+      <line>145</line>
+      <resource><![CDATA[src/DocumentationBundle/Entity/Categorie.php]]></resource>
+      <title>Boolean property should not be prefixed by "is"</title>
+      <message><![CDATA[Boolean property accessor should not be setIsXXX nor getIsXXX but setXXX and isXXX.]]></message>
+      <context start-line="140" end-line="150"><![CDATA[
+
+    /**
+     * @return mixed
+     */
+    public function getIsPrivate()
+    {
+        return $this->isPrivate;
+    }
+
+    /**]]></context>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/20?status=ignored#523693426" rel="self" type="text/html"/>
+    </violation>
+    <violation severity="minor" category="codestyle" ignored="true">
+      <line>153</line>
+      <resource><![CDATA[src/DocumentationBundle/Entity/Categorie.php]]></resource>
+      <title>Boolean property should not be prefixed by "is"</title>
+      <message><![CDATA[Boolean property accessor should not be setIsXXX nor getIsXXX but setXXX and isXXX.]]></message>
+      <context start-line="148" end-line="158"><![CDATA[    }
+
+    /**
+     * @param mixed $isPrivate
+     */
+    public function setIsPrivate($isPrivate)
+    {
+        $this->isPrivate = $isPrivate;
+    }
+
+]]></context>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/20?status=ignored#523693428" rel="self" type="text/html"/>
+    </violation>
+    <violation severity="minor" category="codestyle" ignored="true">
+      <line>224</line>
+      <resource><![CDATA[src/DocumentationBundle/Entity/Document.php]]></resource>
+      <title>Boolean property should not be prefixed by "is"</title>
+      <message><![CDATA[Boolean property accessor should not be setIsXXX nor getIsXXX but setXXX and isXXX.]]></message>
+      <context start-line="219" end-line="229"><![CDATA[     *
+     * @param boolean $isArchived
+     *
+     * @return Document
+     */
+    public function setIsArchived($isArchived)
+    {
+        $this->isArchived = $isArchived;
+
+        return $this;
+    }]]></context>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/20?status=ignored#523693438" rel="self" type="text/html"/>
+    </violation>
+    <violation severity="minor" category="codestyle" ignored="true">
+      <line>236</line>
+      <resource><![CDATA[src/DocumentationBundle/Entity/Document.php]]></resource>
+      <title>Boolean property should not be prefixed by "is"</title>
+      <message><![CDATA[Boolean property accessor should not be setIsXXX nor getIsXXX but setXXX and isXXX.]]></message>
+      <context start-line="231" end-line="241"><![CDATA[    /**
+     * Get isArchived
+     *
+     * @return boolean
+     */
+    public function getIsArchived()
+    {
+        return $this->isArchived;
+    }
+
+    /**]]></context>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/20?status=ignored#523693440" rel="self" type="text/html"/>
+    </violation>
+    <violation severity="minor" category="codestyle" ignored="true">
+      <line>248</line>
+      <resource><![CDATA[src/DocumentationBundle/Entity/Document.php]]></resource>
+      <title>Boolean property should not be prefixed by "is"</title>
+      <message><![CDATA[Boolean property accessor should not be setIsXXX nor getIsXXX but setXXX and isXXX.]]></message>
+      <context start-line="243" end-line="253"><![CDATA[     *
+     * @param boolean $isPrivate
+     *
+     * @return Document
+     */
+    public function setIsPrivate($isPrivate)
+    {
+        $this->isPrivate = $isPrivate;
+
+        return $this;
+    }]]></context>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/20?status=ignored#523693424" rel="self" type="text/html"/>
+    </violation>
+    <violation severity="minor" category="codestyle" ignored="true">
+      <line>260</line>
+      <resource><![CDATA[src/DocumentationBundle/Entity/Document.php]]></resource>
+      <title>Boolean property should not be prefixed by "is"</title>
+      <message><![CDATA[Boolean property accessor should not be setIsXXX nor getIsXXX but setXXX and isXXX.]]></message>
+      <context start-line="255" end-line="265"><![CDATA[    /**
+     * Get isPrivate
+     *
+     * @return boolean
+     */
+    public function getIsPrivate()
+    {
+        return $this->isPrivate;
+    }
+}
+]]></context>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/20?status=ignored#523693421" rel="self" type="text/html"/>
+    </violation>
+    <violation severity="minor" category="codestyle" ignored="true">
+      <line>349</line>
+      <resource><![CDATA[src/UserBundle/Entity/User.php]]></resource>
+      <title>Boolean property should not be prefixed by "is"</title>
+      <message><![CDATA[Boolean property accessor should not be setIsXXX nor getIsXXX but setXXX and isXXX.]]></message>
+      <context start-line="344" end-line="354"><![CDATA[    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+    }
+
+    public function getIsActive()
+    {
+        return $this->isActive;
+    }
+
+    public function setIsActive($isActive)]]></context>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/20?status=ignored#523693439" rel="self" type="text/html"/>
+    </violation>
+    <violation severity="minor" category="codestyle" ignored="true">
+      <line>354</line>
+      <resource><![CDATA[src/UserBundle/Entity/User.php]]></resource>
+      <title>Boolean property should not be prefixed by "is"</title>
+      <message><![CDATA[Boolean property accessor should not be setIsXXX nor getIsXXX but setXXX and isXXX.]]></message>
+      <context start-line="349" end-line="359"><![CDATA[    public function getIsActive()
+    {
+        return $this->isActive;
+    }
+
+    public function setIsActive($isActive)
+    {
+        $this->isActive = $isActive;
+    }
+
+    /**]]></context>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/20?status=ignored#523693427" rel="self" type="text/html"/>
+    </violation>
+    <violation severity="info" category="performance" ignored="true">
+      <line>0</line>
+      <resource><![CDATA[app/.htaccess]]></resource>
+      <title>.htaccess should be avoided</title>
+      <message><![CDATA[A .htaccess file has been spotted. You should consider moving it to the server configuration to improve global performances.]]></message>
+      <context/>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/20?status=ignored#523693431" rel="self" type="text/html"/>
+    </violation>
+    <violation severity="info" category="performance" ignored="true">
+      <line>0</line>
+      <resource><![CDATA[.htaccess]]></resource>
+      <title>.htaccess should be avoided</title>
+      <message><![CDATA[A .htaccess file has been spotted. You should consider moving it to the server configuration to improve global performances.]]></message>
+      <context/>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/20?status=ignored#523693429" rel="self" type="text/html"/>
+    </violation>
+    <violation severity="info" category="performance" ignored="true">
+      <line>0</line>
+      <resource><![CDATA[src/documents/.htaccess]]></resource>
+      <title>.htaccess should be avoided</title>
+      <message><![CDATA[A .htaccess file has been spotted. You should consider moving it to the server configuration to improve global performances.]]></message>
+      <context/>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/20?status=ignored#523693430" rel="self" type="text/html"/>
+    </violation>
+    <violation severity="info" category="performance" ignored="true">
+      <line>0</line>
+      <resource><![CDATA[src/.htaccess]]></resource>
+      <title>.htaccess should be avoided</title>
+      <message><![CDATA[A .htaccess file has been spotted. You should consider moving it to the server configuration to improve global performances.]]></message>
+      <context/>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/20?status=ignored#523693425" rel="self" type="text/html"/>
+    </violation>
+    <violation severity="info" category="performance" ignored="true">
+      <line>0</line>
+      <resource><![CDATA[web/.htaccess]]></resource>
+      <title>.htaccess should be avoided</title>
+      <message><![CDATA[A .htaccess file has been spotted. You should consider moving it to the server configuration to improve global performances.]]></message>
+      <context/>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/20?status=ignored#523693420" rel="self" type="text/html"/>
+    </violation>
+    <violation severity="info" category="performance" ignored="true">
+      <line>0</line>
+      <resource><![CDATA[web/pdf/.htaccess]]></resource>
+      <title>.htaccess should be avoided</title>
+      <message><![CDATA[A .htaccess file has been spotted. You should consider moving it to the server configuration to improve global performances.]]></message>
+      <context/>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/20?status=ignored#523693433" rel="self" type="text/html"/>
+    </violation>
+  </violations>
+  <grades>
+    <entry><![CDATA[none]]></entry>
+    <entry><![CDATA[bronze]]></entry>
+    <entry><![CDATA[silver]]></entry>
+    <entry><![CDATA[gold]]></entry>
+    <entry><![CDATA[platinum]]></entry>
+  </grades>
+  <failed>false</failed>
+  <grade><![CDATA[platinum]]></grade>
+  <begin-at><![CDATA[2017-05-23T15:19:00+0200]]></begin-at>
+  <end-at><![CDATA[2017-05-23T15:19:45+0200]]></end-at>
+  <duration>16</duration>
+  <number>20</number>
+  <altered>false</altered>
+  <remediation-cost>0</remediation-cost>
+  <nb-violations>0</nb-violations>
+  <reference><![CDATA[415b4362e7775226b183aff01b98f742cc3da9aa]]></reference>
+  <configuration>
+    <ignored-branches>
+      <branch><![CDATA[gh-pages]]></branch>
+    </ignored-branches>
+    <pre-composer-script/>
+    <post-composer-script/>
+    <working-directory/>
+    <php-version/>
+    <php-ini/>
+    <commit-failure-conditions>
+      <branch><![CDATA[project.severity.critical > 0]]></branch>
+      <branch><![CDATA[project.severity.major > 0]]></branch>
+    </commit-failure-conditions>
+    <global-excluded-dirs>
+      <dir><![CDATA[vendor]]></dir>
+      <dir><![CDATA[vendors]]></dir>
+      <dir><![CDATA[test]]></dir>
+      <dir><![CDATA[tests]]></dir>
+      <dir><![CDATA[Tests]]></dir>
+      <dir><![CDATA[spec]]></dir>
+      <dir><![CDATA[features]]></dir>
+      <dir><![CDATA[Fixtures]]></dir>
+      <dir><![CDATA[DataFixtures]]></dir>
+      <dir><![CDATA[var]]></dir>
+    </global-excluded-dirs>
+    <excluded-patterns>
+      <pattern><![CDATA[app/check.php]]></pattern>
+      <pattern><![CDATA[app/SymfonyRequirements.php]]></pattern>
+      <pattern><![CDATA[web/config.php]]></pattern>
+      <pattern><![CDATA[web/app_*.php]]></pattern>
+    </excluded-patterns>
+    <patterns>
+      <file>
+        <pattern><![CDATA[*.php]]></pattern>
+        <pattern><![CDATA[*.twig]]></pattern>
+        <pattern><![CDATA[*.xml]]></pattern>
+        <pattern><![CDATA[*.yml]]></pattern>
+        <pattern><![CDATA[*.yaml]]></pattern>
+        <pattern><![CDATA[*.ini]]></pattern>
+        <pattern><![CDATA[*.dist]]></pattern>
+        <pattern><![CDATA[*.sql]]></pattern>
+        <pattern><![CDATA[*.md]]></pattern>
+        <pattern><![CDATA[*.rst]]></pattern>
+        <pattern><![CDATA[composer.*]]></pattern>
+        <pattern><![CDATA[.gitignore]]></pattern>
+        <pattern><![CDATA[LICENSE]]></pattern>
+        <pattern><![CDATA[README]]></pattern>
+        <pattern><![CDATA[Makefile]]></pattern>
+        <pattern><![CDATA[.htaccess]]></pattern>
+      </file>
+      <php>
+        <pattern><![CDATA[*.php]]></pattern>
+      </php>
+      <twig>
+        <pattern><![CDATA[*.twig]]></pattern>
+      </twig>
+    </patterns>
+    <rules>
+      <rule name="task_todo_comment" enabled="false"/>
+      <rule name="symfony.application_not_bootable" enabled="false"/>
+    </rules>
+    <parameters>
+      <parameter name="project_type">12</parameter>
+    </parameters>
+    <env/>
+  </configuration>
+  <previous-analyses-references>
+    <analysis-reference number="20">415b4362e7775226b183aff01b98f742cc3da9aa</analysis-reference>
+    <analysis-reference number="19">c422c4725700d7f5534c2ddacb570ccf62d8f517</analysis-reference>
+    <analysis-reference number="18">e97ab9e869906823b5668c33006e696ce13d41e8</analysis-reference>
+    <analysis-reference number="17">a0f0ed87ec971ba59b5b37895250c7a018f8f79a</analysis-reference>
+    <analysis-reference number="16">b6f8a547e125dc537b444c03270f31236d52270d</analysis-reference>
+    <analysis-reference number="15">4af1620b80497cd2c97e7d1f8ea59d287c58afda</analysis-reference>
+    <analysis-reference number="14">4af1620b80497cd2c97e7d1f8ea59d287c58afda</analysis-reference>
+    <analysis-reference number="13">da004ee5b669fd3cbad50c71341d9a88fef86c84</analysis-reference>
+    <analysis-reference number="12">a56c5e7946d34ccac21117c52d0ecd9c5d282c13</analysis-reference>
+    <analysis-reference number="11">25c06a4db3befbbce2e825d782bad80620cf7e42</analysis-reference>
+    <analysis-reference number="10">7645c25f3d05927b342aa6e4a14acedc625a50f2</analysis-reference>
+    <analysis-reference number="9">8f2763d6449c9228184cafd57cf7964266d3a322</analysis-reference>
+    <analysis-reference number="8">1dfd565a5777713f18d3e180b6ef4278f23b72aa</analysis-reference>
+    <analysis-reference number="7">1dfd565a5777713f18d3e180b6ef4278f23b72aa</analysis-reference>
+    <analysis-reference number="6">a1943526d1d90a7e50e4403b8de1d19022c74612</analysis-reference>
+    <analysis-reference number="5">1af0f482c04efaec3f3cfab46135938d373b855b</analysis-reference>
+    <analysis-reference number="4">1af0f482c04efaec3f3cfab46135938d373b855b</analysis-reference>
+    <analysis-reference number="2">a9d1525d96c3f0a7cdb6317ff6dbd14bcf0338bc</analysis-reference>
+    <analysis-reference number="1">fa5afe31df70e7a48dd226ab6cf5483381fbd58f</analysis-reference>
+  </previous-analyses-references>
+  <nb-violations-new>0</nb-violations-new>
+  <nb-violations-existing>0</nb-violations-existing>
+  <nb-violations-fixed>0</nb-violations-fixed>
+  <nb-violations-ignored>23</nb-violations-ignored>
+</analysis>

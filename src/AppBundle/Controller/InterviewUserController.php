@@ -27,8 +27,6 @@ class InterviewUserController extends BaseController
         $entretienId = $request->attributes->get('id');
         $data = json_decode($request->getContent(), true);
 
-        //$this->get('app.api_response')->ajaxResponse(InterviewUser::class, $data);
-
         /** @var InterviewUser $interviewUser */
         $em = $this->getDoctrine()->getManager();
         $entretien = $em->getRepository('AppBundle:Entretien')->find($entretienId);
