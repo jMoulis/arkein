@@ -35,7 +35,6 @@
             });
             if(formData <= 0)
             {
-                console.log('Je suis vide rien à passer');
             } else {
                 $.ajax({
                     url: $form.data('url'),
@@ -55,18 +54,14 @@
 
         handleEditFormSubmit: function (e) {
             e.preventDefault();
-            console.log(e.currentTarget);
             const $form = $(e.currentTarget);
             const self = this;
             const entretienId = $('.js-edit-entretien-form').data('entretien');
-
-            console.log($form);
+            console.log(entretienId);
             const formData = {};
             $.each($form.serializeArray(), function (key, fieldData) {
                 formData[fieldData.name] = fieldData.value;
             });
-            console.log(formData);
-
 
             $.ajax({
                 url: Routing.generate('api_interviewuser_edit', {id: entretienId}),

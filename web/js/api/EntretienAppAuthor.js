@@ -101,7 +101,8 @@
             editCompteRenduModalBody: '#editCompteRenduModal .modal-body',
             modalFooter: '.modal-footer',
             modalForm: '.modal-body form',
-            tbody: '.tab-content tbody'
+            tbodyEntretiens: '.tab-content tbody',
+            tbodyInvitations: '.tab-content tbody'
         },
 
         handleNewEntretienSubmit: function (e) {
@@ -236,12 +237,11 @@
                 success: function (data) {
                     if($(data.items).length <= 0){
                         $(self._selector.tabInterview).find('.loading').remove();
-                        self.noDataFound();
                     } else {
                         $.each(data.items, function (key, entretien) {
                             $(self._selector.tabInterview).find('.loading').remove();
                             self._addInterviewsRow(entretien);
-                        })
+                        });
                     }
                 }
             })
@@ -258,6 +258,9 @@
                 success: function (data) {
                     if($(data.items).length <= 0){
                         $(self._selector.tabInvitation).find('.loading').remove();
+                        $(this._selector.tbody).append('' +
+                            '<div class="js-nodata-found alert alert-success" role="alert">' +
+                            'Aucun entretiens trouvés</div>');
                     } else {
                         $.each(data.items, function (key, entretien) {
                             $(self._selector.tabInvitation).find('.loading').remove();
@@ -298,31 +301,6 @@
             })
         },
 
-        loadEditCompteRenduFormData: function (e) {
-            const self = this;
-            const compterendu = $(e.currentTarget).data('id');
-            const user = $('.js-entretien-wrapper').data('user');
-
-            $.ajax({
-                beforeSend: function(){
-                    $(self._selector.editModalFooter).append("<span class='loading'>Chargement...</span>");
-                },
-                url: Routing.generate('compterendu_modal_detail', {id: compterendu}),
-                success: function (data) {
-                    $('#loading').hide();
-                    self._addEditCompteRenduForm(data.item);
-
-                    if(data.item.authorId !== user){
-                        CKEDITOR.replace('compteRendu');
-                        $('#compteRendu').prop('disabled', true);
-                    } else {
-                        $('#compteRendu').prop('disabled', false);
-                        CKEDITOR.replace('compteRendu');
-                    }
-                }
-            })
-        },
-
         loadPdf: function (entretienId) {
             const self = this;
             $('#pdfViewer').modal('show');
@@ -333,14 +311,10 @@
                 url: Routing.generate('entretien_modal_detail', {id: entretienId}),
                 success: function (data) {
                     const lienpdf = data.item.compteRenduLien;
-
                     PDFObject.embed(lienpdf, '#pdfViewer .modal-body');
                 }
             });
-
-            $('#pdfViewer .modal-body').css(
-                { height: '50rem'}
-            );
+            $('#pdfViewer .modal-body').css({ height: '50rem'});
 
         },
 
@@ -426,26 +400,18 @@
 
         },
 
-        _addEditCompteRenduForm: function (compterendu) {
-            const tplText = $('#js-compterendu-form-template').html();
-            const tpl = _.template(tplText);
-            const html = tpl(compterendu);
-            this.$wrapper.find(this._selector.editCompteRenduModalBody).append($.parseHTML(html));
-            this.$wrapper.find(this._selector.editModalFooter).html('');
-        },
-
         _addInterviewsRow: function (entretien) {
             const tplText = $('#js-entretien-row-template').html();
             const tpl = _.template(tplText);
             const html = tpl(entretien);
-            $(this._selector.tabInterview).find('tbody').append($.parseHTML(html));
+            $(this._selector.tabInterview).find('tbody').prepend($.parseHTML(html));
         },
 
         _addInvitationsRow: function (entretien) {
             const tplText = $('#js-entretien-row-template').html();
             const tpl = _.template(tplText);
             const html = tpl(entretien);
-            $(this._selector.tabInvitation).find('tbody').append($.parseHTML(html));
+            $(this._selector.tabInterview).find('tbody').append($.parseHTML(html));
         },
 
         _addSelect: function (user) {
@@ -519,12 +485,6 @@
 
             $(this._selector.modalForm).find('button').prop("disabled", false);
             $(this._selector.tbody).find('.alert').remove();
-        },
-
-        noDataFound: function () {
-            $(this._selector.tbody).append('' +
-                '<div class="alert alert-success" role="alert">' +
-                'Aucun entretiens trouvés</div>');
         }
 
     });

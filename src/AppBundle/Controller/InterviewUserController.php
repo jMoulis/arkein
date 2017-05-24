@@ -18,7 +18,7 @@ class InterviewUserController extends BaseController
     /**
      * Displays a form to edit an existing $interviewUser entity.
      *
-     * @Route("api/{id}/edit", name="api_interviewuser_edit",
+     * @Route("/api/{id}/edit", name="api_interviewuser_edit",
      *     options={"expose" = true})
      * @Method({"GET", "POST"})
      */
@@ -27,7 +27,7 @@ class InterviewUserController extends BaseController
         $entretienId = $request->attributes->get('id');
         $data = json_decode($request->getContent(), true);
 
-        $this->get('app.api_response')->ajaxResponse(InterviewUser::class, $data);
+        //$this->get('app.api_response')->ajaxResponse(InterviewUser::class, $data);
 
         /** @var InterviewUser $interviewUser */
         $em = $this->getDoctrine()->getManager();
@@ -44,7 +44,6 @@ class InterviewUserController extends BaseController
         $apiModel = $this->createInterviewUserApiModel($interviewUser);
 
         $response = $this->createApiResponseAction($apiModel);
-        // setting the Location header... it's a best-practice
         $response->headers->set(
             'Location',
             $this->generateUrl('entretien_show', ['id' => $interviewUser->getId()])

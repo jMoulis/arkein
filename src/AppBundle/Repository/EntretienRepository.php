@@ -34,4 +34,16 @@ class EntretienRepository extends EntityRepository
             ->execute()
             ;
     }
+
+    public function getInterviewsByAuthorAndAsGuest(User $user)
+    {
+        return $this->createQueryBuilder('entretien')
+            ->leftJoin('entretien.interviewGuests', 'guest')
+            ->addSelect('guest')
+            ->where('guest.user = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->execute()
+            ;
+    }
 }

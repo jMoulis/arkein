@@ -25,7 +25,7 @@ class EntretienController extends BaseController
      * @Method("GET")
      *
      */
-    public function indexAction(User $user = null)
+    public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
         $entretiens = $em->getRepository('AppBundle:Entretien')->findBy([
@@ -122,7 +122,10 @@ class EntretienController extends BaseController
     }
 
     /**
-     * @Route("/api/author/{id}/", name="entretien_list_by_author", options={"expose" = true})
+     * @Route("/api/author/{id}/",
+     *     name="entretien_list_by_author",
+     *     options={"expose" = true}
+     * )
      * @Method("GET")
      */
     public function getEntretiensByAuthorAction(User $user)

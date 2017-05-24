@@ -4,47 +4,20 @@
     <h1>Liste Entretiens</h1>
 <p><a class="js-new-entretien-btn btn btn-primary" href="#" data-toggle="modal" data-target="#newEntretienModal">Nouvel entretien</a></p>
     <div class="js-entretien-wrapper" data-user="{{ app.user.id }}">
-        <ul class="nav nav-tabs" role="tablist">
-            <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" href="#myInterview" role="tab">Entretiens Créés</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#myInvitation" role="tab">Invitations</a>
-            </li>
-        </ul>
-
-        <div class="tab-content pt-3">
-            <div class="tab-pane active" id="myInterview" role="tabpanel">
-                <div class="js-main-content-created">
-                     <table class="table table-responsive table-hover">
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Objet</th>
-                                <th>Ordre du jour</th>
-                                <th>Organisateur</th>
-                                <th colspan="2">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="tab-pane" id="myInvitation" role="tabpanel">
-                <div class="js-main-content-invitation">
-                    <table class="table table-hover table-responsive">
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Objet</th>
-                                <th>Ordre du jour</th>
-                                <th>Organisateur</th>
-                                <th colspan="2">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
+        <div class="" id="myInterview" role="tabpanel">
+            <div class="js-main-content-created">
+                 <table class="table table-responsive table-hover">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Objet</th>
+                            <th>Ordre du jour</th>
+                            <th>Organisateur</th>
+                            <th colspan="2">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
             </div>
         </div>
         {{ include('entretien/_pdf_loader_modal.html.twig') }}
@@ -57,11 +30,6 @@
         <!-- Modal pour la visualisation du formulaire d'ajout des entretiens -->
         {{ include('entretien/_new_entretien_modal.html.twig') }}
         <!-- Fin modal -->
-
-
-
-
-
     </div>
 {% endblock %}
 
