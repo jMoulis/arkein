@@ -30,7 +30,9 @@
     $.extend(window.TicketApp.prototype, {
         _selector: {
             newTicketForm: '.js-new-ticket-form',
-            editTicketForm: '.js-edit-ticket-form'
+            editTicketForm: '.js-edit-ticket-form',
+            myTicket: '#myTicket',
+            myAttribution: '#myAttribution'
         },
 
         handleTicketDelete: function (e) {
@@ -113,13 +115,13 @@
                 success: function (data) {
 
                     if($(data.items).length <= 0){
-                        $('#myTicket').find('.loading').remove();
-                        $('#myTicket').find('tbody').append('' +
+                        $(self._selector.myTicket).find('.loading').remove();
+                        $(self._selector.myTicket).find('tbody').append('' +
                             '<div class="alert alert-success" role="alert">' +
-                            'Aucun entretiens trouvés</div>');
+                            'Aucun tickets trouvés</div>');
                     } else {
                         $.each(data.items, function (key, ticket) {
-                            $('#myTicket').find('.loading').remove();
+                            $(self._selector.myTicket).find('.loading').remove();
                             self._addCreatedRow(ticket);
                         })
                     }
@@ -134,18 +136,18 @@
             const self = this;
             $.ajax({
                 beforeSend: function(){
-                    $('#myAttribution').append('<span class="loading">Chargement...</span>');
+                    $(self._selector.myAttribution).append('<span class="loading">Chargement...</span>');
                 },
                 url: Routing.generate('api_ticket_attributed_list'),
                 success: function (data) {
                     if($(data.items).length <= 0){
-                        $('#myAttribution').find('.loading').remove();
-                        $('#myAttribution').find('tbody').append('' +
+                        $(self._selector.myAttribution).find('.loading').remove();
+                        $(self._selector.myAttribution).find('tbody').append('' +
                             '<div class="alert alert-success" role="alert">' +
-                            'Aucun entretiens trouvés</div>');
+                            'Aucun tickets trouvés</div>');
                     } else {
                         $.each(data.items, function (key, ticket) {
-                            $('#myAttribution').find('.loading').remove();
+                            $(self._selector.myAttribution).find('.loading').remove();
                             self._addAttributedRow(ticket);
                         })
                     }
@@ -190,14 +192,14 @@
             const tplText = $('#js-ticket-row-template').html();
             const tpl = _.template(tplText);
             const html = tpl(ticket);
-            $('#myTicket').find('tbody').append($.parseHTML(html));
+            $(this._selector.myTicket).find('tbody').append($.parseHTML(html));
         },
 
         _addAttributedRow: function (ticket) {
             const tplText = $('#js-ticket-row-template').html();
             const tpl = _.template(tplText);
             const html = tpl(ticket);
-            $('#myAttribution').find('tbody').append($.parseHTML(html));
+            $(this._selector.myAttribution).find('tbody').append($.parseHTML(html));
         }
 
     });

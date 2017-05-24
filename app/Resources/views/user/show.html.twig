@@ -64,6 +64,8 @@
             const $entretienWrapper = $('.js-entretien-wrapper');
             const entretienApp = new EntretienApp($entretienWrapper);
 
+            categoryApp.loadListTreeViewCategorie();
+            categoryApp.loadListSelectCategorie();
             entretienApp.loadListEntretiens();
 
             $DocWrapper.on('click', '.js-load-file', function (e) {

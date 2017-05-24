@@ -14,7 +14,10 @@
 !var/SymfonyRequirements.php
 /vendor/
 /web/bundles/
-/app/DoctrinesMigrations/*
-/web/css/compiled/*
-/web/js/compiled/*
-/.idea/*
+/app/DoctrinesMigrations/
+/web/css/compiled/
+/web/js/compiled/
+/web/pdf/
+/web/test/
+/src/documents/
+/.idea/

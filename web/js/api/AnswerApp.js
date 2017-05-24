@@ -57,15 +57,20 @@
             });
 
             $.ajax({
+                beforeSend: function(){
+                    $('.js-answer-wrapper').prepend('<span class="loading">Chargement...</span>');
+                },
                 url: Routing.generate('api_answer_new', {id: ticketId}),
                 method: 'POST',
                 data: JSON.stringify(formData),
                 success: function (data) {
+                    $('.js-answer-wrapper .loading').remove();
                     self._clearForm();
                     self._addNewDiv(data);
                 },
                 error: function (jqXHR) {
                     const errorData = JSON.parse(jqXHR.responseText);
+                    $('.js-answer-wrapper .loading').remove();
                     self._mapErrorsToForm(errorData.errors);
                 }
             })
@@ -76,8 +81,12 @@
             const ticketId = $('h1').data('id');
 
             $.ajax({
+                beforeSend: function(){
+                    $('.js-answer-wrapper').prepend('<span class="loading">Chargement...</span>');
+                },
                 url: Routing.generate('api_answer_list', {id: ticketId}),
                 success: function (data) {
+                    $('.js-answer-wrapper .loading').remove();
                     $.each(data.items, function (key, answer) {
                         self._addListDiv(answer);
                     })

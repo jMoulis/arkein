@@ -92,23 +92,6 @@
             $('#status').val(0);
         });
 
-
-
-        CKEDITOR.replace('odj1');
-        CKEDITOR.replace('compteRendu');
-
-        const linkPdf = $('.js-load-pdf').attr("href");
-
-
-        $entretienWrapper.on('shown.bs.modal', '.js-modal-viewer', function (e) {
-            $('#pdfViewer .modal-body').css(
-                {
-                    height: '50rem'
-                }
-            );
-            PDFObject.embed('/pdf/102.pdf', '#pdfViewer .modal-body');
-        })
-
     </script>
 
     <script type="text/template" id="js-entretien-row-template">

@@ -64,9 +64,7 @@
             this.lockNewDocBtn.bind(this)
         );
 
-        this.loadListSelectCategorie();
 
-        this.loadListTreeViewCategorie();
     };
 
     $.extend(window.CategoryApp.prototype, {
@@ -134,9 +132,9 @@
 
         handleNewCatFromAdminPanelSubmit: function (e) {
             e.preventDefault();
+            const self = this;
             const $form = $(e.currentTarget);
             const userid = $('.js-select-user option:selected').val();
-            const self = this;
 
             const formData = {};
             $.each($form.serializeArray(), function (key, fieldData) {
@@ -154,6 +152,7 @@
                     $(self._selector.newModal).modal('hide');
                     self._clearForm();
                     self._removeWaiting();
+                    self._addRowDossier(data);
                 },
                 error: function (jqXHR) {
                     const errorData = JSON.parse(jqXHR.responseText);
@@ -169,6 +168,7 @@
             const $form = $(e.currentTarget);
             const userid = $('.js-select-user option:selected').val();
             const catid = $form.data('id');
+            const $tr = self.$wrapper.find('table tbody tr[data-id='+  catid +']');
 
             let formData = {};
             $.each($form.serializeArray(), function (key, fieldData) {
@@ -183,6 +183,9 @@
                 method: 'POST',
                 data: JSON.stringify(formData),
                 success: function (data) {
+                    if(Number(data.archive) === 1){
+                        $tr.fadeOut();
+                    }
                     self._removeWaiting();
                     $(self._selector.editModal).modal('hide');
                 },
@@ -308,8 +311,9 @@
         _clearForm: function () {
             this._removeFormErrors();
             const $form = this.$wrapper.find('.modal-body').find('form');
-            $form[0].reset();
-            $form[1].reset();
+            $.each($form, function (key, form) {
+                form.reset();
+            });
             this._removeWaiting();
         },
 
@@ -343,6 +347,13 @@
             const tpl = _.template(tplText);
             const html = tpl(document);
             $(wrapper).append($.parseHTML(html));
+        },
+
+        _addRowDossier: function (document) {
+            const tplText = $('#js-dossier-new-row-template').html();
+            const tpl = _.template(tplText);
+            const html = tpl(document);
+            $('.js-row-dossier').append($.parseHTML(html));
         },
 
         _editFormCat: function (categorie) {

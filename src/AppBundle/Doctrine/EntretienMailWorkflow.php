@@ -17,7 +17,7 @@ use Swift_Mailer;
 class EntretienMailWorkflow implements EventSubscriber
 {
     const NOUVELENTRETIEN= "Nouvel Entretien";
-    const ADMINMAIL = 'julien.moulis21@gmail.com';
+    const ADMINMAIL = 'julien.moulis@moulis.me';
 
 
     private $mailer;

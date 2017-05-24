@@ -1,0 +1,17 @@
+<tr class="js-id-categorie" data-id="<%= category.id %>"><td><%= name %></td>
+    {% if owner %}
+        <td>
+            <span class="badge badge-primary"><%= owner %></span>
+        </td>
+    {% else %}
+        <td>
+            <span class="badge badge-success">Générique</span>
+        </td>
+    {% endif %}
+    <td>
+        <span class="badge badge-info"><%= documentCount %></span>
+    </td>
+    <td>
+        <a href="#" class="js-edit-categorie-btn btn btn-warning" data-id="<%= id %>" data-toggle="modal" data-target="#catEditModal">Modifier</a>
+    </td>
+</tr>

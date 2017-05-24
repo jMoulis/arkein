@@ -15,9 +15,9 @@
                 <th>Action</th>
             </tr>
             </thead>
-            <tbody>
+            <tbody class="js-row-dossier">
                 {% for category in categories %}
-                    <tr class="js-id-categorie"><td>{{ category.name }}</td>
+                    <tr class="js-id-categorie" data-id="{{ category.id }}"><td>{{ category.name }}</td>
                         {% if category.owner %}
                             <td>
                                 <span class="badge badge-primary">{{ category.owner }}</span>
@@ -52,6 +52,10 @@
 
     <script type="text/template" id="js-categorie-edit-template">
         {{ source('/document/categorie/_edit_categorie.html.twig') }}
+    </script>
+
+    <script type="text/template" id="js-dossier-new-row-template">
+        {{ source('document/categorie/template/_add_row_dossier.html.twig') }}
     </script>
 
     <script type="text/template" id="js-users-option-template">

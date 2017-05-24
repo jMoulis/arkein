@@ -8,7 +8,7 @@
         this.$wrapper.on(
             'submit',
             this._selector.newEntretienForm,
-            this.handleNewFormSubmit.bind(this)
+            this.handleNewEntretienSubmit.bind(this)
         );
 
         this.$wrapper.on(
@@ -23,13 +23,6 @@
             this.handleNewCompteRendu.bind(this)
         );
 
-
-        this.$wrapper.on(
-            'submit',
-            this._selector.editEntretienForm,
-            this.handleEditFormSubmit.bind(this)
-        );
-
         this.$wrapper.on(
             'click',
             '.js-detail-entretien',
@@ -37,16 +30,22 @@
         );
 
         this.$wrapper.on(
+            'hidden.bs.modal',
+            '#editEntretienModal',
+            this._emptyHtmlModalBody.bind(this)
+        );
+
+        this.$wrapper.on(
             'click',
             '.js-detail-compteRendu', function () {
-                $('#editEntretienModal').modal('hide');
+                $('#editEntretienModal').modal('toggle');
             }
         );
 
         this.$wrapper.on(
-            'hidden.bs.modal',
-            '#editEntretienModal',
-            this._emptyHtmlModalBody.bind(this)
+            'shown.bs.modal',
+            '.js-modal-viewer',
+            this.loadPdf.bind(this)
         );
 
         this.$wrapper.on(
@@ -89,7 +88,7 @@
         _selector: {
             newEntretienForm: '.js-new-entretien-form',
             editEntretienForm: '.js-edit-entretien-form',
-            editEntretienModal: '.js-edit-entretien-modal',
+            editEntretienModal: '#editEntretienModal',
             editModalBody: '#editEntretienModal .modal-body',
             editModalFooter: '#editEntretienModal .modal-footer',
             guestSelect: '#guests',
@@ -107,7 +106,7 @@
             tbody: '.tab-content tbody'
         },
 
-        handleNewFormSubmit: function (e) {
+        handleNewEntretienSubmit: function (e) {
             e.preventDefault();
             const $form = $(e.currentTarget);
             const self = this;
@@ -139,7 +138,7 @@
                     self.sucessSendAction();
                     self._clearForm();
                     self._addInterviewsRow(data);
-                    $(self._selector.newModal).modal('hide');
+                    $(self._selector.newModal).modal('toggle');
                 },
                 error: function (jqXHR) {
                     const errorData = JSON.parse(jqXHR.responseText);
@@ -148,13 +147,48 @@
             })
         },
 
+        handleNewCompteRendu: function (e) {
+            e.preventDefault();
+            const self = this;
+            const $form = $(e.currentTarget);
+            const entretienId = $form.find('.js-entretien-input').val();
+            const $compteRenduBtn = self.$wrapper.find('.js-main-content-created table tbody tr[title=id_'+  entretienId +'] .js-saisir-compteRendu');
+            const $detailBtn = self.$wrapper.find('.js-main-content-created table tbody tr[title=id_'+  entretienId +'] .js-detail-entretien');
+
+            const formData = {};
+            $.each($form.serializeArray(), function (key, fieldData) {
+                formData[fieldData.name] = fieldData.value;
+            });
+            $.ajax({
+                beforeSend: function(){
+                    self.beforeSendAction();
+                },
+                url: Routing.generate('compterendu_new'),
+                method: 'POST',
+                data: JSON.stringify(formData),
+                success: function (data) {
+                    self.sucessSendAction();
+                    self._clearForm();
+                    $(self._selector.newCompteRenduModal).modal('toggle');
+                    $compteRenduBtn.remove();
+                    $detailBtn.removeClass('btn-warning').addClass('btn-success');
+                },
+                error: function (jqXHR) {
+                    const errorData = JSON.parse(jqXHR.responseText);
+                    self.sucessSendAction();
+                    self._mapErrorsToForm(errorData.errors);
+
+                }
+            })
+        },
+
         handleEditFormSubmit: function (e) {
             e.preventDefault();
             const $form = $(e.currentTarget);
             const self = this;
-            const entretienId = $form.data('entretien');
             const $guests = $form.find('.js-actual-guests').children();
-            const tr = self.$wrapper.find('.js-main-content-created table tbody tr[title=id_'+  entretienId +']');
+            const tr = self.$wrapper.find('.js-main-content-created table tbody tr').data('id');
+
 
             /* Afin de pouvoir enregistrer des guests, il était nécessaire
              * de créer un objet avec les id des users
@@ -184,42 +218,11 @@
                     self._updateActualRow(tr, data.date, data.objet, data.odj);
                     self.sucessSendAction();
                     self._clearForm();
-                    $(self._selector.editEntretienModal).modal('hide');
+                    $(self._selector.editEntretienModal).modal('toggle');
                 },
                 error: function (jqXHR) {
                     const errorData = JSON.parse(jqXHR.responseText);
                     self._mapErrorsToForm(errorData.errors);
-                }
-            })
-        },
-
-        handleNewCompteRendu: function (e) {
-            e.preventDefault();
-            const $form = $(e.currentTarget);
-            const self = this;
-
-            const formData = {};
-            $.each($form.serializeArray(), function (key, fieldData) {
-                formData[fieldData.name] = fieldData.value;
-            });
-            $.ajax({
-                beforeSend: function(){
-                    self.beforeSendAction();
-                },
-                url: Routing.generate('compterendu_new'),
-                method: 'POST',
-                data: JSON.stringify(formData),
-                success: function (data) {
-                    self.sucessSendAction();
-                    self._clearForm();
-                    self._CKupdate();
-                    $(self._selector.newCompteRenduModal).modal('hide');
-                },
-                error: function (jqXHR) {
-                    const errorData = JSON.parse(jqXHR.responseText);
-                    self.sucessSendAction();
-                    self._mapErrorsToForm(errorData.errors);
-
                 }
             })
         },
@@ -280,27 +283,18 @@
                 },
                 url: Routing.generate('entretien_modal_detail', {id: entretien}),
                 success: function (data) {
-                    $('#loading').hide();
+                    $('.loading').remove();
                     if(data.item.compteRendu){
                         self._addEditForm(data.item, tplTextNonLoggedIn);
                         $('#odj_edit_2').prop('disabled', true);
-                        CKEDITOR.replace('odj_edit_2', {
-                            removePlugins: 'toolbar, elementspath',
-                            resize_enabled: false
-                        });
                     } else if(data.item.authorId !== user){
                         self._addEditForm(data.item, tplTextNonLoggedIn);
                         self._loadStatusUpdateForm();
                         $('#odj_edit_2').prop('disabled', true);
-                        CKEDITOR.replace('odj_edit_2', {
-                            removePlugins: 'toolbar, elementspath',
-                            resize_enabled: false
-                        });
                     } else {
                         self._addEditForm(data.item, tplTextLoggedIn);
                         self.loadUsers();
                         self.loadGuests($('#young').val());
-                        CKEDITOR.replace('odj_edit_1');
                     }
                 }
             })
@@ -329,6 +323,15 @@
                     }
                 }
             })
+        },
+
+        loadPdf: function () {
+            $('#pdfViewer .modal-body').css(
+                {
+                    height: '50rem'
+                }
+            );
+            PDFObject.embed('/pdf/102.pdf', '#pdfViewer .modal-body');
         },
 
         loadUsers: function () {
@@ -366,6 +369,7 @@
         },
 
         _emptyHtmlModalBody: function () {
+            $('body').removeClass('.modal-open');
             this.$wrapper.find(this._selector.editModalBody).html('');
             this.$wrapper.find(this._selector.editModalFooter).html('');
         },
@@ -395,14 +399,16 @@
         _clearForm: function () {
             this._removeFormErrors();
             const $form = this.$wrapper.find('.modal-body').find('form');
-            $form[0].reset();
-            $('.loading').remove();
+            $.each($form, function (key, form) {
+                form.reset();
+            });
+            $('.js-actual-guests').empty();
+
+            $('.saving').remove();
             $(this._selector.newCompteRenduModal).find('.js-btn-submit-compterendu').prop("disabled", false);
-            //this._removeWaiting();
         },
 
         _addEditForm: function (entretien, tplText) {
-            const self = this;
             const tpl = _.template(tplText);
             const html = tpl(entretien);
             this.$wrapper.find(this._selector.editModalBody).append($.parseHTML(html));
@@ -485,26 +491,22 @@
             this.$wrapper.find(this._selector.editModalFooter).append($.parseHTML(html));
         },
 
-        _CKupdate: function () {
-            for (let instance in CKEDITOR.instances){
-                CKEDITOR.instances[instance].updateElement();
-                CKEDITOR.instances[instance].setData('');
-            }
-        },
-
         setInputIdEntretienNewCompteRenduForm: function (e) {
             const entretien = $(e.currentTarget).data('id');
-            console.log(entretien);
             $('.js-entretien-input').val(entretien);
         },
 
         beforeSendAction: function () {
-            $(this._selector.modalFooter).append("<span class='loading'>Enregistrement...</span>");
+            $(this._selector.modalFooter).find('.saving').remove();
+            $(this._selector.modalForm).find('button').prop("disabled", false);
+            $(this._selector.modalFooter).append("<span class='saving'>Enregistrement...</span>");
             $(this._selector.modalForm).find('button').prop("disabled", true);
         },
 
         sucessSendAction : function () {
-            $('.loading').remove();
+            $(this._selector.modalFooter).find('.loading').remove();
+            $(this._selector.modalFooter).find('.saving').remove();
+
             $(this._selector.modalForm).find('button').prop("disabled", false);
             $(this._selector.tbody).find('.alert').remove();
         },
