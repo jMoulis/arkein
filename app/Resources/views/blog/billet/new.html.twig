@@ -13,13 +13,8 @@
 
 {% block javascripts %}
     {{ parent() }}
+    <script src="{{ asset('js/third-library/ckeditor/ckeditor.js') }}"></script>
     <script>
-        CKEDITOR.replace('billet_contenu', {
-            extraPlugins: 'autogrow',
-            autoGrow_minHeight: 200,
-            autoGrow_maxHeight: 600,
-            autoGrow_bottomSpace: 50,
-            removePlugins: 'resize'
-        });
+        CKEDITOR.replace('billet_contenu');
     </script>
 {% endblock %}

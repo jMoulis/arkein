@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Mail;
+use AppBundle\Form\Type\MailType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -38,17 +39,20 @@ class AppController extends BaseController
     public function contactAction(Request $request)
     {
         $mail = new Mail();
-        $form = $this->createForm('AppBundle\Form\MailType', $mail);
+        $form = $this->createForm(MailType::class, $mail);
         $form->handleRequest($request);
 
-
         if($form->isSubmitted() && $form->isValid()){
+            $this->addFlash(
+                'notice',
+                'Message envoyé'
+            );
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($mail);
             $em->flush();
             $message = \Swift_Message::newInstance()
-                ->setSubject($mail->getObjet())
+                ->setSubject($mail->getSujet())
                 ->setFrom($mail->getMail())
                 ->setTo('julien.moulis@moulis.me')
                 ->setBody(
@@ -59,7 +63,7 @@ class AppController extends BaseController
                 );
             $this->get('mailer')->send($message);
 
-            return $this->redirectToRoute('app_app_index');
+            return $this->redirectToRoute('contact');
         }
 
         return $this->render(':App:contact.html.twig', [

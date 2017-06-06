@@ -52,15 +52,6 @@ class Mail
 
     /**
      * @var string
-     * @ORM\Column(name="objet", type="string", length=255)
-     * @Assert\NotBlank(message = "Merci de renseigner l'objet de votre message")
-     *
-     *
-     */
-    private $objet;
-
-    /**
-     * @var string
      * @ORM\Column(name="message", type="text")
      * @Assert\NotBlank( message = "Merci de renseigner votre message")
      * @Assert\Length(
@@ -171,30 +162,6 @@ class Mail
     }
 
     /**
-     * Set objet
-     *
-     * @param string $objet
-     *
-     * @return Mail
-     */
-    public function setObjet($objet)
-    {
-        $this->objet = $objet;
-
-        return $this;
-    }
-
-    /**
-     * Get objet
-     *
-     * @return string
-     */
-    public function getObjet()
-    {
-        return $this->objet;
-    }
-
-    /**
      * @return string
      */
     public function getMessage()
@@ -209,8 +176,6 @@ class Mail
     {
         $this->message = $message;
     }
-
-
 
     /**
      * Set dateCreated

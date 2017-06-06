@@ -1,23 +1,26 @@
 {% extends ':App:layout.html.twig' %}
 {% block dashcontent %}
-<h3>Dossiers</h3>
+<h1>Dossiers</h1>
     <div class="js-categorie-wrapper">
-        <div>
-            <a href="#" class="js-new-categorie-btn btn btn-primary" data-toggle="modal" data-target="#catNewModal">Nouvelle catégorie</a>
+        <div class="btnAjoutGenerique">
+            <a href="#" class="js-new-categorie-btn btn btn-primary" data-toggle="modal" data-target="#catNewModal">Nouveau Dossier</a>
         </div>
-        <br />
         <table class="table table-responsive table-bordered table-hover">
             <thead>
             <tr>
+                <th>Action</th>
                 <th>Nom dossier</th>
                 <th>Propriétaire</th>
                 <th>Total fichier</th>
-                <th>Action</th>
             </tr>
             </thead>
             <tbody class="js-row-dossier">
                 {% for category in categories %}
-                    <tr class="js-id-categorie" data-id="{{ category.id }}"><td>{{ category.name }}</td>
+                    <tr class="js-id-categorie" data-id="{{ category.id }}">
+                        <td>
+                            <a href="#" class="js-edit-categorie-btn btn btn-warning" data-id="{{ category.id }}" data-toggle="modal" data-target="#catEditModal">Modifier</a>
+                        </td>
+                        <td>{{ category.name }}</td>
                         {% if category.owner %}
                             <td>
                                 <span class="badge badge-primary">{{ category.owner }}</span>
@@ -29,9 +32,6 @@
                         {% endif %}
                         <td>
                             <span class="badge badge-info">{{ category.documents|length }}</span>
-                        </td>
-                        <td>
-                            <a href="#" class="js-edit-categorie-btn btn btn-warning" data-id="{{ category.id }}" data-toggle="modal" data-target="#catEditModal">Modifier</a>
                         </td>
                     </tr>
                 {% endfor %}

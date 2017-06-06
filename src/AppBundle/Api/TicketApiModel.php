@@ -10,6 +10,8 @@ class TicketApiModel
 
     public $auteur = [];
 
+    public $auteurId;
+
     public $message;
 
     public $niveau;

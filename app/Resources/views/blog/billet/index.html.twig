@@ -2,28 +2,28 @@
 
 {% block body %}
     <h1>Billets list</h1>
-    <div>
+    <div class="btnAjoutGenerique">
         <a class="btn btn-primary" href="{{ path('billet_new') }}">Nouveau Billet</a>
     </div>
     <table class="table table-bordered table-responsive table-hovered">
         <thead>
             <tr>
+                <th>Actions</th>
                 <th>Auteur</th>
                 <th>Titre</th>
                 <th>Date</th>
-                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
             {% for billet in billets %}
                 <tr>
-                    <td>{{ billet.author }}</td>
-                    <td>{{ billet.titre}}</td>
-                    <td>{{ billet.date|date('d/m/Y') }}</td>
                     <td>
                         <a class="btn btn-warning" href="{{ path('billet_show', {'id': billet.id}) }}">Voir</a>
                         <a class="btn btn-success" href="{{ path('billet_edit', {'id': billet.id}) }}">Modifier</a>
                     </td>
+                    <td>{{ billet.author }}</td>
+                    <td>{{ billet.titre}}</td>
+                    <td>{{ billet.date|date('d/m/Y') }}</td>
                 </tr>
             {% endfor %}
         </tbody>

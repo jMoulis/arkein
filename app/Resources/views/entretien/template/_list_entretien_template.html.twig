@@ -1,8 +1,4 @@
 <tr title="id_<%= id %>">
-    <td><% var d = new Date(date); print(d.toLocaleDateString()); %></td>
-    <td><%= objet %></td>
-    <td><%= odj %></td>
-    <td><%= author %></td>
     <% if(compteRendu) { %>
     <td>
         <a href="<%= links._self %>"
@@ -28,13 +24,16 @@
     <% } %>
     <td>
         <% if (!compteRendu && authorId == $('.js-entretien-wrapper').data('user')) { %>
-            <a href="#" class="js-saisir-compteRendu btn btn-primary"
-               data-id="<%= id %>"
-               data-toggle="modal"
-               data-target="#saisirCompteRenduModal">
-                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-            </a>
+        <a href="#" class="js-saisir-compteRendu btn btn-primary"
+           data-id="<%= id %>"
+           data-toggle="modal"
+           data-target="#saisirCompteRenduModal">
+            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+        </a>
         <% } %>
     </td>
-
+    <td><% var d = new Date(date); print(d.toLocaleDateString()); %></td>
+    <td><%= objet %></td>
+    <td><%= odj %></td>
+    <td><%= author %></td>
 </tr>

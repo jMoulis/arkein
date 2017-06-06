@@ -25,7 +25,7 @@ html {
 
 body {
     /* Margin bottom by footer height */
-    margin-bottom: 60px;
+    margin-bottom: 120px;
     padding-top: 60px;
 }
 
@@ -173,5 +173,8 @@ h1 {
 
 .billet-contenu-wrapper {
     margin-left: 2em;
+}
+.btnAjoutGenerique {
+    margin-bottom: 1em;
 }
 

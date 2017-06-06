@@ -9,6 +9,15 @@
             </div>
         </div>
     </div>
+    {% if app.request.hasPreviousSession %}
+        {% for type, messages in app.session.flashbag.all() %}
+            {% for message in messages %}
+                <div class="alert alert-{{ type }}">
+                    Message envoyé
+                </div>
+            {% endfor %}
+        {% endfor %}
+    {% endif %}
     <div class="container">
         <div class="row map hidden-xs-down">
             <div class="card w-100">
@@ -36,14 +45,7 @@
                             }
                         }) }}
                         <div class="js-admission-message alert alert-success" role="alert" style="display: none"></div>
-                        <div class="js-admission" style="display: none">
-
-                            {{ form_row(form.objet, {
-                                'label': false,
-                                'attr': {
-                                    'placeholder': 'Autre'
-                                }
-                            }) }}
+                        <div class="js-admission">
                             {{ form_row(form.message, {
                                 'label': false,
                                 'attr': {
@@ -149,8 +151,8 @@
     <script>
         $(document).ready(function () {
 
-            var $messageAdmission = $('.js-admission-message');
-            var $messageLink = '<a href="mailto:admission@arkein.com?subject=Demande d\'admission">admission@arkein.com</a>';
+            const $messageAdmission = $('.js-admission-message');
+            const $messageLink = '<a href="mailto:admission@arkein.com?subject=Demande d\'admission">admission@arkein.com</a>';
 
 
            $('.js-list-choix-contact').on('change', function (e) {
@@ -160,33 +162,33 @@
                    $messageAdmission.hide();
                } else {
                    $('.js-admission').hide();
-                   $messageAdmission.show().html('Pour faire une demande d\'admission. Veuillez envoyer un mail à l\'addresse suivante: '+ $messageLink);
+                   $messageAdmission.show().html('Les demandes d\'admission se font exclusivement par mail à l\'adresse suivante: '+ $messageLink);
                }
            })
         });
         function initMap() {
-            var myLatLng = {lat: 43.597658, lng: 1.543788};
+            const myLatLng = {lat: 43.597658, lng: 1.543788};
 
-            var map = new google.maps.Map(document.getElementById('map'), {
+            const map = new google.maps.Map(document.getElementById('map'), {
                 zoom: 10,
                 center: myLatLng,
                 disableDefaultUI: true
             });
 
-            var marker = new google.maps.Marker({
+            const marker = new google.maps.Marker({
                 position: myLatLng,
                 map: map,
                 title: 'Le Goëland'
             });
 
-            var contentString = '<div id="content">'+
+            const contentString = '<div id="content">'+
                 '<div id="siteNotice">' +
                 '</div>' +
                 '<h3 id="firstHeading" class="firstHeading">Le Goéland</h3>' +
                 '<div id="bodyContent">' +
                 '<p>Voici notre lieu de vie</p>';
 
-            var infowindow = new google.maps.InfoWindow({
+            const infowindow = new google.maps.InfoWindow({
                 content: contentString
             });
 

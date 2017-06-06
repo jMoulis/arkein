@@ -7,24 +7,11 @@
 
 {% block dashcontent %}
     <h1>Tickets list</h1>
-    <p><a class="btn btn-primary" href="{{ path('ticket_new') }}">Créer un nouveau ticket</a></p>
-    <ul class="nav nav-tabs" role="tablist">
-        <li class="nav-item">
-            <a class="nav-link active" data-toggle="tab" href="#myTicket" role="tab">Tickets créés</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#myAttribution" role="tab">Tickets reçus</a>
-        </li>
-    </ul>
-
-    <!-- Tab panes -->
-    <div class="tab-content pt-3">
-        <div class="tab-pane active" id="myTicket" role="tabpanel">
-            {{ include('ticket/_my_ticket.html.twig') }}
-        </div>
-        <div class="tab-pane" id="myAttribution" role="tabpanel">
-            {{ include('ticket/_my_attribution.html.twig') }}
-        </div>
+    <div class="btnAjoutGenerique">
+        <a class="btn btn-primary" href="{{ path('ticket_new') }}">Nouveau ticket</a>
+    </div>
+    <div class="" id="myTicket">
+        {{ include('ticket/_ticket.html.twig') }}
     </div>
 {% endblock %}
 

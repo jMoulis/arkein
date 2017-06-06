@@ -32,7 +32,7 @@
         {% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
-    <body>
+    <body  data-user="{{ app.user.id }}">
 
     <div class="container-fluid">
         {% block nav %}
@@ -83,6 +83,8 @@
         {% block dashbody %}{% endblock %}
 
     <div class="homepage">
+
+
         {% block content %}{% endblock %}
     </div>
     {% block footer %}

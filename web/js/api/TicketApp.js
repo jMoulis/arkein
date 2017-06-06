@@ -23,7 +23,6 @@
         );
 
         this.loadTicketsCreated();
-        this.loadTicketsAttributed();
 
     };
 
@@ -113,7 +112,7 @@
                 },
                 url: Routing.generate('api_ticket_created_list'),
                 success: function (data) {
-
+                    console.log($('body').data('user'));
                     if($(data.items).length <= 0){
                         $(self._selector.myTicket).find('.loading').remove();
                         $(self._selector.myTicket).find('tbody').append('' +
@@ -123,32 +122,10 @@
                         $.each(data.items, function (key, ticket) {
                             $(self._selector.myTicket).find('.loading').remove();
                             self._addCreatedRow(ticket);
-                        })
-                    }
-                },
-                error: function (jqXHR) {
-                    console.log(jqXHR.responseText);
-                }
-            })
-        },
-
-        loadTicketsAttributed: function () {
-            const self = this;
-            $.ajax({
-                beforeSend: function(){
-                    $(self._selector.myAttribution).append('<span class="loading">Chargement...</span>');
-                },
-                url: Routing.generate('api_ticket_attributed_list'),
-                success: function (data) {
-                    if($(data.items).length <= 0){
-                        $(self._selector.myAttribution).find('.loading').remove();
-                        $(self._selector.myAttribution).find('tbody').append('' +
-                            '<div class="alert alert-success" role="alert">' +
-                            'Aucun tickets trouvés</div>');
-                    } else {
-                        $.each(data.items, function (key, ticket) {
-                            $(self._selector.myAttribution).find('.loading').remove();
-                            self._addAttributedRow(ticket);
+                            if($('body').data('user') != ticket.auteurId) {
+                                console.log($('body').data('user') != ticket.auteurId);
+                                $('.js-tickets tbody tr#ticket_auteur_'+ ticket.auteurId +'').css('backgroundColor', '#b2e5ff');
+                            }
                         })
                     }
                 },

@@ -40,7 +40,7 @@ class BlogController extends BaseController
         foreach ($billets as $billet) {
             $models[] = $this->createBilletApiModel($billet);
         }
-        return $this->createApiResponse([
+        return $this->createApiResponseAction([
             'items' => $models
         ]);
     }

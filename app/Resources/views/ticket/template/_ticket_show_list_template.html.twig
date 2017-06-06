@@ -1,23 +1,23 @@
-<tr>
+<tr id="ticket_auteur_<%= auteurId %>" data-user="<%= auteurId %>">
+    <td>
+        <a href="<%= links._self %>" class="btn btn-warning" data-id="<%= id %>" >Consulter</a>
+    </td>
     <td><%= date %></td>
     <td><%= auteur %></td>
     <td><%= destinataire %></td>
     <td><%= message %></td>
     <td>
         <% if (niveau == 'urgent') { %>
-        <span class="badge badge-danger"><%= niveau %></span>
+            <span class="badge badge-danger"><%= niveau %></span>
         <% } else { %>
-        <span class="badge badge-success"><%= niveau %></span>
+            <span class="badge badge-success"><%= niveau %></span>
         <% } %>
     </td>
     <td>
         <% if (reponses > 0) { %>
-        <span class="badge badge-info"><%= reponses %></span>
+            <span class="badge badge-info"><%= reponses %></span>
         <% } else { %>
-        <span class="badge badge-default">0</span>
+            <span class="badge badge-default">0</span>
         <% } %>
-    </td>
-    <td>
-        <a href="<%= links._self %>" class="btn btn-warning" data-id="<%= id %>" >Consulter</a>
     </td>
 </tr>

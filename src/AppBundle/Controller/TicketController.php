@@ -102,33 +102,7 @@ class TicketController extends BaseController
     {
         $em = $this->getDoctrine()->getManager();
         $user = $this->getUser();
-        $tickets = $em->getRepository('AppBundle:Ticket')->findBy([
-            'fromWho' => $user,
-            'statut' => 1
-        ]);
-        $models = [];
-        foreach ($tickets as $ticket) {
-            $models[] = $this->createTicketApiModel($ticket);
-        }
-        return $this->createApiResponseAction([
-            'items' => $models
-        ]);
-    }
-
-    /**
-     * @Route("api/tickets/attributed",
-     *     name="api_ticket_attributed_list",
-     *     options={"expose" = true})
-     * @Method("GET")
-     */
-    public function getTicketAttributeAction()
-    {
-        $em = $this->getDoctrine()->getManager();
-        $user = $this->getUser();
-        $tickets = $em->getRepository('AppBundle:Ticket')->findBy([
-            'toWho' => $user,
-            'statut' => 1
-        ]);
+        $tickets = $em->getRepository('AppBundle:Ticket')->getAllTicketsUserFromAndTo($user);
         $models = [];
         foreach ($tickets as $ticket) {
             $models[] = $this->createTicketApiModel($ticket);
@@ -194,6 +168,7 @@ class TicketController extends BaseController
         $model->date = $ticket->getDate()->format('d-M-y');
         $model->message = $ticket->getMessage();
         $model->auteur = $ticket->getFromWho()->getFullName();
+        $model->auteurId = $ticket->getFromWho()->getId();
         $model->reponses = count($ticket->getAnswers());
         $model->destinataire = $ticket->getToWho()->getFullName();
         $model->niveau = $ticket->getLevel();

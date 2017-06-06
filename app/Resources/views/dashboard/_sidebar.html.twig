@@ -12,9 +12,7 @@
             </li>
         {% endif %}
         {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_STAFF') %}
-        <li class="nav-item">
-            <a class="nav-link" href="{{ path('event_index') }}">Evènements</a>
-        </li>
+
         {% endif %}
         <li class="nav-item">
             <a class="nav-link" href="{{ path('ticket_index') }}">Tickets</a>
@@ -23,11 +21,14 @@
             <li class="nav-item">
                 <a class="nav-link active" href="#">Administration <span class="sr-only">(current)</span></a>
             </li>
+            {#<li class="nav-item">
+                <a class="nav-link" href="{{ path('event_index') }}">Gestion des évènements</a>
+            </li>#}
             <li class="nav-item">
-                <a class="nav-link" href="{{ path('categorie_index') }}">Création de dossier</a>
+                <a class="nav-link" href="{{ path('categorie_index') }}">Gestion des dossiers</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ path('billet_new') }}">Créer un billet</a>
+                <a class="nav-link" href="{{ path('billet_index') }}">Gestion des billets</a>
             </li>
         {% endif %}
     </ul>

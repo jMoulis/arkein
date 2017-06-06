@@ -3,6 +3,7 @@
 namespace BlogBundle\Controller;
 
 use BlogBundle\Entity\Billet;
+use BlogBundle\Form\Type\BilletType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -43,7 +44,7 @@ class BilletController extends Controller
     public function newAction(Request $request)
     {
         $billet = new Billet();
-        $form = $this->createForm('BlogBundle\Form\BilletType', $billet);
+        $form = $this->createForm(BilletType::class, $billet);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -87,7 +88,7 @@ class BilletController extends Controller
     public function editAction(Request $request, Billet $billet)
     {
         $deleteForm = $this->createDeleteForm($billet);
-        $editForm = $this->createForm('BlogBundle\Form\BilletType', $billet);
+        $editForm = $this->createForm(BilletType::class, $billet);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {

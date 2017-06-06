@@ -2,18 +2,18 @@
 
 {% block dashcontent %}
     <h1>Liste Entretiens</h1>
-<p><a class="js-new-entretien-btn btn btn-primary" href="#" data-toggle="modal" data-target="#newEntretienModal">Nouvel entretien</a></p>
+<div class="btnAjoutGenerique"><a class="js-new-entretien-btn btn btn-primary" href="#" data-toggle="modal" data-target="#newEntretienModal">Nouvel entretien</a></div>
     <div class="js-entretien-wrapper" data-user="{{ app.user.id }}">
         <div class="" id="myInterview" role="tabpanel">
             <div class="js-main-content-created">
                  <table class="table table-responsive table-hover">
                     <thead>
                         <tr>
+                            <th colspan="2">Actions</th>
                             <th>Date</th>
                             <th>Objet</th>
                             <th>Ordre du jour</th>
                             <th>Organisateur</th>
-                            <th colspan="2">Actions</th>
                         </tr>
                     </thead>
                     <tbody></tbody>

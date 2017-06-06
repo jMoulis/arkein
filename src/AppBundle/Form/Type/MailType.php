@@ -22,7 +22,6 @@ class MailType extends AbstractType
                     "Demande d'admission" => "admission"
                 ]
             ])
-            ->add('objet')
             ->add('nom')
             ->add('prenom')
             ->add('mail')
