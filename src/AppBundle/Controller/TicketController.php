@@ -50,13 +50,14 @@ class TicketController extends BaseController
             // The admin can select which coach can receive the message
             $toWho = $form->getData()->getToWho();
 
+            //If toWho is not selected by admmin then we find the coach
             if (!$toWho) {
                 if(!$this->getUser()->getRole() !== 'ROLE_ADMIN')
                 {
                     // Fetch the staff coach of the youngster used in the ticket
                     $coach = $em->getRepository('UserBundle:User')->findYoungStaffCoach($ticket->getAboutWho());
 
-                    // If there's no coach assign it to the admin by default
+                    // If there's no coach assigned it to the admin by default
                     if(!$coach){
                         $ticket->setToWho($em->getRepository('UserBundle:User')->findOneBy([
                             'role' => self::ADMIN
@@ -65,6 +66,9 @@ class TicketController extends BaseController
                         $ticket->setToWho($coach[0]);
                     }
                 }
+            }
+            if($this->getUser()->getRole() === 'ROLE_YOUNGSTER'){
+                $ticket->setAboutWho($this->getUser());
             }
 
             $em->persist($ticket);

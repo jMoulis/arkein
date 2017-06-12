@@ -31,7 +31,7 @@ class EntretienController extends BaseController
         $entretiens = $em->getRepository('AppBundle:Entretien')->findBy([
             'author' => $this->getUser()
         ]);
-        return $this->render('entretien/_interviews-by-author.html.twig', array(
+        return $this->render(':entretien:interviews.html.twig', array(
             'entretiens' => $entretiens,
         ));
     }
@@ -52,8 +52,7 @@ class EntretienController extends BaseController
     {
         $data = json_decode($request->getContent(), true);
         $dataFormEntretien = $data[0];
-        $newGuests = $data[1];
-
+        $newGuests = array_keys($data[1]);
         $form = $this->get('app.api_response')->ajaxResponse(EntretienType::class, $dataFormEntretien);
 
         /** @var Entretien $entretien */
@@ -134,9 +133,7 @@ class EntretienController extends BaseController
             throw new \Exception('erreur object non trouvé', 500);
         }
         $entetiens = $this->getDoctrine()->getRepository('AppBundle:Entretien')
-            ->findBy([
-                'author' => $user
-            ]);
+            ->getInterviewsByAuthorAndAsGuest($user);
         $models = [];
         foreach ($entetiens as $entetien) {
             $models[] = $this->createEntretienApiModel($entetien);
@@ -202,8 +199,7 @@ class EntretienController extends BaseController
      *
      * @Route("/{id}/edit",
      *     name="entretien_edit",
-     *     options={"expose" = true}
-     * )
+     *     options={"expose" = true})
      *
      * @Method({"GET", "POST"})
      *
@@ -220,6 +216,7 @@ class EntretienController extends BaseController
         $entretien = $em->getRepository('AppBundle:Entretien')->findOneBy(['id' => $entretienId]);
 
         $this->guestManager($entretien, $data, $dataFormEntretien, $em);
+
         $date = new \DateTime(($dataFormEntretien['date']));
         $entretien->setDate($date);
 
@@ -229,7 +226,6 @@ class EntretienController extends BaseController
         $apiModel = $this->createEntretienApiModel($entretien);
 
         $response = $this->createApiResponseAction($apiModel);
-        // setting the Location header... it's a best-practice
         $response->headers->set(
             'Location',
             $this->generateUrl('entretien_show', ['id' => $entretien->getId()])
@@ -251,7 +247,8 @@ class EntretienController extends BaseController
      */
     private function guestManager($entity, $data, $data2, $em)
     {
-        $newGuests = $data[1];
+        $newGuests = array_keys($data[1]);
+
         $existingGuests = [];
         foreach ($entity->getInterviewGuests() as $interviewGuest){
             $existingGuests[] = $interviewGuest->getId();
@@ -266,7 +263,6 @@ class EntretienController extends BaseController
             foreach ($guestsToAdd as $guest) {
                 $interviewUser = new InterviewUser();
                 $interviewUser->setUser($em->getRepository('UserBundle:User')->find($guest));
-
                 $interviewUser->setInterview($entity);
                 $entity->addInterviewGuest($interviewUser);
             }

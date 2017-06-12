@@ -112,7 +112,7 @@
                 },
                 url: Routing.generate('api_ticket_created_list'),
                 success: function (data) {
-                    console.log($('body').data('user'));
+                    const $connectedUser = $('body').data('user');
                     if($(data.items).length <= 0){
                         $(self._selector.myTicket).find('.loading').remove();
                         $(self._selector.myTicket).find('tbody').append('' +
@@ -123,7 +123,6 @@
                             $(self._selector.myTicket).find('.loading').remove();
                             self._addCreatedRow(ticket);
                             if($('body').data('user') != ticket.auteurId) {
-                                console.log($('body').data('user') != ticket.auteurId);
                                 $('.js-tickets tbody tr#ticket_auteur_'+ ticket.auteurId +'').css('backgroundColor', '#b2e5ff');
                             }
                         })

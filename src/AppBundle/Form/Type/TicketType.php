@@ -31,7 +31,6 @@ class TicketType extends AbstractType
         $this->tokenStorage = $tokenStorage;
     }
 
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $user = $this->tokenStorage->getToken()->getUser();
@@ -52,15 +51,12 @@ class TicketType extends AbstractType
                 FormEvents::PRE_SET_DATA,
                 function(FormEvent $event) use ($user) {
                 $form = $event->getForm();
-                if ($user->getRole() != 'ROLE_ADMIN') {
-                    $formOptions = [
-                        'class' => User::class,
-                        'placeholder' => 'Sélectionner le jeune',
-                        'query_builder' => function(UserRepository $repository) use ($user){
-                            return $repository->findMyYoungsters($user);
-                        },
-                    ];
-                } else {
+                if($user->getRole() === 'ROLE_YOUNGSTER'){
+                    $form
+                        ->remove('toWho')
+                        ->remove('aboutWho');
+
+                } elseif ($user->getRole() === 'ROLE_ADMIN'){
                     $form->add('toWho', EntityType::class, [
                         'class' => User::class,
                         'placeholder' => 'Sélectionner un destinataire',
@@ -75,10 +71,19 @@ class TicketType extends AbstractType
                         'placeholder' => 'Sélectionner le jeune',
                         'query_builder' => function(UserRepository $repository) {
                             return $repository->findAllYoungsters();
-                    }
+                        }
                     ];
+                    $form->add('aboutWho', EntityType::class, $formOptions);
+                } else {
+                    $formOptions = [
+                        'class' => User::class,
+                        'placeholder' => 'Sélectionner le jeune',
+                        'query_builder' => function(UserRepository $repository) use ($user){
+                            return $repository->findMyYoungsters($user);
+                        },
+                    ];
+                    $form->add('aboutWho', EntityType::class, $formOptions);
                 }
-                $form->add('aboutWho', EntityType::class, $formOptions);
             })
         ;
     }

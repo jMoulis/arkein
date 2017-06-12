@@ -19,9 +19,11 @@
         <div class="form-group js-wrapper-input-autre"></div>
     </div>
         {{ form_row(form.objet) }}
+    {% if is_granted('ROLE_YOUNGSTER') == false %}
         {{ form_row(form.aboutWho, {
             'label': 'Jeune'
         }) }}
+    {% endif %}
         {{ form_row(form.message) }}
         {{ form_row(form.level, {
             'label': 'Niveau'

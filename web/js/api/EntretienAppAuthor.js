@@ -38,12 +38,8 @@
 
         this.$wrapper.on(
             'click',
-            '.js-detail-compteRendu', function (e) {
-                $('#editEntretienModal').modal('toggle');
-                let entretienId = $(e.currentTarget).closest('.js-edit-entretien-form').data('entretien');
-                let modal = $('.js-modal-viewer h5').attr('data-id', entretienId);
-                self.loadPdf(entretienId);
-            }
+            '.js-detail-compteRendu',
+            this.loadDetailCompteRendu.bind(this)
         );
 
         this.$wrapper.on(
@@ -77,8 +73,6 @@
         );
 
         this.loadEntretiens();
-
-        this.loadInvitations();
 
     };
 
@@ -118,7 +112,7 @@
              */
             const guestsObject = {};
             $.each($guests, function (key, fieldData) {
-                guestsObject[fieldData.title] = Number(fieldData.id);
+                guestsObject[Number($(fieldData).data('user'))] = fieldData.title;
             });
 
             const formData = {};
@@ -142,6 +136,7 @@
                 error: function (jqXHR) {
                     const errorData = JSON.parse(jqXHR.responseText);
                     self._mapErrorsToForm(errorData.errors);
+                    $(this._selector.modalForm).find('button').prop("disabled", false);
                 }
             })
         },
@@ -151,8 +146,8 @@
             const self = this;
             const $form = $(e.currentTarget);
             const entretienId = $form.find('.js-entretien-input').val();
-            const $compteRenduBtn = self.$wrapper.find('.js-main-content-created table tbody tr[title=id_'+  entretienId +'] .js-saisir-compteRendu');
-            const $detailBtn = self.$wrapper.find('.js-main-content-created table tbody tr[title=id_'+  entretienId +'] .js-detail-entretien');
+            const $compteRenduBtn = self.$wrapper.find('.js-main-content-created table tbody tr[title=entretien_id_'+  entretienId +'] .js-saisir-compteRendu');
+            const $detailBtn = self.$wrapper.find('.js-main-content-created table tbody tr[title=entretien_id_'+  entretienId +'] .js-detail-entretien');
 
             const formData = {};
             $.each($form.serializeArray(), function (key, fieldData) {
@@ -169,12 +164,13 @@
                     self.sucessSendAction();
                     self._clearForm();
                     $(self._selector.newCompteRenduModal).modal('toggle');
+                    console.log($compteRenduBtn);
                     $compteRenduBtn.remove();
                     $detailBtn.removeClass('btn-warning').addClass('btn-success');
                 },
                 error: function (jqXHR) {
                     const errorData = JSON.parse(jqXHR.responseText);
-                    self.sucessSendAction();
+                    $(this._selector.modalForm).find('button').prop("disabled", false);
                     self._mapErrorsToForm(errorData.errors);
 
                 }
@@ -187,7 +183,7 @@
             const self = this;
             const entretienId = $form.data('entretien');
             const $guests = $form.find('.js-actual-guests').children();
-            const tr = self.$wrapper.find('.js-main-content-created table tbody tr[title=id_'+  entretienId +']');
+            const tr = self.$wrapper.find('.js-main-content-created table tbody tr[title=entretien_id_'+  entretienId +']');
 
             /* Afin de pouvoir enregistrer des guests, il était nécessaire
              * de créer un objet avec les id des users
@@ -196,8 +192,9 @@
              */
             const guestsObject = {};
             $.each($guests, function (key, fieldData) {
-                guestsObject[fieldData.title] = Number(fieldData.id);
+                guestsObject[Number($(fieldData).data('user'))] = fieldData.title;
             });
+
 
             const formData = {};
             $.each($form.serializeArray(), function (key, fieldData) {
@@ -221,6 +218,7 @@
                 },
                 error: function (jqXHR) {
                     const errorData = JSON.parse(jqXHR.responseText);
+                    $(this._selector.modalForm).find('button').prop("disabled", false);
                     self._mapErrorsToForm(errorData.errors);
                 }
             })
@@ -228,12 +226,12 @@
 
         loadEntretiens: function () {
             const self = this;
-            const user = $('.js-entretien-wrapper').data('user');
+            const $user = $('.js-entretien-wrapper').data('user');
             $.ajax({
                 beforeSend: function(){
                     $(self._selector.tabInterview).append('<span class="loading">Chargement...</span>');
                 },
-                url: Routing.generate('entretien_list_by_author', {id: user}),
+                url: Routing.generate('entretien_list_by_author', {id: $user}),
                 success: function (data) {
                     if($(data.items).length <= 0){
                         $(self._selector.tabInterview).find('.loading').remove();
@@ -241,31 +239,10 @@
                         $.each(data.items, function (key, entretien) {
                             $(self._selector.tabInterview).find('.loading').remove();
                             self._addInterviewsRow(entretien);
+                            if($user !== entretien.authorId) {
+                                $('.js-entretiens-table tr#entretien_auteur_'+ entretien.authorId +'').css('backgroundColor', '#b2e5ff');
+                            }
                         });
-                    }
-                }
-            })
-        },
-
-        loadInvitations: function () {
-            const self = this;
-            const user = $('.js-entretien-wrapper').data('user');
-            $.ajax({
-                beforeSend: function(){
-                    $(self._selector.tabInvitation).append("<span class='loading'>Chargement...</span>");
-                },
-                url: Routing.generate('entretien_list_by_invitation', {id: user}),
-                success: function (data) {
-                    if($(data.items).length <= 0){
-                        $(self._selector.tabInvitation).find('.loading').remove();
-                        $(this._selector.tbody).append('' +
-                            '<div class="js-nodata-found alert alert-success" role="alert">' +
-                            'Aucun entretiens trouvés</div>');
-                    } else {
-                        $.each(data.items, function (key, entretien) {
-                            $(self._selector.tabInvitation).find('.loading').remove();
-                            self._addInvitationsRow(entretien);
-                        })
                     }
                 }
             })
@@ -301,23 +278,6 @@
             })
         },
 
-        loadPdf: function (entretienId) {
-            const self = this;
-            $('#pdfViewer').modal('show');
-            $.ajax({
-                beforeSend: function(){
-                    $(self._selector.editModalFooter).append("<span class='loading'>Chargement...</span>");
-                },
-                url: Routing.generate('entretien_modal_detail', {id: entretienId}),
-                success: function (data) {
-                    const lienpdf = data.item.compteRenduLien;
-                    PDFObject.embed(lienpdf, '#pdfViewer .modal-body');
-                }
-            });
-            $('#pdfViewer .modal-body').css({ height: '50rem'});
-
-        },
-
         loadUsers: function () {
             const self = this;
             self._emptySelectYoung();
@@ -341,15 +301,45 @@
                     success: function (data) {
                         self._emptySelectGuest();
                         self.$wrapper.find(self._selector.guestSelect).prop('disabled', false);
+                        $('.js-actual-guests').empty();
                         $.each(data.items, function (key, user) {
                             self._addGuestsSelect(user);
+                            self.addAllSpanGuest(user);
                         });
+                    },
+                    error: function (jqXHR) {
+                        const errorData = JSON.parse(jqXHR.responseText);
+                        console.log(errorData);
                     }
                 })
             } else {
                 self._emptySelectGuest();
                 this.$wrapper.find(this._selector.guestSelect).prop('disabled', true);
             }
+        },
+
+        loadDetailCompteRendu: function(e){
+            const self =this;
+            $('#editEntretienModal').modal('toggle');
+            let entretienId = $(e.currentTarget).closest('.js-edit-entretien-form').data('entretien');
+            let modal = $('.js-modal-viewer h5').attr('data-id', entretienId);
+            self.loadPdf(entretienId);
+        },
+
+        loadPdf: function (entretienId) {
+            const self = this;
+            $('#pdfViewer').modal('show');
+            $.ajax({
+                beforeSend: function(){
+                    $(self._selector.editModalFooter).append("<span class='loading'>Chargement...</span>");
+                },
+                url: Routing.generate('entretien_modal_detail', {id: entretienId}),
+                success: function (data) {
+                    const lienpdf = data.item.compteRenduLien;
+                    PDFObject.embed(lienpdf, '#pdfViewer .modal-body');
+                }
+            });
+            $('#pdfViewer .modal-body').css({ height: '50rem'});
         },
 
         _emptyHtmlModalBody: function () {
@@ -407,13 +397,6 @@
             $(this._selector.tabInterview).find('tbody').prepend($.parseHTML(html));
         },
 
-        _addInvitationsRow: function (entretien) {
-            const tplText = $('#js-entretien-row-template').html();
-            const tpl = _.template(tplText);
-            const html = tpl(entretien);
-            $(this._selector.tabInterview).find('tbody').append($.parseHTML(html));
-        },
-
         _addSelect: function (user) {
             const tplText = $('#js-user-option-template').html();
             const tpl = _.template(tplText);
@@ -428,12 +411,21 @@
             this.$wrapper.find('.js-select-guest select').append($.parseHTML(html));
         },
 
-        addSpanGuest: function (e) {
+        addSpanGuest: function () {
             const guest = '#guests option:selected';
             $('.js-actual-guests').append('' +
-                '<li id="'+ $(guest).val()+'" title="'+ $(guest).text() +'">' +
+                '<li id="guest_'+ $(guest).val()+'" title="'+ $(guest).text() +'" data-user="'+ $(guest).val() +'">' +
                     '<span class="js-delete-guest badge badge-danger">X</span> ' +
                     '<span class="badge badge-warning">'+ $(guest).text() +'</span>' +
+                '</li>'
+            );
+        },
+
+        addAllSpanGuest: function (user) {
+            $('.js-actual-guests').append('' +
+                '<li id="guest_'+ user.id+'" title="'+ user.fullname +'" data-user="'+ user.id +'">' +
+                '<span class="js-delete-guest badge badge-danger">X</span> ' +
+                '<span class="badge badge-warning">'+ user.fullname +'</span>' +
                 '</li>'
             );
         },
@@ -451,7 +443,7 @@
         },
 
         _updateActualRow: function (tr, date, objet, compteRendu) {
-            const $columnDate = $(tr).find('td').first();
+            const $columnDate = $(tr).find("td:nth-child(3)");
             const $columnObjet = $columnDate.next();
             const $columnCompteRendu = $columnObjet.next();
 

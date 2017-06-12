@@ -177,4 +177,7 @@ h1 {
 .btnAjoutGenerique {
     margin-bottom: 1em;
 }
+.input-group-addon {
+    background-color: white;
+}
 

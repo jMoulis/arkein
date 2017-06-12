@@ -6,6 +6,7 @@
         <title>{% block title %}Welcome!{% endblock %}</title>
 
         {% block stylesheets %}
+            {#Retraiter le load avce assetic ou autre#}
             <link rel="stylesheet" href="{{ asset('css/third-library/bootstrap4/min/bootstrap.min.css') }}" />
             <link rel="stylesheet" href="{{ asset('css/third-library/jquery/jquery-ui.min.css') }}"/>
             <link rel="stylesheet" href="{{ asset('css/app/bootstrap-select.min.css') }}" />
@@ -32,7 +33,9 @@
         {% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
-    <body  data-user="{{ app.user.id }}">
+    <body  {% if app.user %}
+            data-user="{{ app.user.id }}"
+    {% endif %}>
 
     <div class="container-fluid">
         {% block nav %}
@@ -100,6 +103,7 @@
         </footer>
     {% endblock %}
         {% block javascripts %}
+            {#Retraiter le load avce assetic ou autre#}
             <script src="{{ asset('js/third-library/jquery/jquery-3.2.1.min.js') }}"></script>
             <script src="{{ asset('js/third-library/bootstrap4/tether.min.js') }}"></script>
             <script src="{{ asset('js/third-library/bootstrap4/bootstrap.min.js') }}"></script>
