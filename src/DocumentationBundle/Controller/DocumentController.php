@@ -30,7 +30,7 @@ class DocumentController extends BaseController
      *     options={"expose" = true}
      *     )
      * @Method("GET")
-     * @Security("has_role('ROLE_ADMIN')")
+     *
      *
      */
     public function indexAction($userid)
