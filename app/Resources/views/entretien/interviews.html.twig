@@ -2,41 +2,15 @@
 
 {% block dashcontent %}
     <h1>Liste Entretiens</h1>
-<div class="btnAjoutGenerique"><a class="js-new-entretien-btn btn btn-primary" href="#" data-toggle="modal" data-target="#newEntretienModal">Nouvel entretien</a></div>
-    <div class="js-entretien-wrapper" data-user="{{ app.user.id }}">
-        <div class="" id="myInterview" role="tabpanel">
-            <div class="js-main-content-created">
-                <div>
-                    <span class="badge badge-warning "><i class="fa fa-eye" aria-hidden="true"></i></span><span><em> Clôturé</em></span>
-                    <span class="badge badge-success"><i class="fa fa-eye" aria-hidden="true"></i></span><span><em> Ouvert</em></span>
-                    <span class="badge badge-primary"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></span><span><em> Ecrire compte rendu</em></span>
-                </div>
-
-                <table class="table table-responsive table-hover">
-                    <thead>
-                        <tr>
-                            <th colspan="2">Actions</th>
-                            <th>Date</th>
-                            <th>Objet</th>
-                            <th>Ordre du jour</th>
-                            <th>Organisateur</th>
-                        </tr>
-                    </thead>
-                    <tbody class="js-entretiens-table"></tbody>
-                </table>
-            </div>
-        </div>
-        {{ include('entretien/_pdf_loader_modal.html.twig') }}
-        {{ include('entretien/_new_compte_rendu_modal.html.twig') }}
-        {{ include('entretien/_edit_compterendu_modal.html.twig') }}
-        <!-- Modal pour la visualisation du formulaire d'édition des entretiens -->
-       {{ include('entretien/_edit_entretien_modal.html.twig') }}
-        <!-- Fin modal -->
-
-        <!-- Modal pour la visualisation du formulaire d'ajout des entretiens -->
-        {{ include('entretien/_new_entretien_modal.html.twig') }}
-        <!-- Fin modal -->
-    </div>
+<div class="btnAjoutGenerique">
+    <a class="js-new-entretien-btn btn btn-primary"
+       href="#"
+       data-toggle="modal"
+       data-target="#newEntretienModal">
+        Nouvel entretien
+    </a>
+</div>
+    {{ include('entretien/_interviews-lists.html.twig') }}
 {% endblock %}
 
 {% block javascripts %}
@@ -45,7 +19,6 @@
     <script>
         const $entretienWrapper = $('.js-entretien-wrapper');
         const entretienApp = new EntretienAppAuthor($entretienWrapper);
-
         const statusApp = new StatusApp($entretienWrapper);
 
         $('.js-new-entretien-btn').on('click', function () {
@@ -68,13 +41,22 @@
 
     </script>
 
-    <script type="text/template" id="js-guests-option-template">
-        <option value="<%= id %>"><%= fullname %></option>
-    </script>
-
+    <!-- NEW INTERVIEW SECTION -->
+    <!--
+        1- Displays interviewee (youngtsers)
+        2- Displays guests, filtered by interviewee
+     -->
     <script type="text/template" id="js-user-option-template">
         <option value="<%= id %>"><%= fullname %></option>
     </script>
+    <script type="text/template" id="js-guests-option-template">
+        <option value="<%= id %>"><%= fullname %></option>
+    </script>
+    <!--
+        1- Get the table template,
+        2- Get the edit form template
+        3-
+    -->
     <script type="text/template" id="js-entretien-row-template">
         {{ source('entretien/template/_list_entretien_template.html.twig') }}
     </script>
@@ -82,7 +64,6 @@
     <script type="text/template" id="js-entretien-detail-template-logged">
         {{ source('entretien/template/_edit_entretien_template.html.twig') }}
     </script>
-
     <script type="text/template" id="js-entretien-detail-template-non-logged">
         {{ source('entretien/template/_edit_entretien_template_non_logged.html.twig') }}
     </script>

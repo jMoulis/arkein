@@ -155,6 +155,7 @@ class EntretienController extends BaseController
      */
     public function getEntretiensByYoungAction(User $user)
     {
+
         if(!$user) {
             throw new \Exception('erreur object non trouvé', 500);
         }

@@ -1,0 +1,49 @@
+<div class="js-entretien-wrapper" data-user="{{ app.user.id }}">
+    <div class="" id="myInterview" role="tabpanel">
+        <div class="js-main-content-created">
+            <div>
+                <span class="badge badge-warning ">
+                    <i class="fa fa-eye" aria-hidden="true"></i>
+                </span>
+                <span>
+                    <em> Clôturé</em>
+                </span>
+                <span class="badge badge-success">
+                    <i class="fa fa-eye" aria-hidden="true"></i>
+                </span>
+                <span>
+                    <em> Ouvert</em>
+                </span>
+                <span class="badge badge-primary">
+                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                </span>
+                <span>
+                    <em> Ecrire compte rendu</em>
+                </span>
+            </div>
+
+            <table class="table table-responsive table-hover">
+                <thead>
+                <tr>
+                    <th colspan="2">Actions</th>
+                    <th>Date</th>
+                    <th>Objet</th>
+                    <th>Ordre du jour</th>
+                    <th>Organisateur</th>
+                </tr>
+                </thead>
+                <tbody class="js-entretiens-table"></tbody>
+            </table>
+        </div>
+    </div>
+    {{ include('entretien/_pdf_loader_modal.html.twig') }}
+    {{ include('entretien/_new_compte_rendu_modal.html.twig') }}
+    {{ include('entretien/_edit_compterendu_modal.html.twig') }}
+    <!-- Modal pour la visualisation du formulaire d'édition des entretiens -->
+    {{ include('entretien/_edit_entretien_modal.html.twig') }}
+    <!-- Fin modal -->
+    <!-- Modal pour la visualisation du formulaire d'ajout des entretiens -->
+    {{ include('entretien/_new_entretien_modal.html.twig') }}
+    <!-- Fin modal -->
+</div>
+

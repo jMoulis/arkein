@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block body %}
-    <h1 data-user="{{ user.id }}">Bienvenue, {{ user.firstname }}</h1>
+    <h1 id="member-detail" data-user="{{ user.id }}">Bienvenue, {{ user.firstname }}</h1>
     <!-- Tabs navigation -->
     <ul class="nav nav-tabs" id="tabs" role="tablist">
         <li class="nav-item w-100">
@@ -27,12 +27,8 @@
         </div>
         <!--Fin tab profile-->
         <!-- Début tab Entretien -->
-        <div class="tab-pane js-entretien-wrapper" id="entretiens" role="tabpanel">
-            <p id="loading"><img src="{{ asset('img/ajax-loader.gif') }}" /> Please Wait </p>
-            {{ include('entretien/_interviews-by-young.html.twig') }}
-
-            <!-- Modal pour la visualisation du détail des entretiens -->
-            {{ include('entretien/_edit_entretien_modal.html.twig') }}
+        <div class="tab-pane" id="entretiens" role="tabpanel">
+            {{ include('entretien/_interviews-lists.html.twig') }}
             <!-- Fin modal -->
         </div>
         <!--Fin tab Entretien-->
@@ -85,22 +81,36 @@
      3- Load du détail dans le modal
      #}
 
-    <script type="text/template" id="js-cat-option-template">
-        <option value="<%= id %>"><%= name %></option>
-    </script>
 
+    <script type="text/template" id="js-guests-option-template">
+        <option value="<%= id %>"><%= fullname %></option>
+    </script>
+    <script type="text/template" id="js-user-option-template">
+        <option value="<%= id %>"><%= fullname %></option>
+    </script>
     <script type="text/template" id="js-entretien-row-template">
         {{ source('entretien/template/_list_entretien_template.html.twig') }}
     </script>
-
-    <script type="text/template" id="js-entretien-detail-template">
-
+    <script type="text/template" id="js-entretien-detail-template-logged">
+        {{ source('entretien/template/_edit_entretien_template.html.twig') }}
+    </script>
+    <script type="text/template" id="js-entretien-detail-template-non-logged">
+        {{ source('entretien/template/_edit_entretien_template_non_logged.html.twig') }}
+    </script>
+    <script type="text/template" id="js-status-update">
+        {{ source('entretien/template/_edit_status_template.html.twig') }}
+    </script>
+    <script type="text/template" id="js-compterendu-form-template">
+        {{ source('entretien/template/_edit_compterendu_template.html.twig') }}
     </script>
 
+    <!-- Documents/Categories Templates -->
+    <script type="text/template" id="js-cat-option-template">
+        <option value="<%= id %>"><%= name %></option>
+    </script>
     <script type="text/template" id="js-document-add-template">
         {{ source('document/template/_add_row_document.html.twig') }}
     </script>
-
     <script type="text/template" id="js-new-folder-template">
         {{ source('document/template/_new_folder_template.html.twig') }}
     </script>
