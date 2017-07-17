@@ -177,7 +177,8 @@ class TicketController extends BaseController
         $model->destinataire = $ticket->getToWho()->getFullName();
         $model->niveau = $ticket->getLevel();
         $model->statut = $ticket->getStatut();
-
+        $model->titre = $ticket->getFromWho()->getTitre();
+        $model->auteurEmail = $ticket->getFromWho()->getEmail();
         $selfUrl = $this->generateUrl(
             'ticket_show',
             ['id' => $ticket->getId()]

@@ -6,7 +6,7 @@
         <ul>
             <div class="card" data-id="<%= id %>">
                 <div class="card-header" role="tab" data-id="heading_<%= id %>">
-                    <h5 class="mb-0 d-flex justify-content-between">
+                    <h5 class="mb-0 d-flex justify-content-between header-category">
                         <a href="#collapseFile_<%= id %>" data-toggle="collapse">
                             <i class="fa fa-folder" aria-hidden="true"></i>  <%= name %>
                         </a>
@@ -20,7 +20,13 @@
                         <tbody class="sortable connectedSortable" id="tbody_<%= id %>" data-cat="tbody_<%= id %>">
                            <tr class="notSortable">
                                 <td>
-                                    <button type="button" class="js-new-doc-btn btn btn-success btn-sm" data-id="<%= id %>" data-toggle="modal" data-target="#modalAddDoc">Nouveau Document</button>
+                                    <button type="button"
+                                            class="js-new-doc-btn btn btn-success btn-sm"
+                                            data-id="<%= id %>"
+                                            data-toggle="modal"
+                                            data-target="#modalAddDoc">
+                                        Nouveau Document
+                                    </button>
                                 </td>
                             </tr>
                         </tbody>

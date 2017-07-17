@@ -12,11 +12,15 @@ class TicketApiModel
 
     public $auteurId;
 
+    public $titre;
+
     public $message;
 
     public $niveau;
 
     public $reponses;
+
+    public $auteurEmail;
 
     public $destinataire;
 

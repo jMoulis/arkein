@@ -7,6 +7,7 @@
 
         {% block stylesheets %}
             {#Retraiter le load avce assetic ou autre#}
+            <link rel="stylesheet" href="{{ asset('css/app/reset.css') }}" />
             <link rel="stylesheet" href="{{ asset('css/third-library/bootstrap4/min/bootstrap.min.css') }}" />
             <link rel="stylesheet" href="{{ asset('css/third-library/jquery/jquery-ui.min.css') }}"/>
             <link rel="stylesheet" href="{{ asset('css/app/bootstrap-select.min.css') }}" />
@@ -35,6 +36,7 @@
     </head>
     <body  {% if app.user %}
             data-user="{{ app.user.id }}"
+            data-member-detail=""
     {% endif %}>
 
     <div class="container-fluid">
@@ -60,9 +62,6 @@
                         <a class="nav-link" href="{{ path('event') }}">Evènements</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Boutique</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="{{ path('index_blog') }}">Actualités</a>
                     </li>
                     <li class="nav-item">
@@ -84,12 +83,7 @@
         {% endblock nav %}
     </div>
         {% block dashbody %}{% endblock %}
-
-    <div class="homepage">
-
-
-        {% block content %}{% endblock %}
-    </div>
+    <div class="homepage">{% block content %}{% endblock %}</div>
     {% block footer %}
         <footer class="footer">
             <div class="container">

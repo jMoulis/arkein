@@ -1,7 +1,16 @@
-<form class="js-new-answer-form" name="answer" method="post" action="" novalidate>
-    <div class="form-group">
-        <label class="control-label required" for="answer_message">Réponse</label>
-        <textarea id="answer_message" name="message" required="required" class="form-control"></textarea>
+<div class="card answer">
+    <div class="card-header show-new-answer-form">
+        <div data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" role="alert">
+            <div><i class="fa fa-pencil" aria-hidden="true"></i><strong> Répondre</strong></div> <div><i class="fa fa-plus add-answer-ico" aria-hidden="true"></i></div>
+        </div>
     </div>
-    <input class="btn btn-success" type="submit" value="Répondre" />
-</form>
+    <div class="card-block collapse" id="collapseExample">
+        <form class="js-new-answer-form" name="answer" method="post" action="" novalidate>
+            <div class="form-group">
+                <label class="control-label required" for="answer_message">Message</label>
+                <textarea id="answer_message" name="message" required="required" class="form-control"></textarea>
+            </div>
+            <input class="btn btn-success" type="submit" value="Répondre" />
+        </form>
+    </div>
+</div>

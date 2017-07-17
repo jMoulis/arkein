@@ -62,11 +62,11 @@
             const categoryApp = new CategoryApp($folder);
 
             const $entretienWrapper = $('.js-entretien-wrapper');
-            const entretienApp = new EntretienApp($entretienWrapper);
+            const entretienApp = new EntretienAppAuthor($entretienWrapper);
 
             categoryApp.loadListTreeViewCategorie();
             categoryApp.loadListSelectCategorie();
-            entretienApp.loadListEntretiens();
+
 
             $DocWrapper.on('click', '.js-load-file', function (e) {
                 e.preventDefault();
@@ -94,7 +94,7 @@
     </script>
 
     <script type="text/template" id="js-entretien-detail-template">
-        {{ source('entretien/_edit_entretien_template_non_logged.html.twig') }}
+
     </script>
 
     <script type="text/template" id="js-document-add-template">

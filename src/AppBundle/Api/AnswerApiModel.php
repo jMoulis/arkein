@@ -11,4 +11,7 @@ class AnswerApiModel
     public $auteur;
 
     public $message;
+
+    public $auteurEmail;
+    public $titre;
 }

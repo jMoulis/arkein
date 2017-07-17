@@ -16,6 +16,12 @@
             this.handleNewFormSubmit.bind(this)
         );
 
+        this.$wrapper.on(
+            'click',
+            '.js-detail-user',
+            this.setMemberDetail.bind(this)
+        );
+
         this.loadUsers();
     };
 
@@ -86,6 +92,10 @@
             })
         },
 
+        setMemberDetail: function(e){
+            //The purpose is to set a id of the user clicked to use the right route in the EntretienAppauthor, to display the tight interviews
+            $('body').data('memberDetail', $(e.currentTarget).data('id'));
+        },
         _mapErrorsToForm: function (errorData) {
             this._removeFormErrors();
             const $form = this.$wrapper.find(this._selector.newUserForm);

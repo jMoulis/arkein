@@ -1,7 +1,15 @@
-<div class="media mt-3 answer">
-    <div class="media-body">
-        <h5 class="mt-0"><%= auteur %></h5>
-        <em> posté le <%= date %></em>
+<div class="card">
+    <div class="card-header">
+        <div class="header-heading-card">
+            <i class="fa fa-user fa-3x" aria-hidden="true"></i>
+            <div>
+                <h5 class=""><%= auteur %> - <%= titre %></h5>
+                <p><%= auteurEmail %></p>
+            </div>
+        </div>
+        <em class="date-post">posté le <%= date %></em>
+    </div>
+    <div class="card-block">
         <p><%= message %></p>
     </div>
 </div>

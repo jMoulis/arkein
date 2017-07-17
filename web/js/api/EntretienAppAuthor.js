@@ -4,7 +4,6 @@
 
     window.EntretienAppAuthor = function ($wrapper) {
         this.$wrapper = $wrapper;
-        const self = this;
 
         this.$wrapper.on(
             'submit',
@@ -226,7 +225,12 @@
 
         loadEntretiens: function () {
             const self = this;
-            const $user = $('.js-entretien-wrapper').data('user');
+            const $user = $('body').data('user');
+            console.log($user)
+            const $isYoung = $('body').data('memberDetail');
+            console.log($('body').data())
+            console.log($isYoung)
+
             $.ajax({
                 beforeSend: function(){
                     $(self._selector.tabInterview).append('<span class="loading">Chargement...</span>');
@@ -261,6 +265,7 @@
                 },
                 url: Routing.generate('entretien_modal_detail', {id: entretien}),
                 success: function (data) {
+                    console.log('test');
                     $('.loading').remove();
                     if(data.item.compteRendu){
                         self._addEditForm(data.item, tplTextNonLoggedIn);
@@ -341,7 +346,10 @@
             });
             $('#pdfViewer .modal-body').css({ height: '50rem'});
         },
-
+        _setMemberDetail: function(memberId){
+            //The purpose is to set a id of the user clicked to use the right route in the EntretienAppauthor, to display the tight interviews
+            $('body').data('memberDetail', memberId );
+        },
         _emptyHtmlModalBody: function () {
             $('body').removeClass('.modal-open');
             this.$wrapper.find(this._selector.editModalBody).html('');

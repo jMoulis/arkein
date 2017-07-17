@@ -79,6 +79,8 @@ class AnswerController extends BaseController
         $model->date = $answer->getDateCreated()->format('d-M-y');
         $model->message = $answer->getMessage();
         $model->auteur = $answer->getUser()->getFullName();
+        $model->titre = $answer->getUser()->getTitre();
+        $model->auteurEmail = $answer->getUser()->getEmail();
         return $model;
     }
 

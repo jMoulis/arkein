@@ -112,7 +112,6 @@
                 },
                 url: Routing.generate('api_ticket_created_list'),
                 success: function (data) {
-                    const $connectedUser = $('body').data('user');
                     if($(data.items).length <= 0){
                         $(self._selector.myTicket).find('.loading').remove();
                         $(self._selector.myTicket).find('tbody').append('' +
@@ -170,13 +169,6 @@
             const html = tpl(ticket);
             $(this._selector.myTicket).find('tbody').append($.parseHTML(html));
         },
-
-        _addAttributedRow: function (ticket) {
-            const tplText = $('#js-ticket-row-template').html();
-            const tpl = _.template(tplText);
-            const html = tpl(ticket);
-            $(this._selector.myAttribution).find('tbody').append($.parseHTML(html));
-        }
 
     });
 })(window, jQuery, Routing);

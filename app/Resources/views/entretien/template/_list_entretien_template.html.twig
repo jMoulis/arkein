@@ -2,7 +2,7 @@
     <% if(compteRendu) { %>
     <td>
         <a href="<%= links._self %>"
-           class="js-detail-entretien btn btn-success"
+           class="js-detail-entretien btn btn-success btn-sm"
            data-id="<%= id %>"
            data-toggle="modal"
            data-target="#editEntretienModal">
@@ -12,7 +12,7 @@
     <% } else { %>
     <td>
         <a href="<%= links._self %>"
-           class="js-detail-entretien btn btn-warning"
+           class="js-detail-entretien btn btn-warning btn-sm"
            data-id="<%= id %>"
            data-toggle="modal"
            data-backdrop = "false"
@@ -24,7 +24,7 @@
     <% } %>
     <td>
         <% if (!compteRendu && authorId == $('.js-entretien-wrapper').data('user')) { %>
-        <a href="#" class="js-saisir-compteRendu btn btn-primary"
+        <a href="#" class="js-saisir-compteRendu btn btn-primary btn-sm"
            data-id="<%= id %>"
            data-toggle="modal"
            data-target="#saisirCompteRenduModal">
