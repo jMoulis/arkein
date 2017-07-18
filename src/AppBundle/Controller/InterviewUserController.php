@@ -27,6 +27,7 @@ class InterviewUserController extends BaseController
         $entretienId = $request->attributes->get('id');
         $data = json_decode($request->getContent(), true);
 
+
         /** @var InterviewUser $interviewUser */
         $em = $this->getDoctrine()->getManager();
         $entretien = $em->getRepository('AppBundle:Entretien')->find($entretienId);
@@ -54,6 +55,9 @@ class InterviewUserController extends BaseController
     {
         $model = new InterviewUserApiModel();
         $model->id = $interviewUser->getId();
+        $model->status = $interviewUser->getStatus();
+        $model->interview = $interviewUser->getInterview()->getId();
+
         $selfUrl = $this->generateUrl(
             'entretien_show',
             ['id' => $interviewUser->getId()]

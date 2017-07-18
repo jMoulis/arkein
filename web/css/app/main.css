@@ -219,3 +219,8 @@ h5 {
 .header-category {
     width: 100%;
 }
+
+/* SECTION ENTRETIEN */
+.notMyInterview {
+    background-color: #b2e5ff;
+}

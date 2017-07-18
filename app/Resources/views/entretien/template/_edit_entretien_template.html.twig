@@ -2,7 +2,11 @@
     <div id="appbundle_entretien">
         <div class="form-group">
             <label class="control-label required" for="date">Date</label>
-            <input type="text" id="date" name="date" required="required" class="js-datepicker form-control" value="<% var d = new Date(date); print(d.toLocaleDateString()); %>" />
+            <input type="text" id="date"
+                   name="date"
+                   required="required"
+                   class="js-datepicker form-control"
+                   value="<% var d = new Date(date); print(d.toLocaleDateString()); %>" />
         </div>
         <div class="form-group">
             <label class="control-label required" for="young">Jeune</label>
@@ -17,14 +21,14 @@
             </select>
         </div>
 
-        <ul class="js-actual-guests list-unstyled">
+        <ul class="js-actual-guest-edit list-unstyled">
             <% _.each(guests, function(guest){ %>
-            <li id="<%= guest.id %>" title="<%= guest.name %>">
+            <li id="<%= guest.id %>" title="<%= guest.name %>" data-user="<%= guest.id %>">
                 <span class="js-delete-guest badge badge-danger" title="Supprimer">X</span>
                 <% if(guest.status == false ) { %>
-                <span class="badge badge-warning"><%= guest.name %></span>
+                    <span class="badge badge-warning"><%= guest.name %></span>
                 <% } else { %>
-                <span class="badge badge-success"><%= guest.name %></span>
+                    <span class="badge badge-success"><%= guest.name %></span>
                 <% } ; %>
             </li>
             <% }); %>
@@ -34,13 +38,16 @@
             <label class="control-label required" for="objet">Objet</label>
             <input type="text" id="objet" name="objet" required="required" maxlength="255" class="form-control" value="<%= objet %>"/>
         </div>
+
         <div class="form-group">
             <label class="control-label required" for="odj_edit_1">Ordre du jour</label>
             <textarea id="odj_edit_1" name="odj" required="required" class="form-control"><%= odj %></textarea>
         </div>
+
         <% if(compteRendu) { %>
-        <a href="#" class="js-detail-compteRendu" data-id="<%= compteRendu %>">Consulter Compte Rendu</a>
+            <a href="#" class="js-detail-compteRendu" data-id="<%= compteRendu %>">Consulter Compte Rendu</a>
         <% } %>
     </div>
+
     <button type="submit" class="btn btn-block btn-primary" data-backdrop="false">Modifier</button>
 </form>

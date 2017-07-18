@@ -10,6 +10,8 @@ class InterviewUserApiModel
 
     public $status;
 
+    public $interview;
+
     private $links = [];
 
     public function addLink($ref, $url)

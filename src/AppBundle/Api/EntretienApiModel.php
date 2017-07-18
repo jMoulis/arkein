@@ -26,6 +26,8 @@ class EntretienApiModel
 
     public $date;
 
+    public $isArchived;
+
     private $links = [];
 
     public function addLink($ref, $url)

@@ -1,41 +1,91 @@
-<tr id="entretien_auteur_<%= authorId %>" title="entretien_id_<%= id %>">
-    <% if(compteRendu) { %>
-    <td>
-        <a href="<%= links._self %>"
-           class="js-detail-entretien btn btn-success btn-sm"
-           data-id="<%= id %>"
-           data-toggle="modal"
-           data-target="#editEntretienModal"
-           title="En cours">
-            <i class="fa fa-square-o" aria-hidden="true"></i>
-        </a>
-    </td>
+<!--
+    Check if the user is the author
+    if it is I set a css rule to see the difference in the list
+ -->
+    <% if($('body').data('user') !== authorId) { %>
+        <tr id="entretien_id_<%= id %>" title="<%= objet %>" data-auteur="entretien_auteur_<%= authorId %>" class="notMyInterview">
     <% } else { %>
-    <td>
-        <a href="<%= links._self %>"
-           class="js-detail-entretien btn btn-info btn-sm"
-           data-id="<%= id %>"
-           data-toggle="modal"
-           data-backdrop = "false"
-           data-target="#editEntretienModal"
-            title="Clôturé">
-            <i class="fa fa-check-square-o" aria-hidden="true"></i>
-        </a>
-    </td>
-
+        <tr id="entretien_id_<%= id %>" title="<%= objet %>" data-auteur="entretien_auteur_<%= authorId %>" >
     <% } %>
-    <td>
-        <% if (!compteRendu && authorId == $('.js-entretien-wrapper').data('user')) { %>
-        <a href="#" class="js-saisir-compteRendu btn btn-warning btn-sm"
-           data-id="<%= id %>"
-           data-toggle="modal"
-           data-target="#saisirCompteRenduModal"
-           title="Saisir Compte-Rendu"
-            >
-            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-        </a>
+<!-- End  -->
+    <% if(isArchived !== true) { %>
+        <% if(authorId === $('body').data('user')) { %>
+            <td>
+                <a href="<%= links._self %>"
+                   class="js-detail-entretien btn btn-success btn-sm"
+                   data-id="<%= id %>"
+                   data-toggle="modal"
+                   data-backdrop = "false"
+                   data-target="#editEntretienModal"
+                   title="En cours">
+                    <i class="fa fa-square-o" aria-hidden="true"></i>
+                </a>
+            </td>
+            <td>
+                <a href="#" class="js-saisir-compteRendu btn btn-warning btn-sm"
+                   data-id="<%= id %>"
+                   data-toggle="modal"
+                   data-target="#saisirCompteRenduModal"
+                   title="Saisir Compte-Rendu"
+                >
+                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                </a>
+            </td>
+        <!-- TODO: Check if there is more than one guest, it means that the template is loaded by members panel -->
+        <% } else { %>
+            <% if(guests[0].status === 0){ %>
+                <td>
+                    <a href="<%= links._self %>"
+                       class="js-detail-entretien js-status js-status-pending btn btn-danger btn-sm"
+                       data-id="<%= id %>"
+                       data-toggle="modal"
+                       data-backdrop = "false"
+                       data-target="#editEntretienModal"
+                       title="En attente de réponse">
+                        <i class="fa fa-pause" aria-hidden="true"></i>
+                    </a>
+                </td>
+            <% } else if(guests[0].status === 1){ %>
+                <td>
+                    <a href="<%= links._self %>"
+                       class="js-detail-entretien js-status js-status-present btn btn-primary btn-sm"
+                       data-id="<%= id %>"
+                       data-toggle="modal"
+                       data-backdrop = "false"
+                       data-target="#editEntretienModal"
+                       title="Présent">
+                        <i class="fa fa-thumbs-up" aria-hidden="true"></i>
+                    </a>
+                </td>
+            <% } else if(guests[0].status === 2){ %>
+                <td>
+                    <a href="<%= links._self %>"
+                       class="js-detail-entretien js-status js-status-absent btn  btn-secondary btn-sm"
+                       data-id="<%= id %>"
+                       data-toggle="modal"
+                       data-backdrop = "false"
+                       data-target="#editEntretienModal"
+                       title="Absent">
+                        <i class="fa fa-thumbs-down" aria-hidden="true"></i>
+                    </a>
+                </td>
+            <% } %>
+        <td></td>
         <% } %>
-    </td>
+    <% } else { %>
+        <td>
+            <a href="<%= links._self %>"
+               class="js-detail-entretien btn btn-info btn-sm"
+               data-id="<%= id %>"
+               data-toggle="modal"
+               data-backdrop = "false"
+               data-target="#editEntretienModal"
+               title="Clôturé">
+                <i class="fa fa-square-o" aria-hidden="true"></i>
+            </a>
+        </td>
+    <td></td>
+    <% } %>
     <td><% var d = new Date(date); print(d.toLocaleDateString()); %></td>
     <td><%= objet %></td>
     <td><%= odj %></td>

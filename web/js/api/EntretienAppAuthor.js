@@ -88,11 +88,10 @@
             'click',
             '.js-participe-pas',
             function () {
-                $('#status').val(0);
+                $('#status').val(2);
             });
 
         this.loadEntretiens();
-
     };
 
     $.extend(window.EntretienAppAuthor.prototype, {
@@ -124,7 +123,7 @@
             const self = this;
 
             const $guests = $form.find('ul').children();
-            /* Afin de pouvoir enregistrer des guests, il était nécessaire
+            /** Afin de pouvoir enregistrer des guests, il était nécessaire
              * de créer un objet avec les id des users
              * J'ai donc crée une liste avec les id des users que je récupère en forme
              * d'objet JSON qui sera transmis à l'API
@@ -146,18 +145,16 @@
                 },
                 url: $form.data('url'),
                 method: 'POST',
-                data: JSON.stringify([formData, guestsObject]),
-                success: function (data) {
-                    self.sucessSendAction();
-                    self._clearForm();
-                    self._addInterviewsRow(data);
-                    $(self._selector.newModal).modal('toggle');
-                },
-                error: function (jqXHR) {
-                    const errorData = JSON.parse(jqXHR.responseText);
-                    self._mapErrorsToForm(errorData.errors);
-                    $(this._selector.modalForm).find('button').prop("disabled", false);
-                }
+                data: JSON.stringify([formData, guestsObject])
+            }).done(function(data){
+                self.sucessSendAction();
+                self._clearForm();
+                self._addInterviewsRow(data);
+                $(self._selector.newModal).modal('toggle');
+            }).fail(function (jqXHR) {
+                const errorData = JSON.parse(jqXHR.responseText);
+                self._mapErrorsToForm(errorData.errors);
+                $(this._selector.modalForm).find('button').prop("disabled", false);
             })
         },
 
@@ -165,52 +162,64 @@
             e.preventDefault();
             const self = this;
             const $form = $(e.currentTarget);
+
+            // This input value is set when the compte-rendu btn is clicked
+            // adn get the entretien value.
             const entretienId = $form.find('.js-entretien-input').val();
-            const $compteRenduBtn = self.$wrapper.find('.js-main-content-created table tbody tr[title=entretien_id_'+  entretienId +'] .js-saisir-compteRendu');
-            const $detailBtn = self.$wrapper.find('.js-main-content-created table tbody tr[title=entretien_id_'+  entretienId +'] .js-detail-entretien');
+
+            // Get the action's btn to apply different rules in the done method
+            const $compteRenduBtn = $('#entretien_id_'+ entretienId +'').find('td .js-saisir-compteRendu');
+            const $detailBtn = $compteRenduBtn.closest('tr').find('td .js-detail-entretien');
 
             const formData = {};
             $.each($form.serializeArray(), function (key, fieldData) {
                 formData[fieldData.name] = fieldData.value;
             });
+
             $.ajax({
                 beforeSend: function(){
                     self.beforeSendAction();
                 },
                 url: Routing.generate('compterendu_new'),
                 method: 'POST',
-                data: JSON.stringify(formData),
-                success: function (data) {
-                    self.sucessSendAction();
-                    self._clearForm();
-                    $(self._selector.newCompteRenduModal).modal('toggle');
-                    $compteRenduBtn.remove();
-                    $detailBtn.removeClass('btn-warning').addClass('btn-success');
-                },
-                error: function (jqXHR) {
-                    const errorData = JSON.parse(jqXHR.responseText);
-                    $(this._selector.modalForm).find('button').prop("disabled", false);
-                    self._mapErrorsToForm(errorData.errors);
-
-                }
+                data: JSON.stringify(formData)
+            }).done(function(){
+                self.sucessSendAction();
+                self._clearForm();
+                $(self._selector.newCompteRenduModal).modal('toggle');
+                $compteRenduBtn.remove();
+                $detailBtn
+                    .removeClass('btn-success')
+                    .addClass('btn-info')
+                    .empty()
+                    .append('<i class="fa fa-check-square-o" aria-hidden="true"></i>'
+                    );
+            }).fail(function(jqXHR){
+                const errorData = JSON.parse(jqXHR.responseText);
+                $(this._selector.modalForm).find('button').prop("disabled", false);
+                self._mapErrorsToForm(errorData.errors);
             })
         },
 
         handleEditFormSubmit: function (e) {
             e.preventDefault();
-            const $form = $(e.currentTarget);
             const self = this;
+            const $form = $(e.currentTarget);
+
             const entretienId = $form.data('entretien');
-            const $guests = $form.find('.js-actual-guests').children();
+            const $guests = $form.find('.js-actual-guest-edit').children();
+
+            console.log($guests);
             const tr = self.$wrapper.find('.js-main-content-created table tbody tr[title=entretien_id_'+  entretienId +']');
 
-            /* Afin de pouvoir enregistrer des guests, il était nécessaire
+            /** Afin de pouvoir enregistrer des guests, il était nécessaire
              * de créer un objet avec les id des users
              * J'ai donc crée une liste avec les id des users que je récupère en forme
              * d'objet JSON qui sera transmis à l'API
              */
             const guestsObject = {};
             $.each($guests, function (key, fieldData) {
+                console.log(fieldData)
                 guestsObject[Number($(fieldData).data('user'))] = fieldData.title;
             });
 
@@ -228,98 +237,88 @@
                 },
                 url: Routing.generate('entretien_edit', {id: entretienId}),
                 method: 'POST',
-                data: JSON.stringify(arrayToBeSend),
-                success: function (data) {
-                    self._updateActualRow(tr, data.date, data.objet, data.odj);
-                    self.sucessSendAction();
-                    self._clearForm();
-                    $(self._selector.editEntretienModal).modal('toggle');
-                },
-                error: function (jqXHR) {
-                    const errorData = JSON.parse(jqXHR.responseText);
-                    $(this._selector.modalForm).find('button').prop("disabled", false);
-                    self._mapErrorsToForm(errorData.errors);
-                }
+                data: JSON.stringify(arrayToBeSend)
+            }).done(function(data){
+                self._updateActualRow(tr, data.date, data.objet, data.odj);
+                self.sucessSendAction();
+                self._clearForm();
+                $(self._selector.editEntretienModal).modal('toggle');
+            }).fail(function (jqXHR) {
+                const errorData = JSON.parse(jqXHR.responseText);
+                $(this._selector.modalForm).find('button').prop("disabled", false);
+                self._mapErrorsToForm(errorData.errors);
             })
         },
 
         loadEntretiens: function () {
             const self = this;
+
             // This is the default value used to display the interviews
-            let $user = $('body').data('user');
+            let $userToSendToAjax = $('body').data('user');
+
             let routeName = 'entretien_list_by_author';
 
-            /*
+            /**
             * This variable stores the id of the displayed
-            * membered. This is variable will be defined only if
+            * membered. This variable will be defined only if
             * the user is on the show interviews action. So if it is
             * we change the route fos value and the user id to filter
-            * the interveiws by the diplayed user.
+            * the interviews by the diplayed user.
             * */
             const $isYoung = $('#member-detail').data('user');
 
             if($isYoung !== undefined){
-                $user = $isYoung;
+                $userToSendToAjax = $isYoung;
                 routeName = 'entretien_list_by_young';
             }
-
 
             $.ajax({
                 beforeSend: function(){
                     $(self._selector.tabInterview).append('<span class="loading">Chargement...</span>');
                 },
-                url: Routing.generate(routeName, {id: $user}),
-                success: function (data) {
-                    if($(data.items).length <= 0){
+                url: Routing.generate(routeName, {id: $userToSendToAjax})
+            }).done(function(data){
+                if($(data.items).length <= 0){
+                    $(self._selector.tabInterview).find('.loading').remove();
+                } else {
+                    $.each(data.items, function (key, entretien) {
                         $(self._selector.tabInterview).find('.loading').remove();
-                    } else {
-                        $.each(data.items, function (key, entretien) {
-                            $(self._selector.tabInterview).find('.loading').remove();
-                            self._addInterviewsRow(entretien);
-                            if($user !== entretien.authorId) {
-                                $('.js-entretiens-table tr#entretien_auteur_'+ entretien.authorId +'').css('backgroundColor', '#b2e5ff');
-                            }
-                        });
-                    }
+                        self._addInterviewsRow(entretien);
+                    });
                 }
             })
         },
 
         loadEditFormData: function (e) {
+            e.preventDefault();
             const self = this;
             const entretien = $(e.currentTarget).data('id');
-            const user = $('.js-entretien-wrapper').data('user');
+            const user = $('body').data('user');
 
             $.ajax({
                 beforeSend: function(){
                     $(self._selector.editModalFooter).append("<span class='loading'>Chargement...</span>");
                 },
                 url: Routing.generate('entretien_modal_detail', {id: entretien}),
-                success: function (data) {
-                    $('.loading').remove();
-                    self._addEditForm(data.item);
-                    // By default we disabled form control
-                    // this to avoid any wrong manipulation
+            }).done(function(data){
+                $('.loading').remove();
+                self._addEditForm(data.item);
+                self.loadUsers();
+                self.loadGuests($('#young').val());
+                /**
+                 * 1- Check if the interview is active
+                 * --> We disable everything
+                 * 2- Check if the user isn't the author,
+                 * --> We load the check in presence
+                 * */
+                if(data.item.isArchived === true){
                     self._disabledControlEditForm();
-                    /*
-                    * 1- Check if the actual user is the author of the interview
-                    * --> We eneble the form items, we load users et and guests select
-                    * 2- We check if there is a compte-rendu and if the user is not the author,
-                    * --> We load the check in presence
-                    * */
-                    if(data.item.authorId === user){
-                        self._enableControlEditForm();
-                        self.loadUsers();
-                        self.loadGuests($('#young').val());
-                    }
-                    if(!data.item.compteRendu && user !== data.item.authorId){
-                        self._loadStatusUpdateForm();
-                    }
-                    if(data.item.compteRendu){
-                        self._disabledControlEditForm();
-                        $('.js-delete-guest').remove();
-                    }
+                } else if(data.item.authorId !== user){
+                    self._disabledControlEditForm();
+                    self._loadStatusUpdateForm();
                 }
+            }).fail(function(){
+                console.log('Une erreur')
             })
         },
 
@@ -327,15 +326,12 @@
             const self = this;
             self._emptySelectYoung();
             self._emptySelectGuest();
-            console.log('test')
-            self._enableControlEditForm();
             $.ajax({
-                url: Routing.generate('young_list'),
-                success: function (data) {
-                    $.each(data.items, function (key, user) {
-                        self._addSelect(user);
-                    });
-                }
+                url: Routing.generate('young_list')
+            }).done(function(data){
+                $.each(data.items, function (key, user) {
+                    self._addSelect(user);
+                });
             })
         },
 
@@ -355,7 +351,8 @@
                 }).fail(function(jqXHR){
                     const errorData = JSON.parse(jqXHR.responseText);
                     console.log(errorData);
-                })
+                });
+
             } else {
                 self._emptySelectGuest();
                 this.$wrapper.find(this._selector.guestSelect).prop('disabled', true);
@@ -377,11 +374,10 @@
                 beforeSend: function(){
                     $(self._selector.editModalFooter).append("<span class='loading'>Chargement...</span>");
                 },
-                url: Routing.generate('entretien_modal_detail', {id: entretienId}),
-                success: function (data) {
-                    const lienpdf = data.item.compteRenduLien;
-                    PDFObject.embed(lienpdf, '#pdfViewer .modal-body');
-                }
+                url: Routing.generate('entretien_modal_detail', {id: entretienId})
+            }).done(function(data){
+                const lienpdf = data.item.compteRenduLien;
+                PDFObject.embed(lienpdf, '#pdfViewer .modal-body');
             });
             $('#pdfViewer .modal-body').css({ height: '50rem'});
         },
@@ -426,12 +422,11 @@
         },
 
         _addEditForm: function (entretien) {
-            const tplText = $('#js-entretien-detail-template-logged').html();
+            const tplText = $('#js-entretien-detail-template').html();
             const tpl = _.template(tplText);
             const html = tpl(entretien);
             this.$wrapper.find(this._selector.editModalBody).append($.parseHTML(html));
             this.$wrapper.find(this._selector.editModalFooter).html('');
-
         },
 
         _addInterviewsRow: function (entretien) {
@@ -454,20 +449,35 @@
             const html = tpl(user);
             this.$wrapper.find('.js-select-guest select').append($.parseHTML(html));
         },
-
+        /**
+         * If needed add another guest
+         *
+         * Because the edit and new interview forms are loaded
+         * I check which ul is loaded through the modal's css display's attribute
+         * and set the right ul
+         * */
         addSpanGuest: function () {
             const guest = '#guests option:selected';
-            $('.js-actual-guests').append('' +
+            let $ul = $('.js-actual-guests');
+
+            if($('#editEntretienModal').css('display') !== 'none'){
+                $ul = $('.js-actual-guest-edit');
+            }
+
+            $ul.append('' +
                 '<li id="guest_'+ $(guest).val()+'" title="'+ $(guest).text() +'" data-user="'+ $(guest).val() +'">' +
                     '<span class="js-delete-guest badge badge-danger">X</span> ' +
                     '<span class="badge badge-warning">'+ $(guest).text() +'</span>' +
                 '</li>'
             );
         },
-
+        /**
+         * Add all guest related to the young selected by default
+         * function only for the new interview form
+         * */
         addAllSpanGuest: function (user) {
             $('.js-actual-guests').append('' +
-                '<li id="guest_'+ user.id+'" title="'+ user.fullname +'" data-user="'+ user.id +'">' +
+                '<li id="guest_'+ user.id +'" title="'+ user.fullname +'" data-user="'+ user.id +'">' +
                 '<span class="js-delete-guest badge badge-danger">X</span> ' +
                 '<span class="badge badge-warning">'+ user.fullname +'</span>' +
                 '</li>'
@@ -488,19 +498,17 @@
         _disabledControlEditForm: function () {
             // We lock all form items
             $('.form-control').prop('disabled', true);
-            //We hide and disabled the modify button
-            $('.js-edit-entretien-form button[type=submit]').prop('disabled', true).hide();
             // Hide and disabled the guests select
             $('#guests').prop('disabled', true).hide();
             // We remove the delete guest button
             $('.js-delete-guest').remove();
+            //Removes tht modify button
+            $(this._selector.editEntretienForm).find('button[type=submit]').remove();
 
         },
-        _enableControlEditForm: function () {
-            $('.form-control').prop('disabled', false);
-            $('.js-edit-entretien-form button[type=submit]').prop('disabled', false).show();
-            $('#guests').prop('disabled', false).show();
-        },
+        /**
+         * On edit interview, modifies the rows informations
+         * */
         _updateActualRow: function (tr, date, objet, compteRendu) {
             const $columnDate = $(tr).find("td:nth-child(3)");
             const $columnObjet = $columnDate.next();
@@ -533,7 +541,6 @@
         sucessSendAction : function () {
             $(this._selector.modalFooter).find('.loading').remove();
             $(this._selector.modalFooter).find('.saving').remove();
-
             $(this._selector.modalForm).find('button').prop("disabled", false);
             $(this._selector.tbody).find('.alert').remove();
         }

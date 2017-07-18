@@ -2,7 +2,6 @@
 
 {% block dashcontent %}
     <h1>Liste Entretiens</h1>
-
     {{ include('entretien/_interviews-lists.html.twig') }}
 {% endblock %}
 
@@ -14,12 +13,10 @@
         const entretienApp = new EntretienAppAuthor($entretienWrapper);
         const statusApp = new StatusApp($entretienWrapper);
 
-
         $('.js-select-young').change(function (e) {
             const $user = $(e.currentTarget).val();
             entretienApp.loadGuests($user);
         });
-
 
 
     </script>
@@ -44,11 +41,8 @@
         {{ source('entretien/template/_list_entretien_template.html.twig') }}
     </script>
 
-    <script type="text/template" id="js-entretien-detail-template-logged">
+    <script type="text/template" id="js-entretien-detail-template">
         {{ source('entretien/template/_edit_entretien_template.html.twig') }}
-    </script>
-    <script type="text/template" id="js-entretien-detail-template-non-logged">
-        {{ source('entretien/template/_edit_entretien_template_non_logged.html.twig') }}
     </script>
 
     <script type="text/template" id="js-status-update">

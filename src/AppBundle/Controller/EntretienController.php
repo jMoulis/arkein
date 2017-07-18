@@ -208,7 +208,9 @@ class EntretienController extends BaseController
     public function editAction(Request $request)
     {
         $entretienId = $request->attributes->get('id');
+
         $data = json_decode($request->getContent(), true);
+
         $dataFormEntretien = $data[0];
 
         $this->get('app.api_response')->ajaxResponse(EntretienType::class, $dataFormEntretien);
@@ -219,6 +221,7 @@ class EntretienController extends BaseController
         $this->guestManager($entretien, $data, $dataFormEntretien, $em);
 
         $date = new \DateTime(($dataFormEntretien['date']));
+
         $entretien->setDate($date);
 
         $em->persist($entretien);
@@ -249,11 +252,14 @@ class EntretienController extends BaseController
     private function guestManager($entity, $data, $data2, $em)
     {
         $newGuests = array_keys($data[1]);
+        dump($newGuests);
 
         $existingGuests = [];
+
         foreach ($entity->getInterviewGuests() as $interviewGuest){
             $existingGuests[] = $interviewGuest->getId();
         };
+
         $guestsToRemove = array_diff($existingGuests, $newGuests);
         $guestsToAdd = array_diff($newGuests, $existingGuests);
 
@@ -295,6 +301,7 @@ class EntretienController extends BaseController
                 'status' => $interviewGuest->getStatus()
             ];
         }
+        $model->isArchived = $entretien->getIsArchived();
         $model->author = $entretien->getAuthor()->getFullName();
         $model->authorId = $entretien->getAuthor()->getId();
         $model->young = $entretien->getYoung()->getFullName();

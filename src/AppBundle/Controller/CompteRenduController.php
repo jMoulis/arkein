@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Api\CompteRenduApiModel;
 use AppBundle\Entity\CompteRendu;
+use AppBundle\Entity\Entretien;
 use AppBundle\Form\Type\CompteRenduType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -31,9 +32,12 @@ class CompteRenduController extends BaseController
         $data = json_decode($request->getContent(), true);
 
         $form = $this->get('app.api_response')->ajaxResponse(CompteRenduType::class, $data);
+        $entretien = $this->getDoctrine()->getRepository(Entretien::class)->find($data["entretien"]);
 
         /** @var compterendu $compterendu */
         $compterendu = $form->getData();
+
+        $entretien->setIsArchived(true);
 
         $pathLoad = $this->pdfProcess($data, $compterendu);
 
@@ -41,6 +45,7 @@ class CompteRenduController extends BaseController
         $compterendu->setLienpdf($pathLoad);
 
         $em->persist($compterendu);
+        $em->persist($entretien);
         $em->flush();
 
         $apiModel = $this->createCompteRenduApiModel($compterendu);

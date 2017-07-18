@@ -23,9 +23,9 @@ class InterviewUser
     private $id;
 
     /**
-     * @var bool
+     * @var integer
      *
-     * @ORM\Column(name="status", type="boolean", nullable=true)
+     * @ORM\Column(name="status", type="integer", nullable=true)
      */
     private $status;
 
@@ -60,7 +60,7 @@ class InterviewUser
     /**
      * Set status
      *
-     * @param boolean $status
+     * @param integer $status
      *
      * @return InterviewUser
      */
@@ -74,7 +74,7 @@ class InterviewUser
     /**
      * Get status
      *
-     * @return bool
+     * @return integer
      */
     public function getStatus()
     {

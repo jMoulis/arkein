@@ -40,13 +40,11 @@
                     url: $form.data('url'),
                     method: 'POST',
                     data: JSON.stringify([formData]),
-                    success: function (data) {
-
-                    },
-                    error: function (jqXHR) {
-                        const errorData = JSON.parse(jqXHR.responseText);
-                        self._mapErrorsToForm(errorData.errors);
-                    }
+                }).done(function(){
+                    console.log('test')
+                }).fail(function(jqXHR){
+                    const errorData = JSON.parse(jqXHR.responseText);
+                    self._mapErrorsToForm(errorData.errors);
                 })
             }
 
@@ -57,7 +55,7 @@
             const $form = $(e.currentTarget);
             const self = this;
             const entretienId = $('.js-edit-entretien-form').data('entretien');
-            console.log(entretienId);
+            console.log(entretienId)
             const formData = {};
             $.each($form.serializeArray(), function (key, fieldData) {
                 formData[fieldData.name] = fieldData.value;
@@ -67,17 +65,35 @@
                 url: Routing.generate('api_interviewuser_edit', {id: entretienId}),
                 method: 'POST',
                 data: JSON.stringify(formData),
-                success: function (data) {
-                    $('#editEntretienModal').modal('hide');
-                },
-                error: function (jqXHR) {
-                    const errorData = JSON.parse(jqXHR.responseText);
-                    self._mapErrorsToForm(errorData.errors);
+            }).done(function(data){
+                console.log(data);
+                const $btnStatus = $('#entretien_id_'+ data.interview +'').find('.js-detail-entretien');
+                let html = "";
+                // 0 = non Aswered, 1 = present, 2 = absent
+                if(Number(data.status) === 1){
+                    html = '<i class="fa fa-thumbs-up" aria-hidden="true"></i>';
+                    $btnStatus
+                        .removeClass('btn-secondary btn-danger')
+                        .addClass('btn-primary');
+                } else if(Number(data.status) === 2) {
+                    $btnStatus
+                        .removeClass('btn-primary btn-danger')
+                        .addClass('btn-secondary');
+                    html = '<i class="fa fa-thumbs-down" aria-hidden="true"></i>';
                 }
+                // Et met à jour le bouton du row correspondant
+                $btnStatus
+                    .empty()
+                    .append(html);
+
+                $('#editEntretienModal').modal('hide');
+            }).fail(function(jqXHR){
+                const errorData = JSON.parse(jqXHR.responseText);
+                self._mapErrorsToForm(errorData.errors);
             })
         },
 
-        _mapErrorsToForm: function (errorData) {
+        /*_mapErrorsToForm: function (errorData) {
             this._removeFormErrors();
             const $form = this.$wrapper.find(this._selector.newStatusForm);
 
@@ -99,14 +115,6 @@
             const $form = this.$wrapper.find(this._selector.newStatusForm);
             $form.find('.js-field-error').remove();
             $form.find('.form-group').removeClass('has-error');
-        },
-
-        _clearForm: function () {
-            this._removeFormErrors();
-            $('.js-actual-guests').empty();
-            const $form = this.$wrapper.find(this._selector.newStatusForm);
-            $form[0].reset();
-
-        }
+        },*/
     });
 })(window, jQuery, Routing);
