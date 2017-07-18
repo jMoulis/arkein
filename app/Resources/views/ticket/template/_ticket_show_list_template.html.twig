@@ -1,6 +1,11 @@
 <tr id="ticket_auteur_<%= auteurId %>" data-user="<%= auteurId %>">
     <td>
-        <a href="<%= links._self %>" class="btn btn-warning" data-id="<%= id %>" >Consulter</a>
+        <a href="<%= links._self %>"
+           class="btn btn-success btn-sm"
+           data-id="<%= id %>"
+           title="Consulter">
+            <i class="fa fa-eye" aria-hidden="true"></i>
+        </a>
     </td>
     <td><%= date %></td>
     <td><%= auteur %></td>

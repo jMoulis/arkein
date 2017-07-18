@@ -2,14 +2,7 @@
 
 {% block dashcontent %}
     <h1>Liste Entretiens</h1>
-<div class="btnAjoutGenerique">
-    <a class="js-new-entretien-btn btn btn-primary"
-       href="#"
-       data-toggle="modal"
-       data-target="#newEntretienModal">
-        Nouvel entretien
-    </a>
-</div>
+
     {{ include('entretien/_interviews-lists.html.twig') }}
 {% endblock %}
 
@@ -21,23 +14,13 @@
         const entretienApp = new EntretienAppAuthor($entretienWrapper);
         const statusApp = new StatusApp($entretienWrapper);
 
-        $('.js-new-entretien-btn').on('click', function () {
-            entretienApp._emptyHtmlModalBody();
-            entretienApp.loadUsers();
-        });
 
         $('.js-select-young').change(function (e) {
             const $user = $(e.currentTarget).val();
             entretienApp.loadGuests($user);
         });
 
-        $entretienWrapper.on('click', '.js-participe', function () {
-            $('#status').val(1);
-        });
 
-        $entretienWrapper.on('click', '.js-participe-pas', function () {
-            $('#status').val(0);
-        });
 
     </script>
 

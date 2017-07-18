@@ -1,31 +1,18 @@
 <div class="js-entretien-wrapper" data-user="{{ app.user.id }}">
+    <div class="btnAjoutGenerique">
+        <a class="js-new-entretien-btn btn btn-primary"
+           href="#"
+           data-toggle="modal"
+           data-target="#newEntretienModal">
+            Nouvel entretien
+        </a>
+    </div>
     <div class="" id="myInterview" role="tabpanel">
         <div class="js-main-content-created">
-            <div>
-                <span class="badge badge-warning ">
-                    <i class="fa fa-eye" aria-hidden="true"></i>
-                </span>
-                <span>
-                    <em> Clôturé</em>
-                </span>
-                <span class="badge badge-success">
-                    <i class="fa fa-eye" aria-hidden="true"></i>
-                </span>
-                <span>
-                    <em> Ouvert</em>
-                </span>
-                <span class="badge badge-primary">
-                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                </span>
-                <span>
-                    <em> Ecrire compte rendu</em>
-                </span>
-            </div>
-
             <table class="table table-responsive table-hover">
                 <thead>
                 <tr>
-                    <th colspan="2">Actions</th>
+                    <th colspan="2">Actions <i class="fa fa-question-circle-o" aria-hidden="true" title="Légende"></i> </th>
                     <th>Date</th>
                     <th>Objet</th>
                     <th>Ordre du jour</th>

@@ -5,29 +5,33 @@
            class="js-detail-entretien btn btn-success btn-sm"
            data-id="<%= id %>"
            data-toggle="modal"
-           data-target="#editEntretienModal">
-            <i class="fa fa-eye" aria-hidden="true"></i>
+           data-target="#editEntretienModal"
+           title="En cours">
+            <i class="fa fa-square-o" aria-hidden="true"></i>
         </a>
     </td>
     <% } else { %>
     <td>
         <a href="<%= links._self %>"
-           class="js-detail-entretien btn btn-warning btn-sm"
+           class="js-detail-entretien btn btn-info btn-sm"
            data-id="<%= id %>"
            data-toggle="modal"
            data-backdrop = "false"
-           data-target="#editEntretienModal">
-            <i class="fa fa-eye" aria-hidden="true"></i>
+           data-target="#editEntretienModal"
+            title="Clôturé">
+            <i class="fa fa-check-square-o" aria-hidden="true"></i>
         </a>
     </td>
 
     <% } %>
     <td>
         <% if (!compteRendu && authorId == $('.js-entretien-wrapper').data('user')) { %>
-        <a href="#" class="js-saisir-compteRendu btn btn-primary btn-sm"
+        <a href="#" class="js-saisir-compteRendu btn btn-warning btn-sm"
            data-id="<%= id %>"
            data-toggle="modal"
-           data-target="#saisirCompteRenduModal">
+           data-target="#saisirCompteRenduModal"
+           title="Saisir Compte-Rendu"
+            >
             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
         </a>
         <% } %>

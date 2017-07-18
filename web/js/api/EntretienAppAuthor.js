@@ -71,6 +71,26 @@
             this.setInputIdEntretienNewCompteRenduForm.bind(this)
         );
 
+        this.$wrapper.on(
+            'click',
+            '.js-new-entretien-btn',
+            this.loadUsers.bind(this)
+        );
+
+        this.$wrapper.on(
+            'click',
+            '.js-participe',
+            function () {
+                $('#status').val(1);
+            });
+
+        this.$wrapper.on(
+            'click',
+            '.js-participe-pas',
+            function () {
+                $('#status').val(0);
+            });
+
         this.loadEntretiens();
 
     };
@@ -284,7 +304,7 @@
                     /*
                     * 1- Check if the actual user is the author of the interview
                     * --> We eneble the form items, we load users et and guests select
-                    * 2- We check if there is a compte-rendu or if the user is not the author,
+                    * 2- We check if there is a compte-rendu and if the user is not the author,
                     * --> We load the check in presence
                     * */
                     if(data.item.authorId === user){
@@ -295,6 +315,10 @@
                     if(!data.item.compteRendu && user !== data.item.authorId){
                         self._loadStatusUpdateForm();
                     }
+                    if(data.item.compteRendu){
+                        self._disabledControlEditForm();
+                        $('.js-delete-guest').remove();
+                    }
                 }
             })
         },
@@ -303,6 +327,8 @@
             const self = this;
             self._emptySelectYoung();
             self._emptySelectGuest();
+            console.log('test')
+            self._enableControlEditForm();
             $.ajax({
                 url: Routing.generate('young_list'),
                 success: function (data) {
@@ -468,6 +494,7 @@
             $('#guests').prop('disabled', true).hide();
             // We remove the delete guest button
             $('.js-delete-guest').remove();
+
         },
         _enableControlEditForm: function () {
             $('.form-control').prop('disabled', false);

@@ -26,12 +26,6 @@
      1- Load du tableau
      #}
     <script type="text/template" id="js-user-row-template">
-        <tr>
-            <td><a href="<%= links._self %>" class="js-detail-user btn btn-warning" data-id="<%= id %>" >Consulter</a></td>
-            <td><%= name %></td>
-            <td><%= firstname %></td>
-            <td><%= email %></td>
-            <td><%= role %></td>
-        </tr>
+        {{ source ('user/template/_lists-user.html.twig') }}
     </script>
 {% endblock %}
