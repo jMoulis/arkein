@@ -46,7 +46,7 @@ class BaseController extends Controller
         $errors = array();
         foreach ($form->all() as $childForm) {
             if ($childForm instanceof FormInterface) {
-                if ($childError = $this->getErrorsFromForm($childForm)) {
+                if ($childError = $this->getErrorsFromFormAction($childForm)) {
                     $errors[$childForm->getName()] = $childError;
                 }
             }
