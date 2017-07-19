@@ -1,0 +1,38 @@
+<script src="{{ asset('js/third-library/PDFObject/pdfobject.min.js') }}"></script>
+<script>
+    const $entretienWrapper = $('.js-entretien-wrapper');
+    const entretienApp = new EntretienAppAuthor($entretienWrapper);
+    const statusApp = new StatusApp($entretienWrapper);
+</script>
+
+<!-- NEW INTERVIEW SECTION -->
+<!--
+    1- Displays interviewee (youngtsers)
+    2- Displays guests, filtered by interviewee
+ -->
+<script type="text/template" id="js-user-option-template">
+    <option value="<%= id %>"><%= fullname %></option>
+</script>
+<script type="text/template" id="js-guests-option-template">
+    <option value="<%= id %>"><%= fullname %></option>
+</script>
+<!--
+    1- Get the table template,
+    2- Get the edit form template
+    3-
+-->
+<script type="text/template" id="js-entretien-row-template">
+    {{ source('entretien/template/_list_entretien_template.html.twig') }}
+</script>
+
+<script type="text/template" id="js-entretien-detail-template">
+    {{ source('entretien/template/_edit_entretien_template.html.twig') }}
+</script>
+
+<script type="text/template" id="js-status-update">
+    {{ source('entretien/template/_edit_status_template.html.twig') }}
+</script>
+
+<script type="text/template" id="js-compterendu-form-template">
+    {{ source('entretien/template/_edit_compterendu_template.html.twig') }}
+</script>

@@ -45,18 +45,12 @@
     {{ parent() }}
 
     <script>
+        // Manage document
         const $docWrapper = $('.js-documentation-wrapper');
         const documentApp = new DocumentApp($docWrapper);
-
-        const $folder = $('.js-documentation-wrapper');
-        const categoryApp = new CategoryApp($folder);
-
-        const $entretienWrapper = $('.js-entretien-wrapper');
-        const entretienApp = new EntretienAppAuthor($entretienWrapper);
-        const statusApp = new StatusApp($entretienWrapper);
+        const categoryApp = new CategoryApp($docWrapper);
         categoryApp.loadListTreeViewCategorie();
         categoryApp.loadListSelectCategorie();
-
 
         $docWrapper.on('click', '.js-load-file', function (e) {
             e.preventDefault();
@@ -64,40 +58,9 @@
         });
 
         $('#isPrivate').prop("checked", "true");
-
     </script>
 
-
-
-    {# Template pour les entretiens:
-     1- loader la selectbox du formulaire (Modal) d'ajout de document
-     2- Load du tableau
-     3- Load du détail dans le modal
-     #}
-
-
-    <script type="text/template" id="js-guests-option-template">
-        <option value="<%= id %>"><%= fullname %></option>
-    </script>
-    <script type="text/template" id="js-user-option-template">
-        <option value="<%= id %>"><%= fullname %></option>
-    </script>
-
-    <script type="text/template" id="js-entretien-row-template">
-        {{ source('entretien/template/_list_entretien_template.html.twig') }}
-    </script>
-
-    <script type="text/template" id="js-entretien-detail-template">
-        {{ source('entretien/template/_edit_entretien_template.html.twig') }}
-    </script>
-
-    <script type="text/template" id="js-status-update">
-        {{ source('entretien/template/_edit_status_template.html.twig') }}
-    </script>
-
-    <script type="text/template" id="js-compterendu-form-template">
-        {{ source('entretien/template/_edit_compterendu_template.html.twig') }}
-    </script>
+    {{ include('entretien/template/_scriptGlobal.html.twig') }}
 
     <!-- Documents/Categories Templates -->
     <script type="text/template" id="js-cat-option-template">

@@ -33,6 +33,17 @@
             </td>
         <!-- TODO: Check if there is more than one guest, it means that the template is loaded by members panel -->
         <% } else { %>
+            <td>
+                <a href="<%= links._self %>"
+                   class="js-detail-entretien btn btn-secondary btn-sm"
+                   data-id="<%= id %>"
+                   data-toggle="modal"
+                   data-backdrop = "false"
+                   data-target="#editEntretienModal"
+                   title="Consulter">
+                    <i class="fa fa-eye" aria-hidden="true"></i>
+                </a>
+            </td>
             <% if(guests[0].status === 0){ %>
                 <td>
                     <a href="<%= links._self %>"
@@ -70,9 +81,19 @@
                     </a>
                 </td>
             <% } %>
-        <td></td>
         <% } %>
     <% } else { %>
+    <td>
+        <a href="<%= links._self %>"
+           class="js-detail-entretien btn btn-secondary btn-sm"
+           data-id="<%= id %>"
+           data-toggle="modal"
+           data-backdrop = "false"
+           data-target="#editEntretienModal"
+           title="Consulter">
+            <i class="fa fa-eye" aria-hidden="true"></i>
+        </a>
+    </td>
         <td>
             <a href="<%= links._self %>"
                class="js-detail-entretien btn btn-info btn-sm"
@@ -81,10 +102,10 @@
                data-backdrop = "false"
                data-target="#editEntretienModal"
                title="Clôturé">
-                <i class="fa fa-square-o" aria-hidden="true"></i>
+                <i class="fa fa-check-square-o" aria-hidden="true"></i>
             </a>
         </td>
-    <td></td>
+
     <% } %>
     <td><% var d = new Date(date); print(d.toLocaleDateString()); %></td>
     <td><%= objet %></td>

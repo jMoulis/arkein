@@ -37,6 +37,7 @@ class BaseController extends Controller
     public function getErrorsFromFormAction(FormInterface $form)
     {
         foreach ($form->getErrors() as $error) {
+
             // only supporting 1 error per field
             // and not supporting a "field" with errors, that has more
             // fields with errors below it

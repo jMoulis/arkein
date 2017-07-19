@@ -23,13 +23,15 @@ class EntretienRepository extends EntityRepository
             ;
     }
 
-    public function getInterviewByGuest(User $user)
+    public function getInterviewByGuestAndByYoung(User $user, User $young)
     {
         return $this->createQueryBuilder('entretien')
             ->leftJoin('entretien.interviewGuests', 'guest')
             ->addSelect('guest')
             ->where('guest.user = :user')
             ->setParameter('user', $user)
+            ->andWhere('entretien.young = :young')
+            ->setParameter('young', $young)
             ->getQuery()
             ->execute()
             ;

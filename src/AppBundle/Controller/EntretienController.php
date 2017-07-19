@@ -9,6 +9,7 @@ use AppBundle\Form\Type\EntretienType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use UserBundle\Entity\User;
 
 /**
@@ -53,7 +54,24 @@ class EntretienController extends BaseController
         $data = json_decode($request->getContent(), true);
         $dataFormEntretien = $data[0];
         $newGuests = array_keys($data[1]);
-        $form = $this->get('app.api_response')->ajaxResponse(EntretienType::class, $dataFormEntretien);
+
+        if ($data === null) {
+            throw new BadRequestHttpException('Invalid JSON');
+        }
+
+        $form = $this->createForm(EntretienType::class, null, [
+            'csrf_protection' => false,
+        ]);
+
+        $form->submit($dataFormEntretien);
+
+        if (!$form->isValid()) {
+            $errors = $this->getErrorsFromFormAction($form);
+
+            return $this->createApiResponseAction([
+                'errors' => $errors
+            ], 400);
+        }
 
         /** @var Entretien $entretien */
         $entretien = $form->getData();
@@ -100,25 +118,6 @@ class EntretienController extends BaseController
         ));
     }
 
-    /**
-     * @Route("/api/guest/{id}/", name="entretien_list_by_invitation", options={"expose" = true})
-     * @Method("GET")
-     */
-    public function getInvitationAction(User $user)
-    {
-        if(!$user) {
-            throw new \Exception('erreur object non trouvé', 500);
-        }
-        $entetiens = $this->getDoctrine()->getRepository('AppBundle:Entretien')
-            ->getInterviewByGuest($user);
-        $models = [];
-        foreach ($entetiens as $entetien) {
-            $models[] = $this->createEntretienApiModel($entetien);
-        }
-        return $this->createApiResponseAction([
-            'items' => $models
-        ]);
-    }
 
     /**
      * @Route("/api/author/{id}/",
@@ -151,18 +150,16 @@ class EntretienController extends BaseController
      *
      * @Method("GET")
      *
-     * Load entretiens in the show user
+     * Load entretiens where in the show user and the logged-user is a guest
+     *
      */
-    public function getEntretiensByYoungAction(User $user)
+    public function getEntretiensByYoungAction(User $young)
     {
-
-        if(!$user) {
+        if(!$young) {
             throw new \Exception('erreur object non trouvé', 500);
         }
         $entetiens = $this->getDoctrine()->getRepository('AppBundle:Entretien')
-            ->findBy([
-                'young' => $user
-            ]);
+            ->getInterviewByGuestAndByYoung($this->getUser(), $young);
         $models = [];
         foreach ($entetiens as $entetien) {
             $models[] = $this->createEntretienApiModel($entetien);
@@ -213,7 +210,23 @@ class EntretienController extends BaseController
 
         $dataFormEntretien = $data[0];
 
-        $this->get('app.api_response')->ajaxResponse(EntretienType::class, $dataFormEntretien);
+        if ($data === null) {
+            throw new BadRequestHttpException('Invalid JSON');
+        }
+
+        $form = $this->createForm(EntretienType::class, null, [
+            'csrf_protection' => false,
+        ]);
+
+        $form->submit($dataFormEntretien);
+
+        if (!$form->isValid()) {
+            $errors = $this->getErrorsFromFormAction($form);
+
+            return $this->createApiResponseAction([
+                'errors' => $errors
+            ], 400);
+        }
 
         $em = $this->getDoctrine()->getManager();
         $entretien = $em->getRepository('AppBundle:Entretien')->findOneBy(['id' => $entretienId]);
@@ -297,7 +310,7 @@ class EntretienController extends BaseController
         foreach ($entretien->getInterviewGuests() as $interviewGuest) {
             $model->guests[] = [
                 'name' => $interviewGuest->getUser()->getFullName(),
-                'id' => $interviewGuest->getId(),
+                'id' => $interviewGuest->getUser()->getId(),
                 'status' => $interviewGuest->getStatus()
             ];
         }

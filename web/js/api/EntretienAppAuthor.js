@@ -54,6 +54,12 @@
         );
 
         this.$wrapper.on(
+            'change',
+            '.js-select-young',
+            this._selectGuestByInterviewee.bind(this)
+        );
+
+        this.$wrapper.on(
             'click',
             '.js-delete-guest',
             this.removeGuest.bind(this)
@@ -114,7 +120,7 @@
             modalFooter: '.modal-footer',
             modalForm: '.modal-body form',
             tbodyEntretiens: '.tab-content tbody',
-            tbodyInvitations: '.tab-content tbody'
+            tbodyInvitations: '.tab-content tbody',
         },
 
         handleNewEntretienSubmit: function (e) {
@@ -146,15 +152,16 @@
                 url: $form.data('url'),
                 method: 'POST',
                 data: JSON.stringify([formData, guestsObject])
-            }).done(function(data){
+            }).then(function(data){
                 self.sucessSendAction();
                 self._clearForm();
                 self._addInterviewsRow(data);
                 $(self._selector.newModal).modal('toggle');
-            }).fail(function (jqXHR) {
+            }).catch(function (jqXHR) {
+                console.log('catch');
                 const errorData = JSON.parse(jqXHR.responseText);
                 self._mapErrorsToForm(errorData.errors);
-                $(this._selector.modalForm).find('button').prop("disabled", false);
+                $(self._selector.modalForm).find('button').prop("disabled", false);
             })
         },
 
@@ -167,7 +174,7 @@
             // adn get the entretien value.
             const entretienId = $form.find('.js-entretien-input').val();
 
-            // Get the action's btn to apply different rules in the done method
+            // Get the action's btn to apply different rules in the then method
             const $compteRenduBtn = $('#entretien_id_'+ entretienId +'').find('td .js-saisir-compteRendu');
             const $detailBtn = $compteRenduBtn.closest('tr').find('td .js-detail-entretien');
 
@@ -183,7 +190,7 @@
                 url: Routing.generate('compterendu_new'),
                 method: 'POST',
                 data: JSON.stringify(formData)
-            }).done(function(){
+            }).then(function(){
                 self.sucessSendAction();
                 self._clearForm();
                 $(self._selector.newCompteRenduModal).modal('toggle');
@@ -194,7 +201,7 @@
                     .empty()
                     .append('<i class="fa fa-check-square-o" aria-hidden="true"></i>'
                     );
-            }).fail(function(jqXHR){
+            }).catch(function(jqXHR){
                 const errorData = JSON.parse(jqXHR.responseText);
                 $(this._selector.modalForm).find('button').prop("disabled", false);
                 self._mapErrorsToForm(errorData.errors);
@@ -209,7 +216,6 @@
             const entretienId = $form.data('entretien');
             const $guests = $form.find('.js-actual-guest-edit').children();
 
-            console.log($guests);
             const tr = self.$wrapper.find('.js-main-content-created table tbody tr[title=entretien_id_'+  entretienId +']');
 
             /** Afin de pouvoir enregistrer des guests, il était nécessaire
@@ -219,7 +225,6 @@
              */
             const guestsObject = {};
             $.each($guests, function (key, fieldData) {
-                console.log(fieldData)
                 guestsObject[Number($(fieldData).data('user'))] = fieldData.title;
             });
 
@@ -238,14 +243,15 @@
                 url: Routing.generate('entretien_edit', {id: entretienId}),
                 method: 'POST',
                 data: JSON.stringify(arrayToBeSend)
-            }).done(function(data){
+            }).then(function(data){
                 self._updateActualRow(tr, data.date, data.objet, data.odj);
                 self.sucessSendAction();
                 self._clearForm();
                 $(self._selector.editEntretienModal).modal('toggle');
-            }).fail(function (jqXHR) {
+            }).catch(function (jqXHR) {
+                console.log('catch');
                 const errorData = JSON.parse(jqXHR.responseText);
-                $(this._selector.modalForm).find('button').prop("disabled", false);
+                $(self._selector.modalForm).find('button').prop("disabled", false);
                 self._mapErrorsToForm(errorData.errors);
             })
         },
@@ -277,7 +283,7 @@
                     $(self._selector.tabInterview).append('<span class="loading">Chargement...</span>');
                 },
                 url: Routing.generate(routeName, {id: $userToSendToAjax})
-            }).done(function(data){
+            }).then(function(data){
                 if($(data.items).length <= 0){
                     $(self._selector.tabInterview).find('.loading').remove();
                 } else {
@@ -300,7 +306,7 @@
                     $(self._selector.editModalFooter).append("<span class='loading'>Chargement...</span>");
                 },
                 url: Routing.generate('entretien_modal_detail', {id: entretien}),
-            }).done(function(data){
+            }).then(function(data){
                 $('.loading').remove();
                 self._addEditForm(data.item);
                 self.loadUsers();
@@ -317,7 +323,7 @@
                     self._disabledControlEditForm();
                     self._loadStatusUpdateForm();
                 }
-            }).fail(function(){
+            }).catch(function(){
                 console.log('Une erreur')
             })
         },
@@ -328,7 +334,7 @@
             self._emptySelectGuest();
             $.ajax({
                 url: Routing.generate('young_list')
-            }).done(function(data){
+            }).then(function(data){
                 $.each(data.items, function (key, user) {
                     self._addSelect(user);
                 });
@@ -340,7 +346,7 @@
             if(user) {
                 $.ajax({
                     url: Routing.generate('guest_list', { user: user })
-                }).done(function(data){
+                }).then(function(data){
                     self._emptySelectGuest();
                     self.$wrapper.find(self._selector.guestSelect).prop('disabled', false);
                     $('.js-actual-guests').empty();
@@ -348,7 +354,7 @@
                         self._addGuestsSelect(user);
                         self.addAllSpanGuest(user);
                     });
-                }).fail(function(jqXHR){
+                }).catch(function(jqXHR){
                     const errorData = JSON.parse(jqXHR.responseText);
                     console.log(errorData);
                 });
@@ -359,6 +365,10 @@
             }
         },
 
+        _selectGuestByInterviewee: function (e) {
+            const $user = $(e.currentTarget).val();
+            this.loadGuests($user);
+        },
         loadDetailCompteRendu: function(e){
             const self =this;
             $('#editEntretienModal').modal('toggle');
@@ -375,7 +385,7 @@
                     $(self._selector.editModalFooter).append("<span class='loading'>Chargement...</span>");
                 },
                 url: Routing.generate('entretien_modal_detail', {id: entretienId})
-            }).done(function(data){
+            }).then(function(data){
                 const lienpdf = data.item.compteRenduLien;
                 PDFObject.embed(lienpdf, '#pdfViewer .modal-body');
             });
@@ -388,18 +398,22 @@
         },
 
         _mapErrorsToForm: function (errorData) {
+            console.log(errorData)
             this._removeFormErrors();
-            const $form = this.$wrapper.find('.modal-body').find('form');
-            $form.find(':input').each(function () {
+            const $form = this.$wrapper.find('.show').find('.modal-body').find('form');
+
+            $form.find('.form-control').each(function () {
                 const fieldName = $(this).attr('name');
+                const $wrapper = $(this).closest('.form-group');
+                const $error = $('<span class="js-field-error text-danger"></span>');
+
                 if (!errorData[fieldName]){
                     return;
                 }
 
-                const $error = $('<span class="js-field-error text-danger"></span>');
                 $error.html(errorData[fieldName]);
-                $form.prepend($error);
-                $form.addClass('has-error');
+                $wrapper.append($error);
+                $wrapper.addClass('has-error');
             });
         },
 

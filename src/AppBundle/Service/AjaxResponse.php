@@ -41,6 +41,7 @@ class AjaxResponse
             'csrf_protection' => false,
         ]);
         $form->submit($data);
+
         if (!$form->isValid()) {
             $errors = $this->baseController->getErrorsFromFormAction($form);
 
