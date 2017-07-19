@@ -50,6 +50,7 @@ class CompteRenduController extends BaseController
         }
 
         $compterendu = $form->getData();
+
         $pathLoad = $this->pdfProcess($data, $compterendu);
         $compterendu->setLienpdf($pathLoad);
 
@@ -184,7 +185,7 @@ class CompteRenduController extends BaseController
     {
         $post_editor = trim($data['compteRendu']);
         $fileName = $entity->getEntretien()->getId();
-        $pathSave = "/pdf/".$fileName.".pdf";
+        $pathSave = "/arkein/web/pdf/".$fileName.".pdf";
         $pathLoad = "../web/pdf/".$fileName.".pdf";
 
         if(!$this->exportPDF($post_editor,$pathLoad))
