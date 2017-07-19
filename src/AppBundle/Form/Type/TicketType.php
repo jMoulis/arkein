@@ -2,10 +2,11 @@
 
 namespace AppBundle\Form\Type;
 
+
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -34,8 +35,9 @@ class TicketType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $user = $this->tokenStorage->getToken()->getUser();
+
         $builder
-            ->add('objet', HiddenType::class)
+            ->add('objet', TextType::class)
             /* Je l'ai mis en hiddenType, est l'ai codé en pur html et JS,
              * pour gérer l'objet 'Autre' qui fait apparaître un inputtext
              * pour écrire un objet autre et c'est JS qui sert pour remplir cet hidden field
@@ -103,7 +105,7 @@ class TicketType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'appbundle_ticket';
+        return '';
     }
 
 

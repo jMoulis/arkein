@@ -28,6 +28,7 @@ class InterviewUserController extends BaseController
         $data = json_decode($request->getContent(), true);
 
 
+
         /** @var InterviewUser $interviewUser */
         $em = $this->getDoctrine()->getManager();
         $entretien = $em->getRepository('AppBundle:Entretien')->find($entretienId);
@@ -36,6 +37,7 @@ class InterviewUserController extends BaseController
             'interview' => $entretien,
             'user' => $this->getUser()
         ]);
+
         $interviewUser->setStatus($data['status']);
         $em->persist($interviewUser);
         $em->flush();

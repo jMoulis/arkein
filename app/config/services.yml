@@ -56,7 +56,3 @@ services:
         autowire: true
         tags:
             - { name: doctrine.event_subscriber }
-
-    app.api_response:
-        class: AppBundle\Service\AjaxResponse
-        autowire: true

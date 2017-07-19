@@ -35,7 +35,7 @@
         <% } else { %>
             <td>
                 <a href="<%= links._self %>"
-                   class="js-detail-entretien btn btn-secondary btn-sm"
+                   class="js-detail-entretien btn btn-view btn-sm"
                    data-id="<%= id %>"
                    data-toggle="modal"
                    data-backdrop = "false"
@@ -71,7 +71,7 @@
             <% } else if(guests[0].status === 2){ %>
                 <td>
                     <a href="<%= links._self %>"
-                       class="js-detail-entretien js-status js-status-absent btn  btn-secondary btn-sm"
+                       class="js-detail-entretien js-status js-status-absent btn  btn-default btn-sm"
                        data-id="<%= id %>"
                        data-toggle="modal"
                        data-backdrop = "false"
@@ -85,7 +85,7 @@
     <% } else { %>
     <td>
         <a href="<%= links._self %>"
-           class="js-detail-entretien btn btn-secondary btn-sm"
+           class="js-detail-entretien btn btn-view btn-sm"
            data-id="<%= id %>"
            data-toggle="modal"
            data-backdrop = "false"
@@ -95,20 +95,17 @@
         </a>
     </td>
         <td>
-            <a href="<%= links._self %>"
-               class="js-detail-entretien btn btn-info btn-sm"
-               data-id="<%= id %>"
-               data-toggle="modal"
-               data-backdrop = "false"
-               data-target="#editEntretienModal"
+            <span
+               class="btn btn-info btn-sm"
                title="Clôturé">
                 <i class="fa fa-check-square-o" aria-hidden="true"></i>
-            </a>
+            </span>
         </td>
 
     <% } %>
-    <td><% var d = new Date(date); print(d.toLocaleDateString()); %></td>
+    <td><%= date %></td>
     <td><%= objet %></td>
     <td><%= odj %></td>
     <td><%= author %></td>
+    <td><%= young %></td>
 </tr>

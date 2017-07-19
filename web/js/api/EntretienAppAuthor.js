@@ -97,6 +97,8 @@
                 $('#status').val(2);
             });
 
+        this.loadPopOver();
+
         this.loadEntretiens();
     };
 
@@ -158,7 +160,6 @@
                 self._addInterviewsRow(data);
                 $(self._selector.newModal).modal('toggle');
             }).catch(function (jqXHR) {
-                console.log('catch');
                 const errorData = JSON.parse(jqXHR.responseText);
                 self._mapErrorsToForm(errorData.errors);
                 $(self._selector.modalForm).find('button').prop("disabled", false);
@@ -194,16 +195,26 @@
                 self.sucessSendAction();
                 self._clearForm();
                 $(self._selector.newCompteRenduModal).modal('toggle');
-                $compteRenduBtn.remove();
                 $detailBtn
                     .removeClass('btn-success')
-                    .addClass('btn-info')
+                    .addClass('btn-view')
                     .empty()
-                    .append('<i class="fa fa-check-square-o" aria-hidden="true"></i>'
-                    );
+                    .append('<i class="fa fa-eye" aria-hidden="true"></i>')
+                    .attr({
+                        "title": "Consulter",
+                    });
+                $compteRenduBtn
+                    .removeClass()
+                    .addClass('btn btn-info btn-sm')
+                    .empty()
+                    .append('<i class="fa fa-check-square-o" aria-hidden="true"></i>')
+                    .attr({
+                        "title": "Clôturé",
+                        "data-target": ""
+                    })
             }).catch(function(jqXHR){
                 const errorData = JSON.parse(jqXHR.responseText);
-                $(this._selector.modalForm).find('button').prop("disabled", false);
+                $(self._selector.modalForm).find('button').prop("disabled", false);
                 self._mapErrorsToForm(errorData.errors);
             })
         },
@@ -216,7 +227,7 @@
             const entretienId = $form.data('entretien');
             const $guests = $form.find('.js-actual-guest-edit').children();
 
-            const tr = self.$wrapper.find('.js-main-content-created table tbody tr[title=entretien_id_'+  entretienId +']');
+            const tr = self.$wrapper.find('.js-entretiens-table tr#entretien_id_'+  entretienId +'');
 
             /** Afin de pouvoir enregistrer des guests, il était nécessaire
              * de créer un objet avec les id des users
@@ -249,7 +260,6 @@
                 self._clearForm();
                 $(self._selector.editEntretienModal).modal('toggle');
             }).catch(function (jqXHR) {
-                console.log('catch');
                 const errorData = JSON.parse(jqXHR.responseText);
                 $(self._selector.modalForm).find('button').prop("disabled", false);
                 self._mapErrorsToForm(errorData.errors);
@@ -323,8 +333,9 @@
                     self._disabledControlEditForm();
                     self._loadStatusUpdateForm();
                 }
+
             }).catch(function(){
-                console.log('Une erreur')
+                console.log('Une erreur');
             })
         },
 
@@ -376,7 +387,6 @@
             let modal = $('.js-modal-viewer h5').attr('data-id', entretienId);
             self.loadPdf(entretienId);
         },
-
         loadPdf: function (entretienId) {
             const self = this;
             $('#pdfViewer').modal('show');
@@ -398,7 +408,6 @@
         },
 
         _mapErrorsToForm: function (errorData) {
-            console.log(errorData)
             this._removeFormErrors();
             const $form = this.$wrapper.find('.show').find('.modal-body').find('form');
 
@@ -481,7 +490,7 @@
             $ul.append('' +
                 '<li id="guest_'+ $(guest).val()+'" title="'+ $(guest).text() +'" data-user="'+ $(guest).val() +'">' +
                     '<span class="js-delete-guest badge badge-danger">X</span> ' +
-                    '<span class="badge badge-warning">'+ $(guest).text() +'</span>' +
+                    '<span class="badge badge-danger">'+ $(guest).text() +'</span>' +
                 '</li>'
             );
         },
@@ -493,7 +502,7 @@
             $('.js-actual-guests').append('' +
                 '<li id="guest_'+ user.id +'" title="'+ user.fullname +'" data-user="'+ user.id +'">' +
                 '<span class="js-delete-guest badge badge-danger">X</span> ' +
-                '<span class="badge badge-warning">'+ user.fullname +'</span>' +
+                '<span class="badge badge-danger">'+ user.fullname +'</span>' +
                 '</li>'
             );
         },
@@ -557,7 +566,23 @@
             $(this._selector.modalFooter).find('.saving').remove();
             $(this._selector.modalForm).find('button').prop("disabled", false);
             $(this._selector.tbody).find('.alert').remove();
-        }
+        },
 
+        loadPopOver: function(){
+            let html = '<ul>';
+            html += '<li><span class="badge badge-success"><i class="fa fa-square-o" aria-hidden="true"></i></span> En cours</li>';
+            html += '<li><span class="badge badge-warning"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></span> Saisir le compte rendu </li>';
+            html += '<li><span class="badge badge-view"><i class="fa fa-eye" aria-hidden="true"></i></span> Consulter</li>';
+            html += '<li><span class="badge badge-primary"><i class="fa fa-thumbs-up" aria-hidden="true"></i></span> Présent</li>';
+            html += '<li><span class="badge badge-default"><i class="fa fa-thumbs-down" aria-hidden="true"></i></span> Absent</li>';
+            html += '<li><span class="badge badge-info"><i class="fa fa-check-square-o" aria-hidden="true"></i></span> Clôturé</li>';
+            html += '<li><span class="badge badge-danger"><i class="fa fa-pause" aria-hidden="true"></i></span> Attente de réponse</li>';
+            html += '</ul>';
+            $('#action_popover').popover({
+                html: true,
+                content: html,
+                trigger: 'focus'
+            });
+        }
     });
 })(window, jQuery, Routing);

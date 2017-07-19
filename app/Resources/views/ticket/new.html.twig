@@ -41,7 +41,7 @@
     {{ parent() }}
 
     <script>
-        jQuery(document).ready(function() {
+
             const $div = $('.js-wrapper-input-autre');
             function addAutreField(){
                 const $label = $('<label class="control-label"></label>');
@@ -70,6 +70,5 @@
                 let $value = $(this).val();
                 $('#appbundle_ticket_objet').val($value);
             });
-        });
     </script>
 {% endblock %}

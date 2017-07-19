@@ -15,7 +15,7 @@ use Swift_Mailer;
 
 class TicketMailWorkflow implements EventSubscriber
 {
-    const ADMINMAIL = 'julien.moulis21@gmail.com';
+    const ADMINMAIL = 'julien.moulis@moulis.me';
 
     private $mailer;
 

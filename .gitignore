@@ -20,4 +20,7 @@
 /web/pdf/
 /web/test/
 /src/documents/
-/.idea/
+.idea
+Supprimerait var/cache/
+Supprimerait var/logs/
+Supprimerait var/sessions/

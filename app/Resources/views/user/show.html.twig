@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block dashcontent %}
-    <h1 id="member-detail" data-user="{{ user.id }}">Bienvenue, {{ user.firstname }}</h1>
+    <h1 id="member-detail" data-user="{{ user.id }}">Bienvenue, {{ user.firstname }} <a data-toggle="modal" data-target="#myModal"><i class="fa fa-cogs" aria-hidden="true"></i></a></h1>
     <!-- Tabs navigation -->
     <ul class="nav nav-tabs" id="tabs" role="tablist">
         <li class="nav-item w-100">
@@ -37,7 +37,47 @@
             {{ include('document/_doc_index.html.twig') }}
         </div>
         <!--Fin tab Document-->
+    </div>
 
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Fonctionalitées</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <ul class="list-group">
+                        <li class="list-group-item active">Gestion des membres</li>
+                        <li class="list-group-item">
+                            <strong>Gestion des droits admin</strong>
+                            <ul>
+                                <li class="list-group-item">- Modifier/Ajouter/Supprimer membres</li>
+                            </ul>
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Dépôt de document (bétâ)</strong>
+                            <ul>
+                                <li class="list-group-item">- Ajouter/(Si admin)Supprimer</li>
+                                <li class="list-group-item">- Changement de dossier en drag & drop</li>
+                                <li class="list-group-item">- Création d'un dossier</li>
+                            </ul>
+                        </li>
+                        <li class="list-group-item">Possibilité de consulter l'entretien</li>
+                        <li class="list-group-item">Valider ou invalider sa présence</li>
+                        <li class="list-group-item">Créer un compte rendu</li>
+                        <li class="list-group-item">Consulter et télécharger le compte rendu en pdf</li>
+                        <li class="list-group-item">Si l'utilisateur connecté n'est pas invité à un entretien, celui-ci ne s'affiche pas</li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}
 

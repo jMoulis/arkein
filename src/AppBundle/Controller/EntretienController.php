@@ -52,6 +52,7 @@ class EntretienController extends BaseController
     public function newAction(Request $request)
     {
         $data = json_decode($request->getContent(), true);
+
         $dataFormEntretien = $data[0];
         $newGuests = array_keys($data[1]);
 
@@ -81,10 +82,14 @@ class EntretienController extends BaseController
 
         if ($newGuests) {
             foreach ($newGuests as $guest) {
+
                 $interviewUser = new InterviewUser();
                 $interviewUser->setUser($em->getRepository('UserBundle:User')->find($guest));
                 $interviewUser->setInterview($entretien);
                 $entretien->addInterviewGuest($interviewUser);
+                if($em->getRepository('UserBundle:User')->find($guest) === $this->getUser()){
+                    $interviewUser->setStatus(1);
+                }
             }
         }
         $em->persist($entretien);
@@ -128,6 +133,7 @@ class EntretienController extends BaseController
      */
     public function getEntretiensByAuthorAction(User $user)
     {
+
         if(!$user) {
             throw new \Exception('erreur object non trouvé', 500);
         }
@@ -229,11 +235,15 @@ class EntretienController extends BaseController
         }
 
         $em = $this->getDoctrine()->getManager();
+
         $entretien = $em->getRepository('AppBundle:Entretien')->findOneBy(['id' => $entretienId]);
 
         $this->guestManager($entretien, $data, $dataFormEntretien, $em);
 
-        $date = new \DateTime(($dataFormEntretien['date']));
+
+        $dateTemporary = explode('/', $dataFormEntretien['date']);
+
+        $date = $this->setRightDateAction($dateTemporary);
 
         $entretien->setDate($date);
 
@@ -265,7 +275,6 @@ class EntretienController extends BaseController
     private function guestManager($entity, $data, $data2, $em)
     {
         $newGuests = array_keys($data[1]);
-        dump($newGuests);
 
         $existingGuests = [];
 
@@ -299,14 +308,25 @@ class EntretienController extends BaseController
             }
         }
     }
+    private function setRightDateAction($dateTemp)
+    {
+        $day = $dateTemp[0];
+        $month = $dateTemp[1];
+        $year = $dateTemp[2];
 
+        $date = new \DateTime(''. $year .'-'. $month .'-'. $day);
+
+        return $date;
+    }
     private function createEntretienApiModel(Entretien $entretien)
     {
         $model = new EntretienApiModel();
+
         $model->id = $entretien->getId();
         $model->objet = $entretien->getObjet();
         $model->date = $entretien->getDate()->format('d/m/Y');
         $model->odj = $entretien->getOdj();
+
         foreach ($entretien->getInterviewGuests() as $interviewGuest) {
             $model->guests[] = [
                 'name' => $interviewGuest->getUser()->getFullName(),
@@ -314,6 +334,8 @@ class EntretienController extends BaseController
                 'status' => $interviewGuest->getStatus()
             ];
         }
+
+        $model->totalGuests = count($entretien->getInterviewGuests());
         $model->isArchived = $entretien->getIsArchived();
         $model->author = $entretien->getAuthor()->getFullName();
         $model->authorId = $entretien->getAuthor()->getId();

@@ -8,6 +8,7 @@ use AppBundle\Form\Type\AnswerType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
  * @Route("answer")
@@ -47,7 +48,22 @@ class AnswerController extends BaseController
     {
         $ticketId = $request->attributes->get('id');
         $data = json_decode($request->getContent(), true);
-        $form = $this->get('app.api_response')->ajaxResponse(AnswerType::class, $data);
+        if ($data === null) {
+            throw new BadRequestHttpException('Invalid JSON');
+        }
+        $form = $this->createForm(AnswerType::class, null, [
+            'csrf_protection' => false,
+        ]);
+
+        $form->submit($data);
+
+        if (!$form->isValid()) {
+            $errors = $this->getErrorsFromFormAction($form);
+
+            return $this->createApiResponseAction([
+                'errors' => $errors
+            ], 400);
+        }
 
         /** @var Answer $answer */
         $answer = $form->getData();

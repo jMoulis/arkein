@@ -30,26 +30,38 @@ class CompteRenduController extends BaseController
     public function newAction(Request $request)
     {
         $data = json_decode($request->getContent(), true);
+        $em = $this->getDoctrine()->getManager();
 
-        $form = $this->get('app.api_response')->ajaxResponse(CompteRenduType::class, $data);
-        $entretien = $this->getDoctrine()->getRepository(Entretien::class)->find($data["entretien"]);
+        if ($data === null) {
+            throw new BadRequestHttpException('Invalid JSON');
+        }
+        $form = $this->createForm(CompteRenduType::class, null, [
+            'csrf_protection' => false,
+        ]);
 
-        /** @var compterendu $compterendu */
+        $form->submit($data);
+
+        if (!$form->isValid()) {
+            $errors = $this->getErrorsFromFormAction($form);
+
+            return $this->createApiResponseAction([
+                'errors' => $errors
+            ], 400);
+        }
+
         $compterendu = $form->getData();
+        $pathLoad = $this->pdfProcess($data, $compterendu);
+        $compterendu->setLienpdf($pathLoad);
 
+        $entretien = $this->getDoctrine()->getRepository(Entretien::class)->find($data["entretien"]);
         $entretien->setIsArchived(true);
 
-        $pathLoad = $this->pdfProcess($data, $compterendu);
-
-        $em = $this->getDoctrine()->getManager();
-        $compterendu->setLienpdf($pathLoad);
 
         $em->persist($compterendu);
         $em->persist($entretien);
         $em->flush();
 
         $apiModel = $this->createCompteRenduApiModel($compterendu);
-
         $response = $this->createApiResponseAction($apiModel);
         $response->headers->set(
             'Location',
@@ -108,7 +120,23 @@ class CompteRenduController extends BaseController
     {
 
         $data = json_decode($request->getContent(), true);
-        $this->get('app.api_response')->ajaxResponse(CompteRenduType::class, $data);
+
+        if ($data === null) {
+            throw new BadRequestHttpException('Invalid JSON');
+        }
+        $form = $this->createForm(CompteRenduType::class, null, [
+            'csrf_protection' => false,
+        ]);
+
+        $form->submit($data);
+
+        if (!$form->isValid()) {
+            $errors = $this->getErrorsFromFormAction($form);
+
+            return $this->createApiResponseAction([
+                'errors' => $errors
+            ], 400);
+        }
 
         $em = $this->getDoctrine()->getManager();
 
@@ -132,7 +160,6 @@ class CompteRenduController extends BaseController
         );
 
         return $response;
-
     }
 
     private function createCompteRenduApiModel(CompteRendu $compterendu)
@@ -181,6 +208,4 @@ class CompteRenduController extends BaseController
             return false;
         }
     }
-
-
 }

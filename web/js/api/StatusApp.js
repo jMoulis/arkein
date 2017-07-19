@@ -55,7 +55,6 @@
             const $form = $(e.currentTarget);
             const self = this;
             const entretienId = $('.js-edit-entretien-form').data('entretien');
-            console.log(entretienId)
             const formData = {};
             $.each($form.serializeArray(), function (key, fieldData) {
                 formData[fieldData.name] = fieldData.value;
@@ -65,20 +64,19 @@
                 url: Routing.generate('api_interviewuser_edit', {id: entretienId}),
                 method: 'POST',
                 data: JSON.stringify(formData),
-            }).done(function(data){
-                console.log(data);
-                const $btnStatus = $('#entretien_id_'+ data.interview +'').find('.js-detail-entretien');
+            }).then(function(data){
+                const $btnStatus = $('#entretien_id_'+ data.interview +'').find('.js-status');
                 let html = "";
                 // 0 = non Aswered, 1 = present, 2 = absent
                 if(Number(data.status) === 1){
                     html = '<i class="fa fa-thumbs-up" aria-hidden="true"></i>';
                     $btnStatus
-                        .removeClass('btn-secondary btn-danger')
+                        .removeClass('btn-default btn-danger')
                         .addClass('btn-primary');
                 } else if(Number(data.status) === 2) {
                     $btnStatus
                         .removeClass('btn-primary btn-danger')
-                        .addClass('btn-secondary');
+                        .addClass('btn-default');
                     html = '<i class="fa fa-thumbs-down" aria-hidden="true"></i>';
                 }
                 // Et met à jour le bouton du row correspondant
@@ -87,7 +85,7 @@
                     .append(html);
 
                 $('#editEntretienModal').modal('hide');
-            }).fail(function(jqXHR){
+            }).catch(function(jqXHR){
                 const errorData = JSON.parse(jqXHR.responseText);
                 self._mapErrorsToForm(errorData.errors);
             })

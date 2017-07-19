@@ -272,11 +272,11 @@ class Entretien
     /**
      * Set compteRendu
      *
-     * @param \AppBundle\Entity\CompteRendu $compteRendu
+     * @param CompteRendu $compteRendu
      *
      * @return Entretien
      */
-    public function setCompteRendu(\AppBundle\Entity\CompteRendu $compteRendu = null)
+    public function setCompteRendu(CompteRendu $compteRendu = null)
     {
         $this->compteRendu = $compteRendu;
 

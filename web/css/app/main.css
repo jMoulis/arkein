@@ -221,6 +221,17 @@ h5 {
 }
 
 /* SECTION ENTRETIEN */
+/* This rule defines the background tr of the interview
+    which are not created by the logged user
+*/
 .notMyInterview {
     background-color: #b2e5ff;
+}
+.btn-default {
+    background-color: #636c72;
+    color: white;
+}
+.btn-view, .badge-view {
+    background-color: hotpink;
+    color: white;
 }

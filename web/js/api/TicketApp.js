@@ -22,6 +22,11 @@
             this.handleEditFormSubmit.bind(this)
         );
 
+        this.$wrapper.on(
+            'click',
+            '.js-new-ticket',
+            this.loadUsers.bind(this));
+
         this.loadTicketsCreated();
 
     };
@@ -65,17 +70,17 @@
             });
 
             $.ajax({
-                url: $form.data('url'),
+                url: Routing.generate('api_ticket_new'),
                 method: 'POST',
-                data: JSON.stringify(formData),
-                success: function (data) {
-                    self._clearForm();
-                    $('#ticket').val(data.id);
-                },
-                error: function (jqXHR) {
-                    const errorData = JSON.parse(jqXHR.responseText);
-                    self._mapErrorsToForm(errorData.errors);
-                }
+                data: JSON.stringify(formData)
+            }).then(function (data) {
+                console.log('ok');
+                self._clearForm();
+                $('#ticket').val(data.id);
+
+            }).catch(function (jqXHR) {
+                const errorData = JSON.parse(jqXHR.responseText);
+                self._mapErrorsToForm(errorData.errors);
             })
         },
 
@@ -103,7 +108,31 @@
                 }
             })
         },
+        _loadThemesSelect: function() {
+            const self = this;
+            $.ajax({
+                url: Routing.generate('api_ticket_themes_list')
+            }).then(function(data){
+                $.each(data, function (key, theme) {
+                    $.each(theme, function(key, value){
+                        $('#objet').append('<option value="'+ value.value +'">'+ value.label +'</option>');
+                    })
+                });
+            }).catch(function (jqXHR) {
 
+            })
+        },
+        loadUsers: function () {
+            const self = this;
+            self._emptySelectYoung();
+            $.ajax({
+                url: Routing.generate('young_list')
+            }).then(function(data){
+                $.each(data.items, function (key, user) {
+                    self._addSelect(user);
+                });
+            })
+        },
         loadTicketsCreated: function () {
             const self = this;
             $.ajax({
@@ -111,25 +140,24 @@
                     $('#myTicket').append('<span class="loading">Chargement...</span>');
                 },
                 url: Routing.generate('api_ticket_created_list'),
-                success: function (data) {
-                    if($(data.items).length <= 0){
+            }).then(function(data){
+                self._loadThemesSelect();
+                if($(data.items).length <= 0){
+                    $(self._selector.myTicket).find('.loading').remove();
+                    $(self._selector.myTicket).find('tbody').append('' +
+                        '<div class="alert alert-success" role="alert">' +
+                        'Aucun tickets trouvés</div>');
+                } else {
+                    $.each(data.items, function (key, ticket) {
                         $(self._selector.myTicket).find('.loading').remove();
-                        $(self._selector.myTicket).find('tbody').append('' +
-                            '<div class="alert alert-success" role="alert">' +
-                            'Aucun tickets trouvés</div>');
-                    } else {
-                        $.each(data.items, function (key, ticket) {
-                            $(self._selector.myTicket).find('.loading').remove();
-                            self._addCreatedRow(ticket);
-                            if($('body').data('user') != ticket.auteurId) {
-                                $('.js-tickets tbody tr#ticket_auteur_'+ ticket.auteurId +'').css('backgroundColor', '#b2e5ff');
-                            }
-                        })
-                    }
-                },
-                error: function (jqXHR) {
-                    console.log(jqXHR.responseText);
+                        self._addCreatedRow(ticket);
+                        if($('body').data('user') != ticket.auteurId) {
+                            $('.js-tickets tbody tr#ticket_auteur_'+ ticket.auteurId +'').css('backgroundColor', '#b2e5ff');
+                        }
+                    });
                 }
+            }).catch(function (jqXHR) {
+                console.log(jqXHR.responseText);
             })
         },
 
@@ -137,16 +165,17 @@
             this._removeFormErrors();
             const $form = this.$wrapper.find(this._selector.newTicketForm);
 
-            $form.find(':input').each(function () {
+            $form.find('.form-control').each(function () {
                 const fieldName = $(this).attr('name');
-                const $wrapper = $('.js-new-ticket-form');
+                const $wrapper = $(this).closest('.form-group');
                 if (!errorData[fieldName]){
                     return;
                 }
 
                 const $error = $('<span class="js-field-error text-danger"></span>');
+
                 $error.html(errorData[fieldName]);
-                $wrapper.prepend($error);
+                $wrapper.append($error);
                 $wrapper.addClass('has-error');
             });
         },
@@ -169,6 +198,17 @@
             const html = tpl(ticket);
             $(this._selector.myTicket).find('tbody').append($.parseHTML(html));
         },
+
+        _addSelect: function (user) {
+            const tplText = $('#js-user-option-template').html();
+            const tpl = _.template(tplText);
+            const html = tpl(user);
+            $('#aboutWho').append($.parseHTML(html));
+        },
+        _emptySelectYoung: function () {
+            $('#aboutWho').html('<option value="" selected="selected">Sélectionner un jeune</option>');
+        },
+
 
     });
 })(window, jQuery, Routing);

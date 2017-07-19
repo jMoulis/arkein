@@ -15,6 +15,7 @@ class BaseController extends Controller
      */
     public function createApiResponseAction($data, $statusCode = 200)
     {
+        //die(dump($this->get('serializer')));
         $json = $this->get('serializer')
             ->serialize($data, 'json');
 
@@ -37,10 +38,6 @@ class BaseController extends Controller
     public function getErrorsFromFormAction(FormInterface $form)
     {
         foreach ($form->getErrors() as $error) {
-
-            // only supporting 1 error per field
-            // and not supporting a "field" with errors, that has more
-            // fields with errors below it
             return $error->getMessage();
         }
 
@@ -53,6 +50,7 @@ class BaseController extends Controller
             }
         }
 
+        dump($errors);
         return $errors;
     }
 }

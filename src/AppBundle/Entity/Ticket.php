@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use UserBundle\Entity\User;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Ticket
@@ -23,7 +24,8 @@ class Ticket
     private $id;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(name="objet", type="string", nullable=true)
+     * @Assert\NotBlank(message="Merci de saisir le sujet")
      */
     private $objet;
 
@@ -31,6 +33,7 @@ class Ticket
      * @var string
      *
      * @ORM\Column(name="message", type="text", nullable=true)
+     * @Assert\NotBlank(message="Merci de saisir un message")
      */
     private $message;
 
@@ -45,6 +48,7 @@ class Ticket
      * @var string
      *
      * @ORM\Column(name="statut", type="smallint")
+     *
      */
     private $statut;
 

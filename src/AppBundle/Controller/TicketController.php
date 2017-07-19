@@ -3,14 +3,16 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Api\TicketApiModel;
+use AppBundle\Api\TicketThemeApiModel;
 use AppBundle\Entity\Ticket;
-use AppBundle\Form\Type\TicketEditType;
+use AppBundle\Entity\TicketThemes;
 use AppBundle\Form\Type\TicketType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
  * @Route("ticket")
@@ -33,54 +35,69 @@ class TicketController extends BaseController
     /**
      * Creates a new ticket entity.
      *
-     * @Route("/new", name="ticket_new")
+     * @Route("/new", name="api_ticket_new", options={"expose" = true})
      * @Method({"GET", "POST"})
      */
     public function newAction(Request $request)
     {
-        $ticket = new Ticket();
+        $data = json_decode($request->getContent(), true);
 
-        $form = $this->createForm(TicketType::class, $ticket);
-        $form->handleRequest($request);
+        if ($data === null) {
+            throw new BadRequestHttpException('Invalid JSON');
+        }
+        $form = $this->createForm(TicketType::class, null, [
+            'csrf_protection' => false,
+        ]);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $ticket->setFromWho($this->getUser());
 
-            // The admin can select which coach can receive the message
-            $toWho = $form->getData()->getToWho();
+        $form->submit($data);
 
-            //If toWho is not selected by admmin then we find the coach
-            if (!$toWho) {
-                if(!$this->getUser()->getRole() !== 'ROLE_ADMIN')
-                {
-                    // Fetch the staff coach of the youngster used in the ticket
-                    $coach = $em->getRepository('UserBundle:User')->findYoungStaffCoach($ticket->getAboutWho());
+        if (!$form->isValid()) {
+            $errors = $this->getErrorsFromFormAction($form);
 
-                    // If there's no coach assigned it to the admin by default
-                    if(!$coach){
-                        $ticket->setToWho($em->getRepository('UserBundle:User')->findOneBy([
-                            'role' => self::ADMIN
-                        ]));
-                    } else {
-                        $ticket->setToWho($coach[0]);
-                    }
-                }
-            }
-            if($this->getUser()->getRole() === 'ROLE_YOUNGSTER'){
-                $ticket->setAboutWho($this->getUser());
-            }
-
-            $em->persist($ticket);
-            $em->flush();
-
-            return $this->redirectToRoute('ticket_show', array('id' => $ticket->getId()));
+            return $this->createApiResponseAction([
+                'errors' => $errors
+            ], 400);
         }
 
-        return $this->render('ticket/new.html.twig', array(
-            'ticket' => $ticket,
-            'form' => $form->createView(),
-        ));
+        $ticket = $form->getData();
+        $em = $this->getDoctrine()->getManager();
+        $ticket->setFromWho($this->getUser());
+
+        $toWho = $form->getData()->getToWho();
+
+        //If toWho is not selected by admin then we find the coach
+        if (!$toWho) {
+            if (!$this->getUser()->getRole() !== 'ROLE_ADMIN') {
+                // Fetch the staff coach of the youngster used in the ticket
+                $coach = $em->getRepository('UserBundle:User')->findYoungStaffCoach($ticket->getAboutWho());
+
+                // If there's no coach assigned it to the admin by default
+                if (!$coach) {
+                    $ticket->setToWho($em->getRepository('UserBundle:User')->findOneBy([
+                        'role' => self::ADMIN
+                    ]));
+                } else {
+                    $ticket->setToWho($coach[0]);
+                }
+            }
+            if ($this->getUser()->getRole() === 'ROLE_YOUNGSTER') {
+                $ticket->setAboutWho($this->getUser());
+            }
+        }
+
+        $em->persist($ticket);
+        $em->flush();
+
+        $apiModel = $this->createTicketApiModel($ticket);
+
+        $response = $this->createApiResponseAction($apiModel);
+        $response->headers->set(
+            'Location',
+            $this->generateUrl('ticket_show', ['id' => $ticket->getId()])
+        );
+
+        return $response;
     }
 
     /**
@@ -107,6 +124,7 @@ class TicketController extends BaseController
         $em = $this->getDoctrine()->getManager();
         $user = $this->getUser();
         $tickets = $em->getRepository('AppBundle:Ticket')->getAllTicketsUserFromAndTo($user);
+
         $models = [];
         foreach ($tickets as $ticket) {
             $models[] = $this->createTicketApiModel($ticket);
@@ -114,6 +132,27 @@ class TicketController extends BaseController
         return $this->createApiResponseAction([
             'items' => $models
         ]);
+    }
+
+    /**
+     * @Route("api/tickets/themes",
+     *     name="api_ticket_themes_list",
+     *     options={"expose" = true})
+     * @Method("GET")
+     */
+    public function getTicketThemesAction()
+    {
+        $ticketThemes = new TicketThemes();
+        $themes = $ticketThemes->getThemes();
+        $models = [];
+
+        for ($i = 0; $i < count($themes); $i++){
+            $models[] = $themes[$i];
+        }
+        return $this->createApiResponseAction([
+            'items' => $models
+        ]);
+
     }
 
     /**
@@ -126,7 +165,22 @@ class TicketController extends BaseController
     {
         $data = json_decode($request->getContent(), true);
 
-        $this->get('app.api_response')->ajaxResponse(TicketEditType::class, $data);
+        if ($data === null) {
+            throw new BadRequestHttpException('Invalid JSON');
+        }
+        $form = $this->createForm(TicketType::class, null, [
+            'csrf_protection' => false,
+        ]);
+
+        $form->submit($data);
+
+        if (!$form->isValid()) {
+            $errors = $this->getErrorsFromFormAction($form);
+
+            return $this->createApiResponseAction([
+                'errors' => $errors
+            ], 400);
+        }
 
         $em = $this->getDoctrine()->getManager();
         $ticket = $em->getRepository('AppBundle:Ticket')->find($id);
@@ -168,6 +222,8 @@ class TicketController extends BaseController
     private function createTicketApiModel(Ticket $ticket)
     {
         $model = new TicketApiModel();
+        $ticketThemes = new TicketThemes();
+
         $model->id = $ticket->getId();
         $model->date = $ticket->getDate()->format('d-M-y');
         $model->message = $ticket->getMessage();
@@ -179,6 +235,7 @@ class TicketController extends BaseController
         $model->statut = $ticket->getStatut();
         $model->titre = $ticket->getFromWho()->getTitre();
         $model->auteurEmail = $ticket->getFromWho()->getEmail();
+        $model->themes = $ticketThemes->getThemes();
         $selfUrl = $this->generateUrl(
             'ticket_show',
             ['id' => $ticket->getId()]
@@ -189,6 +246,17 @@ class TicketController extends BaseController
         );
         $model->addLink('_self', $selfUrl);
         $model->addLink('_archived', $archivedUrl);
+
+        return $model;
+    }
+
+    private function createThemesApiModel($ticketThemes)
+    {
+        $model = new TicketThemeApiModel();
+        foreach ($ticketThemes as $key => $ticketTheme){
+            $model->value = $key;
+            $model->label = $ticketTheme;
+        }
 
         return $model;
     }

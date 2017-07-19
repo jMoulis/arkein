@@ -7,24 +7,31 @@
 
 {% block dashcontent %}
     <h1>Tickets list</h1>
-    <div class="btnAjoutGenerique">
-        <a class="btn btn-primary" href="{{ path('ticket_new') }}">Nouveau ticket</a>
+    <div class="js-main-content-created">
+        <div class="btnAjoutGenerique">
+            <a class="js-new-ticket btn btn-primary" data-toggle="modal" data-target="#newTicketModal" href="#">Nouveau ticket</a>
+        </div>
+        {{ include('ticket/template/_new_ticket_modal_template.html.twig') }}
     </div>
+
     <div class="" id="myTicket">
         {{ include('ticket/_ticket.html.twig') }}
     </div>
+
+
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
-    <script src="{{ asset('js/api/TicketApp.js') }}"></script>
-
     <script>
         const $wrapperCreatedTicket = $('.js-main-content-created');
         const ticketApp = new TicketApp($wrapperCreatedTicket);
     </script>
-
+    <script type="text/template" id="js-user-option-template">
+        <option value="<%= id %>"><%= fullname %></option>
+    </script>
     <script type="text/template" id="js-ticket-row-template">
         {{ source('ticket/template/_ticket_show_list_template.html.twig') }}
     </script>
+
 {% endblock %}
