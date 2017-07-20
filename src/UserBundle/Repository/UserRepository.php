@@ -76,4 +76,13 @@ class UserRepository extends EntityRepository
         return $qb;
     }
 
+    public function getMyYoung($user)
+    {
+        return $this->createQueryBuilder('user')
+            ->leftJoin('user.coach', 'coach')
+            ->where('coach = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->execute();
+    }
 }

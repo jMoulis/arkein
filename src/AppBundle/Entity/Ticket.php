@@ -69,7 +69,6 @@ class Ticket
 
     /**
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
-     * @Assert\NotBlank(message="Merci de sélectionner un jeune")
      */
     private $aboutWho;
 
@@ -83,6 +82,7 @@ class Ticket
     {
         $this->statut = 1;
         $this->date = new \DateTime();
+
     }
 
     /**

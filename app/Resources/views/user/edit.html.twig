@@ -103,11 +103,11 @@
             </div>
         </div>
 
-        {# Je n'affiche pas la case Role si l'utilisateur edité est un jeune #}
+        {# Je n'affiche pas la case groupe si l'utilisateur edité est un jeune #}
         {% if (user.role != 'ROLE_YOUNGSTER') %}
         <div class="col">
             <div class="form-group">
-                {{ form_label(edit_form.coach, 'Groupe', {
+                {{ form_label(edit_form.groups, 'Groupe', {
                     'attr': {
                         'class': 'control-label'
                     }

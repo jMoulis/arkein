@@ -46,10 +46,12 @@ class UserController extends BaseController
                     'isActive' => 1
                 ]);
         } else {
-            $users = $this->getDoctrine()->getRepository('UserBundle:User')
-                ->findMyYoungsters($this->getUser())->getQuery()->execute();
+            $users = $this->getDoctrine()->getRepository(User::class)->getMyYoung($this->getUser());
 
         }
+
+
+
         $models = [];
         foreach ($users as $user) {
             $models[] = $this->createUserApiModel($user);
@@ -72,8 +74,10 @@ class UserController extends BaseController
         $form->handleRequest($request);
         if($form->isValid())
         {
+
             /** @var User $user */
             $user = $form->getData();
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();

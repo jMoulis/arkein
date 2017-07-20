@@ -12,22 +12,23 @@
     <div class="row">
         <div class="col">
             <div class="form-group">
-                {{ form_label(form.youngsters, 'Jeunes', {
+                {{ form_label(form.coach, 'Coach', {
                     'attr': {
                         'class': 'control-label'
                     }
                 }) }}
-                {{ form_errors(form.youngsters) }}
-                {{ form_widget(form.youngsters, {
+                {{ form_errors(form.coach) }}
+                {{ form_widget(form.coach, {
                     'attr': {
                         'class': 'form-control'
                     }
                 }) }}
             </div>
         </div>
+
         <div class="col">
             <div class="form-group">
-                {{ form_label(form.youngsters, 'Groupe', {
+                {{ form_label(form.groups, 'Groupe', {
                     'attr': {
                         'class': 'control-label'
                     }

@@ -10,7 +10,9 @@ namespace UserBundle\Entity;
 
 use AppBundle\Entity\Address;
 use AppBundle\Entity\Answer;
+use AppBundle\Entity\InterviewUser;
 use AppBundle\Entity\Phone;
+use BlogBundle\Entity\Billet;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use DocumentationBundle\Entity\Document;
@@ -34,19 +36,19 @@ class User implements UserInterface
     private $id;
 
     /**
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="Merci de renseigner un nom")
      * @ORM\Column(type="string")
      */
     private $name;
 
     /**
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="Merci de renseigner un prénom")
      * @ORM\Column(type="string")
      */
     private $firstname;
 
     /**
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="Merci de renseigner un email")
      * @Assert\Email()
      * @ORM\Column(type="string", unique=true)
      */
@@ -92,7 +94,7 @@ class User implements UserInterface
      *     cascade={"persist"}
      * )
      */
-    private $author;
+    private $billet;
 
     /**
      * @ORM\Column(type="boolean")
@@ -105,15 +107,13 @@ class User implements UserInterface
     private $answers;
 
     /**
-     * @ORM\ManyToMany(targetEntity="UserBundle\Entity\User", inversedBy="youngsters")
-     * @ORM\JoinTable(name="youngster_coach")
+     * @ORM\ManyToMany(targetEntity="UserBundle\Entity\User")
+     * @ORM\JoinTable(name="coaches", joinColumns={ @ORM\JoinColumn(name="young_user_id", referencedColumnName="id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="coach_id", referencedColumnName = "id")}
+     * )
      */
     private $coach;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="UserBundle\Entity\User", mappedBy="coach")
-     */
-    private $youngsters;
     /**
      * @ORM\OneToMany(targetEntity="DocumentationBundle\Entity\Document", mappedBy="destinataire")
      */
@@ -145,6 +145,7 @@ class User implements UserInterface
         $this->coach = new ArrayCollection();
         $this->youngsters = new ArrayCollection();
         $this->documents = new ArrayCollection();
+        $this->billet = new ArrayCollection();
         $this->guestInterviews = new ArrayCollection();
         $this->isActive = true;
     }
@@ -407,38 +408,6 @@ class User implements UserInterface
     }
 
     /**
-     * @return mixed
-     */
-    public function getCoach()
-    {
-        return $this->coach;
-    }
-
-    /**
-     * Add coach
-     *
-     * @param User $coach
-     *
-     * @return User
-     */
-    public function addCoach(User $coach)
-    {
-        $this->coach[] = $coach;
-
-        return $this;
-    }
-
-    /**
-     * Remove coach
-     *
-     * @param User $coach
-     */
-    public function removeCoach(User $coach)
-    {
-        $this->coach->removeElement($coach);
-    }
-
-    /**
      * Add document
      *
      * @param \DocumentationBundle\Entity\Document $document
@@ -506,39 +475,40 @@ class User implements UserInterface
         return $this->groups;
     }
 
+
+    /* COACH AND YOUNGSTER MANAGEMENT */
     /**
-     * Add youngster
+     * @return mixed
+     */
+    public function getCoach()
+    {
+        return $this->coach;
+    }
+
+    /**
+     * Add coach
      *
-     * @param User $youngster
+     * @param User $coach
      *
      * @return User
      */
-    public function addYoungster(User $youngster)
+    public function addCoach(User $coach)
     {
-        $this->youngsters[] = $youngster;
+        $this->coach[] = $coach;
 
         return $this;
     }
 
     /**
-     * Remove youngster
+     * Remove coach
      *
-     * @param User $youngster
+     * @param User $coach
      */
-    public function removeYoungster(User $youngster)
+    public function removeCoach(User $coach)
     {
-        $this->youngsters->removeElement($youngster);
+        $this->coach->removeElement($coach);
     }
 
-    /**
-     * Get youngsters
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getYoungsters()
-    {
-        return $this->youngsters;
-    }
 
     /**
      * Get guestInterviews
@@ -548,5 +518,99 @@ class User implements UserInterface
     public function getGuestInterviews()
     {
         return $this->guestInterviews;
+    }
+
+    /**
+     * Add guestInterview
+     *
+     * @param InterviewUser $guestInterview
+     *
+     * @return User
+     */
+    public function addGuestInterview(InterviewUser $guestInterview)
+    {
+        $this->guestInterviews[] = $guestInterview;
+
+        return $this;
+    }
+
+    /**
+     * Remove guestInterview
+     *
+     * @param InterviewUser $guestInterview
+     */
+    public function removeGuestInterview(InterviewUser $guestInterview)
+    {
+        $this->guestInterviews->removeElement($guestInterview);
+    }
+
+
+    /* BILLET MANAGEMENT */
+    /**
+     * Add billet
+     *
+     * @param Billet $billet
+     *
+     * @return User
+     */
+    public function addBillet(Billet $billet)
+    {
+        $this->billet[] = $billet;
+
+        return $this;
+    }
+
+    /**
+     * Remove billet
+     *
+     * @param Billet $billet
+     */
+    public function removeBillet(Billet $billet)
+    {
+        $this->billet->removeElement($billet);
+    }
+
+    /**
+     * Get billet
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getBillet()
+    {
+        return $this->billet;
+    }
+    /**
+     * Add author
+     *
+     * @param Billet $billet
+     *
+     * @return User
+     */
+    public function addAuthor(Billet $billet)
+    {
+        $this->billet[] = $billet;
+        $billet->setAuthor($this);
+
+        return $this;
+    }
+
+    /**
+     * Remove author
+     *
+     * @param Billet $billet
+     */
+    public function removeAuthor(Billet $billet)
+    {
+        $this->billet->removeElement($billet);
+    }
+
+    /**
+     * Get author
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getAuthor()
+    {
+        return $this->billet;
     }
 }

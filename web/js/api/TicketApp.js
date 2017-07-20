@@ -23,12 +23,17 @@
         );
 
         this.$wrapper.on(
+            'hidden.bs.modal',
+            '.modal',
+            this._clearForm.bind(this)
+        );
+
+        this.$wrapper.on(
             'click',
             '.js-new-ticket',
-            this.loadUsers.bind(this));
+            this.loadNewForm.bind(this));
 
         this.loadTicketsCreated();
-
     };
 
     $.extend(window.TicketApp.prototype, {
@@ -135,6 +140,12 @@
                 });
             })
         },
+        loadNewForm: function(){
+            const self = this;
+
+            self.loadUsers();
+            self._hideSelectBoxYoungster();
+        },
         loadTicketsCreated: function () {
             const self = this;
             $.ajax({
@@ -210,7 +221,13 @@
         _emptySelectYoung: function () {
             $('#aboutWho').html('<option value="" selected="selected">Sélectionner un jeune</option>');
         },
+        _hideSelectBoxYoungster: function(){
+            const $selectBox = $('.js-new-ticket-form').find('#aboutWho');
+            if($('body').data("role") === 'ROLE_YOUNGSTER'){
+                $selectBox.parent().remove();
+            }
 
+        }
 
     });
 })(window, jQuery, Routing);

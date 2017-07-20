@@ -61,18 +61,19 @@ class RegisterType extends AbstractType
             ->add('groups', null, [
                 'label' => 'Groupe',
                 'expanded' => true,
-                'multiple' => true
-            ])
-            ->add('youngsters', EntityType::class, [
-                'class' => User::class,
-                'expanded' => true,
                 'multiple' => true,
-                'query_builder' => function(UserRepository $repository) {
-                    return $repository->createQueryBuilder('user')
-                        ->where('user.role = :role')
-                        ->setParameter('role', 'ROLE_YOUNGSTER');
-                }
 
+            ])
+            ->add('coach', EntityType::class, [
+                'class' => User::class,
+                'multiple' => true,
+                'expanded' => true,
+                'query_builder' => function(UserRepository $repository){
+                    return $repository->createQueryBuilder('user')
+                        ->andWhere('user.role != :role ')
+                        ->setParameter('role', 'ROLE_YOUNGSTER');
+                },
+                'group_by' => 'role'
             ])
             ->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'onPreSubmitData'))
         ;

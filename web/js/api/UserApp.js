@@ -43,11 +43,10 @@
             $.ajax({
                 url: deleteUrl,
                 method: 'DELETE',
-                success: function () {
-                    $row.fadeOut('normal', function () {
-                        $(this).remove();
-                    });
-                }
+            }).then(function () {
+                $row.fadeOut('normal', function () {
+                    $(this).remove();
+                });
             })
         },
 
@@ -65,15 +64,13 @@
                 url: $form.data('url'),
                 method: 'POST',
                 data: JSON.stringify(formData),
-                success: function (data) {
-                    self._clearForm();
-                    self._addSelect(data);
-                    $('#user').val(data.id);
-                },
-                error: function (jqXHR) {
-                    const errorData = JSON.parse(jqXHR.responseText);
-                    self._mapErrorsToForm(errorData.errors);
-                }
+            }).then(function(data){
+                self._clearForm();
+                self._addSelect(data);
+                $('#user').val(data.id);
+            }).catch(function (jqXHR) {
+                const errorData = JSON.parse(jqXHR.responseText);
+                self._mapErrorsToForm(errorData.errors);
             })
         },
 
@@ -81,14 +78,10 @@
             const self = this;
             $.ajax({
                 url: Routing.generate('young_list'),
-                success: function (data) {
-                    $.each(data.items, function (key, user) {
-                        self._addRow(user);
-                    })
-                },
-                error: function (jqXHR) {
-                    console.log(jqXHR.responseText);
-                }
+            }).then(function(data){
+                $.each(data.items, function (key, user) {
+                    self._addRow(user);
+                })
             })
         },
 
@@ -100,16 +93,17 @@
             this._removeFormErrors();
             const $form = this.$wrapper.find(this._selector.newUserForm);
 
-            $form.find(':input').each(function () {
+            $form.find('.form-control').each(function () {
                 const fieldName = $(this).attr('name');
-                const $wrapper = $('.js-new-user-form');
+                const $wrapper = $(this).closest('.form-group');
+                const $error = $('<span class="js-field-error text-danger"></span>');
+
                 if (!errorData[fieldName]){
                     return;
                 }
 
-                const $error = $('<span class="js-field-error text-danger"></span>');
                 $error.html(errorData[fieldName]);
-                $wrapper.prepend($error);
+                $wrapper.append($error);
                 $wrapper.addClass('has-error');
             });
         },

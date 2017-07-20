@@ -10,6 +10,7 @@ namespace UserBundle\Entity;
 
 use AppBundle\Entity\Address;
 use AppBundle\Entity\Answer;
+use AppBundle\Entity\InterviewUser;
 use AppBundle\Entity\Phone;
 use BlogBundle\Entity\Billet;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -35,19 +36,19 @@ class User implements UserInterface
     private $id;
 
     /**
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="Merci de renseigner un nom")
      * @ORM\Column(type="string")
      */
     private $name;
 
     /**
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="Merci de renseigner un prénom")
      * @ORM\Column(type="string")
      */
     private $firstname;
 
     /**
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="Merci de renseigner un email")
      * @Assert\Email()
      * @ORM\Column(type="string", unique=true)
      */
@@ -107,7 +108,14 @@ class User implements UserInterface
 
     /**
      * @ORM\ManyToMany(targetEntity="UserBundle\Entity\User", inversedBy="youngsters")
-     * @ORM\JoinTable(name="youngster_coach")
+     * @ORM\JoinTable(name="coaches",
+     *     joinColumns={
+     *     @ORM\JoinColumn(name="young_user_id", referencedColumnName="id")
+     * },
+     *     inverseJoinColumns={
+     *     @ORM\JoinColumn(name="coach_id", referencedColumnName = "id")
+     * }
+     * )
      */
     private $coach;
 
@@ -115,6 +123,7 @@ class User implements UserInterface
      * @ORM\ManyToMany(targetEntity="UserBundle\Entity\User", mappedBy="coach")
      */
     private $youngsters;
+
     /**
      * @ORM\OneToMany(targetEntity="DocumentationBundle\Entity\Document", mappedBy="destinataire")
      */
@@ -409,38 +418,6 @@ class User implements UserInterface
     }
 
     /**
-     * @return mixed
-     */
-    public function getCoach()
-    {
-        return $this->coach;
-    }
-
-    /**
-     * Add coach
-     *
-     * @param User $coach
-     *
-     * @return User
-     */
-    public function addCoach(User $coach)
-    {
-        $this->coach[] = $coach;
-
-        return $this;
-    }
-
-    /**
-     * Remove coach
-     *
-     * @param User $coach
-     */
-    public function removeCoach(User $coach)
-    {
-        $this->coach->removeElement($coach);
-    }
-
-    /**
      * Add document
      *
      * @param \DocumentationBundle\Entity\Document $document
@@ -508,6 +485,43 @@ class User implements UserInterface
         return $this->groups;
     }
 
+
+    /* COACH AND YOUNGSTER MANAGEMENT */
+    /**
+     * @return mixed
+     */
+    public function getCoach()
+    {
+        return $this->coach;
+    }
+
+    /**
+     * Add coach
+     *
+     * @param User $coach
+     *
+     * @return User
+     */
+    public function addCoach(User $coach)
+    {
+        if($this->coach->contains($coach)){
+            return;
+        }
+        $this->coach[] = $coach;
+
+        return $this;
+    }
+
+    /**
+     * Remove coach
+     *
+     * @param User $coach
+     */
+    public function removeCoach(User $coach)
+    {
+        $this->coach->removeElement($coach);
+    }
+
     /**
      * Add youngster
      *
@@ -517,7 +531,9 @@ class User implements UserInterface
      */
     public function addYoungster(User $youngster)
     {
+
         $this->youngsters[] = $youngster;
+        $youngster->addCoach($this);
 
         return $this;
     }
@@ -542,6 +558,9 @@ class User implements UserInterface
         return $this->youngsters;
     }
 
+
+
+
     /**
      * Get guestInterviews
      *
@@ -552,6 +571,65 @@ class User implements UserInterface
         return $this->guestInterviews;
     }
 
+    /**
+     * Add guestInterview
+     *
+     * @param InterviewUser $guestInterview
+     *
+     * @return User
+     */
+    public function addGuestInterview(InterviewUser $guestInterview)
+    {
+        $this->guestInterviews[] = $guestInterview;
+
+        return $this;
+    }
+
+    /**
+     * Remove guestInterview
+     *
+     * @param InterviewUser $guestInterview
+     */
+    public function removeGuestInterview(InterviewUser $guestInterview)
+    {
+        $this->guestInterviews->removeElement($guestInterview);
+    }
+
+
+    /* BILLET MANAGEMENT */
+    /**
+     * Add billet
+     *
+     * @param Billet $billet
+     *
+     * @return User
+     */
+    public function addBillet(Billet $billet)
+    {
+        $this->billet[] = $billet;
+
+        return $this;
+    }
+
+    /**
+     * Remove billet
+     *
+     * @param Billet $billet
+     */
+    public function removeBillet(Billet $billet)
+    {
+        $this->billet->removeElement($billet);
+    }
+
+    /**
+     * Get billet
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getBillet()
+    {
+        return $this->billet;
+    }
     /**
      * Add author
      *
@@ -572,7 +650,7 @@ class User implements UserInterface
      *
      * @param Billet $billet
      */
-    public function removeAuthor( Billet $billet)
+    public function removeAuthor(Billet $billet)
     {
         $this->billet->removeElement($billet);
     }
@@ -585,29 +663,5 @@ class User implements UserInterface
     public function getAuthor()
     {
         return $this->billet;
-    }
-
-    /**
-     * Add guestInterview
-     *
-     * @param \AppBundle\Entity\InterviewUser $guestInterview
-     *
-     * @return User
-     */
-    public function addGuestInterview(\AppBundle\Entity\InterviewUser $guestInterview)
-    {
-        $this->guestInterviews[] = $guestInterview;
-
-        return $this;
-    }
-
-    /**
-     * Remove guestInterview
-     *
-     * @param \AppBundle\Entity\InterviewUser $guestInterview
-     */
-    public function removeGuestInterview(\AppBundle\Entity\InterviewUser $guestInterview)
-    {
-        $this->guestInterviews->removeElement($guestInterview);
     }
 }
