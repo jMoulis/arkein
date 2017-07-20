@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block dashcontent %}
-    <h1>Tickets list</h1>
+    <h1>Tickets list <a data-toggle="modal" data-target="#myModal"><i class="fa fa-cogs" aria-hidden="true"></i></a></h1>
     <div class="js-main-content-created">
         <div class="btnAjoutGenerique">
             <a class="js-new-ticket btn btn-primary" data-toggle="modal" data-target="#newTicketModal" href="#">Nouveau ticket</a>
@@ -18,7 +18,29 @@
         {{ include('ticket/_ticket.html.twig') }}
     </div>
 
-
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Fonctionalitées</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <ul class="list-group">
+                    <li class="list-group-item active">Gestion ticketing</li>
+                    <li class="list-group-item">Créer une demande</li>
+                    <li class="list-group-item">Répondre à la demande et suivi des réponse</li>
+                    <li class="list-group-item">Workflow</li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block javascripts %}

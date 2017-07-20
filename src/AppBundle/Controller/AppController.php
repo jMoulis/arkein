@@ -14,10 +14,11 @@ class AppController extends BaseController
 {
     /**
      * @Route("/", name="homepage")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      */
     public function indexAction()
     {
-        return $this->render(':App:index.html.twig', array(
+        return $this->render(':dashboard:dashboard.html.twig', array(
         ));
     }
 
