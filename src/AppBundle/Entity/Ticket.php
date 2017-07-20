@@ -69,6 +69,7 @@ class Ticket
 
     /**
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
+     * @Assert\NotBlank(message="Merci de sélectionner un jeune")
      */
     private $aboutWho;
 

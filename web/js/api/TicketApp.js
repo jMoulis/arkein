@@ -36,7 +36,8 @@
             newTicketForm: '.js-new-ticket-form',
             editTicketForm: '.js-edit-ticket-form',
             myTicket: '#myTicket',
-            myAttribution: '#myAttribution'
+            myAttribution: '#myAttribution',
+            newModal: '#newTicketModal',
         },
 
         handleTicketDelete: function (e) {
@@ -74,9 +75,10 @@
                 method: 'POST',
                 data: JSON.stringify(formData)
             }).then(function (data) {
-                console.log('ok');
+                self._addCreatedRow(data);
                 self._clearForm();
                 $('#ticket').val(data.id);
+                $(self._selector.newModal).modal('toggle');
 
             }).catch(function (jqXHR) {
                 const errorData = JSON.parse(jqXHR.responseText);
@@ -157,7 +159,7 @@
                     });
                 }
             }).catch(function (jqXHR) {
-                console.log(jqXHR.responseText);
+
             })
         },
 
@@ -196,7 +198,7 @@
             const tplText = $('#js-ticket-row-template').html();
             const tpl = _.template(tplText);
             const html = tpl(ticket);
-            $(this._selector.myTicket).find('tbody').append($.parseHTML(html));
+            $(this._selector.myTicket).find('tbody').prepend($.parseHTML(html));
         },
 
         _addSelect: function (user) {

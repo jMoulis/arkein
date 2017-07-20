@@ -12,17 +12,19 @@
             <div class="modal-body">
                 <div class="js-new-document-form-wrapper">
                     <form id="form-id" enctype="multipart/form-data" class="js-new-document-form" data-url="{{ path('api_new_doc', {id: user.id}) }}" novalidate="novalidate">
-                        <div class="form-group d-flex justify-content-center">
-                            <span class="input-group-btn">
-                                <button class="btn btn-secondary" type="button"><i class="fa fa-folder"></i></button>
-                            </span>
+                        <div class="form-group">
+                            <div class="d-flex justify-content-center">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-secondary" type="button"><i class="fa fa-folder"></i></button>
+                                </span>
 
-                            <select
-                                    name="categorie"
-                                    required="required"
-                                    class="js-select-folder form-control">
-                                <option value="" selected>Sélectionner un dossier</option>
-                            </select>
+                                <select
+                                        name="categorie"
+                                        required="required"
+                                        class="js-select-folder form-control">
+                                    <option value="" selected>Sélectionner un dossier</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="form-group">
                             <input type="file" class="js-input-load file" name="fileTemporary" required="required" />
@@ -35,7 +37,7 @@
                         </div>
                         <div class="form-check">
                             <label class="form-check-label">
-                                Privé/Public
+                                Privé
                                 <input id="isPrivate" type="checkbox" name="isPrivate" />
                             </label>
                         </div>

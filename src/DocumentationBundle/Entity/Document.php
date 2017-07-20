@@ -37,6 +37,17 @@ class Document
     /**
      * @Vich\UploadableField(mapping="file_youngster", fileNameProperty="fileName")
      * @Assert\NotBlank(message="Veuillez sélectionner un fichier")
+     * @Assert\File(
+     *     mimeTypes = {
+     *     "application/pdf",
+     *     "application/x-pdf",
+     *     "image/*",
+     *     "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+     *     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+     *     "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+     *     },
+     *     mimeTypesMessage = "Format de fichier non autorisé"
+     * )
      *
      * @var File
      */
@@ -64,6 +75,7 @@ class Document
     /**
      * @ORM\ManyToOne(targetEntity="DocumentationBundle\Entity\Categorie", inversedBy="documents")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotBlank(message="Veuillez sélectionner un dossier")
      */
     private $categorie;
 

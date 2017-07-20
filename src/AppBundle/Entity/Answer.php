@@ -36,7 +36,7 @@ class Answer
 
     /**
      * @ORM\Column(type="string")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="Merci de saisir votre message")
      */
     private $message;
 

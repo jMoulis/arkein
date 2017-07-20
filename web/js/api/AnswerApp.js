@@ -63,16 +63,15 @@
                 url: Routing.generate('api_answer_new', {id: ticketId}),
                 method: 'POST',
                 data: JSON.stringify(formData),
-                success: function (data) {
-                    $('.js-answer-wrapper .loading').remove();
-                    self._clearForm();
-                    self._addNewDiv(data);
-                },
-                error: function (jqXHR) {
-                    const errorData = JSON.parse(jqXHR.responseText);
-                    $('.js-answer-wrapper .loading').remove();
-                    self._mapErrorsToForm(errorData.errors);
-                }
+            }).then(function(data){
+                $('.js-answer-wrapper .loading').remove();
+                self._clearForm();
+                self._addNewDiv(data);
+                $('#collapseExample').collapse('toggle');
+            }).catch(function (jqXHR) {
+                const errorData = JSON.parse(jqXHR.responseText);
+                $('.js-answer-wrapper .loading').remove();
+                self._mapErrorsToForm(errorData.errors);
             })
         },
 
@@ -85,15 +84,13 @@
                     $('.js-answer-wrapper').prepend('<span class="loading">Chargement...</span>');
                 },
                 url: Routing.generate('api_answer_list', {id: ticketId}),
-                success: function (data) {
-                    $('.js-answer-wrapper .loading').remove();
-                    $.each(data.items, function (key, answer) {
-                        self._addListDiv(answer);
-                    })
-                },
-                error: function (jqXHR) {
-                    console.log(jqXHR.responseText);
-                }
+            }).then(function (data) {
+                $('.js-answer-wrapper .loading').remove();
+                $.each(data.items, function (key, answer) {
+                    self._addListDiv(answer);
+                })
+            }).catch(function (jqXHR) {
+                console.log(jqXHR.responseText);
             })
         },
 
@@ -101,16 +98,16 @@
             this._removeFormErrors();
             const $form = this.$wrapper.find(this._selector.newAnswerForm);
 
-            $form.find(':input').each(function () {
+            $form.find('.form-control').each(function () {
                 const fieldName = $(this).attr('name');
-                const $wrapper = $('.js-new-answer-form');
+                const $wrapper = $(this).closest('.form-group');
                 if (!errorData[fieldName]){
                     return;
                 }
 
                 const $error = $('<span class="js-field-error text-danger"></span>');
                 $error.html(errorData[fieldName]);
-                $wrapper.prepend($error);
+                $wrapper.append($error);
                 $wrapper.addClass('has-error');
             });
         },

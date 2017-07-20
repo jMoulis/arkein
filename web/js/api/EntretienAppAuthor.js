@@ -527,7 +527,6 @@
             $('.js-delete-guest').remove();
             //Removes tht modify button
             $(this._selector.editEntretienForm).find('button[type=submit]').remove();
-
         },
         /**
          * On edit interview, modifies the rows informations
