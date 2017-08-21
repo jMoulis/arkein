@@ -134,26 +134,6 @@ class TicketController extends BaseController
         ]);
     }
 
-    /**
-     * @Route("api/tickets/themes",
-     *     name="api_ticket_themes_list",
-     *     options={"expose" = true})
-     * @Method("GET")
-     */
-    public function getTicketThemesAction()
-    {
-        $ticketThemes = new TicketThemes();
-        $themes = $ticketThemes->getThemes();
-        $models = [];
-
-        for ($i = 0; $i < count($themes); $i++){
-            $models[] = $themes[$i];
-        }
-        return $this->createApiResponseAction([
-            'items' => $models
-        ]);
-
-    }
 
     /**
      * @Route("api/ticket/{id}edit",
@@ -246,17 +226,6 @@ class TicketController extends BaseController
         );
         $model->addLink('_self', $selfUrl);
         $model->addLink('_archived', $archivedUrl);
-
-        return $model;
-    }
-
-    private function createThemesApiModel($ticketThemes)
-    {
-        $model = new TicketThemeApiModel();
-        foreach ($ticketThemes as $key => $ticketTheme){
-            $model->value = $key;
-            $model->label = $ticketTheme;
-        }
 
         return $model;
     }

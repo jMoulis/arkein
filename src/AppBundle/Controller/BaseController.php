@@ -15,7 +15,6 @@ class BaseController extends Controller
      */
     public function createApiResponseAction($data, $statusCode = 200)
     {
-        //die(dump($this->get('serializer')));
         $json = $this->get('serializer')
             ->serialize($data, 'json');
 
