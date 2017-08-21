@@ -354,6 +354,7 @@
 
         loadGuests: function (user) {
             const self = this;
+            console.log('test')
             if(user) {
                 $.ajax({
                     url: Routing.generate('guest_list', { user: user })
