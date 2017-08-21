@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <analysis>
-  <link href="https://insight.sensiolabs.com/api/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/20" rel="self" type="application/vnd.com.sensiolabs.insight+xml"/>
-  <link href="https://insight.sensiolabs.com/api/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/20/status" rel="status" type="application/vnd.com.sensiolabs.insight+xml"/>
+  <link href="https://insight.sensiolabs.com/api/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/49" rel="self" type="application/vnd.com.sensiolabs.insight+xml"/>
+  <link href="https://insight.sensiolabs.com/api/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/49/status" rel="status" type="application/vnd.com.sensiolabs.insight+xml"/>
   <link href="https://insight.sensiolabs.com/api/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0" rel="project" type="application/vnd.com.sensiolabs.insight+xml"/>
-  <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/20" rel="self" type="text/html"/>
+  <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/49" rel="self" type="text/html"/>
   <status><![CDATA[finished]]></status>
   <violations>
     <violation severity="major" category="bugrisk" ignored="true">
@@ -17,7 +17,7 @@
     "type": "project",
     "autoload": {
         "psr-4": {]]></context>
-      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/20?status=ignored#523693422" rel="self" type="text/html"/>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/49?status=ignored#545018814" rel="self" type="text/html"/>
     </violation>
     <violation severity="info" category="bugrisk" ignored="true">
       <line>0</line>
@@ -25,41 +25,24 @@
       <title>The composer.json file should not raise warnings</title>
       <message><![CDATA[Defining autoload.psr-4 with an empty namespace prefix is a bad idea for performance]]></message>
       <context/>
-      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/20?status=ignored#523693434" rel="self" type="text/html"/>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/49?status=ignored#545018823" rel="self" type="text/html"/>
     </violation>
-    <violation severity="minor" category="codestyle" ignored="true">
-      <line>20</line>
+    <violation severity="minor" category="codestyle" ignored="false">
+      <line>23</line>
       <resource><![CDATA[.gitignore]]></resource>
       <title>User specific files should not appear in .gitignore</title>
-      <message><![CDATA[/.idea/* is user-specific and should not appear in a project .gitignore. Consider adding it to the user global .gitignore instead.]]></message>
-      <context start-line="15" end-line="21"><![CDATA[/vendor/
-/web/bundles/
-/app/DoctrinesMigrations/*
-/web/css/compiled/*
-/web/js/compiled/*
-/.idea/*
+      <message><![CDATA[.idea is user-specific and should not appear in a project .gitignore. Consider adding it to the user global .gitignore instead.]]></message>
+      <context start-line="18" end-line="27"><![CDATA[/web/css/compiled/
+/web/js/compiled/
+/web/pdf/
+/web/test/
+/src/documents/
+.idea
+Supprimerait var/cache/
+Supprimerait var/logs/
+Supprimerait var/sessions/
 ]]></context>
-      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/20?status=ignored#523693432" rel="self" type="text/html"/>
-    </violation>
-    <violation severity="info" category="codestyle" ignored="true">
-      <line>0</line>
-      <title>Project files should not mix end of lines</title>
-      <message><![CDATA[            
-                Some files contain mixed and/or invalid end of lines ( \r\n instead of \n). Homogenize
-                them to improve compatibility across different platforms.
-            
-            web/js/third-library/ckeditor/CHANGES.mdweb/js/third-library/ckeditor/LICENSE.mdweb/js/third-library/ckeditor/plugins/scayt/CHANGELOG.mdweb/js/third-library/ckeditor/plugins/scayt/LICENSE.mdweb/js/third-library/ckeditor/plugins/scayt/README.mdweb/js/third-library/ckeditor/plugins/wsc/LICENSE.mdweb/js/third-library/ckeditor/plugins/wsc/README.mdweb/js/third-library/ckeditor/skins/moono-lisa/readme.md
-            To solve this issue, run the below command:]]></message>
-      <context/>
-      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/20?status=ignored#523693441" rel="self" type="text/html"/>
-    </violation>
-    <violation severity="info" category="codestyle" ignored="true">
-      <line>1</line>
-      <resource><![CDATA[web/js/third-library/PDFObject/.gitignore]]></resource>
-      <title>Text files should end with a newline character</title>
-      <message><![CDATA[This file ends with no newline character. It won't render properly on a terminal, and it's considered a bad practice. Add a simple line feed as the last character to fix it.]]></message>
-      <context start-line="1" end-line="1"><![CDATA[.DS_Store]]></context>
-      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/20?status=ignored#523693423" rel="self" type="text/html"/>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/49?status=existing#545018813" rel="self" type="text/html"/>
     </violation>
     <violation severity="minor" category="codestyle" ignored="true">
       <line>154</line>
@@ -77,7 +60,7 @@
 
         return $this;
     }]]></context>
-      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/20?status=ignored#523693442" rel="self" type="text/html"/>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/49?status=ignored#545018832" rel="self" type="text/html"/>
     </violation>
     <violation severity="minor" category="codestyle" ignored="true">
       <line>166</line>
@@ -95,7 +78,7 @@
     }
 
 ]]></context>
-      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/20?status=ignored#523693436" rel="self" type="text/html"/>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/49?status=ignored#545018825" rel="self" type="text/html"/>
     </violation>
     <violation severity="minor" category="codestyle" ignored="true">
       <line>199</line>
@@ -113,7 +96,7 @@
 
         return $this;
     }]]></context>
-      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/20?status=ignored#523693437" rel="self" type="text/html"/>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/49?status=ignored#545018826" rel="self" type="text/html"/>
     </violation>
     <violation severity="minor" category="codestyle" ignored="true">
       <line>211</line>
@@ -131,7 +114,7 @@
     }
 }
 ]]></context>
-      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/20?status=ignored#523693435" rel="self" type="text/html"/>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/49?status=ignored#545018824" rel="self" type="text/html"/>
     </violation>
     <violation severity="minor" category="codestyle" ignored="true">
       <line>145</line>
@@ -149,7 +132,7 @@
     }
 
     /**]]></context>
-      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/20?status=ignored#523693426" rel="self" type="text/html"/>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/49?status=ignored#545018817" rel="self" type="text/html"/>
     </violation>
     <violation severity="minor" category="codestyle" ignored="true">
       <line>153</line>
@@ -167,14 +150,14 @@
     }
 
 ]]></context>
-      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/20?status=ignored#523693428" rel="self" type="text/html"/>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/49?status=ignored#545018819" rel="self" type="text/html"/>
     </violation>
     <violation severity="minor" category="codestyle" ignored="true">
-      <line>224</line>
+      <line>236</line>
       <resource><![CDATA[src/DocumentationBundle/Entity/Document.php]]></resource>
       <title>Boolean property should not be prefixed by "is"</title>
       <message><![CDATA[Boolean property accessor should not be setIsXXX nor getIsXXX but setXXX and isXXX.]]></message>
-      <context start-line="219" end-line="229"><![CDATA[     *
+      <context start-line="231" end-line="241"><![CDATA[     *
      * @param boolean $isArchived
      *
      * @return Document
@@ -185,14 +168,14 @@
 
         return $this;
     }]]></context>
-      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/20?status=ignored#523693438" rel="self" type="text/html"/>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/49?status=ignored#545018828" rel="self" type="text/html"/>
     </violation>
     <violation severity="minor" category="codestyle" ignored="true">
-      <line>236</line>
+      <line>248</line>
       <resource><![CDATA[src/DocumentationBundle/Entity/Document.php]]></resource>
       <title>Boolean property should not be prefixed by "is"</title>
       <message><![CDATA[Boolean property accessor should not be setIsXXX nor getIsXXX but setXXX and isXXX.]]></message>
-      <context start-line="231" end-line="241"><![CDATA[    /**
+      <context start-line="243" end-line="253"><![CDATA[    /**
      * Get isArchived
      *
      * @return boolean
@@ -203,14 +186,14 @@
     }
 
     /**]]></context>
-      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/20?status=ignored#523693440" rel="self" type="text/html"/>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/49?status=ignored#545018830" rel="self" type="text/html"/>
     </violation>
     <violation severity="minor" category="codestyle" ignored="true">
-      <line>248</line>
+      <line>260</line>
       <resource><![CDATA[src/DocumentationBundle/Entity/Document.php]]></resource>
       <title>Boolean property should not be prefixed by "is"</title>
       <message><![CDATA[Boolean property accessor should not be setIsXXX nor getIsXXX but setXXX and isXXX.]]></message>
-      <context start-line="243" end-line="253"><![CDATA[     *
+      <context start-line="255" end-line="265"><![CDATA[     *
      * @param boolean $isPrivate
      *
      * @return Document
@@ -221,14 +204,14 @@
 
         return $this;
     }]]></context>
-      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/20?status=ignored#523693424" rel="self" type="text/html"/>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/49?status=ignored#545018815" rel="self" type="text/html"/>
     </violation>
     <violation severity="minor" category="codestyle" ignored="true">
-      <line>260</line>
+      <line>272</line>
       <resource><![CDATA[src/DocumentationBundle/Entity/Document.php]]></resource>
       <title>Boolean property should not be prefixed by "is"</title>
       <message><![CDATA[Boolean property accessor should not be setIsXXX nor getIsXXX but setXXX and isXXX.]]></message>
-      <context start-line="255" end-line="265"><![CDATA[    /**
+      <context start-line="267" end-line="277"><![CDATA[    /**
      * Get isPrivate
      *
      * @return boolean
@@ -239,14 +222,14 @@
     }
 }
 ]]></context>
-      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/20?status=ignored#523693421" rel="self" type="text/html"/>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/49?status=ignored#545018811" rel="self" type="text/html"/>
     </violation>
     <violation severity="minor" category="codestyle" ignored="true">
-      <line>349</line>
+      <line>358</line>
       <resource><![CDATA[src/UserBundle/Entity/User.php]]></resource>
       <title>Boolean property should not be prefixed by "is"</title>
       <message><![CDATA[Boolean property accessor should not be setIsXXX nor getIsXXX but setXXX and isXXX.]]></message>
-      <context start-line="344" end-line="354"><![CDATA[    public function setSlug($slug)
+      <context start-line="353" end-line="363"><![CDATA[    public function setSlug($slug)
     {
         $this->slug = $slug;
     }
@@ -257,14 +240,14 @@
     }
 
     public function setIsActive($isActive)]]></context>
-      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/20?status=ignored#523693439" rel="self" type="text/html"/>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/49?status=ignored#545018829" rel="self" type="text/html"/>
     </violation>
     <violation severity="minor" category="codestyle" ignored="true">
-      <line>354</line>
+      <line>363</line>
       <resource><![CDATA[src/UserBundle/Entity/User.php]]></resource>
       <title>Boolean property should not be prefixed by "is"</title>
       <message><![CDATA[Boolean property accessor should not be setIsXXX nor getIsXXX but setXXX and isXXX.]]></message>
-      <context start-line="349" end-line="359"><![CDATA[    public function getIsActive()
+      <context start-line="358" end-line="368"><![CDATA[    public function getIsActive()
     {
         return $this->isActive;
     }
@@ -275,7 +258,68 @@
     }
 
     /**]]></context>
-      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/20?status=ignored#523693427" rel="self" type="text/html"/>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/49?status=ignored#545018818" rel="self" type="text/html"/>
+    </violation>
+    <violation severity="minor" category="deadcode" ignored="false">
+      <line>18</line>
+      <resource><![CDATA[src/AppBundle/Controller/BaseController.php]]></resource>
+      <title>Commented code should not be committed</title>
+      <message><![CDATA[Commented out code reduces readability and lowers the code confidence for other developers. If it's common usage for debug, it should not be committed. Using a version control system, such code can be safely removed.]]></message>
+      <context start-line="13" end-line="23"><![CDATA[     * @param int $statusCode
+     * @return JsonResponse
+     */
+    public function createApiResponseAction($data, $statusCode = 200)
+    {
+        //die(dump($this->get('serializer')));
+        $json = $this->get('serializer')
+            ->serialize($data, 'json');
+
+        return new JsonResponse($json, $statusCode, [], true);
+    }]]></context>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/49?status=existing#545018831" rel="self" type="text/html"/>
+    </violation>
+    <violation severity="minor" category="performance" ignored="false">
+      <line>149</line>
+      <resource><![CDATA[src/AppBundle/Controller/TicketController.php]]></resource>
+      <title>Usage of a function in loops should be avoided</title>
+      <message><![CDATA[This loop uses a function. To avoid the overhead of executing the function n times, you should precalculate it before the loop.]]></message>
+      <context start-line="144" end-line="154"><![CDATA[    {
+        $ticketThemes = new TicketThemes();
+        $themes = $ticketThemes->getThemes();
+        $models = [];
+
+        for ($i = 0; $i < count($themes); $i++){
+            $models[] = $themes[$i];
+        }
+        return $this->createApiResponseAction([
+            'items' => $models
+        ]);]]></context>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/49?status=existing#545018810" rel="self" type="text/html"/>
+    </violation>
+    <violation severity="minor" category="deadcode" ignored="false">
+      <line>253</line>
+      <resource><![CDATA[src/AppBundle/Controller/TicketController.php]]></resource>
+      <title>Unused method, property, variable or parameter</title>
+      <message><![CDATA[This createThemesApiModel method is declared but never used. You should remove it.]]></message>
+      <context start-line="248" end-line="258"><![CDATA[        $model->addLink('_archived', $archivedUrl);
+
+        return $model;
+    }
+
+    private function createThemesApiModel($ticketThemes)
+    {
+        $model = new TicketThemeApiModel();
+        foreach ($ticketThemes as $key => $ticketTheme){
+            $model->value = $key;
+            $model->label = $ticketTheme;]]></context>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/49?status=existing#545018812" rel="self" type="text/html"/>
+    </violation>
+    <violation severity="major" category="readability" ignored="false">
+      <line>0</line>
+      <title>Symfony controller action method should not be too long</title>
+      <message><![CDATA[11% of all actions have more than 20 lines. This violation is raised when more than 10% actions are too long.]]></message>
+      <context/>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/49?status=existing#545018827" rel="self" type="text/html"/>
     </violation>
     <violation severity="info" category="performance" ignored="true">
       <line>0</line>
@@ -283,7 +327,7 @@
       <title>.htaccess should be avoided</title>
       <message><![CDATA[A .htaccess file has been spotted. You should consider moving it to the server configuration to improve global performances.]]></message>
       <context/>
-      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/20?status=ignored#523693431" rel="self" type="text/html"/>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/49?status=ignored#545018822" rel="self" type="text/html"/>
     </violation>
     <violation severity="info" category="performance" ignored="true">
       <line>0</line>
@@ -291,7 +335,7 @@
       <title>.htaccess should be avoided</title>
       <message><![CDATA[A .htaccess file has been spotted. You should consider moving it to the server configuration to improve global performances.]]></message>
       <context/>
-      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/20?status=ignored#523693429" rel="self" type="text/html"/>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/49?status=ignored#545018820" rel="self" type="text/html"/>
     </violation>
     <violation severity="info" category="performance" ignored="true">
       <line>0</line>
@@ -299,7 +343,7 @@
       <title>.htaccess should be avoided</title>
       <message><![CDATA[A .htaccess file has been spotted. You should consider moving it to the server configuration to improve global performances.]]></message>
       <context/>
-      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/20?status=ignored#523693430" rel="self" type="text/html"/>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/49?status=ignored#545018821" rel="self" type="text/html"/>
     </violation>
     <violation severity="info" category="performance" ignored="true">
       <line>0</line>
@@ -307,7 +351,7 @@
       <title>.htaccess should be avoided</title>
       <message><![CDATA[A .htaccess file has been spotted. You should consider moving it to the server configuration to improve global performances.]]></message>
       <context/>
-      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/20?status=ignored#523693425" rel="self" type="text/html"/>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/49?status=ignored#545018816" rel="self" type="text/html"/>
     </violation>
     <violation severity="info" category="performance" ignored="true">
       <line>0</line>
@@ -315,15 +359,7 @@
       <title>.htaccess should be avoided</title>
       <message><![CDATA[A .htaccess file has been spotted. You should consider moving it to the server configuration to improve global performances.]]></message>
       <context/>
-      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/20?status=ignored#523693420" rel="self" type="text/html"/>
-    </violation>
-    <violation severity="info" category="performance" ignored="true">
-      <line>0</line>
-      <resource><![CDATA[web/pdf/.htaccess]]></resource>
-      <title>.htaccess should be avoided</title>
-      <message><![CDATA[A .htaccess file has been spotted. You should consider moving it to the server configuration to improve global performances.]]></message>
-      <context/>
-      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/20?status=ignored#523693433" rel="self" type="text/html"/>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/49?status=ignored#545018809" rel="self" type="text/html"/>
     </violation>
   </violations>
   <grades>
@@ -334,15 +370,16 @@
     <entry><![CDATA[platinum]]></entry>
   </grades>
   <failed>false</failed>
-  <grade><![CDATA[platinum]]></grade>
-  <begin-at><![CDATA[2017-05-23T15:19:00+0200]]></begin-at>
-  <end-at><![CDATA[2017-05-23T15:19:45+0200]]></end-at>
-  <duration>16</duration>
-  <number>20</number>
+  <grade><![CDATA[bronze]]></grade>
+  <next-grade><![CDATA[silver]]></next-grade>
+  <begin-at><![CDATA[2017-08-21T11:07:14+0200]]></begin-at>
+  <end-at><![CDATA[2017-08-21T11:08:02+0200]]></end-at>
+  <duration>12</duration>
+  <number>49</number>
   <altered>false</altered>
-  <remediation-cost>0</remediation-cost>
-  <nb-violations>0</nb-violations>
-  <reference><![CDATA[415b4362e7775226b183aff01b98f742cc3da9aa]]></reference>
+  <remediation-cost>3.75</remediation-cost>
+  <nb-violations>5</nb-violations>
+  <reference><![CDATA[05caa21ce24b2870544afe0edb19d6ca2355dd8f]]></reference>
   <configuration>
     <ignored-branches>
       <branch><![CDATA[gh-pages]]></branch>
@@ -403,6 +440,7 @@
     <rules>
       <rule name="task_todo_comment" enabled="false"/>
       <rule name="symfony.application_not_bootable" enabled="false"/>
+      <rule name="missing_e_o_l" enabled="false"/>
     </rules>
     <parameters>
       <parameter name="project_type">12</parameter>
@@ -410,6 +448,35 @@
     <env/>
   </configuration>
   <previous-analyses-references>
+    <analysis-reference number="49">05caa21ce24b2870544afe0edb19d6ca2355dd8f</analysis-reference>
+    <analysis-reference number="48">7046edd62e1a3471744102b4d51535d0459ff3a7</analysis-reference>
+    <analysis-reference number="47">7046edd62e1a3471744102b4d51535d0459ff3a7</analysis-reference>
+    <analysis-reference number="46">26ac6d898977002295c857094681fbe55da8c6db</analysis-reference>
+    <analysis-reference number="45">a14d7eaff8a16a956d5c88b7d584636284df3f72</analysis-reference>
+    <analysis-reference number="44">6d96358646fbaa823868900a7a265b4f1034e924</analysis-reference>
+    <analysis-reference number="43">caaf2043d28091d479145b979a74ecb142dd5270</analysis-reference>
+    <analysis-reference number="42">d171ff67b13853c6c731a0b92b92824e174d9e5e</analysis-reference>
+    <analysis-reference number="41">c20c24231d88174a2813941d4562e260cd4d1c9b</analysis-reference>
+    <analysis-reference number="40">e0c79242af2be4832d207a8bcb17bc25bca48d7c</analysis-reference>
+    <analysis-reference number="39">8b041c2e7f408de33a6a2629f356937d10250eb6</analysis-reference>
+    <analysis-reference number="38">a9571b7353ebfbe2e3b1b5985613c15e93348835</analysis-reference>
+    <analysis-reference number="37">9aaa4071f90f2d81429b4cfdeda2c15a1e93e6c1</analysis-reference>
+    <analysis-reference number="36">643667eef89582cf0606403209cbc4ad0aa16274</analysis-reference>
+    <analysis-reference number="35">2b84a86c6726854226f13ed700d987612c78c66e</analysis-reference>
+    <analysis-reference number="34">2b84a86c6726854226f13ed700d987612c78c66e</analysis-reference>
+    <analysis-reference number="33">2b84a86c6726854226f13ed700d987612c78c66e</analysis-reference>
+    <analysis-reference number="32">2fec93ca4208be37e4efe78076f9a57b819d38ad</analysis-reference>
+    <analysis-reference number="31">3dc7ecf2dab374dfb95af85bc69a70c863fdec77</analysis-reference>
+    <analysis-reference number="30">bab0a733a8c91a90da3188b30e929f265942913d</analysis-reference>
+    <analysis-reference number="29">79e087b2192642ca3e0c0eaafbf6a6841d95c489</analysis-reference>
+    <analysis-reference number="28">79e087b2192642ca3e0c0eaafbf6a6841d95c489</analysis-reference>
+    <analysis-reference number="27">8be41173c928cffe0e3b8336eacc9cb679364f01</analysis-reference>
+    <analysis-reference number="26">349b6168b72543ecc36c7c6eea0f9343bf9fd748</analysis-reference>
+    <analysis-reference number="25">0afed94452697fa01c5c8974cfbc1dbbc1d1eee9</analysis-reference>
+    <analysis-reference number="24">6404b86972f8a3438102dbc3eecbd4eb77745f1b</analysis-reference>
+    <analysis-reference number="23">b2c8d72e6953e8fbebba613923d23f5fe08f5a52</analysis-reference>
+    <analysis-reference number="22">a6a067f52130ff88d34908eb559b66e87fa5ba7a</analysis-reference>
+    <analysis-reference number="21">b44a0812ffd6c0fce4f21eb5e42c36c5f385b2ea</analysis-reference>
     <analysis-reference number="20">415b4362e7775226b183aff01b98f742cc3da9aa</analysis-reference>
     <analysis-reference number="19">c422c4725700d7f5534c2ddacb570ccf62d8f517</analysis-reference>
     <analysis-reference number="18">e97ab9e869906823b5668c33006e696ce13d41e8</analysis-reference>
@@ -431,7 +498,7 @@
     <analysis-reference number="1">fa5afe31df70e7a48dd226ab6cf5483381fbd58f</analysis-reference>
   </previous-analyses-references>
   <nb-violations-new>0</nb-violations-new>
-  <nb-violations-existing>0</nb-violations-existing>
-  <nb-violations-fixed>0</nb-violations-fixed>
-  <nb-violations-ignored>23</nb-violations-ignored>
+  <nb-violations-existing>5</nb-violations-existing>
+  <nb-violations-fixed>1</nb-violations-fixed>
+  <nb-violations-ignored>19</nb-violations-ignored>
 </analysis>
