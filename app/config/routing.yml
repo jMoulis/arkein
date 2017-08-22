@@ -33,16 +33,6 @@ app.ticket:
     type:     annotation
     prefix:   /dashboard
 
-app.user.security:
-    resource: "@UserBundle/Controller/SecurityController.php"
-    type:     annotation
-    prefix:   /
-
-app.user:
-    resource: "@UserBundle/Controller/UserController.php"
-    type:     annotation
-    prefix:   /dashboard
-
 app.answer:
     resource: "@AppBundle/Controller/AnswerController.php"
     type:     annotation
@@ -62,6 +52,15 @@ blog_billet:
     resource: "@BlogBundle/Controller/BilletController.php"
     type:     annotation
     prefix:   /blog
+app.user.security:
+    resource: "@UserBundle/Controller/SecurityController.php"
+    type:     annotation
+    prefix:   /
+
+app.user:
+    resource: "@UserBundle/Controller"
+    type:     annotation
+    prefix:   /dashboard
 
 fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"

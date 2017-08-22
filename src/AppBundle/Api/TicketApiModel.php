@@ -26,6 +26,8 @@ class TicketApiModel
 
     public $statut;
 
+    public $themes;
+
     private $links = [];
 
     public function addLink($ref, $url)

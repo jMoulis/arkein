@@ -8,6 +8,7 @@ use AppBundle\Entity\InterviewUser;
 use AppBundle\Form\Type\EntretienType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use UserBundle\Entity\User;
@@ -52,27 +53,18 @@ class EntretienController extends BaseController
     public function newAction(Request $request)
     {
         $data = json_decode($request->getContent(), true);
-
         $dataFormEntretien = $data[0];
         $newGuests = array_keys($data[1]);
-
         if ($data === null) {
             throw new BadRequestHttpException('Invalid JSON');
         }
-
         $form = $this->createForm(EntretienType::class, null, [
             'csrf_protection' => false,
         ]);
 
         $form->submit($dataFormEntretien);
 
-        if (!$form->isValid()) {
-            $errors = $this->getErrorsFromFormAction($form);
-
-            return $this->createApiResponseAction([
-                'errors' => $errors
-            ], 400);
-        }
+        $this->apiValidFormAction($form);
 
         /** @var Entretien $entretien */
         $entretien = $form->getData();
@@ -80,18 +72,8 @@ class EntretienController extends BaseController
         $em = $this->getDoctrine()->getManager();
         $entretien->setAuthor($this->getUser());
 
-        if ($newGuests) {
-            foreach ($newGuests as $guest) {
+        $this->addNewGuestAction($newGuests, $em, $entretien);
 
-                $interviewUser = new InterviewUser();
-                $interviewUser->setUser($em->getRepository('UserBundle:User')->find($guest));
-                $interviewUser->setInterview($entretien);
-                $entretien->addInterviewGuest($interviewUser);
-                if($em->getRepository('UserBundle:User')->find($guest) === $this->getUser()){
-                    $interviewUser->setStatus(1);
-                }
-            }
-        }
         $em->persist($entretien);
         $em->flush();
 
@@ -106,6 +88,20 @@ class EntretienController extends BaseController
         return $response;
     }
 
+    private function addNewGuestAction($newGuests, $em, $entretien)
+    {
+        if ($newGuests) {
+            foreach ($newGuests as $guest) {
+                $interviewUser = new InterviewUser();
+                $interviewUser->setUser($em->getRepository('UserBundle:User')->find($guest));
+                $interviewUser->setInterview($entretien);
+                $entretien->addInterviewGuest($interviewUser);
+                if($em->getRepository('UserBundle:User')->find($guest) === $this->getUser()){
+                    $interviewUser->setStatus(1);
+                }
+            }
+        }
+    }
     /**
      * Finds and displays a entretien entity.
      *
@@ -123,6 +119,51 @@ class EntretienController extends BaseController
         ));
     }
 
+    /**
+     * Displays a form to edit an existing entretien entity.
+     *
+     * @Route("/{id}/edit",
+     *     name="entretien_edit",
+     *     options={"expose" = true})
+     *
+     * @Method({"GET", "POST"})
+     *
+     */
+    public function editAction(Request $request, Entretien $entretien)
+    {
+        $data = json_decode($request->getContent(), true);
+        $dataFormEntretien = $data[0];
+
+        if ($data === null) {
+            throw new BadRequestHttpException('Invalid JSON');
+        }
+
+        $form = $this->createForm(EntretienType::class, $entretien, [
+            'csrf_protection' => false,
+        ]);
+
+        $form->submit($dataFormEntretien);
+
+        $this->apiValidFormAction($form);
+
+        $em = $this->getDoctrine()->getManager();
+
+        $this->guestManager($entretien, $data, $dataFormEntretien, $em);
+        $dateTemporary = explode('/', $dataFormEntretien['date']);
+        $date = $this->setRightDateAction($dateTemporary);
+        $entretien->setDate($date);
+        $em->flush();
+
+        $apiModel = $this->createEntretienApiModel($entretien);
+
+        $response = $this->createApiResponseAction($apiModel);
+        $response->headers->set(
+            'Location',
+            $this->generateUrl('entretien_show', ['id' => $entretien->getId()])
+        );
+
+        return $response;
+    }
 
     /**
      * @Route("/api/author/{id}/",
@@ -133,7 +174,6 @@ class EntretienController extends BaseController
      */
     public function getEntretiensByAuthorAction(User $user)
     {
-
         if(!$user) {
             throw new \Exception('erreur object non trouvé', 500);
         }
@@ -153,11 +193,9 @@ class EntretienController extends BaseController
      *     name="entretien_list_by_young",
      *     options={"expose" = true}
      * )
-     *
      * @Method("GET")
      *
      * Load entretiens where in the show user and the logged-user is a guest
-     *
      */
     public function getEntretiensByYoungAction(User $young)
     {
@@ -180,9 +218,7 @@ class EntretienController extends BaseController
      *
      * @Route("/api/modal/{id}/show",
      *     name="entretien_modal_detail",
-     *     options={"expose" = true}
-     * )
-     *
+     *     options={"expose" = true})
      * @Method("GET")
      */
     public function detailModalAction(Entretien $entretien)
@@ -190,76 +226,10 @@ class EntretienController extends BaseController
         if(!$entretien) {
             throw new \Exception('erreur object non trouvé', 500);
         }
-        $entetien = $this->getDoctrine()->getRepository('AppBundle:Entretien')
-            ->find($entretien->getId());
-        $model = $this->createEntretienApiModel($entetien);
+        $model = $this->createEntretienApiModel($entretien);
         return $this->createApiResponseAction([
             'item' => $model
         ]);
-    }
-
-    /**
-     * Displays a form to edit an existing entretien entity.
-     *
-     * @Route("/{id}/edit",
-     *     name="entretien_edit",
-     *     options={"expose" = true})
-     *
-     * @Method({"GET", "POST"})
-     *
-     */
-    public function editAction(Request $request)
-    {
-        $entretienId = $request->attributes->get('id');
-
-        $data = json_decode($request->getContent(), true);
-
-        $dataFormEntretien = $data[0];
-
-        if ($data === null) {
-            throw new BadRequestHttpException('Invalid JSON');
-        }
-
-        $form = $this->createForm(EntretienType::class, null, [
-            'csrf_protection' => false,
-        ]);
-
-        $form->submit($dataFormEntretien);
-
-        if (!$form->isValid()) {
-            $errors = $this->getErrorsFromFormAction($form);
-
-            return $this->createApiResponseAction([
-                'errors' => $errors
-            ], 400);
-        }
-
-        $em = $this->getDoctrine()->getManager();
-
-        $entretien = $em->getRepository('AppBundle:Entretien')->findOneBy(['id' => $entretienId]);
-
-        $this->guestManager($entretien, $data, $dataFormEntretien, $em);
-
-
-        $dateTemporary = explode('/', $dataFormEntretien['date']);
-
-        $date = $this->setRightDateAction($dateTemporary);
-
-        $entretien->setDate($date);
-
-        $em->persist($entretien);
-        $em->flush();
-
-        $apiModel = $this->createEntretienApiModel($entretien);
-
-        $response = $this->createApiResponseAction($apiModel);
-        $response->headers->set(
-            'Location',
-            $this->generateUrl('entretien_show', ['id' => $entretien->getId()])
-        );
-
-        return $response;
-
     }
 
     /**
@@ -308,16 +278,28 @@ class EntretienController extends BaseController
             }
         }
     }
+
     private function setRightDateAction($dateTemp)
     {
         $day = $dateTemp[0];
         $month = $dateTemp[1];
         $year = $dateTemp[2];
-
         $date = new \DateTime(''. $year .'-'. $month .'-'. $day);
-
         return $date;
     }
+
+    private function apiValidFormAction(Form $form)
+    {
+        if (!$form->isValid()) {
+            $errors = $this->getErrorsFromFormAction($form);
+
+            return $this->createApiResponseAction([
+                'errors' => $errors
+            ], 400);
+        }
+        return true;
+    }
+
     private function createEntretienApiModel(Entretien $entretien)
     {
         $model = new EntretienApiModel();

@@ -4,9 +4,11 @@ namespace AppBundle\Controller;
 
 use AppBundle\Api\AnswerApiModel;
 use AppBundle\Entity\Answer;
+use AppBundle\Entity\Ticket;
 use AppBundle\Form\Type\AnswerType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
@@ -21,14 +23,12 @@ class AnswerController extends BaseController
      * @Route("api/answers/{id}/list", name="api_answer_list", options={"expose" = true})
      * @Method("GET")
      */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request, Ticket $ticket)
     {
-        $ticketId = $request->attributes->get('id');
-
         $em = $this->getDoctrine()->getManager();
         $answers = $em->getRepository('AppBundle:Answer')
                 ->findAnswerOrderedByDate($em->getRepository('AppBundle:Ticket')
-                ->find($ticketId));
+                ->find($ticket->getId()));
         $models = [];
         foreach ($answers as $answer) {
             $models[] = $this->createAnswerApiModel($answer);
@@ -44,9 +44,8 @@ class AnswerController extends BaseController
      *     options={"expose" = true})
      * @Method("POST")
      */
-    public function newAnswerAction(Request $request)
+    public function newAnswerAction(Request $request, Ticket $ticket)
     {
-        $ticketId = $request->attributes->get('id');
         $data = json_decode($request->getContent(), true);
         if ($data === null) {
             throw new BadRequestHttpException('Invalid JSON');
@@ -57,19 +56,13 @@ class AnswerController extends BaseController
 
         $form->submit($data);
 
-        if (!$form->isValid()) {
-            $errors = $this->getErrorsFromFormAction($form);
-
-            return $this->createApiResponseAction([
-                'errors' => $errors
-            ], 400);
-        }
+        $this->apiValidFormAction($form);
 
         /** @var Answer $answer */
         $answer = $form->getData();
         $em = $this->getDoctrine()->getManager();
         $answer->setUser($this->getUser());
-        $answer->setTicket($em->getRepository('AppBundle:Ticket')->find($ticketId));
+        $answer->setTicket($ticket);
         $em->persist($answer);
         $em->flush();
 
@@ -84,6 +77,17 @@ class AnswerController extends BaseController
         return $response;
     }
 
+    private function apiValidFormAction(Form $form)
+    {
+        if (!$form->isValid()) {
+            $errors = $this->getErrorsFromFormAction($form);
+
+            return $this->createApiResponseAction([
+                'errors' => $errors
+            ], 400);
+        }
+        return true;
+    }
     /**
      * @param Answer $answer
      * @return AnswerApiModel

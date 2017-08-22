@@ -107,7 +107,8 @@
                 method: 'POST',
                 data: JSON.stringify(formData),
                 success: function (data) {
-                    $('#myModal').modal('hide');
+                    $('#editTicketModal').modal('hide');
+                    console.log(data);
                 },
                 error: function (jqXHR) {
                     const errorData = JSON.parse(jqXHR.responseText);
@@ -120,10 +121,8 @@
             $.ajax({
                 url: Routing.generate('api_ticket_themes_list')
             }).then(function(data){
-                $.each(data, function (key, theme) {
-                    $.each(theme, function(key, value){
-                        $('#objet').append('<option value="'+ value.value +'">'+ value.label +'</option>');
-                    })
+                $.each(data.items, function (key, theme) {
+                    $('#objet').append('<option value="'+ theme.name +'">'+ theme.name +'</option>');
                 });
             }).catch(function (jqXHR) {
 
@@ -142,7 +141,7 @@
         },
         loadNewForm: function(){
             const self = this;
-
+            self._loadThemesSelect();
             self.loadUsers();
             self._hideSelectBoxYoungster();
         },
@@ -154,7 +153,6 @@
                 },
                 url: Routing.generate('api_ticket_created_list'),
             }).then(function(data){
-                self._loadThemesSelect();
                 if($(data.items).length <= 0){
                     $(self._selector.myTicket).find('.loading').remove();
                     $(self._selector.myTicket).find('tbody').append('' +
@@ -164,7 +162,7 @@
                     $.each(data.items, function (key, ticket) {
                         $(self._selector.myTicket).find('.loading').remove();
                         self._addCreatedRow(ticket);
-                        if($('body').data('user') != ticket.auteurId) {
+                        if($('body').data('user') !== ticket.auteurId) {
                             $('.js-tickets tbody tr#ticket_auteur_'+ ticket.auteurId +'').css('backgroundColor', '#b2e5ff');
                         }
                     });
@@ -184,7 +182,6 @@
                 if (!errorData[fieldName]){
                     return;
                 }
-
                 const $error = $('<span class="js-field-error text-danger"></span>');
 
                 $error.html(errorData[fieldName]);
@@ -201,8 +198,7 @@
 
         _clearForm: function () {
             this._removeFormErrors();
-            $('.js-new-ticket-form')[0].reset();
-
+            $('form')[0].reset();
         },
 
         _addCreatedRow: function (ticket) {
@@ -226,8 +222,6 @@
             if($('body').data("role") === 'ROLE_YOUNGSTER'){
                 $selectBox.parent().remove();
             }
-
         }
-
     });
 })(window, jQuery, Routing);

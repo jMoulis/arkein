@@ -10,11 +10,13 @@ use DocumentationBundle\Form\Type\DocumentType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use UserBundle\Entity\User;
 
 /**
  * @Route("document")
@@ -33,9 +35,8 @@ class DocumentController extends BaseController
      *
      *
      */
-    public function indexAction($userid)
+    public function indexAction(User $user)
     {
-        $user = $this->getDoctrine()->getRepository('UserBundle:User')->find($userid);
         $documents = $this->getDoctrine()->getRepository('DocumentationBundle:Document')
             ->getDocumentsByDestinataire($user);
         $models = [];
@@ -79,7 +80,7 @@ class DocumentController extends BaseController
      *
      * @Method({"GET","POST"})
      */
-    public  function newAction(Request $request, $id)
+    public  function newAction(Request $request, User $user)
     {
         $data = $request->files;
         if ($data === null) {
@@ -91,17 +92,11 @@ class DocumentController extends BaseController
 
         $form->handleRequest($request);
 
-        if (!$form->isValid()) {
-            $errors = $this->getErrorsFromFormAction($form);
+        $this->apiValidFormAction($form);
 
-            return $this->createApiResponseAction([
-                'errors' => $errors
-            ], 400);
-        }
 
         /** @var Document $document */
         $em = $this->getDoctrine()->getManager();
-        $user = $em->getRepository('UserBundle:User')->find($id);
 
         $document = $form->getData();
         $document->setAuthor($this->getUser());
@@ -263,6 +258,18 @@ class DocumentController extends BaseController
             $type = ($navigateur!="Mozilla") ? 'application/octetstream' : 'application/octet-stream';
         }
         return $type;
+    }
+
+    private function apiValidFormAction(Form $form)
+    {
+        if (!$form->isValid()) {
+            $errors = $this->getErrorsFromFormAction($form);
+
+            return $this->createApiResponseAction([
+                'errors' => $errors
+            ], 400);
+        }
+        return true;
     }
 
     /**

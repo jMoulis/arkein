@@ -9,6 +9,7 @@ use AppBundle\Form\Type\CompteRenduType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Config\Definition\Exception\Exception;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use mPDF;
@@ -38,31 +39,24 @@ class CompteRenduController extends BaseController
         $form = $this->createForm(CompteRenduType::class, null, [
             'csrf_protection' => false,
         ]);
-
         $form->submit($data);
 
-        if (!$form->isValid()) {
-            $errors = $this->getErrorsFromFormAction($form);
-
-            return $this->createApiResponseAction([
-                'errors' => $errors
-            ], 400);
-        }
+        $this->apiValidFormAction($form);
 
         $compterendu = $form->getData();
 
         $pathLoad = $this->pdfProcess($data, $compterendu);
         $compterendu->setLienpdf($pathLoad);
 
-        $entretien = $this->getDoctrine()->getRepository(Entretien::class)->find($data["entretien"]);
+        $entretien = $em->getRepository(Entretien::class)->find($data["entretien"]);
         $entretien->setIsArchived(true);
-
 
         $em->persist($compterendu);
         $em->persist($entretien);
         $em->flush();
 
         $apiModel = $this->createCompteRenduApiModel($compterendu);
+
         $response = $this->createApiResponseAction($apiModel);
         $response->headers->set(
             'Location',
@@ -70,6 +64,18 @@ class CompteRenduController extends BaseController
         );
 
         return $response;
+    }
+
+    private function apiValidFormAction(Form $form)
+    {
+        if (!$form->isValid()) {
+            $errors = $this->getErrorsFromFormAction($form);
+
+            return $this->createApiResponseAction([
+                'errors' => $errors
+            ], 400);
+        }
+        return true;
     }
 
     /**
@@ -117,9 +123,8 @@ class CompteRenduController extends BaseController
      * @Method({"GET", "POST"})
      *
      */
-    public function editAction(Request $request, $id)
+    public function editAction(Request $request, CompteRendu $compteRendu)
     {
-
         $data = json_decode($request->getContent(), true);
 
         if ($data === null) {
@@ -130,34 +135,24 @@ class CompteRenduController extends BaseController
         ]);
 
         $form->submit($data);
-
-        if (!$form->isValid()) {
-            $errors = $this->getErrorsFromFormAction($form);
-
-            return $this->createApiResponseAction([
-                'errors' => $errors
-            ], 400);
-        }
+        $this->apiValidFormAction($form);
 
         $em = $this->getDoctrine()->getManager();
 
-        $compterendu = $em->getRepository('AppBundle:compterendu')->findOneBy(['id' => $id]);
-
         $date = new \DateTime(($data['date']));
 
-        $compterendu->setObjet($data['objet']);
-        $compterendu->setOdj($data['odj']);
-        $compterendu->setDate($date);
+        $compteRendu->setObjet($data['objet']);
+        $compteRendu->setOdj($data['odj']);
+        $compteRendu->setDate($date);
 
-        $em->persist($compterendu);
         $em->flush();
 
-        $apiModel = $this->createcompterenduApiModel($compterendu);
+        $apiModel = $this->createcompterenduApiModel($compteRendu);
 
         $response = $this->createApiResponseAction($apiModel);
         $response->headers->set(
             'Location',
-            $this->generateUrl('compterendu_show', ['id' => $compterendu->getId()])
+            $this->generateUrl('compterendu_show', ['id' => $compteRendu->getId()])
         );
 
         return $response;

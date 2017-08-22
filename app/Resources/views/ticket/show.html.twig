@@ -25,38 +25,14 @@
                     <span>Message</span>
                     <p>{{ ticket.message }}</p>
                     {% if is_granted('ROLE_ADMIN') %}
-                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">
+                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editTicketModal">
                         Clôturer
                     </button>
                     {% endif %}
                 </div>
             </div>
         </div>
-
-
-        {# Modal pour confirmer la clôture#}
-        <!-- Modal -->
-        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Confirmation clôture</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form class="js-edit-ticket-form" name="statut" method="post" action="" novalidate>
-                            <select id="select-statuts" name="statut">
-                                <option value="1">Ouvert</option>
-                                <option value="0">Clôturer</option>
-                            </select>
-                            <button class="btn btn-primary" type="submit">Modifier</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
+        {{ include(':ticket:_modal_edit_ticket_form.html.twig') }}
     </div>
 {% endblock %}
 

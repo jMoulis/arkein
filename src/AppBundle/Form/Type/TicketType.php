@@ -38,10 +38,6 @@ class TicketType extends AbstractType
 
         $builder
             ->add('objet', TextType::class)
-            /* Je l'ai mis en hiddenType, est l'ai codé en pur html et JS,
-             * pour gérer l'objet 'Autre' qui fait apparaître un inputtext
-             * pour écrire un objet autre et c'est JS qui sert pour remplir cet hidden field
-             */
             ->add('level', ChoiceType::class, [
                 'choices' => [
                     'Normal' => 'normal',

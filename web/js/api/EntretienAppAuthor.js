@@ -239,7 +239,6 @@
                 guestsObject[Number($(fieldData).data('user'))] = fieldData.title;
             });
 
-
             const formData = {};
             $.each($form.serializeArray(), function (key, fieldData) {
                 formData[fieldData.name] = fieldData.value;
@@ -354,7 +353,6 @@
 
         loadGuests: function (user) {
             const self = this;
-            console.log('test')
             if(user) {
                 $.ajax({
                     url: Routing.generate('guest_list', { user: user })

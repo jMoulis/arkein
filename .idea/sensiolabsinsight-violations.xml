@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <analysis>
-  <link href="https://insight.sensiolabs.com/api/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/49" rel="self" type="application/vnd.com.sensiolabs.insight+xml"/>
-  <link href="https://insight.sensiolabs.com/api/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/49/status" rel="status" type="application/vnd.com.sensiolabs.insight+xml"/>
+  <link href="https://insight.sensiolabs.com/api/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/52" rel="self" type="application/vnd.com.sensiolabs.insight+xml"/>
+  <link href="https://insight.sensiolabs.com/api/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/52/status" rel="status" type="application/vnd.com.sensiolabs.insight+xml"/>
   <link href="https://insight.sensiolabs.com/api/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0" rel="project" type="application/vnd.com.sensiolabs.insight+xml"/>
-  <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/49" rel="self" type="text/html"/>
+  <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/52" rel="self" type="text/html"/>
   <status><![CDATA[finished]]></status>
   <violations>
+    <violation severity="critical" category="bugrisk" ignored="true">
+      <line>0</line>
+      <title>Dependencies not installable</title>
+      <message><![CDATA[SensioLabsInsight was not able to install your Composer dependencies. If you need to customize files or run commands to make it work, you can edit your SensioLabsInsight project configuration to override the default "pre_composer_script" and/or "post_composer_script" settings.]]></message>
+      <context/>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/52?status=ignored#545053057" rel="self" type="text/html"/>
+    </violation>
     <violation severity="major" category="bugrisk" ignored="true">
       <line>1</line>
       <resource><![CDATA[composer.json]]></resource>
@@ -17,7 +24,7 @@
     "type": "project",
     "autoload": {
         "psr-4": {]]></context>
-      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/49?status=ignored#545018814" rel="self" type="text/html"/>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/52?status=ignored#545053053" rel="self" type="text/html"/>
     </violation>
     <violation severity="info" category="bugrisk" ignored="true">
       <line>0</line>
@@ -25,24 +32,7 @@
       <title>The composer.json file should not raise warnings</title>
       <message><![CDATA[Defining autoload.psr-4 with an empty namespace prefix is a bad idea for performance]]></message>
       <context/>
-      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/49?status=ignored#545018823" rel="self" type="text/html"/>
-    </violation>
-    <violation severity="minor" category="codestyle" ignored="false">
-      <line>23</line>
-      <resource><![CDATA[.gitignore]]></resource>
-      <title>User specific files should not appear in .gitignore</title>
-      <message><![CDATA[.idea is user-specific and should not appear in a project .gitignore. Consider adding it to the user global .gitignore instead.]]></message>
-      <context start-line="18" end-line="27"><![CDATA[/web/css/compiled/
-/web/js/compiled/
-/web/pdf/
-/web/test/
-/src/documents/
-.idea
-Supprimerait var/cache/
-Supprimerait var/logs/
-Supprimerait var/sessions/
-]]></context>
-      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/49?status=existing#545018813" rel="self" type="text/html"/>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/52?status=ignored#545053063" rel="self" type="text/html"/>
     </violation>
     <violation severity="minor" category="codestyle" ignored="true">
       <line>154</line>
@@ -60,7 +50,7 @@ Supprimerait var/sessions/
 
         return $this;
     }]]></context>
-      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/49?status=ignored#545018832" rel="self" type="text/html"/>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/52?status=ignored#545053071" rel="self" type="text/html"/>
     </violation>
     <violation severity="minor" category="codestyle" ignored="true">
       <line>166</line>
@@ -78,7 +68,7 @@ Supprimerait var/sessions/
     }
 
 ]]></context>
-      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/49?status=ignored#545018825" rel="self" type="text/html"/>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/52?status=ignored#545053065" rel="self" type="text/html"/>
     </violation>
     <violation severity="minor" category="codestyle" ignored="true">
       <line>199</line>
@@ -96,7 +86,7 @@ Supprimerait var/sessions/
 
         return $this;
     }]]></context>
-      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/49?status=ignored#545018826" rel="self" type="text/html"/>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/52?status=ignored#545053066" rel="self" type="text/html"/>
     </violation>
     <violation severity="minor" category="codestyle" ignored="true">
       <line>211</line>
@@ -114,7 +104,7 @@ Supprimerait var/sessions/
     }
 }
 ]]></context>
-      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/49?status=ignored#545018824" rel="self" type="text/html"/>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/52?status=ignored#545053064" rel="self" type="text/html"/>
     </violation>
     <violation severity="minor" category="codestyle" ignored="true">
       <line>145</line>
@@ -132,7 +122,7 @@ Supprimerait var/sessions/
     }
 
     /**]]></context>
-      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/49?status=ignored#545018817" rel="self" type="text/html"/>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/52?status=ignored#545053056" rel="self" type="text/html"/>
     </violation>
     <violation severity="minor" category="codestyle" ignored="true">
       <line>153</line>
@@ -150,7 +140,7 @@ Supprimerait var/sessions/
     }
 
 ]]></context>
-      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/49?status=ignored#545018819" rel="self" type="text/html"/>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/52?status=ignored#545053059" rel="self" type="text/html"/>
     </violation>
     <violation severity="minor" category="codestyle" ignored="true">
       <line>236</line>
@@ -168,7 +158,7 @@ Supprimerait var/sessions/
 
         return $this;
     }]]></context>
-      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/49?status=ignored#545018828" rel="self" type="text/html"/>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/52?status=ignored#545053068" rel="self" type="text/html"/>
     </violation>
     <violation severity="minor" category="codestyle" ignored="true">
       <line>248</line>
@@ -186,7 +176,7 @@ Supprimerait var/sessions/
     }
 
     /**]]></context>
-      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/49?status=ignored#545018830" rel="self" type="text/html"/>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/52?status=ignored#545053070" rel="self" type="text/html"/>
     </violation>
     <violation severity="minor" category="codestyle" ignored="true">
       <line>260</line>
@@ -204,7 +194,7 @@ Supprimerait var/sessions/
 
         return $this;
     }]]></context>
-      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/49?status=ignored#545018815" rel="self" type="text/html"/>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/52?status=ignored#545053054" rel="self" type="text/html"/>
     </violation>
     <violation severity="minor" category="codestyle" ignored="true">
       <line>272</line>
@@ -222,7 +212,7 @@ Supprimerait var/sessions/
     }
 }
 ]]></context>
-      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/49?status=ignored#545018811" rel="self" type="text/html"/>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/52?status=ignored#545053052" rel="self" type="text/html"/>
     </violation>
     <violation severity="minor" category="codestyle" ignored="true">
       <line>358</line>
@@ -240,7 +230,7 @@ Supprimerait var/sessions/
     }
 
     public function setIsActive($isActive)]]></context>
-      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/49?status=ignored#545018829" rel="self" type="text/html"/>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/52?status=ignored#545053069" rel="self" type="text/html"/>
     </violation>
     <violation severity="minor" category="codestyle" ignored="true">
       <line>363</line>
@@ -258,68 +248,14 @@ Supprimerait var/sessions/
     }
 
     /**]]></context>
-      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/49?status=ignored#545018818" rel="self" type="text/html"/>
-    </violation>
-    <violation severity="minor" category="deadcode" ignored="false">
-      <line>18</line>
-      <resource><![CDATA[src/AppBundle/Controller/BaseController.php]]></resource>
-      <title>Commented code should not be committed</title>
-      <message><![CDATA[Commented out code reduces readability and lowers the code confidence for other developers. If it's common usage for debug, it should not be committed. Using a version control system, such code can be safely removed.]]></message>
-      <context start-line="13" end-line="23"><![CDATA[     * @param int $statusCode
-     * @return JsonResponse
-     */
-    public function createApiResponseAction($data, $statusCode = 200)
-    {
-        //die(dump($this->get('serializer')));
-        $json = $this->get('serializer')
-            ->serialize($data, 'json');
-
-        return new JsonResponse($json, $statusCode, [], true);
-    }]]></context>
-      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/49?status=existing#545018831" rel="self" type="text/html"/>
-    </violation>
-    <violation severity="minor" category="performance" ignored="false">
-      <line>149</line>
-      <resource><![CDATA[src/AppBundle/Controller/TicketController.php]]></resource>
-      <title>Usage of a function in loops should be avoided</title>
-      <message><![CDATA[This loop uses a function. To avoid the overhead of executing the function n times, you should precalculate it before the loop.]]></message>
-      <context start-line="144" end-line="154"><![CDATA[    {
-        $ticketThemes = new TicketThemes();
-        $themes = $ticketThemes->getThemes();
-        $models = [];
-
-        for ($i = 0; $i < count($themes); $i++){
-            $models[] = $themes[$i];
-        }
-        return $this->createApiResponseAction([
-            'items' => $models
-        ]);]]></context>
-      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/49?status=existing#545018810" rel="self" type="text/html"/>
-    </violation>
-    <violation severity="minor" category="deadcode" ignored="false">
-      <line>253</line>
-      <resource><![CDATA[src/AppBundle/Controller/TicketController.php]]></resource>
-      <title>Unused method, property, variable or parameter</title>
-      <message><![CDATA[This createThemesApiModel method is declared but never used. You should remove it.]]></message>
-      <context start-line="248" end-line="258"><![CDATA[        $model->addLink('_archived', $archivedUrl);
-
-        return $model;
-    }
-
-    private function createThemesApiModel($ticketThemes)
-    {
-        $model = new TicketThemeApiModel();
-        foreach ($ticketThemes as $key => $ticketTheme){
-            $model->value = $key;
-            $model->label = $ticketTheme;]]></context>
-      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/49?status=existing#545018812" rel="self" type="text/html"/>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/52?status=ignored#545053058" rel="self" type="text/html"/>
     </violation>
     <violation severity="major" category="readability" ignored="false">
       <line>0</line>
       <title>Symfony controller action method should not be too long</title>
       <message><![CDATA[11% of all actions have more than 20 lines. This violation is raised when more than 10% actions are too long.]]></message>
       <context/>
-      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/49?status=existing#545018827" rel="self" type="text/html"/>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/52?status=existing#545053067" rel="self" type="text/html"/>
     </violation>
     <violation severity="info" category="performance" ignored="true">
       <line>0</line>
@@ -327,7 +263,7 @@ Supprimerait var/sessions/
       <title>.htaccess should be avoided</title>
       <message><![CDATA[A .htaccess file has been spotted. You should consider moving it to the server configuration to improve global performances.]]></message>
       <context/>
-      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/49?status=ignored#545018822" rel="self" type="text/html"/>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/52?status=ignored#545053062" rel="self" type="text/html"/>
     </violation>
     <violation severity="info" category="performance" ignored="true">
       <line>0</line>
@@ -335,7 +271,7 @@ Supprimerait var/sessions/
       <title>.htaccess should be avoided</title>
       <message><![CDATA[A .htaccess file has been spotted. You should consider moving it to the server configuration to improve global performances.]]></message>
       <context/>
-      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/49?status=ignored#545018820" rel="self" type="text/html"/>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/52?status=ignored#545053060" rel="self" type="text/html"/>
     </violation>
     <violation severity="info" category="performance" ignored="true">
       <line>0</line>
@@ -343,7 +279,7 @@ Supprimerait var/sessions/
       <title>.htaccess should be avoided</title>
       <message><![CDATA[A .htaccess file has been spotted. You should consider moving it to the server configuration to improve global performances.]]></message>
       <context/>
-      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/49?status=ignored#545018821" rel="self" type="text/html"/>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/52?status=ignored#545053061" rel="self" type="text/html"/>
     </violation>
     <violation severity="info" category="performance" ignored="true">
       <line>0</line>
@@ -351,7 +287,7 @@ Supprimerait var/sessions/
       <title>.htaccess should be avoided</title>
       <message><![CDATA[A .htaccess file has been spotted. You should consider moving it to the server configuration to improve global performances.]]></message>
       <context/>
-      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/49?status=ignored#545018816" rel="self" type="text/html"/>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/52?status=ignored#545053055" rel="self" type="text/html"/>
     </violation>
     <violation severity="info" category="performance" ignored="true">
       <line>0</line>
@@ -359,7 +295,7 @@ Supprimerait var/sessions/
       <title>.htaccess should be avoided</title>
       <message><![CDATA[A .htaccess file has been spotted. You should consider moving it to the server configuration to improve global performances.]]></message>
       <context/>
-      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/49?status=ignored#545018809" rel="self" type="text/html"/>
+      <link href="https://insight.sensiolabs.com/projects/2fb40d2f-3560-40e7-9958-d51eec9763b0/analyses/52?status=ignored#545053051" rel="self" type="text/html"/>
     </violation>
   </violations>
   <grades>
@@ -372,14 +308,14 @@ Supprimerait var/sessions/
   <failed>false</failed>
   <grade><![CDATA[bronze]]></grade>
   <next-grade><![CDATA[silver]]></next-grade>
-  <begin-at><![CDATA[2017-08-21T11:07:14+0200]]></begin-at>
-  <end-at><![CDATA[2017-08-21T11:08:02+0200]]></end-at>
-  <duration>12</duration>
-  <number>49</number>
+  <begin-at><![CDATA[2017-08-21T12:25:35+0200]]></begin-at>
+  <end-at><![CDATA[2017-08-21T12:26:02+0200]]></end-at>
+  <duration>6</duration>
+  <number>52</number>
   <altered>false</altered>
-  <remediation-cost>3.75</remediation-cost>
-  <nb-violations>5</nb-violations>
-  <reference><![CDATA[05caa21ce24b2870544afe0edb19d6ca2355dd8f]]></reference>
+  <remediation-cost>2.5</remediation-cost>
+  <nb-violations>1</nb-violations>
+  <reference><![CDATA[a318f57ccb73695eb5236c9d2ff2f80766bb3dd2]]></reference>
   <configuration>
     <ignored-branches>
       <branch><![CDATA[gh-pages]]></branch>
@@ -448,6 +384,9 @@ Supprimerait var/sessions/
     <env/>
   </configuration>
   <previous-analyses-references>
+    <analysis-reference number="52">a318f57ccb73695eb5236c9d2ff2f80766bb3dd2</analysis-reference>
+    <analysis-reference number="51">4d7c76b5ed73b27f69b0cd8bc3d3af117c2f775f</analysis-reference>
+    <analysis-reference number="50">e4dee67fc1cdcc891ea0b5d31132dd750e09ab2a</analysis-reference>
     <analysis-reference number="49">05caa21ce24b2870544afe0edb19d6ca2355dd8f</analysis-reference>
     <analysis-reference number="48">7046edd62e1a3471744102b4d51535d0459ff3a7</analysis-reference>
     <analysis-reference number="47">7046edd62e1a3471744102b4d51535d0459ff3a7</analysis-reference>
@@ -498,7 +437,7 @@ Supprimerait var/sessions/
     <analysis-reference number="1">fa5afe31df70e7a48dd226ab6cf5483381fbd58f</analysis-reference>
   </previous-analyses-references>
   <nb-violations-new>0</nb-violations-new>
-  <nb-violations-existing>5</nb-violations-existing>
-  <nb-violations-fixed>1</nb-violations-fixed>
-  <nb-violations-ignored>19</nb-violations-ignored>
+  <nb-violations-existing>1</nb-violations-existing>
+  <nb-violations-fixed>5</nb-violations-fixed>
+  <nb-violations-ignored>20</nb-violations-ignored>
 </analysis>
