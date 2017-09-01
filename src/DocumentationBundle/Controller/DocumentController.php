@@ -272,7 +272,7 @@ class DocumentController extends BaseController
     /**
      * @param Document $document
      * @return DocumentApiModel
-     * @Security("has_role('ROLE_ADMIN')")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      */
     private function createDocumentApiModel(Document $document)
     {

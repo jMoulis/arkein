@@ -48,8 +48,6 @@ class BaseController extends Controller
                 }
             }
         }
-
-        dump($errors);
         return $errors;
     }
 }
