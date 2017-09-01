@@ -84,6 +84,7 @@
                 self._clearForm();
                 $('#ticket').val(data.id);
                 $(self._selector.newModal).modal('toggle');
+                $('.alert-success').remove();
 
             }).catch(function (jqXHR) {
                 const errorData = JSON.parse(jqXHR.responseText);

@@ -64,7 +64,13 @@ class EntretienController extends BaseController
 
         $form->submit($dataFormEntretien);
 
-        $this->apiValidFormAction($form);
+        if (!$form->isValid()) {
+            $errors = $this->getErrorsFromFormAction($form);
+
+            return $this->createApiResponseAction([
+                'errors' => $errors
+            ], 400);
+        }
 
         /** @var Entretien $entretien */
         $entretien = $form->getData();
@@ -144,7 +150,14 @@ class EntretienController extends BaseController
 
         $form->submit($dataFormEntretien);
 
-        $this->apiValidFormAction($form);
+
+        if (!$form->isValid()) {
+            $errors = $this->getErrorsFromFormAction($form);
+
+            return $this->createApiResponseAction([
+                'errors' => $errors
+            ], 400);
+        }
 
         $em = $this->getDoctrine()->getManager();
 
@@ -286,18 +299,6 @@ class EntretienController extends BaseController
         $year = $dateTemp[2];
         $date = new \DateTime(''. $year .'-'. $month .'-'. $day);
         return $date;
-    }
-
-    private function apiValidFormAction(Form $form)
-    {
-        if (!$form->isValid()) {
-            $errors = $this->getErrorsFromFormAction($form);
-
-            return $this->createApiResponseAction([
-                'errors' => $errors
-            ], 400);
-        }
-        return true;
     }
 
     private function createEntretienApiModel(Entretien $entretien)

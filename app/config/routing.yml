@@ -52,13 +52,19 @@ blog_billet:
     resource: "@BlogBundle/Controller/BilletController.php"
     type:     annotation
     prefix:   /blog
+
 app.user.security:
     resource: "@UserBundle/Controller/SecurityController.php"
     type:     annotation
     prefix:   /
 
 app.user:
-    resource: "@UserBundle/Controller"
+    resource: "@UserBundle/Controller/UserController.php"
+    type:     annotation
+    prefix:   /dashboard
+
+app.user.groups:
+    resource: "@UserBundle/Controller/GroupsController.php"
     type:     annotation
     prefix:   /dashboard
 

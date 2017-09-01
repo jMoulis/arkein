@@ -6,6 +6,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use UserBundle\Form\Type\LoginType;
 
+
 class SecurityController extends Controller
 {
     /**

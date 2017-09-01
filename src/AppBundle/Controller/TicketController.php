@@ -49,7 +49,13 @@ class TicketController extends BaseController
         ]);
         $form->submit($data);
 
-        $this->apiValidFormAction($form);
+        if (!$form->isValid()) {
+            $errors = $this->getErrorsFromFormAction($form);
+
+            return $this->createApiResponseAction([
+                'errors' => $errors
+            ], 400);
+        }
 
         $ticket = $form->getData();
         $em = $this->getDoctrine()->getManager();
@@ -127,7 +133,13 @@ class TicketController extends BaseController
 
         $form->submit($data);
 
-        $this->apiValidFormAction($form);
+        if (!$form->isValid()) {
+            $errors = $this->getErrorsFromFormAction($form);
+
+            return $this->createApiResponseAction([
+                'errors' => $errors
+            ], 400);
+        }
 
         $em = $this->getDoctrine()->getManager();
         $em->flush();
@@ -180,18 +192,6 @@ class TicketController extends BaseController
                 $ticket->setAboutWho($this->getUser());
             }
         }
-    }
-
-    private function apiValidFormAction(Form $form)
-    {
-        if (!$form->isValid()) {
-            $errors = $this->getErrorsFromFormAction($form);
-
-            return $this->createApiResponseAction([
-                'errors' => $errors
-            ], 400);
-        }
-        return true;
     }
 
     /**

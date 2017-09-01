@@ -35,8 +35,10 @@ class DocumentController extends BaseController
      *
      *
      */
-    public function indexAction(User $user)
+    public function indexAction($userid)
     {
+        $user = $this->getDoctrine()->getRepository('UserBundle:User')->find($userid);
+
         $documents = $this->getDoctrine()->getRepository('DocumentationBundle:Document')
             ->getDocumentsByDestinataire($user);
         $models = [];
@@ -92,7 +94,13 @@ class DocumentController extends BaseController
 
         $form->handleRequest($request);
 
-        $this->apiValidFormAction($form);
+        if (!$form->isValid()) {
+            $errors = $this->getErrorsFromFormAction($form);
+
+            return $this->createApiResponseAction([
+                'errors' => $errors
+            ], 400);
+        }
 
 
         /** @var Document $document */
@@ -101,7 +109,7 @@ class DocumentController extends BaseController
         $document = $form->getData();
         $document->setAuthor($this->getUser());
         $document->setDestinataire($user);
-
+        //die(dump($document));
         $em->persist($document);
         $em->flush();
 
@@ -260,17 +268,6 @@ class DocumentController extends BaseController
         return $type;
     }
 
-    private function apiValidFormAction(Form $form)
-    {
-        if (!$form->isValid()) {
-            $errors = $this->getErrorsFromFormAction($form);
-
-            return $this->createApiResponseAction([
-                'errors' => $errors
-            ], 400);
-        }
-        return true;
-    }
 
     /**
      * @param Document $document

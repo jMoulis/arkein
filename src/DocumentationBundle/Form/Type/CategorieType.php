@@ -14,7 +14,6 @@ class CategorieType extends AbstractType
             ->add('name')
             ->add('isPrivate')
             ->add('owner')
-            ->add('classified')
         ;
     }
 

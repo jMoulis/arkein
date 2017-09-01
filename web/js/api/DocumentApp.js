@@ -62,11 +62,11 @@
                 method: 'DELETE',
                 success: function () {
                     $row.fadeOut('normal', function () {
-                        let totalDocReceiver = Number($(this).closest('ul').find('.js-total-doc-categorie').text());
+                        console.log('test')
+                        /*let totalDocReceiver = Number($(this).closest('ul').find('.js-total-doc-categorie').text());
                         totalDocReceiver = totalDocReceiver - 1;
-                        $link.closest('ul').find('.js-total-doc-categorie').text(totalDocReceiver);
+                        $link.closest('ul').find('.js-total-doc-categorie').text(totalDocReceiver);*/
                         $(this).remove();
-
                     });
                 }
             })
@@ -91,9 +91,9 @@
                     self._addNewDoc(data, $wrapper);
                     self._clearForm();
 
-                    let totalDocReceiver = Number($wrapper.closest('ul').find('.js-total-doc-categorie').text());
+                    /*let totalDocReceiver = Number($wrapper.closest('ul').find('.js-total-doc-categorie').text());
                     totalDocReceiver = totalDocReceiver + 1;
-                    $wrapper.closest('ul').find('.js-total-doc-categorie').text(totalDocReceiver);
+                    $wrapper.closest('ul').find('.js-total-doc-categorie').text(totalDocReceiver);*/
                 },
                 error: function (jqXHR) {
                     const errorData = JSON.parse(jqXHR.responseText);

@@ -56,7 +56,13 @@ class AnswerController extends BaseController
 
         $form->submit($data);
 
-        $this->apiValidFormAction($form);
+        if (!$form->isValid()) {
+            $errors = $this->getErrorsFromFormAction($form);
+
+            return $this->createApiResponseAction([
+                'errors' => $errors
+            ], 400);
+        }
 
         /** @var Answer $answer */
         $answer = $form->getData();
@@ -77,17 +83,6 @@ class AnswerController extends BaseController
         return $response;
     }
 
-    private function apiValidFormAction(Form $form)
-    {
-        if (!$form->isValid()) {
-            $errors = $this->getErrorsFromFormAction($form);
-
-            return $this->createApiResponseAction([
-                'errors' => $errors
-            ], 400);
-        }
-        return true;
-    }
     /**
      * @param Answer $answer
      * @return AnswerApiModel

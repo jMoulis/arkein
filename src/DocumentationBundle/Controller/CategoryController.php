@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use UserBundle\Entity\User;
 
 /**
@@ -48,10 +49,30 @@ class CategoryController extends BaseController
     public function newCategoryAction(Request $request, $userid = null)
     {
         $data = json_decode($request->getContent(), true);
-        $form = $this->get('app.api_response')->ajaxResponse(CategorieType::class, $data);
+
+        if ($data === null) {
+            throw new BadRequestHttpException('Invalid JSON');
+        }
+        $form = $this->createForm(CategorieType::class, null, [
+            'csrf_protection' => false,
+        ]);
+
+        $form->submit($data);
+
+
+
+        if (!$form->isValid()) {
+            $errors = $this->getErrorsFromFormAction($form);
+
+            return $this->createApiResponseAction([
+                'errors' => $errors
+            ], 400);
+        }
+
 
         /** @var Categorie $category */
         $category = $form->getData();
+
         $em = $this->getDoctrine()->getManager();
         if($userid){
             $category->setOwner($em->getRepository('UserBundle:User')->find($userid));

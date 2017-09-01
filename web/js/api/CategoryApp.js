@@ -125,7 +125,7 @@
                 error: function (jqXHR) {
                     const errorData = JSON.parse(jqXHR.responseText);
                     self._mapErrorsToForm(errorData.errors);
-                    this._removeWaiting();
+                    self._removeWaiting();
                 }
             })
         },
@@ -247,7 +247,7 @@
                         let $wrapper = $('tbody#tbody_'+ document.categories);
                         self._addNewDoc(document, $wrapper);
                         testArray.push(document);
-                        $('#collapseFile_'+ document.categories).prev('.card').find('span').text($('#collapseFile_'+ document.categories).length)
+                        //$('#collapseFile_'+ document.categories).prev('.card').find('span').text($('#collapseFile_'+ document.categories).length)
                     });
 
                 }

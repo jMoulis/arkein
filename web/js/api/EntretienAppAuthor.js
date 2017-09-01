@@ -162,7 +162,13 @@
             }).catch(function (jqXHR) {
                 const errorData = JSON.parse(jqXHR.responseText);
                 self._mapErrorsToForm(errorData.errors);
-                $(self._selector.modalForm).find('button').prop("disabled", false);
+
+                const buttons = $(self._selector.modalForm).find('button');
+                $.map(buttons, function(button){
+                    $(button).prop("disabled", false);
+                });
+
+                $('.saving').remove();
             })
         },
 
