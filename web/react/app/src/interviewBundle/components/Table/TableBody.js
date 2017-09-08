@@ -8,13 +8,19 @@ import PropTypes from 'prop-types';
 /*
  * Local import
  */
-
+import Tr from './Tr';
 
 /*
  * Code
  */
-const TableBody = () => (
-  <tbody />
+const TableBody = ({ interviews }) => (
+
+  <tbody>
+    { interviews['interviews'].map(interview => (
+        <Tr key={interview.id}
+            interview={interview}/>
+    ))}
+  </tbody>
 );
 TableBody.propTypes = {
 

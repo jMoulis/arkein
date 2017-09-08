@@ -14,11 +14,11 @@ import TableBody from './TableBody';
 /*
  * Code
  */
-const Table = ({ interviews }) => (
+const Table = (interviews) => (
   <div className="js-main-content-created">
     <table className="table table-responsive table-hover">
       <TableHeader />
-      <TableBody />
+      <TableBody interviews={interviews}/>
     </table>
   </div>
 );

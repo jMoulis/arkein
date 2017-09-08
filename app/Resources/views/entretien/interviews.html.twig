@@ -37,15 +37,21 @@
             </div>
         </div>
     </div>
-
     <div id="root"></div>
+    {{ include('entretien/_pdf_loader_modal.html.twig') }}
+    {{ include('entretien/_new_compte_rendu_modal.html.twig') }}
+    {{ include('entretien/_edit_compterendu_modal.html.twig') }}
+    <!-- Modal pour la visualisation du formulaire d'édition des entretiens -->
+    {{ include('entretien/_edit_entretien_modal.html.twig') }}
+    <!-- Fin modal -->
+    <!-- Modal pour la visualisation du formulaire d'ajout des entretiens -->
+    {{ include('entretien/_new_entretien_modal.html.twig') }}
+    <!-- Fin modal -->
 {% endblock %}
+
 
 {% block javascripts %}
     {{ parent() }}
-    <script type="text/babel">
-      document.addEventListener('DOMContentLoaded', () => {
-        render(<App />, document.getElementById('root'));
-      });
-    </script>
+    {{ include('entretien/template/_scriptGlobal.html.twig') }}
 {% endblock %}
+

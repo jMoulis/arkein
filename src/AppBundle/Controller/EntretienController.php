@@ -205,6 +205,7 @@ class EntretienController extends BaseController
         $entetiens = $this->getDoctrine()->getRepository('AppBundle:Entretien')
             ->getInterviewByGuestAndByYoung($this->getUser(), $young);
         $models = [];
+
         foreach ($entetiens as $entetien) {
             $models[] = $this->createEntretienApiModel($entetien);
         }

@@ -7,10 +7,7 @@ exports.config = {
       },
     },
     javascripts: {
-      joinTo: {
-        'js/app.js': /^app/,
-        'js/vendor.js': /^(?!app)/
-      }
+      joinTo: 'js/app.js'
     },
   },
   plugins: {
