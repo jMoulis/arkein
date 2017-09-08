@@ -6,16 +6,10 @@
         <title>{% block title %}Welcome!{% endblock %}</title>
 
         {% block stylesheets %}
-            {#Retraiter le load avce assetic ou autre#}
-            <link rel="stylesheet" href="{{ asset('css/app/reset.css') }}" />
-            <link rel="stylesheet" href="{{ asset('css/third-library/bootstrap4/min/bootstrap.min.css') }}" />
-            <link rel="stylesheet" href="{{ asset('css/third-library/jquery/jquery-ui.min.css') }}"/>
-            <link rel="stylesheet" href="{{ asset('css/app/bootstrap-select.min.css') }}" />
-            <link rel="stylesheet" href="{{ asset('css/app/main.css') }}" />
-            <link rel="stylesheet" href="{{ asset('css/app/login.css') }}" />
-            <link rel="stylesheet" href="{{ asset('css/app/security.css') }}" />
-            <link rel="stylesheet" href="{{ asset('font/css/font-awesome.min.css') }}" />
-            <link rel="stylesheet" href="{{ asset('css/widget/bootstrap-datepicker.min.css') }}" />
+            {#Retraiter le load avce assetic ou autre #}
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+            <link rel="stylesheet" href="{{ asset('react/public/css/app.css') }}">
             {#
                 {% stylesheets
                     'css/app/upload-btn.css'
@@ -116,24 +110,8 @@
             <script src="{{ asset('js/api/BlogApp.js') }}"></script>
             <script src="{{ asset('js/fileUploadInput.js') }}"></script>
             <script src="{{ asset('js/navTab.js') }}"></script>
-
-            {#
-            {% javascripts
-                'js/widget/bootstrap-datepicker.js'
-                'js/api/UserApp.js'
-                'js/api/AnswerApp.js'
-                'js/api/TicketApp.js'
-                'js/api/DocumentApp.js'
-                'js/api/CategoryApp.js'
-                'js/api/EntretienApp.js'
-                'js/fileUploadInput.js'
-                'js/navTab.js'
-                output='js/compiled/compiled.js'
-            %}
-                <script src="{{ asset_url }}"></script>
-            {% endjavascripts %}
-            #}
-
+            <script src="{{ asset('react/public/js/interview.js') }}"></script>
+            <script>require('src/index.js');</script>
 
         {% endblock %}
     </body>

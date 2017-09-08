@@ -24,3 +24,12 @@ Supprimerait var/cache/
 Supprimerait var/logs/
 Supprimerait var/sessions/
 
+Supprimerait var/
+Supprimerait web/.babelrc
+Supprimerait web/app/
+Supprimerait web/brunch-config.js
+Supprimerait web/node_modules/
+Supprimerait web/package.json
+Supprimerait web/yarn.lock
+/web/react/node_modules/
+Supprimerait web/react/

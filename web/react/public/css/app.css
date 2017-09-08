@@ -1,0 +1,397 @@
+
+
+
+@media (max-width: 576px) {
+    #loginform {
+        margin-top: 50px;
+    }
+}
+
+#loginform{
+    margin-top: 2em;
+}
+
+.container {
+    padding-bottom: 2rem;
+}
+@media (max-width: 576px) {
+    #loginform {
+        margin-top: 50px;
+    }
+}
+
+#loginform{
+    margin-top: 2em;
+}
+
+.container {
+    padding-bottom: 2rem;
+}
+@media (max-width: 576px) {
+    .display-3 {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .display-3 {
+        font-size: 1.5rem;
+    }
+    .jumbotron {
+        padding: 2rem 1rem;
+        margin-bottom: 0;
+    }
+    .lead {
+        font-size: 1rem;
+    }
+}
+
+.card-header a:visited, a:active, a:hover, a:focus {
+    color: #014c8c;
+    text-decoration: none;
+}
+.card {
+    border-radius: 0;
+    margin-bottom: 1em;
+}
+.card-header {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+}
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 120px;
+    line-height: 60px;
+    background-color: #3c3f41;
+    color: white;
+}
+
+.form-control {
+    border-radius: 0;
+}
+
+.btn {
+    border-radius: 0;
+}
+
+#map {
+    height: 300px;
+}
+
+.accueil {
+    margin-top: 2em;
+}
+
+/*
+ * Sidebar
+ */
+
+.sidebar {
+    position: fixed;
+    top: 51px;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    padding: 20px;
+    overflow-x: hidden;
+    overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+    border-right: 1px solid #eee;
+}
+
+/* Sidebar navigation */
+.sidebar {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.sidebar .nav {
+    margin-bottom: 20px;
+}
+
+.sidebar .nav-item {
+    width: 100%;
+}
+
+.sidebar .nav-item + .nav-item {
+    margin-left: 0;
+}
+
+.sidebar .nav-link {
+    border-radius: 0;
+}
+
+/*
+ * Dashboard
+ */
+
+/* Placeholders */
+.placeholders {
+    padding-bottom: 3rem;
+}
+
+.placeholder img {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+}
+
+.nav-tabs .nav-link{
+    border-radius: 0;
+
+}
+
+.nav-tabs .nav-link.active {
+    border-top: solid #0275d8 3px ;
+}
+
+.nav-link:hover {
+    border-bottom: none;
+}
+
+#categorie {
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+}
+
+.file {
+    visibility: hidden;
+    position: absolute;
+}
+
+.top-header li {
+    display: inline;
+}
+
+.homepage .container {
+    border: solid rgb(238, 238, 238) 1px;
+    border-radius: 2px;
+    padding-top: 1em;
+    padding-bottom: 0;
+}
+
+.admin-footer {
+    border: solid rgb(238, 238, 238) 1px;
+    border-radius: 2px;
+    padding-top: 1em;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.billet-contenu-wrapper {
+    margin-left: 2em;
+}
+.btnAjoutGenerique {
+    margin-bottom: 1em;
+}
+.input-group-addon {
+    background-color: white;
+}
+
+/* SECTION TICKET */
+.date-post{
+    display: block;
+    font-size: 0.75em;
+}
+.show-new-answer-form {
+    border-color: #bcdff1;
+    background-color: #d9edf7;
+    color: #31708f;
+}
+.header-heading-card {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+}
+.header-heading-card div p {
+    font-weight: bold;
+    margin-bottom: 0;
+    font-size: 0.75em;
+}
+.fa-user {
+    display: block;
+    margin-right: 0.5em;
+}
+.show-new-answer-form>div {
+    width: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+}
+
+/* SECTION DOCUMENTS */
+.header-category {
+    width: 100%;
+}
+
+/* SECTION ENTRETIEN */
+/* This rule defines the background tr of the interview
+    which are not created by the logged user
+*/
+.notMyInterview {
+    background-color: #b2e5ff;
+}
+.btn-default {
+    background-color: #636c72;
+    color: white;
+}
+.btn-view, .badge-view {
+    background-color: hotpink;
+    color: white;
+}
+
+.form-signin {
+    max-width: 330px;
+    padding: 15px;
+    margin: 0 auto;
+}
+.form-signin .form-signin-heading,
+.form-signin .checkbox {
+    margin-bottom: 10px;
+}
+.form-signin .checkbox {
+    font-weight: normal;
+}
+.form-signin .form-control {
+    position: relative;
+    height: auto;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 10px;
+    font-size: 16px;
+}
+.form-signin .form-control:focus {
+    z-index: 2;
+}
+.form-signin input[type="text"] {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+.form-signin input[type="password"] {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+/* http://meyerweb.com/eric/tools/css/reset/
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+body {
+    line-height: 1;
+}
+ol, ul {
+    list-style: none;
+}
+blockquote, q {
+    quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content: '';
+    content: none;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+.form-signin {
+    max-width: 330px;
+    padding: 15px;
+    margin: 0 auto;
+}
+.form-signin .form-signin-heading,
+.form-signin .checkbox {
+    margin-bottom: 10px;
+}
+.form-signin .checkbox {
+    font-weight: normal;
+}
+.form-signin .form-control {
+    position: relative;
+    height: auto;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 10px;
+    font-size: 16px;
+}
+.form-signin .form-control:focus {
+    z-index: 2;
+}
+.form-signin input[type="text"] {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+.form-signin input[type="password"] {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    /* Margin bottom by footer height */
+    margin-bottom: 120px;
+    padding-top: 60px;
+    font-family: sans-serif;
+}
+
+body >.container {
+    padding-bottom: 2rem;
+}
+
+h1 {
+    margin-bottom: 20px;
+    padding-bottom: 9px;
+    border-bottom: 1px solid #eee;
+}
+h5 {
+    font-size: 1em;
+    margin: 0;
+}
+
+/*# sourceMappingURL=app.css.map*/

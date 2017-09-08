@@ -38,10 +38,14 @@
         </div>
     </div>
 
-    {{ include('entretien/_interviews-lists.html.twig') }}
+    <div id="root"></div>
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
-    {{ include('entretien/template/_scriptGlobal.html.twig') }}
+    <script type="text/babel">
+      document.addEventListener('DOMContentLoaded', () => {
+        render(<App />, document.getElementById('root'));
+      });
+    </script>
 {% endblock %}

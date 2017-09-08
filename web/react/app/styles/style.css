@@ -1,0 +1,25 @@
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    /* Margin bottom by footer height */
+    margin-bottom: 120px;
+    padding-top: 60px;
+    font-family: sans-serif;
+}
+
+body >.container {
+    padding-bottom: 2rem;
+}
+
+h1 {
+    margin-bottom: 20px;
+    padding-bottom: 9px;
+    border-bottom: 1px solid #eee;
+}
+h5 {
+    font-size: 1em;
+    margin: 0;
+}

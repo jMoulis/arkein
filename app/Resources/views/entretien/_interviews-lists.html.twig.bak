@@ -1,0 +1,45 @@
+<div class="js-entretien-wrapper" data-user="{{ app.user.id }}">
+    <div class="btnAjoutGenerique">
+        <a class="js-new-entretien-btn btn btn-primary"
+           href="#"
+           data-toggle="modal"
+           data-target="#newEntretienModal">
+            Nouvel entretien
+        </a>
+    </div>
+    <div class="" id="myInterview" role="tabpanel">
+        <div class="js-main-content-created">
+            <table class="table table-responsive table-hover">
+                <thead>
+                <tr>
+                    <th colspan="2">Actions
+                        <a id="action_popover" href="#"
+                           tabindex="0"
+                           data-trigger="focus"
+                            data-toggle="popover" title="Légende"
+                            >
+                            <i class="fa fa-question-circle-o" aria-hidden="true" title="Légende"></i>
+                        </a>
+                    </th>
+                    <th>Date</th>
+                    <th>Objet</th>
+                    <th>Ordre du jour</th>
+                    <th>Organisateur</th>
+                    <th>Jeune</th>
+                </tr>
+                </thead>
+                <tbody class="js-entretiens-table"></tbody>
+            </table>
+        </div>
+    </div>
+    {{ include('entretien/_pdf_loader_modal.html.twig') }}
+    {{ include('entretien/_new_compte_rendu_modal.html.twig') }}
+    {{ include('entretien/_edit_compterendu_modal.html.twig') }}
+    <!-- Modal pour la visualisation du formulaire d'édition des entretiens -->
+    {{ include('entretien/_edit_entretien_modal.html.twig') }}
+    <!-- Fin modal -->
+    <!-- Modal pour la visualisation du formulaire d'ajout des entretiens -->
+    {{ include('entretien/_new_entretien_modal.html.twig') }}
+    <!-- Fin modal -->
+</div>
+
